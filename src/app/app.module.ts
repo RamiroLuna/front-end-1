@@ -7,13 +7,16 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { MaterializeModule } from 'angular2-materialize';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthService } from './auth/auth.service'
+import { AuthService } from './auth/auth.service';
+import { HomeComponent } from './home/home.component';
+import { AuthGuard } from './auth/auth.guard';
 
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent }
+  { path: 'login', component: LoginComponent },
+  { path: 'home', component: HomeComponent , canActivate: [AuthGuard]}
   // {
   //   path: 'home', component: HomeComponent, children: [
   //     { path: 'admon', loadChildren: './administrador/administrador.module#AdministradorModule' }
@@ -25,7 +28,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +38,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   providers: [
-    AuthService,  
+    AuthService,
+    AuthGuard,
     {
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptor,

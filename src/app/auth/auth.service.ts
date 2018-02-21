@@ -11,5 +11,6 @@ export class AuthService {
     // return a boolean reflecting 
     // whether or not the token is expired
     return tokenNotExpired(null, token);
+    
   }
 }
