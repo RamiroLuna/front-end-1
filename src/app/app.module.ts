@@ -1,9 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './auth/token.interceptor';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { MaterializeModule } from 'angular2-materialize';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthService } from './auth/auth.service'
+
 
 
 const routes: Routes = [
@@ -25,9 +30,17 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     MaterializeModule,
+    HttpClientModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [],
+  providers: [
+    AuthService,  
+    {
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptor,
+    multi: true
+  }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
