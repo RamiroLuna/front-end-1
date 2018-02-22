@@ -10,6 +10,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthService } from './auth/auth.service';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth/auth.guard';
+import { MenuComponent } from './menu/menu.component';
 
 
 
@@ -29,7 +30,8 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

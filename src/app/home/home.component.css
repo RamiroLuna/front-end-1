@@ -1,0 +1,9 @@
+.nav-wrapper .brand-logo img {
+    height: 60px;
+}
+
+@media (max-width: 600px) {
+    .nav-wrapper .brand-logo img {
+      height: 50px;
+    }
+  }

@@ -17,8 +17,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private service: LoginService) { }
 
-  ngOnInit() {
-    console.log('ejecuta');
+  ngOnInit() {    
    this.service.getAll().subscribe(res =>{ console.log(res)});
   }
 
