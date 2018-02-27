@@ -11,6 +11,10 @@ import { AuthService } from './auth/auth.service';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth/auth.guard';
 import { MenuComponent } from './menu/menu.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgPipesModule } from 'ngx-pipes';
+
+
 
 
 
@@ -37,6 +41,9 @@ const routes: Routes = [
     BrowserModule,
     MaterializeModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgPipesModule,
     RouterModule.forRoot(routes)
   ],
   providers: [
