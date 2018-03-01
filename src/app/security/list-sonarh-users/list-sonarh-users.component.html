@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="section"></div>
+  <div class="col s12 m12 l8 xl8">
+   
+    <h5 class="color_titulo center-align"><b>Usuarios SONARH</b></h5>
+     <!-- Solo para dispositivos moviles -->
+     <div class="hide-on-large-only right-align">
+        <a routerLink="../etad" >Ir a usuarios ETAD</a>
+     </div>
+    <!-- Fin solo para dispositivos moviles -->
+    <div class="section"></div>
+    <div class="row">
+      <table id="tabla_usuarios_sonarh" class="display" cellspacing="0" width="100%" style="overflow-x:auto;">
+        <thead>
+          <tr>
+            <th class="center-align">Id</th>
+            <th class="center-align">Empleado</th>
+            <th class="center-align">Departamento</th>
+            <th class="center-align">Grupo</th>
+            <th class="center-align">Linea</th>
+            <th class="center-align">Activo en ETAD</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let usuario of usuarios_sonarh">
+            <td class="center-align">{{ usuario.id_usuario}}</td>
+            <td class="center-align">{{ usuario.nombre + ' ' + usuario.apellido_paterno + ' ' + usuario.apellido_materno }}</td>
+            <td class="center-align">{{ usuario.departamento}}</td>
+            <td class="center-align">{{ usuario.grupo}}</td>
+            <td class="center-align">{{ usuario.linea}}</td>
+            <td class="center-align">
+                <a *ngIf="!usuario.activo_etad" [routerLink]="['../usuario/' + usuario.id_usuario]"   class="btn-floating waves-effect waves-light light-green lighten-1"><i class="material-icons">add</i></a>
+                <p *ngIf="usuario.activo_etad"> Activo </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a routerLink="../etad" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Ver usuarios ETAD" (click)="ocultarTooltip()">
+        <i class="material-icons">
+          <i class="material-icons">view_list</i>
+        </i>
+      </a>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas -->
+    
+</div>

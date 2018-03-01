@@ -2,16 +2,6 @@
     height: 60px;
 }
 
-
-/*
- * Estilo para la barra de busqueda
- */
-.nav-wrapper .input-field label{
-  top: -10px;
-  margin-left: 10px;
-}
-
-
 /*
  * @media para ajustar el tamaño de la imagen del header de la 
  * pagina 

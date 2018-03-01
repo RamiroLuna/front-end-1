@@ -1,16 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 
-declare var $:any;
+declare var $: any;
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styles: []
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent implements OnInit, AfterViewInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+  }
+  ngAfterViewInit() {
+    $('.collapsible').collapsible();
+  }
 
 }

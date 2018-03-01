@@ -1,0 +1,72 @@
+<div class="container">
+  <h3 class="color_titulo center-align">Catalogo de perdidas</h3>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+        <a routerLink="../perdidas/nuevo"  class="btn-floating btn light-green darken-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+          data-tooltip="Agregar" (click)="agregar()">
+          <i class="material-icons">add</i>
+        </a>
+        
+        <a routerLink="../lista" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Ver catalogos" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">view_list</i>
+          </i>
+        </a>
+  </div>
+  <!-- Fin solo para dispositivos moviles -->
+  <table class="display" class="striped" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Nombre</th>
+        <th>Activo</th>
+        <th>Actualizar</th>
+        <th>Eliminar</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let equipo of equipos">
+        <td>{{ equipo.id}}</td>
+        <td>{{ equipo.nombre}}</td>
+        <td>
+          <div class="switch">
+            <label>
+              No
+              <input type="checkbox">
+              <span class="lever"></span>
+              Si
+            </label>
+          </div>
+        </td>
+        <td>
+          <a class="btn-floating  light-green lighten-1">
+            <i class="material-icons">edit</i>
+          </a>
+        </td>
+        <td>
+          <a class="btn-floating   red lighten-2">
+            <i class="material-icons">delete</i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table> 
+  <!-- Inicio solo para pantallas-->
+   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a routerLink="../perdidas/nuevo"  class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+          data-tooltip="Agregar" (click)="agregar()">
+          <i class="material-icons">add</i>
+        </a>
+        <a routerLink="../lista" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Ver catalogos" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">view_list</i>
+          </i>
+        </a>
+      </div>
+    </div>
+    <!-- Fin solo para pantallas -->
+</div>

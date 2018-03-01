@@ -1,41 +1,60 @@
 <ul id="slide-out" class="side-nav">
-    <li>
-      <div class="user-view">
-        <div class="background light-green darken-1">
-         
-        </div>
-        <a href="#!user">
-          <img class="circle" src="http://www.mejorafinanzas.com.mx/images/usuario.png">
-        </a>
-        <a href="#!name">
-          <span class="white-text name">User Name</span>
-        </a>
-        <a href="#!email">
-          <span class="white-text email">usuario.ejemplo@gmail.com</span>
-        </a>
-      </div>
-    </li>
-    <li>
-      <a class="waves-effect" href="#!">
-        <i class="material-icons">perm_identity</i>Perfil</a>
-    </li>
-    <li><div class="divider"></div></li>
-    <li>
-      <a class="waves-effect" href="#!">
-          <i class="material-icons">insert_chart</i>Graficas</a>
-    </li>
-    <li>
-      <a class="waves-effect" href="#!">
-          <i class="material-icons">library_books</i>Catalogos</a>
-    </li>
-    <li>
-      <a class="waves-effect" href="#!">
-        <i class="material-icons">cloud</i>Opción menu 3</a>
-    </li>
-    <li>
-      <a class="waves-effect" href="#!">
-        <i class="material-icons">power_settings_new</i>Cerrar sesión</a>
-    </li>
-   
-  </ul>
+  <li>
+    <div class="user-view">
+      <div class="background light-green darken-1">
 
+      </div>
+      <a href="#!user">
+        <img class="circle" src="http://www.mejorafinanzas.com.mx/images/usuario.png">
+      </a>
+      <a href="#!name">
+        <span class="white-text name">User Name</span>
+      </a>
+      <a href="#!email">
+        <span class="white-text email">usuario.ejemplo@gmail.com</span>
+      </a>
+    </div>
+  </li>
+  <li>
+    <a class="waves-effect" href="#!">
+      <i class="material-icons">perm_identity</i>Perfil</a>
+  </li>
+  <li>
+    <div class="divider"></div>
+  </li>
+  <li>
+    <a class="waves-effect" href="#!">
+      <i class="material-icons">insert_chart</i>Graficas</a>
+  </li>
+  <li>
+    <a class="waves-effect" routerLink="catalogos/lista">
+      <i class="material-icons">library_books</i>Catalogos</a>
+  </li>
+  <li>
+    <ul class="collapsible collapsible-accordion">
+      <li>
+        <a class="collapsible-header">
+          <i class="material-icons" style="padding-left: 15px">keyboard_arrow_down</i>&ensp;&ensp;Usuarios</a>
+        <div class="collapsible-body  light-green lighten-5">
+          <ul>
+            <li>
+              <a class="waves-effect" routerLink="usuarios/sonarh">
+                <i class="material-icons" style="padding-left: 20px">supervisor_account</i>SONARH</a>
+            </li>
+            <li>
+                <a class="waves-effect" routerLink="usuarios/etad">
+                <i class="material-icons" style="padding-left: 20px">supervisor_account</i>ETAD</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a class="waves-effect" href="#!">
+      <i class="material-icons">power_settings_new</i>Cerrar sesión</a>
+  </li>
+
+
+
+</ul>

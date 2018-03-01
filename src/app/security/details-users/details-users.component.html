@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="section"></div>
+  <div class="row">
+    <div class="col offset-l2 offset-xl2 s12 m12 l8 lx8">
+      <div class="card-panel">
+        <h5 class="color_titulo header2 center-align">Detalle usuario</h5>
+        <div class="section"></div>
+        <div class="row">
+          <form class="col s12 m12 l12 xl12">
+            <div class="row">
+              <div class="input-field col s12 m12 l12 xl12">
+                <input disabled id="nombre" type="text" value="nombre ejemplo">
+                <label for="nombre" class="active">Nombre</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 m12 l6 xl6">
+                <input disabled id="usuario_nomina" type="text" value="123ABCD">
+                <label for="usuario_nomina" class="active">Usuario(nomina)</label>
+              </div>
+              <div class="input-field col s12 m12 l6 xl6">
+                <input disabled value="12345678" id="password" type="text">
+                <label for="password" class="active">Contraseña</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 m12 l12 xl12">
+                <label>Perfil</label>
+                <select materialize="material_select" [materializeSelectOptions]="selectOptions">
+                  <option *ngFor="let perfil of perfiles" [value]="perfil.id">{{perfil.nombre}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="row">
+                <div class="input-field col  offset-m1 offset-l1 offset-xl1 s6 m4 l4 lx4">
+                  <a routerLink="../../lista" class="btn grey lighten-1 waves-effect waves-light right" name="action">Cancelar
+                  </a>
+                </div>
+                <div class="input-field col offset-m2 offset-l2 offset-xl2 s6 m4 l4 lx4">
+                  <a routerLink="../../registrados" class="btn light-green lighten-1 waves-effect waves-light right" name="action">Dar de alta
+                  </a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

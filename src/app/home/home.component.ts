@@ -1,8 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as Chart from 'chart.js';
 
-
-
 declare var $: any;
 @Component({
   selector: 'app-home',
@@ -48,86 +46,43 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  public catalogos:any[]=[
-      { id : 1 , nombre: 'Ejemplo catalogo 1' , descripcion: 'descripcion'},
-      { id : 2 , nombre: 'Ejemplo catalogo 2' , descripcion: 'descripcion'},
-      { id : 3 , nombre: 'Ejemplo catalogo 3' , descripcion: 'descripcion'},
-      { id : 4 , nombre: 'Ejemplo catalogo 4' , descripcion: 'descripcion'},
-      { id : 5 , nombre: 'Ejemplo catalogo 5' , descripcion: 'descripcion'},
-      { id : 6 , nombre: 'Ejemplo catalogo 6' , descripcion: 'descripcion'},
-      { id : 7 , nombre: 'Ejemplo catalogo 7' , descripcion: 'descripcion'},
-      { id : 8 , nombre: 'Ejemplo catalogo 8' , descripcion: 'descripcion'},
-    
-    ]
- 
-    
 
-    public equipos:any[]=[
-        { id : 1 , nombre: 'Catalogo equipo 1' , descripcion: 'descripcion'},
-        { id : 2 , nombre: 'Catalogo equipo 2' , descripcion: 'descripcion'},
-        { id : 3 , nombre: 'Catalogo equipo 3' , descripcion: 'descripcion'},
-        { id : 4 , nombre: 'Catalogo equipo 4' , descripcion: 'descripcion'},
-        { id : 5 , nombre: 'Catalogo equipo 5' , descripcion: 'descripcion'},
-        { id : 6 , nombre: 'Catalogo equipo 6' , descripcion: 'descripcion'},
-        { id : 7 , nombre: 'Catalogo equipo 7' , descripcion: 'descripcion'},
-        { id : 8 , nombre: 'Catalogo equipo 8' , descripcion: 'descripcion'},
-        { id : 1 , nombre: 'Catalogo equipo 1' , descripcion: 'descripcion'},
-        { id : 2 , nombre: 'Catalogo equipo 2' , descripcion: 'descripcion'},
-        { id : 3 , nombre: 'Catalogo equipo 3' , descripcion: 'descripcion'},
-        { id : 4 , nombre: 'Catalogo equipo 4' , descripcion: 'descripcion'},
-        { id : 5 , nombre: 'Catalogo equipo 5' , descripcion: 'descripcion'},
-        { id : 6 , nombre: 'Catalogo equipo 6' , descripcion: 'descripcion'},
-        { id : 7 , nombre: 'Catalogo equipo 7' , descripcion: 'descripcion'},
-        { id : 8 , nombre: 'Catalogo equipo 8' , descripcion: 'descripcion'},
-        { id : 1 , nombre: 'Catalogo equipo 1' , descripcion: 'descripcion'},
-        { id : 2 , nombre: 'Catalogo equipo 2' , descripcion: 'descripcion'},
-        { id : 3 , nombre: 'Catalogo equipo 3' , descripcion: 'descripcion'},
-        { id : 4 , nombre: 'Catalogo equipo 4' , descripcion: 'descripcion'},
-        { id : 5 , nombre: 'Catalogo equipo 5' , descripcion: 'descripcion'},
-        { id : 6 , nombre: 'Catalogo equipo 6' , descripcion: 'descripcion'},
-        { id : 7 , nombre: 'Catalogo equipo 7' , descripcion: 'descripcion'},
-        { id : 8 , nombre: 'Catalogo equipo 8' , descripcion: 'descripcion'}
-      
-      ]
-
-    public texto_busqueda:string = "";
+    
 
   constructor() { }
 
   ngOnInit() {
     $(".button-collapse").sideNav();
-    
-
   }
 
   ngAfterViewInit() {
-    $('#tabla').DataTable({
-        "dom": '<lf<t>ip>',
-        "bPaginate": true, 
-        "bLengthChange": true,
-        "lengthChange": true,
-        "aLengthMenu": [[10,25, 50, 75, -1], [10,25, 50, 75, "Todos"]],
-        "iDisplayLength": 10,
-        "language": {
-            "zeroRecords": "No se encontrarón coincidencias",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
-            "infoEmpty":      "Mostrando 0 a 0 de 0 registros",
-            "infoFiltered":   "(filtrado de _MAX_ total registros)",
-            "lengthMenu":     "Mostrar _MENU_ regitros",
-            "search": "Buscar:",
-            "paginate": {
-                "first":      "Inicio",
-                "last":       "Fin",
-                "next":       "Sig.",
-                "previous":   "Anterior"
-            }
-        }
+//     $('#tabla').DataTable({
+//         "dom": '<lf<t>ip>',
+//         "bPaginate": true, 
+//         "bLengthChange": true,
+//         "lengthChange": true,
+//         "aLengthMenu": [[10,25, 50, 75, -1], [10,25, 50, 75, "Todos"]],
+//         "iDisplayLength": 10,
+//         "language": {
+//             "zeroRecords": "No se encontrarón coincidencias",
+//             "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+//             "infoEmpty":      "Mostrando 0 a 0 de 0 registros",
+//             "infoFiltered":   "(filtrado de _MAX_ total registros)",
+//             "lengthMenu":     "Mostrar _MENU_ regitros",
+//             "search": "Buscar:",
+//             "paginate": {
+//                 "first":      "Inicio",
+//                 "last":       "Fin",
+//                 "next":       "Sig.",
+//                 "previous":   "Anterior"
+//             }
+//         }
 
-    });
+//     });
 
-    $('select').val('10'); //seleccionar valor por defecto del select
-    $('select').addClass("browser-default"); //agregar una clase de materializecss de esta forma ya no se pierde el select de numero de registros.
-    $('select').material_select();
+//     $('select').val('10'); //seleccionar valor por defecto del select
+//     $('select').addClass("browser-default"); //agregar una clase de materializecss de esta forma ya no se pierde el select de numero de registros.
+//     $('select').material_select();
 
     var ctx = $("#myChart").get(0).getContext("2d");
     var ctx1 = $("#myChart1").get(0).getContext("2d");
@@ -144,8 +99,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   }
 
-  limpiarInput(){
-      this.texto_busqueda="";
-  }
+
 
 }

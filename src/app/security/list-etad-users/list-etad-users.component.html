@@ -1,0 +1,63 @@
+<div class="container">
+  <div class="section"></div>
+  <div class="col s12 m12 l8 xl8">
+    <h5 class="color_titulo center-align"><b>Usuarios ETAD</b></h5>
+     <!-- Solo para dispositivos moviles -->
+     <div class="hide-on-large-only right-align">
+        <a routerLink="../sonarh" >Ir a usuarios SONARH</a>
+     </div>
+    <!-- Fin solo para dispositivos moviles -->
+    <div class="section"></div>
+    <div class="row">
+      <table id="tabla_usuarios_etad" class="display" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th class="center-align">Id</th>
+            <th class="center-align">Empleado</th>
+            <th class="center-align">Usuario</th>
+            <th class="center-align">Contraseña</th>
+            <th class="center-align">Perfil</th>
+            <th class="center-align">Activo</th>
+            <th class="center-align">Editar</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let usuario of usuarios_etad">
+            <td class="center-align">{{ usuario.id_usuario}}</td>
+            <td class="center-align">{{ usuario.nombre + ' ' + usuario.apellido_paterno + ' ' + usuario.apellido_materno}}</td>
+            <td class="center-align">{{ usuario.usuario}}</td>
+            <td class="center-align">{{ usuario.contrasenia}}</td>
+            <td class="center-align">{{ usuario.descripcion_perfil}}</td>
+            <td class="center-align">
+              <div class="switch">
+                <label>
+                  No
+                  <input type="checkbox">
+                  <span class="lever"></span>
+                  Si
+                </label>
+              </div>
+            </td>
+            <td  class="center-align">
+              <a class="btn-floating light-green lighten-1"><i class="material-icons">edit</i></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a routerLink="../sonarh" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Ver usuarios SONARH" (click)="ocultarTooltip()">
+          <i class="material-icons">
+            <i class="material-icons">view_list</i>
+          </i>
+        </a>
+      </div>
+    </div>
+    <!-- Fin solo para pantallas -->
+</div>

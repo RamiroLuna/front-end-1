@@ -12,21 +12,19 @@ import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth/auth.guard';
 import { MenuComponent } from './menu/menu.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgPipesModule } from 'ngx-pipes';
-
-
-
+import { CatalogsModule } from './catalogs/catalogs.module';
+import { SecurityModule } from './security/security.module'; 
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent , canActivate: [AuthGuard]}
-  // {
-  //   path: 'home', component: HomeComponent, children: [
-  //     { path: 'admon', loadChildren: './administrador/administrador.module#AdministradorModule' }
-  //   ]
-  // }
+  {
+    path: 'home', component: HomeComponent, canActivate: [AuthGuard], children: [
+      { path: 'catalogos', loadChildren: './catalogs/catalogs.module#CatalogsModule' },
+      { path: 'usuarios', loadChildren: './security/security.module#SecurityModule' }
+    ]
+  }
 ];
 
 
@@ -43,7 +41,6 @@ const routes: Routes = [
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NgPipesModule,
     RouterModule.forRoot(routes)
   ],
   providers: [
