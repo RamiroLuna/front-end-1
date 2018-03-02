@@ -1,0 +1,94 @@
+<div class="container">
+  <div class="section"></div>
+  <div class="row">
+    <div class="col offset-l2 offset-xl2 s12 m12 l8 lx8">
+      <div class="card-panel">
+        <h5 class="color_titulo header2 center-align">
+          <b>Mi perfil</b>
+        </h5>
+        <div class="section"></div>
+        <div class="row">
+          <form class="col s12 m12 l12 xl12">
+            <div class="row">
+              <div class="input-field col s12 m12 l12 xl12">
+                <input disabled id="nombre" type="text" value="nombre ejemplo">
+                <label for="nombre" class="active">Nombre</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 m12 l12 xl12">
+                <input disabled id="usuario_nomina" type="text" value="123ABCD">
+                <label for="usuario_nomina" class="active">Usuario(nomina)</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 m12 l12 xl12">
+                <input disabled id="area" type="text" value="Desarrollo">
+                <label for="area" class="active">Area</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 m12 l12 xl12">
+                <input disabled id="perfil" type="text" value="Consultor">
+                <label for="peril" class="active">Perfil</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 m12 l12 xl12">
+                <input type="checkbox" id="cambio_password" (change)="onChangePassword()" [ngModel]="cambio_password" [ngModelOptions]="{standalone: true}"
+                />
+                <label for="cambio_password">Cambiar contraseña</label>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para el cambio de contraseña -->
+<div id="modal_cambio_password"  class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
+  <div class="modal-content">
+    <div class="row">
+      <div class="col s12 m12 l12 xl12">
+        <div class="row">
+          <form class="col s12">
+            <fieldset>
+              <legend class="color_titulo"><b>Cambiar contraseña</b></legend>
+              <div class="section"></div>
+              <div class="row">
+                <div class="input-field col s12 m12 l6 xl6">
+                  <i class="material-icons prefix">lock_outline</i>
+                  <input id="nueva_contrasenia" type="password" class="validate">
+                  <label for="nueva_contrasenia" class="">Nueva contraseña</label>
+                </div>
+                <div class="input-field col s12 m12 l6 xl6">
+                  <i class="material-icons prefix">lock_outline</i>
+                  <input id="confirmacion" type="password" class="validate">
+                  <label for="confirmacion">Confirme nueva contraseña</label>
+                </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s12 m12 l12 xl12">
+                      <i class="material-icons prefix">lock_outline</i>
+                      <input id="contrasenia" type="password" class="validate">
+                      <label for="contrasenia">Contraseña antigua</label>
+                    </div>
+              </div>
+              <div class="row center-align">
+                <div class="col s6 m6 l6 xl6">
+                    <button class="modal-action modal-close waves-effect  btn-flat grey lighten-1" (click)="closeModal()">Cancelar</button>
+                </div>
+                <div class="col s6 m6 l6 xl6">
+                  <button class="waves-effect waves-light btn-flat light-green lighten-1" style="color:white">Aceptar</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fin modal para el cambio de contraseña -->
