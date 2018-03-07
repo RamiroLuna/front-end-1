@@ -25,4 +25,4 @@ const routesUsuarios: Routes = [
   ],
   declarations: [ListSonarhUsersComponent, ListEtadUsersComponent, DetailsUsersComponent, PerfilComponent]
 })
-export class SecurityModule { }
+export class UsersModule { }

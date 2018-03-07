@@ -2,3 +2,7 @@
 .color_titulo{
     color: #303f9f;
 }
+
+ .error{
+    color: red;
+}

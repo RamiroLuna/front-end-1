@@ -13,7 +13,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { MenuComponent } from './menu/menu.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CatalogsModule } from './catalogs/catalogs.module';
-import { SecurityModule } from './security/security.module'; 
+import { UsersModule } from './users/security.module'; 
 
 
 const routes: Routes = [
@@ -22,7 +22,7 @@ const routes: Routes = [
   {
     path: 'home', component: HomeComponent, canActivate: [AuthGuard], children: [
       { path: 'catalogos', loadChildren: './catalogs/catalogs.module#CatalogsModule' },
-      { path: 'usuarios', loadChildren: './security/security.module#SecurityModule' }
+      { path: 'usuarios', loadChildren: './users/security.module#UsersModule' }
     ]
   }
 ];
