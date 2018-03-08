@@ -8,10 +8,10 @@
         <img class="circle" src="http://www.mejorafinanzas.com.mx/images/usuario.png">
       </a>
       <a href="#!name">
-        <span class="white-text name">User Name</span>
+        <span class="white-text name"> {{ sesion.nombre }}</span>
       </a>
       <a href="#!email">
-        <span class="white-text email">usuario.ejemplo@gmail.com</span>
+        <span class="white-text">{{ sesion.perfil | ucfirst }}</span>
       </a>
     </div>
   </li>
@@ -22,34 +22,158 @@
   <li>
     <div class="divider"></div>
   </li>
-  <li>
-    <a class="waves-effect" href="#!">
-      <i class="material-icons">insert_chart</i>Graficas</a>
-  </li>
-  <li>
-    <a class="waves-effect" routerLink="catalogos/lista">
-      <i class="material-icons">library_books</i>Catalogos</a>
-  </li>
-  <li>
+  <!-- menu para el admin -->
+  <div *ngIf="sesion.id_perfil == 1">
+    <li>
+      <ul class="collapsible collapsible-accordion">
+        <li>
+          <a class="collapsible-header">
+            <i class="material-icons" style="padding-left: 15px">keyboard_arrow_down</i>&ensp;&ensp;Procesos</a>
+          <div class="collapsible-body  light-green lighten-5">
+            <ul>
+              <li>
+                <a class="waves-effect">
+                  <i class="material-icons" style="padding-left: 20px">fiber_manual_record</i>Proceso</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <ul class="collapsible collapsible-accordion">
+        <li>
+          <a class="collapsible-header">
+            <i class="material-icons" style="padding-left: 15px">keyboard_arrow_down</i>&ensp;&ensp;Informes</a>
+          <div class="collapsible-body  light-green lighten-5">
+            <ul>
+              <li>
+                <a class="waves-effect">
+                  <i class="material-icons" style="padding-left: 20px">assignment</i>Reportes</a>
+              </li>
+              <li>
+                <a class="waves-effect">
+                  <i class="material-icons" style="padding-left: 20px">insert_chart</i>Graficas</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </li>
+  </div>
+  <!-- Fin menu para el admin -->
+  <!-- menu para el area -->
+  <div *ngIf="sesion.id_perfil == 2">
+    <li>
+      <a class="waves-effect">
+        <i class="material-icons">flag</i>Metas</a>
+    </li>
     <ul class="collapsible collapsible-accordion">
       <li>
         <a class="collapsible-header">
-          <i class="material-icons" style="padding-left: 15px">keyboard_arrow_down</i>&ensp;&ensp;Usuarios</a>
+          <i class="material-icons" style="padding-left: 15px">keyboard_arrow_down</i>&ensp;&ensp;Informes</a>
         <div class="collapsible-body  light-green lighten-5">
           <ul>
             <li>
-              <a class="waves-effect" routerLink="usuarios/sonarh">
-                <i class="material-icons" style="padding-left: 20px">supervisor_account</i>SONARH</a>
+              <a class="waves-effect">
+                <i class="material-icons" style="padding-left: 20px">assignment</i>Reportes</a>
             </li>
             <li>
-                <a class="waves-effect" routerLink="usuarios/etad">
-                <i class="material-icons" style="padding-left: 20px">supervisor_account</i>ETAD</a>
+              <a class="waves-effect">
+                <i class="material-icons" style="padding-left: 20px">insert_chart</i>Graficas</a>
             </li>
           </ul>
         </div>
       </li>
     </ul>
-  </li>
+  </div>
+  <!-- Fin menu para el area -->
+  <!-- menu para el gerente -->
+  <div *ngIf="sesion.id_perfil == 3">
+    <li>
+      <a class="waves-effect" routerLink="catalogos/lista">
+        <i class="material-icons">library_books</i>Catalogos</a>
+    </li>
+    <li>
+      <a class="waves-effect">
+        <i class="material-icons">flag</i>Metas</a>
+    </li>
+    <li>
+      <a class="waves-effect">
+        <i class="material-icons">redeem</i>Productos</a>
+    </li>
+    <li>
+      <a class="waves-effect">
+        <i class="material-icons">timeline</i>Indicadores</a>
+    </li>
+    <li>
+      <ul class="collapsible collapsible-accordion">
+        <li>
+          <a class="collapsible-header">
+            <i class="material-icons" style="padding-left: 15px">keyboard_arrow_down</i>&ensp;&ensp;Usuarios</a>
+          <div class="collapsible-body  light-green lighten-5">
+            <ul>
+              <li>
+                <a class="waves-effect" routerLink="usuarios/sonarh">
+                  <i class="material-icons" style="padding-left: 20px">supervisor_account</i>SONARH</a>
+              </li>
+              <li>
+                <a class="waves-effect" routerLink="usuarios/etad">
+                  <i class="material-icons" style="padding-left: 20px">supervisor_account</i>ETAD</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </li>
+    <ul class="collapsible collapsible-accordion">
+      <li>
+        <a class="collapsible-header">
+          <i class="material-icons" style="padding-left: 15px">keyboard_arrow_down</i>&ensp;&ensp;Informes</a>
+        <div class="collapsible-body  light-green lighten-5">
+          <ul>
+            <li>
+              <a class="waves-effect">
+                <i class="material-icons" style="padding-left: 20px">assignment</i>Reportes</a>
+            </li>
+            <li>
+              <a class="waves-effect">
+                <i class="material-icons" style="padding-left: 20px">insert_chart</i>Graficas</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <!-- Fin menu para el gerente -->
+  <!-- menu para el facilitador -->
+  <div *ngIf="sesion.id_perfil == 4">
+    <li>
+      <a class="waves-effect">
+        <i class="material-icons">timeline</i>Indicadores</a>
+    </li>
+  </div>
+  <!-- Fin menu para el facilitador -->
+  <!-- menu para el integrador -->
+  <div *ngIf="sesion.id_perfil == 5">
+    <li>
+      <a class="waves-effect">
+        <i class="material-icons">timeline</i>Indicadores</a>
+    </li>
+  </div>
+  <!-- Fin menu para el integrador -->
+  <!-- menu para el admin -->
+  <div *ngIf="sesion.id_perfil == 6">
+    <li>
+      <a class="waves-effect">
+        <i class="material-icons">flag</i>Metas</a>
+    </li>
+    <li>
+      <a class="waves-effect">
+        <i class="material-icons">timeline</i>Indicadores</a>
+    </li>
+  </div>
+  <!-- Fin menu para el admin -->
   <li>
     <a class="waves-effect" href="#" (click)="logout($event)">
       <i class="material-icons">power_settings_new</i>Cerrar sesión</a>

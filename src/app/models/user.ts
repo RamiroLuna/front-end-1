@@ -11,4 +11,6 @@ export class User {
     token:  string;
     turno: string;
     usuario_acceso: string;
+
+    constructor(){}
 }

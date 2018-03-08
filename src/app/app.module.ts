@@ -14,6 +14,7 @@ import { MenuComponent } from './menu/menu.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CatalogsModule } from './catalogs/catalogs.module';
 import { UsersModule } from './users/security.module'; 
+import { NgPipesModule } from 'ngx-pipes';
 
 
 const routes: Routes = [
@@ -40,6 +41,7 @@ const routes: Routes = [
     MaterializeModule,
     HttpClientModule,
     FormsModule,
+    NgPipesModule,
     ReactiveFormsModule,
     RouterModule.forRoot(routes)
   ],

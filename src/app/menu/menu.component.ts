@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from '../models/user';
 
 declare var $: any;
 declare var Materialize: any;
@@ -10,13 +11,26 @@ declare var Materialize: any;
 })
 export class MenuComponent implements OnInit, AfterViewInit {
 
+  public sesion: User;
+
   constructor(private router: Router) { }
 
   ngOnInit() {
+    try {
+      if (localStorage.datos_usuario) {
+        this.sesion = JSON.parse(localStorage.getItem('datos_usuario'));
+        console.log('construye menu' , this.sesion);
+      }
+    } catch (e) {
+       this.sesion = new User();
+       Materialize.toast('Error al obtener datos de sesión!', 4000, 'red');
+     }
+
 
   }
   ngAfterViewInit() {
     $('.collapsible').collapsible();
+
   }
 
   logout(event) {
