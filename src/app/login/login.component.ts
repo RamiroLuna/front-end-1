@@ -20,14 +20,18 @@ export class LoginComponent implements OnInit {
   public formLogin: FormGroup;
   public submitted: boolean;
   public usuario_acceso: string;
-  public clave_accesso:string;
-  public id_sistemas:number;
-  
+  public clave_accesso: string;
+  public id_sistemas: number;
+  public mensaje_error: string;
+  public disabled: boolean;
+
 
   constructor(private service: LoginService, private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.mensaje_error = "";
     this.submitted = false;
+    this.disabled = false;
     this.formLogin = this.fb.group({
       usuario_acceso: new FormControl(this.usuario_acceso, [Validators.required]),
       clave_accesso: new FormControl(this.clave_accesso, [Validators.required]),
@@ -37,14 +41,32 @@ export class LoginComponent implements OnInit {
 
 
   login() {
+    this.mensaje_error = "";
     this.submitted = true;
+
     if (this.formLogin.valid) {
-      this.service.login(this.usuario_acceso, this.clave_accesso,this.id_sistemas).subscribe(res =>{
-         console.log('Resultado de login',res)
+      this.disabled = true;
+      this.service.login(this.usuario_acceso, this.clave_accesso, this.id_sistemas).subscribe(result => {
+
+
+        if (result.response.sucessfull) {
+
+        } else {
+
+          this.mensaje_error = result.response.message;
+          Materialize.toast('Error al ingresar!', 4000, 'red');
+        }
+        this.disabled = false;
       });
-    }else{
+
+    } else {
       Materialize.toast('Se encontrarón errores!', 4000, 'red');
     }
+
+  }
+
+  resetMensaje() {
+    this.mensaje_error = "";
   }
 
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { catchError, retry } from 'rxjs/operators';
@@ -15,9 +15,16 @@ export class LoginService {
 
 
 
-  login(usuario_acceso:string, clave_accesso:string, id_sistemas:number): Observable<User>{
-    //let params= JSON.stringify({action:'Login',usuario_acceso:usuario_acceso,clave_accesso:clave_accesso,id_sistemas:id_sistemas})
-    return this.http.post<User>(this.URL, {action : "Login"} );
+  login(usuario_acceso:string, clave_accesso:string, id_sistemas:number): Observable<any>{
+    // let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
+    const body = new HttpParams()
+    .set('action', 'Login')
+    .set('usuario_acceso', usuario_acceso)
+    .set('clave_accesso', clave_accesso)
+    .set('id_sistemas', ""+id_sistemas);
+
+    // return this.http.post<User>(this.URL,body.toString(),{headers: headers});
+    return this.http.post<User>(this.URL,body);
   }
 
 

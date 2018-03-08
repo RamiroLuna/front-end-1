@@ -14,7 +14,7 @@
 
           <div class='row'>
             <div class='input-field col s12'>
-              <input class='validate' type='text' name='usuario_acceso' id='usuario_acceso' formControlName='usuario_acceso' [(ngModel)]='usuario_acceso' />
+              <input class='validate' type='text' name='usuario_acceso' id='usuario_acceso' formControlName='usuario_acceso' (ngModelChange)="resetMensaje()" [(ngModel)]='usuario_acceso' />
               <label for='usuario_acceso'>Ingresa tu usuario</label>
             </div>
             <div *ngIf="formLogin.controls.usuario_acceso.errors?.required && (formLogin.controls.usuario_acceso?.touched || submitted)" class="error">
@@ -24,7 +24,7 @@
 
           <div class='row'>
               <div class='input-field col s12'>
-                <select  materialize="material_select" [materializeSelectOptions]="accesos" formControlName="id_sistemas" [(ngModel)]="id_sistemas">
+                <select  materialize="material_select" [materializeSelectOptions]="accesos" formControlName="id_sistemas" [(ngModel)]="id_sistemas"  (ngModelChange)="resetMensaje()">
                   <option value="" selected>Seleccione una opción</option>
                   <option *ngFor="let acceso of accesos" [value]="acceso.id">{{acceso.descripcion}}</option>
                 </select>
@@ -35,16 +35,19 @@
           </div>
           <div class='row'>
             <div class='input-field col s12'>
-              <input class='validate' type='password' name='clave_accesso' id='clave_accesso'  formControlName='clave_accesso' [(ngModel)]='clave_accesso' />
-              <label for='clave_accesso'>Ingresa tu clave de acceso</label>
+              <input class='validate' type='password' name='clave_accesso' id='clave_accesso'  formControlName='clave_accesso' [(ngModel)]='clave_accesso'  (ngModelChange)="resetMensaje()" />
+              <label for='clave_accesso'>Ingresa tu clave </label>
               <div *ngIf="formLogin.controls.clave_accesso.errors?.required && (formLogin.controls.clave_accesso?.touched || submitted)" class="error">
-                  La clave de acceso es requerida
+                  La clave es requerida
+              </div>
+              <div class="error">
+                    {{ mensaje_error }}
               </div>
             </div>
           </div>
           <br />
           <div class='row'>
-            <button type='submit' name='btn_login' class='col s12 btn btn-large light-green darken-1 waves-effect waves-light'>Ingresar</button>
+            <button type='submit' name='btn_login' class='col s12 btn btn-large light-green darken-1 waves-effect waves-light' [disabled]='disabled'>{{ !disabled ? 'Ingresar' : 'Procesando'}}</button>
           </div>
         </form>
       </div>
