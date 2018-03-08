@@ -13,7 +13,7 @@ export class ListEtadUsersComponent implements  AfterViewInit {
 
 
   public usuarios_etad: Array<UserEtad> = [
-    { id_usuario: 1, id_sonarh: 1, nombre: 'Ivan', apellido_paterno: 'Tadeo', apellido_materno: 'Comboy', clave: '1234567', id_perfil: 1, descripcion_perfil: 'Admin', activo: true, activo_etad: false, departamento: 'produccion', grupo: 'A', linea: '1' , token: '1235565' , contrasenia: '12345'},
+    
   ]
 
   constructor() { }

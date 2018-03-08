@@ -35,9 +35,9 @@
           </div>
           <div class='row'>
             <div class='input-field col s12'>
-              <input class='validate' type='password' name='clave_accesso' id='clave_accesso'  formControlName='clave_accesso' [(ngModel)]='clave_accesso'  (ngModelChange)="resetMensaje()" />
+              <input class='validate' type='password' name='clave_acceso' id='clave_acceso'  formControlName='clave_acceso' [(ngModel)]='clave_acceso'  (ngModelChange)="resetMensaje()" />
               <label for='clave_accesso'>Ingresa tu clave </label>
-              <div *ngIf="formLogin.controls.clave_accesso.errors?.required && (formLogin.controls.clave_accesso?.touched || submitted)" class="error">
+              <div *ngIf="formLogin.controls.clave_acceso.errors?.required && (formLogin.controls.clave_acceso?.touched || submitted)" class="error">
                   La clave es requerida
               </div>
               <div class="error">

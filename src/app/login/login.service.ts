@@ -15,12 +15,12 @@ export class LoginService {
 
 
 
-  login(usuario_acceso:string, clave_accesso:string, id_sistemas:number): Observable<any>{
+  login(usuario_acceso:string, clave_acceso:string, id_sistemas:number): Observable<any>{
     // let headers = new HttpHeaders().set('Content-Type','application/x-www-form-urlencoded');
     const body = new HttpParams()
     .set('action', 'Login')
     .set('usuario_acceso', usuario_acceso)
-    .set('clave_accesso', clave_accesso)
+    .set('clave_acceso', clave_acceso)
     .set('id_sistemas', ""+id_sistemas);
 
     // return this.http.post<User>(this.URL,body.toString(),{headers: headers});
