@@ -19,7 +19,6 @@ export class MenuComponent implements OnInit, AfterViewInit {
     try {
       if (localStorage.datos_usuario) {
         this.sesion = JSON.parse(localStorage.getItem('datos_usuario'));
-        console.log('construye menu' , this.sesion);
       }
     } catch (e) {
        this.sesion = new User();
