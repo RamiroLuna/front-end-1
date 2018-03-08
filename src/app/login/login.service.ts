@@ -15,8 +15,9 @@ export class LoginService {
 
 
 
-  login(datos: any){
-    return this.http.post(this.URL, datos);
+  login(usuario_acceso:string, clave_accesso:string, id_sistemas:number): Observable<User>{
+    //let params= JSON.stringify({action:'Login',usuario_acceso:usuario_acceso,clave_accesso:clave_accesso,id_sistemas:id_sistemas})
+    return this.http.post<User>(this.URL, {action : "Login"} );
   }
 
 
