@@ -11,25 +11,25 @@
           <form class="col s12 m12 l12 xl12">
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input disabled id="nombre" type="text" value="nombre ejemplo">
+                <input disabled id="nombre" type="text" [value]="usuario?.nombre">
                 <label for="nombre" class="active">Nombre</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input disabled id="usuario_nomina" type="text" value="123ABCD">
+                <input disabled id="usuario_nomina" type="text" [value]="usuario?.usuario_acceso">
                 <label for="usuario_nomina" class="active">Usuario(nomina)</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input disabled id="area" type="text" value="Desarrollo">
-                <label for="area" class="active">Area</label>
+                <input disabled id="linea" type="text" [value]="usuario?.linea">
+                <label for="linea" class="active">Linea</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input disabled id="perfil" type="text" value="Consultor">
+                <input disabled id="perfil" type="text" [value]="usuario.perfil">
                 <label for="peril" class="active">Perfil</label>
               </div>
             </div>
@@ -48,40 +48,60 @@
 </div>
 
 <!-- Modal para el cambio de contraseña -->
-<div id="modal_cambio_password"  class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
+<div id="modal_cambio_password" class="modal" materialize="modal">
   <div class="modal-content">
     <div class="row">
       <div class="col s12 m12 l12 xl12">
         <div class="row">
-          <form class="col s12">
+          <form class="col s12" [formGroup]="formCambioPassword" class="col s12" (ngSubmit)="changePassword()" autocomplete="off">
             <fieldset>
-              <legend class="color_titulo"><b>Cambiar contraseña</b></legend>
+              <legend class="color_titulo">
+                <b>Cambiar contraseña</b>
+              </legend>
               <div class="section"></div>
               <div class="row">
                 <div class="input-field col s12 m12 l6 xl6">
                   <i class="material-icons prefix">lock_outline</i>
-                  <input id="nueva_contrasenia" type="password" class="validate">
-                  <label for="nueva_contrasenia" class="">Nueva contraseña</label>
+                  <input id="contrasenia_nueva" type="password" formControlName='contrasenia_nueva' [(ngModel)]='contrasenia_nueva'>
+                  <label for="contrasenia_nueva" class="">Nueva contraseña</label>
+                  <div *ngIf="formCambioPassword.controls.contrasenia_nueva.errors?.required && (formCambioPassword.controls.contrasenia_nueva?.touched || submitted)"
+                    class="error center-align">
+                    Campo requerido
+                  </div>
                 </div>
                 <div class="input-field col s12 m12 l6 xl6">
                   <i class="material-icons prefix">lock_outline</i>
-                  <input id="confirmacion" type="password" class="validate">
-                  <label for="confirmacion">Confirme nueva contraseña</label>
+                  <input id="confirmacion_nueva" type="password" (change)="comprobarPassword()" formControlName='confirmacion_nueva' [(ngModel)]='confirmacion_nueva'>
+                  <label for="confirmacion_nueva">Confirme nueva contraseña</label>
+                  <div *ngIf="formCambioPassword.controls.confirmacion_nueva.errors?.required && (formCambioPassword.controls.confirmacion_nueva?.touched || submitted)"
+                    class="error center-align">
+                    Campo requerido
+                  </div>
+                  <div class="error center-align" *ngIf="!coincide && !formCambioPassword.controls.confirmacion_nueva.errors?.required">
+                    Las contraseñas no coinciden
+                  </div>
                 </div>
               </div>
               <div class="row">
-                  <div class="input-field col s12 m12 l12 xl12">
-                      <i class="material-icons prefix">lock_outline</i>
-                      <input id="contrasenia" type="password" class="validate">
-                      <label for="contrasenia">Contraseña antigua</label>
-                    </div>
+                <div class="input-field col s12 m12 l12 xl12">
+                  <i class="material-icons prefix">lock_outline</i>
+                  <input id="contrasenia_anterior" type="password" formControlName='contrasenia_anterior' [(ngModel)]='contrasenia_anterior'>
+                  <label for="contrasenia_anterior">Contraseña antigua</label>
+                  <div *ngIf="formCambioPassword.controls.contrasenia_anterior.errors?.required && (formCambioPassword.controls.contrasenia_anterior?.touched || submitted)"
+                    class="error center-align">
+                    Campo requerido
+                  </div>
+                </div>
+              </div>
+              <div class="row error center-align" *ngIf="true">
+                  {{ mensaje_error }}
               </div>
               <div class="row center-align">
                 <div class="col s6 m6 l6 xl6">
-                    <button class="modal-action modal-close waves-effect  btn-flat grey lighten-1" (click)="closeModal()">Cancelar</button>
+                  <button class="modal-action modal-close waves-effect  btn-flat grey lighten-1" (click)="closeModal()">Cancelar</button>
                 </div>
                 <div class="col s6 m6 l6 xl6">
-                  <button class="waves-effect waves-light btn-flat light-green lighten-1" style="color:white">Aceptar</button>
+                  <button type="submit" class="waves-effect waves-light btn-flat light-green lighten-1" style="color:white">Aceptar</button>
                 </div>
               </div>
             </fieldset>

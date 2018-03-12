@@ -69,6 +69,9 @@ export class LoginComponent implements OnInit {
           Materialize.toast('Error al ingresar!', 4000, 'red');
         }
         this.disabled = false;
+      }, error =>{
+        this.disabled = false;
+        Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
       });
 
     } else {
