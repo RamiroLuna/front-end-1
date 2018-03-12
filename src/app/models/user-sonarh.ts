@@ -1,5 +1,5 @@
 
-export class UserEtad {
+export class UserSonarh {
     Nombre:string;
     Paterno:string;
     Materno:string;

@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit, EventEmitter } from '@angular/core';
 import { PerfilService } from './perfil.service';
+import { AuthService } from '../../auth/auth.service';
 import { User } from '../../models/user';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -18,7 +19,6 @@ export class PerfilComponent implements OnInit, AfterViewInit {
 
   public cambio_password: boolean;
   public usuario: User;
-  public id_perfil: number;
   public submitted: boolean;
   public contrasenia_nueva: string;
   public contrasenia_anterior: string;
@@ -32,6 +32,7 @@ export class PerfilComponent implements OnInit, AfterViewInit {
     private service: PerfilService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
+    private auth: AuthService,
     private router: Router) {
     this.contrasenia_nueva;
     this.contrasenia_anterior;
@@ -49,8 +50,8 @@ export class PerfilComponent implements OnInit, AfterViewInit {
     });
 
     this.route.params.subscribe(params => {
-      if (params['id'] != null) {
-        this.service.getPerfil(params['id']).subscribe(result => {
+      if (this.auth.getIdUsuario() != null) {
+        this.service.getPerfil(this.auth.getIdUsuario()).subscribe(result => {
           if (result.response.sucessfull) {
             this.usuario = result.data.usuario;
           } else {
@@ -103,7 +104,6 @@ export class PerfilComponent implements OnInit, AfterViewInit {
         this.contrasenia_anterior,
         this.usuario.id_usuario
       ).subscribe(result => {
-        console.log('resultado del cambio de la contraseña', result);
         this.submitted = false;
         this.formCambioPassword.reset();
         if (result.response.sucessfull) {

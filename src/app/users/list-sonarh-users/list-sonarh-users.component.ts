@@ -1,37 +1,52 @@
-import { Component, AfterViewInit } from '@angular/core';
-import { User } from '../../models/user';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { UserSonarh } from '../../models/user-sonarh';
+import { ListSonarhUsersService } from './list-sonarh-users.service';
+import { AuthService } from '../../auth/auth.service';
 
-declare var $:any;
+declare var $: any;
+declare var Materialize: any;
 
 @Component({
   selector: 'app-list-sonarh-users',
   templateUrl: './list-sonarh-users.component.html',
-  styles: []
+  providers: [ListSonarhUsersService]
 })
 
-export class ListSonarhUsersComponent  implements  AfterViewInit  {
-
-  public usuarios_sonarh: Array<User> = [
-   
-  ]
+export class ListSonarhUsersComponent implements OnInit, AfterViewInit {
 
 
-  constructor() { }
+  public usuarios_sonarh: Array<UserSonarh>;
+  public id_usuario:number;
 
-  ngAfterViewInit() {
+
+  constructor(
+      private service:ListSonarhUsersService,
+      private auth:AuthService
+    ) { }
+
+  ngOnInit(): void {
+    this.service.getSonarhUsuarios(this.auth.getIdUsuario()).subscribe(result=>{
+      console.log('Listado de usuario en sonarh', result)
+    },error =>{
+      Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+    });
+
+  }
+
+  ngAfterViewInit(): void {
 
     $('#tabla_usuarios_sonarh').DataTable({
       "dom": '<lf<t>ip>',
       "responsive": true,
       "scrollX": true,
-      "bSort" : false,
+      "bSort": false,
       "bPaginate": true,
       "bLengthChange": true,
       "lengthChange": true,
       "aLengthMenu": [[10, 25, 50, 75, -1], [10, 25, 50, 75, "Todos"]],
       "iDisplayLength": 10,
       "language": {
-        "zeroRecords": "No se encontrarón coincidencias",
+        "zeroRecords": "No hay registros",
         "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
         "infoEmpty": "Mostrando 0 a 0 de 0 registros",
         "infoFiltered": "(filtrado de _MAX_ total registros)",
@@ -51,10 +66,10 @@ export class ListSonarhUsersComponent  implements  AfterViewInit  {
     $('select').addClass("browser-default"); //agregar una clase de materializecss de esta forma ya no se pierde el select de numero de registros.
     $('select').material_select();
 
-    $('.tooltipped').tooltip({delay: 50});
+    $('.tooltipped').tooltip({ delay: 50 });
   }
 
-  ocultarTooltip(){
+  ocultarTooltip() {
     $('.tooltipped').tooltip('hide');
   }
 

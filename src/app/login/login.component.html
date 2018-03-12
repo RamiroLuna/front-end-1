@@ -25,7 +25,7 @@
           <div class='row'>
               <div class='input-field col s12'>
                 <select  materialize="material_select" [materializeSelectOptions]="accesos" formControlName="id_sistemas" [(ngModel)]="id_sistemas"  (ngModelChange)="resetMensaje()">
-                  <option value="" selected>Seleccione una opción</option>
+                  <option value="">Seleccione una opción</option>
                   <option *ngFor="let acceso of accesos" [value]="acceso.id">{{acceso.descripcion}}</option>
                 </select>
                 <div *ngIf="formLogin.controls.id_sistemas.errors?.required && (formLogin.controls.id_sistemas?.touched || submitted)" class="error">

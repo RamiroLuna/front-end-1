@@ -11,10 +11,9 @@ import {
 export class TokenInterceptor implements HttpInterceptor {
     constructor(public auth: AuthService) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
         request = request.clone({
             setHeaders: {
-                Authorization: `${this.auth.getToken()}`
+                Authorization: `${this.auth.getToken()}`,
                 // 'Content-Type':'application/x-www-form-urlencoded'
             }
         });

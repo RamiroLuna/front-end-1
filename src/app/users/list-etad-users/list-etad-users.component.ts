@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { UserEtad } from '../../models/user-etad';
+import { User } from '../../models/user';
 
 declare var $:any;
 
@@ -12,7 +12,7 @@ declare var $:any;
 export class ListEtadUsersComponent implements  AfterViewInit {
 
 
-  public usuarios_etad: Array<UserEtad> = [
+  public usuarios_etad: Array<User> = [
     
   ]
 

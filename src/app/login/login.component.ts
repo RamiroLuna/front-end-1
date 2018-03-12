@@ -9,21 +9,20 @@ declare var Materialize: any;
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styles: [],
   providers: [LoginService]
 })
 export class LoginComponent implements OnInit {
 
   public accesos: Array<any> = [
-    { id: 1, descripcion: 'ETAD' },
-    { id: 2, descripcion: 'ACOPIO' }
+    { id: 1, descripcion: 'ETAD' }
+    //{ id: 2, descripcion: 'ACOPIO' }
   ];
 
   public formLogin: FormGroup;
   public submitted: boolean;
   public usuario_acceso: string;
   public clave_acceso: string;
-  public id_sistemas: number;
+  public id_sistemas: number = 1;
   public mensaje_error: string;
   public disabled: boolean;
   public usuario: User;
