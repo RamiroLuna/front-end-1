@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, AfterContentInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListByCatalogService } from './list-by-catalog.service';
 import { Catalogo } from '../../models/catalogo';
@@ -88,12 +88,14 @@ export class ListByCatalogComponent implements OnInit, AfterViewInit {
     this.service.getElementsByCatalog(this.auth.getIdUsuario(), this.nombre_tabla).subscribe(result => {
       if (result.response.sucessfull) {
         this.items = result.data.listCatalogosDTO;
+       
       } else {
         Materialize.toast(result.response.message, 4000, 'red');
       }
     }, error => {
       Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
     });
+
   }
 
   ngAfterViewInit() {
@@ -102,6 +104,8 @@ export class ListByCatalogComponent implements OnInit, AfterViewInit {
       dismissible: false
     });
   }
+
+ 
 
   /*
   * Inicia codigo para la funcionalidad del componente

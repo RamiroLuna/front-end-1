@@ -1,3 +1,5 @@
+declare var $: any;
+
 function arrayObjectIndexOf(arr, searchTerm, property): number {
 
     for (let i = 0, len = arr.length; i < len; i++) {
@@ -20,6 +22,11 @@ function deleteItemArray(arreglo, valor, propiedad) {
     }
 }
 
+function isValidId(id:any):boolean {
+    return /^[0-9]+$/.test(id);
+}
 
 
-export { deleteItemArray };
+
+
+export { deleteItemArray , isValidId}

@@ -15,7 +15,7 @@
     </a>
   </div>
   <!-- Fin solo para dispositivos moviles -->
-  <table class="display" class="striped" cellspacing="0">
+  <table class="display" class="striped" cellspacing="0" id="itemsCatalogos">
     <thead>
       <tr>
         <th>Id</th>
@@ -41,7 +41,7 @@
           </div>
         </td>
         <td>
-          <a class="btn-floating  light-green lighten-1">
+          <a class="btn-floating  light-green lighten-1"  [routerLink]="['../formulario/'+ tipo_catalogo + '/' + item.id]">
             <i class="material-icons">edit</i>
           </a>
         </td>
