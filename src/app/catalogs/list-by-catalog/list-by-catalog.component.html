@@ -1,0 +1,98 @@
+<div class="container" *ngIf="isCatalog">
+  <h3 class="color_titulo center-align">Catalogo de {{ nombre_catalogo }}</h3>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <a [routerLink]="['../formulario/'+ tipo_catalogo + '/nuevo']" class="btn-floating btn light-green darken-1 waves-effect waves-light tooltipped"
+      data-position="top" data-delay="50" data-tooltip="Agregar" (click)="agregar()">
+      <i class="material-icons">add</i>
+    </a>
+
+    <a routerLink="../../lista" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      data-delay="50" data-tooltip="Ver catalogos" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">view_list</i>
+      </i>
+    </a>
+  </div>
+  <!-- Fin solo para dispositivos moviles -->
+  <table class="display" class="striped" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Nombre</th>
+        <th>Activo</th>
+        <th>Actualizar</th>
+        <th>Eliminar</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>{{ item.id}}</td>
+        <td>{{ item.descripcion }}</td>
+        <td>
+          <div class="switch">
+            <label>
+              No
+              <input type="checkbox" [checked]="item.activo == 1" (change)="openModalActivar($event, item)">
+              <span class="lever"></span>
+              Si
+            </label>
+          </div>
+        </td>
+        <td>
+          <a class="btn-floating  light-green lighten-1">
+            <i class="material-icons">edit</i>
+          </a>
+        </td>
+        <td>
+          <a class="btn-floating red lighten-2" (click)="openModalDelete(item)">
+            <i class="material-icons">delete</i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a [routerLink]="['../formulario/'+ tipo_catalogo + '/nuevo']" class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped"
+        data-position="top" data-delay="50" data-tooltip="Agregar" (click)="agregar()">
+        <i class="material-icons">add</i>
+      </a>
+      <a routerLink="../../lista" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Ver catalogos" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">view_list</i>
+        </i>
+      </a>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas -->
+</div>
+<!-- Muestra si el catalogo no existe-->
+<div class="container" *ngIf="!isCatalog">
+  <div class="section"></div>
+  <h3 class="color_titulo center-align">No existe el catalogo consultado</h3>
+  <h6 class="center-align">
+    <a routerLink="../../lista">Volver a la lista de catalogos disponibles</a>
+  </h6>
+</div>
+
+<!-- Modal de confirmacion -->
+
+<div id="modalConfirmacion" class="modal" materialize="modal">
+  <div class="modal-content">      
+    <div class="row">
+      <div class="col s12 m12 l12 xl12">
+        <h5 class="color_titulo center-align"> {{ mensajeModal }} </h5>
+      </div>
+    </div>
+    <div class="row center-align">
+      <button class="modal-action modal-close waves-effect  btn-flat" (click)="closeModal(accion)">Cancelar</button>
+      <button type="button" class="waves-effect waves-light btn-flat" (click)="aceptarAccion(accion)">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Fin modal de confirmacion -->

@@ -4,14 +4,14 @@ import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { ListCatalogsComponent } from './list-catalogs/list-catalogs.component';
 import { NgPipesModule } from 'ngx-pipes';
-import { CatPerdidasComponent } from './cat-perdidas/cat-perdidas.component';
-import { DetallePerdidasComponent } from './cat-perdidas/detalle-perdidas/detalle-perdidas.component';
+import { ListByCatalogComponent } from './list-by-catalog/list-by-catalog.component';
+import { FormularioDetalleComponent } from './list-by-catalog/formulario-detalle/formulario-detalle.component';
 
 
 const routesCatalogos: Routes = [
-  { path: 'lista', component: ListCatalogsComponent },
-  { path: 'perdidas', component: CatPerdidasComponent },
-  { path: 'perdidas/:id', component: DetallePerdidasComponent }
+  { path: 'lista', component: ListCatalogsComponent},
+  { path: 'lista/:name', component: ListByCatalogComponent },
+  { path: 'lista/formulario/:name/:id', component: FormularioDetalleComponent }
 ];
 
 @NgModule({
@@ -22,6 +22,6 @@ const routesCatalogos: Routes = [
     NgPipesModule,
     RouterModule.forChild(routesCatalogos)
   ],
-  declarations: [ListCatalogsComponent, CatPerdidasComponent, DetallePerdidasComponent]
+  declarations: [ListCatalogsComponent, ListByCatalogComponent, FormularioDetalleComponent]
 })
 export class CatalogsModule { }
