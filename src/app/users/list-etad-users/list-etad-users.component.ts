@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { User } from '../../models/user';
 import { ListEtadUsersService } from './list-etad-users.service';
 import { AuthService } from '../../auth/auth.service';
+import swal from 'sweetalert2'
 
 declare var $: any;
 declare var Materialize: any;
@@ -16,9 +17,6 @@ export class ListEtadUsersComponent implements OnInit, AfterViewInit {
 
   public usuarios_etad: Array<User> = [];
   public mensajeModal: string;
-  public usuario_selected: User;
-  public accion: string;
-  public tmpObj:any;
 
   constructor(private service: ListEtadUsersService,
     private auth: AuthService) { }
@@ -27,9 +25,8 @@ export class ListEtadUsersComponent implements OnInit, AfterViewInit {
     this.service.getEtadUsuarios(this.auth.getIdUsuario()).subscribe(result => {
       if (result.response.sucessfull) {
         this.usuarios_etad = result.data.listUserDTO || [];
-        console.log('resultado de etad', result)
       } else {
-        Materialize.toast('Ocurrió  un error al consultar usuarios en SONARH!', 4000, 'red');
+        Materialize.toast('Ocurrió  un error al consultar usuarios ETAD!', 4000, 'red');
       }
     }, error => {
       Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
@@ -71,9 +68,6 @@ export class ListEtadUsersComponent implements OnInit, AfterViewInit {
 
     $('.tooltipped').tooltip({ delay: 50 });
 
-    $('#modalConfirmacion').modal({
-      dismissible: false
-    });
   }
 
   ocultarTooltip() {
@@ -82,36 +76,42 @@ export class ListEtadUsersComponent implements OnInit, AfterViewInit {
 
   openModalConfirmacion(usuario: User, accion: string, event?: any): void {
     this.mensajeModal = '';
-    this.usuario_selected = new User();
-    this.accion = '';
-    this.tmpObj = null;
+
     switch (accion) {
       case 'activar':
-        this.accion = accion;
-        this.usuario_selected = usuario;
-        this.usuario_selected.activo = event.target.checked?1:0;
-        this.tmpObj = event;
-        this.mensajeModal = '¿ESTÁ SEGURO DE ' + (event.target.checked ? ' ACTIVAR ' : ' DESACTIVAR ') + ' A ' + usuario.nombre + ' ? ';
+        usuario.activo = event.target.checked ? 1 : 0;
+        this.mensajeModal = '¿Está seguro de ' + (event.target.checked ? ' activar ' : ' desactivar ') + ' ? ';
         break;
       case 'eliminar':
-        this.accion = accion;       
-        this.usuario_selected = usuario;
-        this.mensajeModal = '¿ESTÁ SEGURO DE ELIMINAR A ' + usuario.nombre + ' ? ';
+        this.mensajeModal = '¿Está seguro de eliminar ? ';
         break;
     }
-    $('#modalConfirmacion').modal('open');
-  }
 
-  closeModal():void {
-    debugger
-    switch (this.accion) {
-      case 'activar':
-      this.usuario_selected.activo = !this.usuario_selected.activo?1:0;
-      this.tmpObj.target.checked = !this.tmpObj.target.checked;
-        break;
-      case 'eliminar':
-        break;
-    }
-    $('#modalConfirmacion').modal('close');
+    swal({
+      title: '<span style="color: #303f9f ">'+this.mensajeModal+'</span>' ,
+      type: 'question',
+      html: '<p style="color: #303f9f "> Usuario: <b>'+ usuario.nombre +' </b></p>',
+      showCancelButton: true,
+      confirmButtonColor: '#303f9f',
+      cancelButtonColor: '#9fa8da ',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Si!',
+      allowOutsideClick: false,
+      allowEnterKey: false
+    }).then(function (result) {
+       
+      if (result.value) {
+              alert('ok acccion')
+      } else if (result.dismiss === swal.DismissReason.cancel) {
+          switch(accion){
+            case 'activar':
+            usuario.activo = !usuario.activo?1:0;
+            event.target.checked = !event.target.checked;
+            break;
+          }
+        
+        }
+    })
+
   }
 }
