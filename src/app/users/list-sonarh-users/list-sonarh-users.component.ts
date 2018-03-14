@@ -17,6 +17,7 @@ export class ListSonarhUsersComponent implements OnInit, AfterViewInit {
 
   public usuarios_sonarh: Array<UserSonarh>;
   public id_usuario:number;
+  public loading: boolean;
 
 
   constructor(
@@ -25,14 +26,18 @@ export class ListSonarhUsersComponent implements OnInit, AfterViewInit {
     ) { }
 
   ngOnInit(): void {
+    this.loading = true;
     this.service.getSonarhUsuarios(this.auth.getIdUsuario()).subscribe(result=>{
       if(result.response.sucessfull){
            this.usuarios_sonarh = result.data.list || [];
+           this.loading = false;
       }else{
         Materialize.toast('Ocurrió  un error al consultar usuarios en SONARH!', 4000, 'red');
+        this.loading = false;
       }
     },error =>{
       Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+      this.loading = false;
     });
 
   }

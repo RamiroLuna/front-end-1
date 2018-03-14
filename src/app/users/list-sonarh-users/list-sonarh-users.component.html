@@ -1,12 +1,14 @@
-<div class="container">
+<div class="container" *ngIf="!loading">
   <div class="section"></div>
   <div class="col s12 m12 l8 xl8">
-   
-    <h5 class="color_titulo center-align"><b>USUARIOS SONARH</b></h5>
-     <!-- Solo para dispositivos moviles -->
-     <div class="hide-on-large-only right-align">
-        <a routerLink="../etad" >IR A USUARIOS ETAD</a>
-     </div>
+
+    <h5 class="color_titulo center-align">
+      <b>USUARIOS SONARH</b>
+    </h5>
+    <!-- Solo para dispositivos moviles -->
+    <div class="hide-on-large-only right-align">
+      <a routerLink="../etad">IR A USUARIOS ETAD</a>
+    </div>
     <!-- Fin solo para dispositivos moviles -->
     <div class="section"></div>
     <div class="row">
@@ -30,8 +32,10 @@
             <td class="center-align">{{ usuario.grupo}}</td>
             <td class="center-align">{{ usuario.linea}}</td>
             <td class="center-align">
-                <a *ngIf="!usuario.activo_etad" [routerLink]="['../usuario/' + usuario.id_usuario]"   class="btn-floating waves-effect waves-light light-green lighten-1"><i class="material-icons">add</i></a>
-                <p *ngIf="usuario.activo_etad"> Activo </p>
+              <a *ngIf="!usuario.activo_etad" [routerLink]="['../usuario/' + usuario.id_sonarh]" class="btn-floating waves-effect waves-light light-green lighten-1">
+                <i class="material-icons">add</i>
+              </a>
+              <p *ngIf="usuario.activo_etad"> Activo </p>
             </td>
           </tr>
         </tbody>
@@ -42,7 +46,7 @@
   <!-- Inicio solo para pantallas-->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-      <a routerLink="../etad" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      <a routerLink="../etad" class="btn-floating btn-large  indigo darken-4 waves-effect waves-light tooltipped" data-position="top"
         data-delay="50" data-tooltip="IR USUARIOS ETAD" (click)="ocultarTooltip()">
         <i class="material-icons">
           <i class="material-icons">view_list</i>
@@ -51,5 +55,12 @@
     </div>
   </div>
   <!-- Fin solo para pantallas -->
-    
+</div>
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
 </div>

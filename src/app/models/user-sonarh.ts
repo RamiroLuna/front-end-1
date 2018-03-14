@@ -9,5 +9,8 @@ export class UserSonarh {
     usuario_acceso:string;
     nombre_completo:string;
 
+    id_perfil?: number;
+    id_turno?: number;
+
 }
 

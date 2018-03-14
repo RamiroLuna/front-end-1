@@ -2,7 +2,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { User } from '../../models/user';
 import { ListEtadUsersService } from './list-etad-users.service';
 import { AuthService } from '../../auth/auth.service';
-import swal from 'sweetalert2'
+import swal from 'sweetalert2';
+import { deleteItemArray } from '../../utils';
 
 declare var $: any;
 declare var Materialize: any;
@@ -17,19 +18,24 @@ export class ListEtadUsersComponent implements OnInit, AfterViewInit {
 
   public usuarios_etad: Array<User> = [];
   public mensajeModal: string;
+  public loading: boolean;
 
   constructor(private service: ListEtadUsersService,
     private auth: AuthService) { }
 
   ngOnInit(): void {
+    this.loading = true;
     this.service.getEtadUsuarios(this.auth.getIdUsuario()).subscribe(result => {
       if (result.response.sucessfull) {
         this.usuarios_etad = result.data.listUserDTO || [];
+        this.loading = false;
       } else {
         Materialize.toast('Ocurrió  un error al consultar usuarios ETAD!', 4000, 'red');
+        this.loading = false;
       }
     }, error => {
       Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+      this.loading = false;
     });
 
   }
@@ -83,14 +89,18 @@ export class ListEtadUsersComponent implements OnInit, AfterViewInit {
         this.mensajeModal = '¿Está seguro de ' + (event.target.checked ? ' activar ' : ' desactivar ') + ' ? ';
         break;
       case 'eliminar':
-        this.mensajeModal = '¿Está seguro de eliminar ? ';
+        this.mensajeModal = '¿Está seguro de eliminar? ';
         break;
     }
 
+
+    /* 
+     * Configuración del modal de confirmación
+     */
     swal({
-      title: '<span style="color: #303f9f ">'+this.mensajeModal+'</span>' ,
+      title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
       type: 'question',
-      html: '<p style="color: #303f9f "> Usuario: <b>'+ usuario.nombre +' </b></p>',
+      html: '<p style="color: #303f9f "> Usuario: <b>' + usuario.nombre + ' </b></p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
@@ -98,19 +108,51 @@ export class ListEtadUsersComponent implements OnInit, AfterViewInit {
       confirmButtonText: 'Si!',
       allowOutsideClick: false,
       allowEnterKey: false
-    }).then(function (result) {
-       
+    }).then((result) => {
+      /*
+       * Si acepta
+       */
       if (result.value) {
-              alert('ok acccion')
+        switch (accion) {
+          case 'activar':
+            this.service.update(this.auth.getIdUsuario(), usuario).subscribe(result => {
+              if (result.response.sucessfull) {
+                Materialize.toast('Actualización completa', 4000, 'green');
+
+              } else {
+                Materialize.toast(result.response.message, 4000, 'red');
+                usuario.activo = !usuario.activo?1:0;
+              }
+            }, error => {
+              usuario.activo = !usuario.activo?1:0;
+              Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+            });
+            break;
+          case 'eliminar':
+            this.service.delete(this.auth.getIdUsuario(), usuario.id_usuario).subscribe(result => {
+              if (result.response.sucessfull) {
+                deleteItemArray(this.usuarios_etad, usuario.id_usuario, 'id_usuario');
+                Materialize.toast('Se eliminó correctamente ', 4000, 'green');
+              } else {
+                Materialize.toast(result.response.message, 4000, 'red');
+              }
+            }, error => {
+              Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+            });
+            break;
+        }
+        /*
+        * Si cancela accion
+        */
       } else if (result.dismiss === swal.DismissReason.cancel) {
-          switch(accion){
-            case 'activar':
-            usuario.activo = !usuario.activo?1:0;
+        switch (accion) {
+          case 'activar':
+            usuario.activo = !usuario.activo ? 1 : 0;
             event.target.checked = !event.target.checked;
             break;
-          }
-        
         }
+
+      }
     })
 
   }
