@@ -1,16 +1,19 @@
 export class User {
-    grupo: string;
-    id_grupo: number;
-    id_linea: number;
-    id_perfil: number;
-    id_turno: number;
-    id_usuario: number;
-    linea: string;
+    id_usuario:number;
     nombre:string;
-    perfil: string;
-    token:  string;
-    turno: string;
-    usuario_acceso: string;
-
+    id_turno:number;
+    id_linea:number;
+    id_grupo:number;
+    usuario_acceso:string;
+    id_perfil:number;
+    token:string;
+    turno:string;
+    linea:string;
+    grupo:string;
+    perfil:string;
+    clave_accesos:string;
+    activo:number;
     constructor(){}
+
+
 }

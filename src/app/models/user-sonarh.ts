@@ -1,15 +1,13 @@
 
 export class UserSonarh {
-    Nombre:string;
-    Paterno:string;
-    Materno:string;
-    RFC:string;
-    Activo?:number;
-    Turno: number;
-    CharUsr2:string;
-    Expr1:string;
-    Expr2:number;
-    CharUsr3:string;
+
+    id_sonarh: number;
+    id_grupo: number;
+    grupo:string;
+    id_linea: number;
+    linea:string;
+    usuario_acceso:string;
+    nombre_completo:string;
 
 }
 
