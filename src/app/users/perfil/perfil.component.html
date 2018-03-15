@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="!loading">
   <div class="section"></div>
   <div class="row">
     <div class="col offset-l2 offset-xl2 s12 m12 l8 lx8">
@@ -47,6 +47,14 @@
   </div>
 </div>
 
+<div class="container" *ngIf="loading">
+    <div id="loader-wrapper">
+      <div id="loader"></div>
+      <div class="loader-section section-left"></div>
+      <div class="loader-section section-right"></div>
+    </div>
+  </div>
+
 <!-- Modal para el cambio de contraseña -->
 <div id="modal_cambio_password" class="modal" materialize="modal">
   <div class="modal-content">
@@ -94,11 +102,11 @@
                 </div>
               </div>
               <div class="row error center-align" *ngIf="true">
-                  {{ mensaje_error }}
+                {{ mensaje_error }}
               </div>
               <div class="row center-align">
                 <div class="col s6 m6 l6 xl6">
-                  <button class="modal-action modal-close waves-effect  btn-flat grey lighten-1" (click)="closeModal()">Cancelar</button>
+                  <button class="modal-action modal-close waves-effect  btn-flat grey lighten-1" (click)="closeModal($event)">Cancelar</button>
                 </div>
                 <div class="col s6 m6 l6 xl6">
                   <button type="submit" class="waves-effect waves-light btn-flat light-green lighten-1" style="color:white">Aceptar</button>
@@ -110,5 +118,5 @@
       </div>
     </div>
   </div>
-
   <!-- Fin modal para el cambio de contraseña -->
+

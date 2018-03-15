@@ -21,6 +21,7 @@ export class DetailsUsersComponent implements OnInit {
   public turnos: Array<Catalogo> = [];
   public formPerfilSonarh: FormGroup;
   public submitted: boolean;
+  public usuario_en_etad: boolean;
 
   constructor(
     private auth: AuthService,
@@ -32,6 +33,7 @@ export class DetailsUsersComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
+    this.usuario_en_etad = false;
     this.service.getCatalogo(this.auth.getIdUsuario(), 'pet_cat_perfiles').subscribe(result => {
 
       if (result.response.sucessfull) {
@@ -62,14 +64,17 @@ export class DetailsUsersComponent implements OnInit {
           this.loading = false;
           this.usuario = result.data.usuarioSonarth || new UserSonarh();
           this.usuario.id_perfil = 6;
+          this.usuario_en_etad = false;
           this.loadFormulario();
         } else {
           Materialize.toast(result.response.message, 4000, 'red');
           this.loading = false;
+          this.usuario_en_etad = true;
         }
       }, error => {
         Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
         this.loading = false;
+        this.usuario_en_etad = false;
       });
     });
 

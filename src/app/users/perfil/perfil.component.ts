@@ -25,7 +25,8 @@ export class PerfilComponent implements OnInit, AfterViewInit {
   public confirmacion_nueva: string;
   public coincide: boolean;
   public formCambioPassword: FormGroup;
-  public mensaje_error:string;
+  public mensaje_error: string;
+  public loading: boolean;
 
 
   constructor(
@@ -42,6 +43,7 @@ export class PerfilComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.loading = true;
     this.submitted = false;
     this.formCambioPassword = this.fb.group({
       contrasenia_nueva: new FormControl(this.contrasenia_nueva, [Validators.required]),
@@ -54,10 +56,16 @@ export class PerfilComponent implements OnInit, AfterViewInit {
         this.service.getPerfil(this.auth.getIdUsuario()).subscribe(result => {
           if (result.response.sucessfull) {
             this.usuario = result.data.usuario;
+            this.loading = false;
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
+            this.loading = false;
           }
-        });
+        }, error => {
+          Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+          this.loading = false;
+        }
+        );
       }
     });
 
@@ -81,7 +89,8 @@ export class PerfilComponent implements OnInit, AfterViewInit {
     $('#modal_cambio_password').modal('open');
   }
 
-  closeModal() {
+  closeModal(event) {
+    event.preventDefault();
     this.cambio_password = false;
     $('#modal_cambio_password').modal('close');
   }
