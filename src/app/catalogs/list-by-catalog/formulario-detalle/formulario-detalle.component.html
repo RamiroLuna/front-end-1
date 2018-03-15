@@ -1,16 +1,18 @@
 <div class="container" *ngIf="isCatalog && seccion!='invalid'">
   <div class="section"></div>
-  <div class="row">
+  <!-- Seccion de formulario para catalogos genericos -->
+  <div class="row" *ngIf="type_Catalogo == 'generico'">
     <div class="col offset-l2 offset-xl2 s12 m12 l8 lx8">
       <div class="card-panel">
-        <h5 class="color_titulo header2 center-align">{{ seccion == 'add'? ' Agregar a ' : ' Actualizar en'}}   {{ nombre_catalogo }}</h5>
+        <h5 class="color_titulo header2 center-align">{{ seccion == 'add'? ' Agregar a ' : ' Actualizar en'}} {{ nombre_catalogo }}</h5>
         <div class="section"></div>
         <div class="row">
-          <form class="col s12" [formGroup]="formCatalogs" (ngSubmit)="accion(itemCatalogo)" autocomplete="off">
+          <form class="col s12" [formGroup]="formCatalogs" (ngSubmit)="openModalConfirmacion(itemCatalogo, seccion, type_Catalogo)"
+            autocomplete="off">
             <div class="row">
               <div class="input-field col s12">
                 <input placeholder="Nombre" id="nombre" type="text" formControlName='descripcion' [(ngModel)]='itemCatalogo.descripcion'>
-                <label for="nombre" class="active">Nombre</label>
+                <label for="nombre" class="active">Descripción</label>
                 <div *ngIf="formCatalogs.controls.descripcion.errors?.required && (formCatalogs.controls.descripcion?.touched || submitted)"
                   class="error">
                   La descripción es requerida
@@ -35,32 +37,70 @@
       </div>
     </div>
   </div>
+  <!-- Fin de seccion de formulario para catalogos genericos -->
+
+  <!-- Seccion de formulario para catalogos de lineas -->
+  <div class="row" *ngIf="type_Catalogo == 'lineas'">
+    <div class="col offset-l2 offset-xl2 s12 m12 l8 lx8">
+      <div class="card-panel">
+        <h5 class="color_titulo header2 center-align">{{ seccion == 'add'? ' Agregar a ' : ' Actualizar en'}} {{ nombre_catalogo }}</h5>
+        <div class="section"></div>
+        <div class="row">
+          <form class="col s12" [formGroup]="formCatalogs" (ngSubmit)="openModalConfirmacion(itemCatalogo, seccion, type_Catalogo)"
+            autocomplete="off">
+            <div class="row">
+              <div class="input-field col s12">
+                <input placeholder="Nombre" id="nombre" type="text" formControlName='descripcion' [(ngModel)]='itemCatalogo.descripcion'>
+                <label for="nombre" class="active">Descripción</label>
+                <div *ngIf="formCatalogs.controls.descripcion.errors?.required && (formCatalogs.controls.descripcion?.touched || submitted)"
+                  class="error">
+                  La descripción es requerida
+                </div>
+              </div>
+            </div>
+            <div class='row'>
+              <div class='input-field col s12'>
+                <select materialize="material_select" [materializeSelectOptions]="grupos_lineas" formControlName="id_gpo_linea" [(ngModel)]="itemCatalogo.id_gpo_linea">
+                  <option value="">Seleccione una opción</option>
+                  <option *ngFor="let gpo_linea of grupos_lineas" [value]="gpo_linea.id" [selected]="gpo_linea.id == itemCatalogo.id_gpo_linea">{{gpo_linea.descripcion}}</option>
+                </select>
+                <label>Grupo linea</label>
+                <div *ngIf="formCatalogs.controls.id_gpo_linea.errors?.required && (formCatalogs.controls.id_gpo_linea?.touched || submitted)"
+                  class="error">
+                  Seleccione grupo linea
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="row">
+                <div class="input-field col  offset-m1 offset-l1 offset-xl1 s6 m4 l4 lx4">
+                  <a [routerLink]="'../../../' + link_back" class="btn grey lighten-1 waves-effect waves-light right" name="action">{{ texto_btn }}
+                  </a>
+                </div>
+                <div class="input-field col offset-m2 offset-l2 offset-xl2 s6 m4 l4 lx4">
+                  <button class="btn light-green lighten-1 waves-effect waves-light right" type="submit" name="action"> {{ seccion == 'add' ? 'Agregar' : 'Guardar cambio'}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fin de seccion de formulario para catalogos lineas -->
 </div>
 <div class="container" *ngIf="!isCatalog && seccion!='invalid'">
   <div class="section"></div>
   <h3 class="color_titulo center-align">No existe el catalogo consultado</h3>
-   <h6 class="center-align"><a routerLink="../../../../lista" >Volver a la lista de catalogos disponibles</a></h6>
+  <h6 class="center-align">
+    <a routerLink="../../../../lista">Volver a la lista de catalogos disponibles</a>
+  </h6>
 </div>
 
 <div class="container" *ngIf="seccion =='invalid'">
-    <h3 class="color_titulo center-align">Elemento no encontrado</h3>
-    <h6 class="center-align"><a [routerLink]="['../../../'+link_back]" >Volver a elementos disponibles en {{nombre_catalogo}} </a></h6>
+  <h3 class="color_titulo center-align">Elemento no encontrado</h3>
+  <h6 class="center-align">
+    <a [routerLink]="['../../../'+link_back]">Volver a elementos disponibles en {{nombre_catalogo}} </a>
+  </h6>
 </div>
-
-<!-- Modal de confirmacion -->
-
-<div id="modalConfirmacion" class="modal" materialize="modal">
-    <div class="modal-content">      
-      <div class="row">
-        <div class="col s12 m12 l12 xl12">
-          <h5 class="color_titulo center-align"> ¿ Está seguro de {{ seccion == 'add' ? 'agregar': 'actualizar' }} ? </h5>
-        </div>
-      </div>
-      <div class="row center-align">
-        <button class="modal-action modal-close waves-effect  btn-flat" (click)="closeModal()">Cancelar</button>
-        <button type="button" class="waves-effect waves-light btn-flat" (click)="aceptarAccion(itemCatalogo)">Aceptar</button>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Fin modal de confirmacion -->

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
+import { MaterializeModule } from 'angular2-materialize';
 import { ListCatalogsComponent } from './list-catalogs/list-catalogs.component';
 import { NgPipesModule } from 'ngx-pipes';
 import { ListByCatalogComponent } from './list-by-catalog/list-by-catalog.component';
@@ -18,6 +19,7 @@ const routesCatalogos: Routes = [
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    MaterializeModule,
     FormsModule,
     NgPipesModule,
     RouterModule.forChild(routesCatalogos)
