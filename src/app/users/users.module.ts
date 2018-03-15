@@ -7,11 +7,13 @@ import { ListSonarhUsersComponent } from './list-sonarh-users/list-sonarh-users.
 import { ListEtadUsersComponent } from './list-etad-users/list-etad-users.component';
 import { DetailsUsersComponent } from './details-users/details-users.component';
 import { PerfilComponent } from './perfil/perfil.component';
+import { PerfilEtadComponent } from './perfil-etad/perfil-etad.component';
 
 const routesUsuarios: Routes = [
   { path: 'sonarh', component: ListSonarhUsersComponent },
   { path: 'etad', component: ListEtadUsersComponent },
   { path: 'usuario/:id', component: DetailsUsersComponent },
+  { path: 'usuario-etad/:id', component: PerfilEtadComponent },
   { path: 'perfil/:id', component: PerfilComponent }
 ];
 
@@ -23,6 +25,6 @@ const routesUsuarios: Routes = [
     FormsModule,
     RouterModule.forChild(routesUsuarios)
   ],
-  declarations: [ListSonarhUsersComponent, ListEtadUsersComponent, DetailsUsersComponent, PerfilComponent]
+  declarations: [ListSonarhUsersComponent, ListEtadUsersComponent, DetailsUsersComponent, PerfilComponent, PerfilEtadComponent]
 })
 export class UsersModule { }

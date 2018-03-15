@@ -39,7 +39,7 @@
               </div>
             </td>
             <td  class="center-align">
-              <a class="btn-floating light-green lighten-1"><i class="material-icons">edit</i></a>
+              <a class="btn-floating light-green lighten-1"  [routerLink]="['../usuario-etad/' + usuario.id_usuario]"><i class="material-icons">edit</i></a>
             </td>
             <td class="center-align">
               <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(usuario,'eliminar')">

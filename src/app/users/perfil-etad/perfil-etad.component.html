@@ -1,0 +1,88 @@
+<div class="container" *ngIf="!loading && usuario_en_etad">
+  <div class="section"></div>
+  <div class="row">
+    <div class="col offset-l2 offset-xl2 s12 m12 l8 lx8">
+      <div class="card-panel">
+        <h5 class="color_titulo header2 center-align">Detalle usuario en ETAD</h5>
+        <div class="section"></div>
+        <div class="row">
+          <form class="col s12 m12 l12 xl12" [formGroup]="formPerfilEtad" autocomplete="off" (ngSubmit)="modalConfirmacion(usuario)">
+            <div class="row">
+              <div class="input-field col s12 m12 l12 xl12">
+                <input disabled id="nombre" type="text" [value]="usuario?.nombre">
+                <label for="nombre" class="active">Nombre</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 m12 l12 xl12">
+                <input disabled id="usuario_nomina" type="text" [value]="usuario?.usuario_acceso">
+                <label for="usuario_nomina" class="active">Usuario(nomina)</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 m12 l6 xl6">
+                <input disabled id="linea" type="text" [value]="usuario?.linea">
+                <label for="linea" class="active">Linea</label>
+              </div>
+              <div class="input-field col s12 m12 l6 xl6">
+                <input disabled id="grupo" type="text" [value]="usuario?.grupo">
+                <label for="grupo" class="active">Grupo</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 m12 l12 xl12">
+                <label>Asigna turno</label>
+                <select materialize="material_select" formControlName="turno" [materializeSelectOptions]="turnos" [(ngModel)]="usuario.id_turno">
+                  <option value="">Seleccione</option>
+                  <option *ngFor="let turno of turnos" [value]="turno.id"  [selected]="turno.id == usuario.id_turno">{{turno.descripcion}}</option>
+                </select>
+                <div *ngIf="formPerfilEtad.controls.turno.errors?.required && (formPerfilEtad.controls.turno?.touched || submitted)"
+                  class="error">
+                  Seleccione un turno
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 m12 l12 xl12">
+                <label>Asigna perfil para ETAD</label>
+                <select materialize="material_select" formControlName="perfil" [materializeSelectOptions]="perfiles" [(ngModel)]="usuario.id_perfil">
+                  <option *ngFor="let perfil of perfiles" [value]="perfil.id" [selected]="perfil.id == usuario.id_perfil">{{perfil.descripcion}}</option>
+                </select>
+                <div *ngIf="formPerfilEtad.controls.perfil.errors?.required && (formPerfilEtad.controls.perfil?.touched || submitted)"
+                  class="error">
+                  Seleccione un perfil
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="row">
+                <div class="input-field col  offset-m1 offset-l1 offset-xl1 s6 m4 l4 lx4">
+                  <a routerLink="../../etad" class="btn grey lighten-1 waves-effect waves-light right" name="action">Cancelar
+                  </a>
+                </div>
+                <div class="input-field col offset-m2 offset-l2 offset-xl2 s6 m4 l4 lx4">
+                  <button type="submit" class="btn light-green lighten-1 waves-effect waves-light right" name="action">Actualizar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>
+
+<div class="container" *ngIf="!loading && !usuario_en_etad">
+  <h3 class="color_titulo center-align">El usuario no existe en ETAD</h3>
+  <h6 class="center-align">
+    <a routerLink="../../etad">Volver a usuarios en ETAD</a>
+  </h6>
+</div>

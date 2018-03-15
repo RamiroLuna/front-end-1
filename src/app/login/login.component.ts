@@ -14,7 +14,7 @@ declare var Materialize: any;
 export class LoginComponent implements OnInit {
 
   public accesos: Array<any> = [
-    { id: 1, descripcion: 'ETAD' }
+    { id: 1, descripcion: 'RECICLADO' }
     //{ id: 2, descripcion: 'ACOPIO' }
   ];
 
