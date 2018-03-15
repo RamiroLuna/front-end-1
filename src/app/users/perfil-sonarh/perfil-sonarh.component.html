@@ -1,9 +1,9 @@
-<div class="container" *ngIf="!loading && !usuario_en_etad">
+<div class="container" *ngIf="!loading && !usuario_en_etad && existe_user">
   <div class="section"></div>
   <div class="row">
     <div class="col offset-l2 offset-xl2 s12 m12 l8 lx8">
       <div class="card-panel">
-        <h5 class="color_titulo header2 center-align">Detalle usuario en SONARH</h5>
+        <h5 class="color_titulo header2 center-align">DETALLE DE USUARIO SONARH</h5>
         <div class="section"></div>
         <div class="row">
           <form class="col s12 m12 l12 xl12" [formGroup]="formPerfilSonarh" autocomplete="off" (ngSubmit)="modalConfirmacion(usuario)">
@@ -81,6 +81,13 @@
 </div>
 
 <div class="container" *ngIf="!loading && usuario_en_etad">
-    <h3 class="color_titulo center-align">Usuario ya esta dado de alta en ETAD</h3>
+    <div class="section"></div>
+    <h5 class="color_titulo center-align">USUARIO YA ESTA DADO DE ALTA EN ETAD</h5>
     <h6 class="center-align"><a routerLink="../../sonarh"  >Volver a usuarios en SONARH</a></h6>
+</div>
+
+<div class="container" *ngIf="!loading && !usuario_en_etad && !existe_user">
+    <div class="section"></div>
+    <h5 class="color_titulo center-align">EL USUARIO NO EXISTE EN SONARH</h5>
+    <h6 class="center-align"><a routerLink="../../sonarh"  >Volver a usuarios disponibles en SONARH</a></h6>
 </div>

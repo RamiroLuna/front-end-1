@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col offset-l2 offset-xl2 s12 m12 l8 lx8">
       <div class="card-panel">
-        <h5 class="color_titulo header2 center-align">Detalle usuario en ETAD</h5>
+        <h5 class="color_titulo header2 center-align">DETALLE DE USUARIO ETAD</h5>
         <div class="section"></div>
         <div class="row">
           <form class="col s12 m12 l12 xl12" [formGroup]="formPerfilEtad" autocomplete="off" (ngSubmit)="modalConfirmacion(usuario)">
@@ -57,7 +57,7 @@
             <div class="row">
               <div class="row">
                 <div class="input-field col  offset-m1 offset-l1 offset-xl1 s6 m4 l4 lx4">
-                  <a routerLink="../../etad" class="btn grey lighten-1 waves-effect waves-light right" name="action">Cancelar
+                  <a routerLink="../../etad" class="btn grey lighten-1 waves-effect waves-light right" name="action">Cerrar
                   </a>
                 </div>
                 <div class="input-field col offset-m2 offset-l2 offset-xl2 s6 m4 l4 lx4">
@@ -81,7 +81,8 @@
 </div>
 
 <div class="container" *ngIf="!loading && !usuario_en_etad">
-  <h3 class="color_titulo center-align">El usuario no existe en ETAD</h3>
+  <div class="section"></div>
+  <h5 class="color_titulo center-align">EL USUARIO NO EXISTE EN ETAD</h5>
   <h6 class="center-align">
     <a routerLink="../../etad">Volver a usuarios en ETAD</a>
   </h6>

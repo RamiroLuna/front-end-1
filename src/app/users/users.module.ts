@@ -5,14 +5,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { MaterializeModule } from 'angular2-materialize';
 import { ListSonarhUsersComponent } from './list-sonarh-users/list-sonarh-users.component';
 import { ListEtadUsersComponent } from './list-etad-users/list-etad-users.component';
-import { DetailsUsersComponent } from './details-users/details-users.component';
+import { PerfilSonarhComponent } from './perfil-sonarh/perfil-sonarh.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { PerfilEtadComponent } from './perfil-etad/perfil-etad.component';
 
 const routesUsuarios: Routes = [
   { path: 'sonarh', component: ListSonarhUsersComponent },
   { path: 'etad', component: ListEtadUsersComponent },
-  { path: 'usuario/:id', component: DetailsUsersComponent },
+  { path: 'usuario-sonarh/:id', component: PerfilSonarhComponent },
   { path: 'usuario-etad/:id', component: PerfilEtadComponent },
   { path: 'perfil/:id', component: PerfilComponent }
 ];
@@ -25,6 +25,6 @@ const routesUsuarios: Routes = [
     FormsModule,
     RouterModule.forChild(routesUsuarios)
   ],
-  declarations: [ListSonarhUsersComponent, ListEtadUsersComponent, DetailsUsersComponent, PerfilComponent, PerfilEtadComponent]
+  declarations: [ListSonarhUsersComponent, ListEtadUsersComponent, PerfilSonarhComponent, PerfilComponent, PerfilEtadComponent]
 })
 export class UsersModule { }

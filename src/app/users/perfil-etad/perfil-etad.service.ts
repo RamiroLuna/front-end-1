@@ -22,5 +22,17 @@ export class PerfilEtadService {
      return this.http.get<User>(this.URL + '?action=getPerfilEtad&id_usuario='+id_usuario+'&id_usuario_buscar='+id_usuario_buscar);
   }
 
+  update(id_usuario:number, usuario:User): Observable<any>{
+    const body = new HttpParams()
+    .set('action', 'updatePerfil')
+    .set('id_usuario_modificar', ''+usuario.id_usuario)
+    .set('id_perfil', ''+usuario.id_perfil)
+    .set('id_turno', ''+usuario.id_turno)
+    .set('activo', ''+usuario.activo)
+    .set('id_usuario', ""+id_usuario);
+    return this.http.post(this.URL,body);
+  }
+
+
 
 }

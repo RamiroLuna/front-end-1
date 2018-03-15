@@ -7,7 +7,7 @@
     </h5>
     <!-- Solo para dispositivos moviles -->
     <div class="hide-on-large-only right-align">
-      <a routerLink="../etad">IR A USUARIOS ETAD</a>
+      <a routerLink="../etad">Ir a usuarios ETAD</a>
     </div>
     <!-- Fin solo para dispositivos moviles -->
     <div class="section"></div>
@@ -15,12 +15,12 @@
       <table id="tabla_usuarios_sonarh" class="display" cellspacing="0" width="100%" style="overflow-x:auto;">
         <thead>
           <tr>
-            <th class="center-align">ID SONARH</th>
-            <th class="center-align">NOMBRE DE EMPLEADO</th>
-            <th class="center-align">USUARIO</th>
-            <th class="center-align">GRUPO</th>
-            <th class="center-align">LINEA</th>
-            <th class="center-align">ACTIVAR EN ETAD</th>
+            <th class="center-align">Id empleado</th>
+            <th class="center-align">Nombre de empleado</th>
+            <th class="center-align">Usuario</th>
+            <th class="center-align">Grupo</th>
+            <th class="center-align">Linea</th>
+            <th class="center-align">Activar en ETAD</th>
           </tr>
         </thead>
 
@@ -32,7 +32,7 @@
             <td class="center-align">{{ usuario.grupo}}</td>
             <td class="center-align">{{ usuario.linea}}</td>
             <td class="center-align">
-              <a *ngIf="!usuario.activo_etad" [routerLink]="['../usuario/' + usuario.id_sonarh]" class="btn-floating waves-effect waves-light light-green lighten-1">
+              <a *ngIf="!usuario.activo_etad" [routerLink]="['../usuario-sonarh/' + usuario.id_sonarh]" class="btn-floating waves-effect waves-light light-green lighten-1">
                 <i class="material-icons">add</i>
               </a>
               <p *ngIf="usuario.activo_etad"> Activo </p>
@@ -47,7 +47,7 @@
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
       <a routerLink="../etad" class="btn-floating btn-large  indigo darken-4 waves-effect waves-light tooltipped" data-position="top"
-        data-delay="50" data-tooltip="IR USUARIOS ETAD" (click)="ocultarTooltip()">
+        data-delay="50" data-tooltip="Ir a usuarios ETAD" (click)="ocultarTooltip()">
         <i class="material-icons">
           <i class="material-icons">view_list</i>
         </i>

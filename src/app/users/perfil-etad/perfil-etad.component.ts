@@ -114,7 +114,24 @@ export class PerfilEtadComponent implements OnInit {
          * Si acepta
          */
         if (result.value) {
-            alert('Envia')
+          
+          this.submitted = false;
+
+          this.service.update(this.auth.getIdUsuario(), usuario).subscribe(
+            result => {
+              
+
+              if (result.response.sucessfull) {
+
+                Materialize.toast('Actualización exitosa!', 4000, 'green');
+
+              } else {
+                Materialize.toast(result.response.message, 4000, 'red');
+              }
+            }, error => {
+              Materialize.toast('Ocrrió error en el servicio', 4000, 'red');
+            }
+          );
           /*
           * Si cancela accion
           */

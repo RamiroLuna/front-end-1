@@ -6,7 +6,7 @@ import { UserSonarh } from '../../models/user-sonarh';
 import { Catalogo } from '../../models/catalogo';
 
 @Injectable()
-export class DetailsUsersService {
+export class PerfilSonarhService {
 
   private URL = BASE_URL_SERVICE + '/Users';
   private URL_CATALOGOS = BASE_URL_SERVICE + '/Catalogos';
