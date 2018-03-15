@@ -9,8 +9,13 @@ declare var $: any;
 export class ListCatalogsComponent implements  AfterViewInit  {
   public texto_busqueda:string = "";
   
-
+  /*
+   * En este arreglo se deben agregar los nuevos catalogos tanto especificos como genericos
+   */ 
   public catalogos: Array<any>=[
+    /*
+     * Catalogos genericos
+     */ 
     { id : 1 , name:'pet_cat_perdida', descripcion: 'Perdida' , link: 'perdidas', activo: true},
     { id : 2 , name:'pet_cat_planeado', descripcion: 'Paro Planeado' , link: 'planeado', activo: true},
     { id : 3 , name:'pet_cat_noplaneado', descripcion: 'Paro No Planeado' , link: 'no_planeado', activo: true},
@@ -21,7 +26,13 @@ export class ListCatalogsComponent implements  AfterViewInit  {
     { id : 8 , name:'pet_cat_gpo_linea', descripcion: 'Grupos de linea' , link: 'grupo-linea', activo: true},
     { id : 9 , name:'pet_cat_grupos', descripcion: 'Grupos' , link: 'grupos', activo: true},
     { id : 10 , name:'pet_cat_perfiles', descripcion: 'Perfiles' , link: 'perfiles', activo: true},
-    { id : 11 , name:'pet_cat_turnos', descripcion: 'Turnos' , link: 'turnos', activo: true}
+    { id : 11 , name:'pet_cat_turnos', descripcion: 'Turnos' , link: 'turnos', activo: true},
+
+    /*
+     * Catalogos especificos
+     */ 
+    { id : 12 , name:'pet_cat_lineas', descripcion: 'Lineas' , link: 'lineas', activo: true},
+    { id : 13 , name:'pet_cat_nombre_equipo_amut', descripcion: 'Equipo AMUT' , link: 'equipos_amut', activo: true},
   ];
 
     

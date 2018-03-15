@@ -15,7 +15,9 @@
     </a>
   </div>
   <!-- Fin solo para dispositivos moviles -->
-  <table class="display" class="striped" cellspacing="0" id="itemsCatalogos">
+
+  <!-- tabla para catalogos genericos -->
+  <table class="display" class="striped" cellspacing="0" id="itemsCatalogos" *ngIf="type_Catalogo == 'generico'">
     <thead>
       <tr>
         <th>Id</th>
@@ -34,25 +36,113 @@
           <div class="switch">
             <label>
               No
-              <input type="checkbox" [checked]="item.activo == 1" (change)="openModalActivar($event, item)">
+              <input type="checkbox" [checked]="item.activo == 1" (change)="openModalConfirmacion(item, 'activar', 'generico' ,$event )">
               <span class="lever"></span>
               Si
             </label>
           </div>
         </td>
         <td>
-          <a class="btn-floating  light-green lighten-1"  [routerLink]="['../formulario/'+ tipo_catalogo + '/' + item.id]">
+          <a class="btn-floating  light-green lighten-1" [routerLink]="['../formulario/'+ tipo_catalogo + '/' + item.id]">
             <i class="material-icons">edit</i>
           </a>
         </td>
         <td>
-          <a class="btn-floating red lighten-2" (click)="openModalDelete(item)">
+          <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(item,'eliminar','generico')">
             <i class="material-icons">delete</i>
           </a>
         </td>
       </tr>
     </tbody>
   </table>
+  <!-- Fin tabla para catalogos genericos -->
+
+  <!-- tabla para catalogos lineas -->
+  <table class="display" class="striped" cellspacing="0" id="itemsCatalogos" *ngIf="type_Catalogo == 'lineas'">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Nombre</th>
+        <th>Grupo Linea</th>
+        <th>Activo</th>
+        <th>Actualizar</th>
+        <th>Eliminar</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>{{ item.id_linea}}</td>
+        <td>{{ item.descripcion }}</td>
+        <td>{{ item.descripcion_gpo_linea }}</td>
+        <td>
+          <div class="switch">
+            <label>
+              No
+              <input type="checkbox" [checked]="item.activo == 1" (change)="openModalConfirmacion(item, 'activar', 'lineas' ,$event )">
+              <span class="lever"></span>
+              Si
+            </label>
+          </div>
+        </td>
+        <td>
+          <a class="btn-floating  light-green lighten-1" [routerLink]="['../formulario/'+ tipo_catalogo + '/' + item.id]">
+            <i class="material-icons">edit</i>
+          </a>
+        </td>
+        <td>
+          <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(item,'eliminar','lineas')">
+            <i class="material-icons">delete</i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Fin tabla para catalogos lineas -->
+
+  <!-- tabla para catalogos equipos -->
+  <table class="display" class="striped" cellspacing="0" id="itemsCatalogos" *ngIf="type_Catalogo == 'equipos_amut'">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Clave de equipo</th>
+        <th>Nombre de equipo</th>
+        <th>Activo</th>
+        <th>Actualizar</th>
+        <th>Eliminar</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>{{ item.id_equipo_amut}}</td>
+        <td>{{ item.clave_equipo }}</td>
+        <td>{{ item.nombre_equipo }}</td>
+        <td>
+          <div class="switch">
+            <label>
+              No
+              <input type="checkbox" [checked]="item.activo == 1" (change)="openModalConfirmacion(item, 'activar', 'equipos_amut' ,$event )">
+              <span class="lever"></span>
+              Si
+            </label>
+          </div>
+        </td>
+        <td>
+          <a class="btn-floating  light-green lighten-1" [routerLink]="['../formulario/'+ tipo_catalogo + '/' + item.id]">
+            <i class="material-icons">edit</i>
+          </a>
+        </td>
+        <td>
+          <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(item,'eliminar','equipos_amut')">
+            <i class="material-icons">delete</i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Fin tabla para catalogos equipos -->
+
   <!-- Inicio solo para pantallas-->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
@@ -78,21 +168,3 @@
     <a routerLink="../../lista">Volver a la lista de catalogos disponibles</a>
   </h6>
 </div>
-
-<!-- Modal de confirmacion -->
-
-<div id="modalConfirmacion" class="modal" materialize="modal">
-  <div class="modal-content">      
-    <div class="row">
-      <div class="col s12 m12 l12 xl12">
-        <h5 class="color_titulo center-align"> {{ mensajeModal }} </h5>
-      </div>
-    </div>
-    <div class="row center-align">
-      <button class="modal-action modal-close waves-effect  btn-flat" (click)="closeModal(accion)">Cancelar</button>
-      <button type="button" class="waves-effect waves-light btn-flat" (click)="aceptarAccion(accion)">Aceptar</button>
-    </div>
-  </div>
-</div>
-
-<!-- Fin modal de confirmacion -->
