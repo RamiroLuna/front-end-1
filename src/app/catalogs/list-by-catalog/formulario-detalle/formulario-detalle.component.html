@@ -1,4 +1,4 @@
-<div class="container" *ngIf="isCatalog && seccion!='invalid'">
+<div class="container" *ngIf="!loading && isCatalog && seccion!='invalid'">
   <div class="section"></div>
   <!-- Seccion de formulario para catalogos genericos -->
   <div class="row" *ngIf="type_Catalogo == 'generico'">
@@ -138,7 +138,16 @@
   </div>
   <!-- Fin de seccion de formulario para catalogos de equipos amut -->
 </div>
-<div class="container" *ngIf="!isCatalog && seccion!='invalid'">
+
+<div class="container" *ngIf="loading">
+    <div id="loader-wrapper">
+      <div id="loader"></div>
+      <div class="loader-section section-left"></div>
+      <div class="loader-section section-right"></div>
+    </div>
+</div>
+
+<div class="container" *ngIf="!loading && !isCatalog && seccion!='invalid'">
   <div class="section"></div>
   <h3 class="color_titulo center-align">No existe el catalogo consultado</h3>
   <h6 class="center-align">
@@ -146,9 +155,10 @@
   </h6>
 </div>
 
-<div class="container" *ngIf="seccion =='invalid'">
+<div class="container" *ngIf="!loading && seccion =='invalid'">
   <h3 class="color_titulo center-align">Elemento no encontrado</h3>
   <h6 class="center-align">
     <a [routerLink]="['../../../'+link_back]">Volver a elementos disponibles en {{nombre_catalogo}} </a>
   </h6>
 </div>
+

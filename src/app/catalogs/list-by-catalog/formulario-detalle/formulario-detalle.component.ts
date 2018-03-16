@@ -20,6 +20,7 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
 
   public nombre_catalogo: string;
   public nombre_tabla: string;
+  public loading: boolean;
   public isCatalog: boolean = true;
   public link_back: string;
   public formCatalogs: FormGroup;
@@ -41,6 +42,7 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
+    this.loading= true;
     this.submitted = false;
     this.texto_btn = "Cancelar";
     this.route.paramMap.subscribe(params => {
@@ -141,12 +143,17 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
 
         if (this.seccion == 'edit') {
           this.loadData(this.type_Catalogo, parseInt(params.get('id')));
+        } else {
+          this.loading= false;
         }
+      }else{
+        this.loading= false;
       }
       this.link_back = params.get('name');
     });
 
     this.loadFormulario(this.type_Catalogo);
+    
   }
 
   ngAfterViewInit() {
@@ -185,11 +192,14 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
         this.service.getElementById(this.auth.getIdUsuario(), this.nombre_tabla, id).subscribe(result => {
           if (result.response.sucessfull) {
             this.itemCatalogo = result.data.catalogosDTO;
+            this.loading= false;
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
+            this.loading= false;
           }
         }, error => {
           Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+          this.loading= false;
         });
         break;
       case 'lineas':
@@ -199,11 +209,14 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
         this.service.getElementLineaById(this.auth.getIdUsuario(), id).subscribe(result => {
           if (result.response.sucessfull) {
             this.itemCatalogo = result.data.lineasDTO;
+            this.loading= false;
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
+            this.loading= false;
           }
         }, error => {
           Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+          this.loading= false;
         });
         break;
       case 'equipos_amut':
@@ -213,11 +226,14 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
         this.service.getElementEquipoAmutById(this.auth.getIdUsuario(), id).subscribe(result => {
           if (result.response.sucessfull) {
             this.itemCatalogo = result.data.equipoAmut;
+            this.loading= false;
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
+            this.loading= false;
           }
         }, error => {
           Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+          this.loading= false;
         });
         break;
     }

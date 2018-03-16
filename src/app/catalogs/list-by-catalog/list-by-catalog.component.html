@@ -1,4 +1,4 @@
-<div class="container" *ngIf="isCatalog">
+<div class="container" *ngIf="!loading && isCatalog">
   <h3 class="color_titulo center-align">Catalogo de {{ nombre_catalogo }}</h3>
   <!-- Solo para dispositivos moviles -->
   <div class="hide-on-large-only right-align">
@@ -161,10 +161,18 @@
   <!-- Fin solo para pantallas -->
 </div>
 <!-- Muestra si el catalogo no existe-->
-<div class="container" *ngIf="!isCatalog">
+<div class="container" *ngIf="!loading && !isCatalog">
   <div class="section"></div>
   <h3 class="color_titulo center-align">No existe el catalogo consultado</h3>
   <h6 class="center-align">
     <a routerLink="../../lista">Volver a la lista de catalogos disponibles</a>
   </h6>
+</div>
+
+<div class="container" *ngIf="loading">
+    <div id="loader-wrapper">
+      <div id="loader"></div>
+      <div class="loader-section section-left"></div>
+      <div class="loader-section section-right"></div>
+    </div>
 </div>

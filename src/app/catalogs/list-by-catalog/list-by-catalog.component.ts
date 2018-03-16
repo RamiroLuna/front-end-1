@@ -22,6 +22,7 @@ export class ListByCatalogComponent implements OnInit, AfterViewInit {
   public mensajeModal: string;
   public items: Array<any>;
   public type_Catalogo: string;
+  public loading:boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,6 +32,7 @@ export class ListByCatalogComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
+    this.loading = true;
     this.route.paramMap.subscribe(params => {
       this.tipo_catalogo = params.get('name');
       switch (this.tipo_catalogo) {
@@ -109,36 +111,46 @@ export class ListByCatalogComponent implements OnInit, AfterViewInit {
       this.service.getElementsByCatalog(this.auth.getIdUsuario(), this.nombre_tabla).subscribe(result => {
         if (result.response.sucessfull) {
           this.items = result.data.listCatalogosDTO;
-
+          this.loading = false;
         } else {
           Materialize.toast(result.response.message, 4000, 'red');
+          this.loading = false;
         }
       }, error => {
         Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+        this.loading = false;
       });
     } else if (this.type_Catalogo == 'lineas') {
 
       this.service.getElementsLineas(this.auth.getIdUsuario(), this.nombre_tabla).subscribe(result => {
         if (result.response.sucessfull) {
           this.items = result.data.listLineasDTO;
+          this.loading = false;
         } else {
           Materialize.toast(result.response.message, 4000, 'red');
+          this.loading = false;
         }
       }, error => {
         Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+        this.loading = false;
       });
 
     } else if (this.type_Catalogo == 'equipos_amut') {
       this.service.getElementsEquipos(this.auth.getIdUsuario()).subscribe(result => {
         if (result.response.sucessfull) {
           this.items = result.data.listEquipoAmut;
+          this.loading = false;
         } else {
           Materialize.toast(result.response.message, 4000, 'red');
+          this.loading = false;
         }
       }, error => {
         Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+        this.loading = false;
       });
 
+    } else {
+      this.loading = false;
     }
 
   }
