@@ -4,9 +4,13 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { MaterializeModule } from 'angular2-materialize';
 import { OptionsComponent } from './options/options.component';
+import { FormularioMetasComponent } from './formulario-metas/formulario-metas.component';
+import { ListaMetasComponent } from './lista-metas/lista-metas.component';
 
 const routesMetas: Routes = [
-  { path: 'opciones', component: OptionsComponent }
+  { path: 'opciones', component: OptionsComponent },
+  { path: 'opciones/metas', component: ListaMetasComponent },
+  { path: 'opciones/metas/:id', component: FormularioMetasComponent }
 ];
 
 @NgModule({
@@ -17,6 +21,6 @@ const routesMetas: Routes = [
     FormsModule,
     RouterModule.forChild(routesMetas)
   ],
-  declarations: [OptionsComponent]
+  declarations: [OptionsComponent, FormularioMetasComponent, ListaMetasComponent]
 })
 export class CuaModule { }

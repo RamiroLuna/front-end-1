@@ -1,0 +1,69 @@
+<div class="container" *ngIf="!loading">
+  <div class="section"></div>
+  <h4 class="color_titulo center-align">Metas registradas</h4>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <a routerLink="nuevo" class="btn-floating btn light-green darken-1 waves-effect waves-light tooltipped" data-position="top"
+      data-delay="50" data-tooltip="Agregar meta">
+      <i class="material-icons">add</i>
+    </a>
+  </div>
+  <!-- Fin solo para dispositivos moviles -->
+  <table id="tabla" class="display" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th class="center-align">Linea</th>
+        <th class="center-align">Meta</th>
+        <th class="center-align">Medida</th>
+        <th class="center-align">Posicion</th>
+        <th class="center-align">Activo</th>
+        <th class="center-align">Editar</th>
+        <th class="center-align">Eliminar</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let catMetas of catalogoMetas">
+        <td class="center-align">{{catMetas.linea}}</td>
+        <td class="center-align">{{catMetas.meta}}</td>
+        <td class="center-align">{{catMetas.medida}}</td>
+        <td class="center-align">{{catMetas.posicion}}</td>
+        <td class="center-align">
+          <div class="switch">
+            <label>
+              No
+              <input type="checkbox">
+              <span class="lever"></span>
+              Si
+            </label>
+          </div>
+        </td>
+        <td class="center-align">
+          <a href="#">Editar</a>
+        </td>
+        <td class="center-align">
+          <a href="#">Eliminar</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a routerLink="nuevo" class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Agregar meta">
+        <i class="material-icons">add</i>
+      </a>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas-->
+</div>
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>
