@@ -1,0 +1,63 @@
+<div class="container">
+  <div class="section"></div>
+  <h4 class="color_titulo center-align">Objetivo CUA</h4>
+  <div>
+    <ul class="collapsible collection with-header" data-collapsible="accordion">
+      <li>
+        <div class="collapsible-header">
+          <i class="material-icons">flag</i>Metas</div>
+        <div class="collapsible-body light-green lighten-5">
+          <div class="row">
+            <div class="col s12 m12 l12 xl12">
+              <!-- Vista solo para moviles  -->
+              <div class="hide-on-large-only">
+                <a [routerLink]="" class="waves-effect waves-light btn-floating  light-green darken-1" (click)="ocultarTooltip()">
+                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Agregar meta">
+                    <i class="material-icons">add</i>
+                  </i>
+                </a>
+                <a [routerLink]="" class="waves-effect waves-circle waves-light btn-floating indigo center-align" (click)="ocultarTooltip()">
+                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver metas">
+                    <i class="material-icons">list</i>
+                  </i>
+                </a>
+              </div>
+              <!-- Fin solo para moviles -->
+              <!-- Inicio solo para pantallas-->
+              <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+                  <div class="col s1 m1 l1 xl1"></div>
+                  <a class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">AGREGAR</a>
+                  <div class="col s2 m2 l2 xl2"></div>
+                  <a class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">VER METAS</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="collapsible-header">
+          <i class="material-icons">redeem</i>Productos</div>
+        <div class="collapsible-body light-green lighten-5">
+          <div class="row">
+            <div class="col s12">
+              <div class="secondary-content">
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="collapsible-header">
+          <i class="material-icons">report</i>Fallas</div>
+        <div class="collapsible-body light-green lighten-5">
+          <div class="row">
+            <div class="col s12">
+              <div class="secondary-content">
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
