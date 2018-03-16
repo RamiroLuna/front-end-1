@@ -171,6 +171,10 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
         });
         break;
       case 'equipos_amut':
+        this.formCatalogs = this.fb.group({
+          clave_equipo: new FormControl(this.itemCatalogo.clave_equipo, [Validators.required]),
+          nombre_equipo: new FormControl(this.itemCatalogo.nombre_equipo, [Validators.required])
+        });
         break;
     }
   }
@@ -195,6 +199,20 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
         this.service.getElementLineaById(this.auth.getIdUsuario(), id).subscribe(result => {
           if (result.response.sucessfull) {
             this.itemCatalogo = result.data.lineasDTO;
+          } else {
+            Materialize.toast(result.response.message, 4000, 'red');
+          }
+        }, error => {
+          Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+        });
+        break;
+      case 'equipos_amut':
+        /*
+         * Consulta el elemento del catalogo
+         */
+        this.service.getElementEquipoAmutById(this.auth.getIdUsuario(), id).subscribe(result => {
+          if (result.response.sucessfull) {
+            this.itemCatalogo = result.data.equipoAmut;
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
           }
@@ -290,7 +308,7 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
              */
             case 'lineas':
               if (this.seccion == 'add') {
-                this.service.agregarLinea(this.auth.getIdUsuario(),  this.itemCatalogo).subscribe(result => {
+                this.service.agregarLinea(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(result => {
                   if (result.response.sucessfull) {
                     Materialize.toast('Se agregó correctamente', 4000, 'green');
                     this.router.navigate(['home/catalogos/lista', this.link_back]);
@@ -316,10 +334,29 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
               break;
 
             case 'equipos_amut':
-              if (accion == 'add') {
-
-              } else if (accion == 'edit') {
-
+              if (this.seccion == 'add') {
+                this.service.agregarEquipoAmut(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(result => {
+                  if (result.response.sucessfull) {
+                    Materialize.toast('Se agregó correctamente', 4000, 'green');
+                    this.router.navigate(['home/catalogos/lista', this.link_back]);
+                  } else {
+                    Materialize.toast(result.response.message, 4000, 'red');
+                  }
+                }, eror => {
+                  Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+                });
+              } else if (this.seccion == 'edit') {
+                this.service.updateEquipoAmut(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(
+                  result => {
+                    if (result.response.sucessfull) {
+                      Materialize.toast('Actualización completa', 4000, 'green');
+                      this.texto_btn = 'Cerrar ficha';
+                    } else {
+                      Materialize.toast(result.response.message, 4000, 'red');
+                    }
+                  }, error => {
+                    Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+                  });
               }
               break;
           }

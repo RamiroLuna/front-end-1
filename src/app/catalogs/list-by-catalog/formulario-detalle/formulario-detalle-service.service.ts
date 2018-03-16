@@ -73,4 +73,31 @@ export class FormularioDetalleServiceService {
     return this.http.get<Catalogo>(this.URL + '?action=getCatalogosData&id_usuario=' + id_usuario + '&tableName='+nombre_tabla);
   }
 
+    /*
+   * Bloque de codigo para peticiones de catalogos de lineas
+   */
+  agregarEquipoAmut(id_usuario: number, equipo: EquipoAmut): Observable<any> {
+    const body = new HttpParams()
+      .set('action', 'insertNewEquipos')
+      .set('nombre_equipo', ''+ equipo.nombre_equipo)
+      .set('clave_equipo', ''+ equipo.clave_equipo)
+      .set('id_usuario', '' + id_usuario );
+    return this.http.post(this.URL_EQUIPOS_AMUT, body);
+  }
+
+  updateEquipoAmut(id_usuario: number, equipo: EquipoAmut): Observable<any> {
+    const body = new HttpParams()
+      .set('action', 'updateEquipos')
+      .set('id_equipo', ''+equipo.id_equipo_amut)
+      .set('activo', ''+equipo.activo)
+      .set('nombre_equipo', ''+equipo.nombre_equipo )
+      .set('clave_equipo', ''+equipo.clave_equipo)
+      .set('id_usuario', "" + id_usuario);
+    return this.http.post(this.URL_EQUIPOS_AMUT, body);
+  }
+
+  getElementEquipoAmutById(id_usuario: number,  id_equipo:number): Observable<any> {
+    return this.http.get<Linea>(this.URL_EQUIPOS_AMUT + '?action=getDataByID&id_usuario=' + id_usuario + '&id_equipo='+id_equipo);
+  }
+
 }
