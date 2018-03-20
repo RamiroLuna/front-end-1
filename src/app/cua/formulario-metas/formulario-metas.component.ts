@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FormularioMetasComponent implements OnInit {
   public loading:boolean;
-
   constructor() { }
 
   ngOnInit() {

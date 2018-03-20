@@ -16,6 +16,7 @@ import { CatalogsModule } from './catalogs/catalogs.module';
 import { UsersModule } from './users/users.module'; 
 import { CuaModule } from './cua/cua.module'; 
 import { NgPipesModule } from 'ngx-pipes';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 const routes: Routes = [
@@ -43,6 +44,7 @@ const routes: Routes = [
     MaterializeModule,
     HttpClientModule,
     FormsModule,
+    BrowserAnimationsModule,
     NgPipesModule,
     ReactiveFormsModule,
     RouterModule.forRoot(routes)

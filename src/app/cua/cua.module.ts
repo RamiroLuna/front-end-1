@@ -7,6 +7,7 @@ import { OptionsComponent } from './options/options.component';
 import { FormularioMetasComponent } from './formulario-metas/formulario-metas.component';
 import { ListaMetasComponent } from './lista-metas/lista-metas.component';
 
+
 const routesMetas: Routes = [
   { path: 'opciones', component: OptionsComponent },
   { path: 'opciones/metas', component: ListaMetasComponent },
@@ -19,6 +20,7 @@ const routesMetas: Routes = [
     MaterializeModule,
     ReactiveFormsModule,
     FormsModule,
+    
     RouterModule.forChild(routesMetas)
   ],
   declarations: [OptionsComponent, FormularioMetasComponent, ListaMetasComponent]
