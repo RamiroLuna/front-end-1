@@ -6,6 +6,7 @@ import { MaterializeModule } from 'angular2-materialize';
 import { OptionsComponent } from './options/options.component';
 import { FormularioMetasComponent } from './formulario-metas/formulario-metas.component';
 import { ListaMetasComponent } from './lista-metas/lista-metas.component';
+import { AsginacionMetasComponent } from './asginacion-metas/asginacion-metas.component';
 
 
 const routesMetas: Routes = [
@@ -23,6 +24,6 @@ const routesMetas: Routes = [
     
     RouterModule.forChild(routesMetas)
   ],
-  declarations: [OptionsComponent, FormularioMetasComponent, ListaMetasComponent]
+  declarations: [OptionsComponent, FormularioMetasComponent, ListaMetasComponent, AsginacionMetasComponent]
 })
 export class CuaModule { }

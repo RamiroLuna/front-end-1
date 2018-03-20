@@ -31,6 +31,17 @@ export class ListaMetasComponent implements OnInit{
   public loading: boolean;
   public status: string = 'inactive';
   public status_tabla: string = 'active';
+  /*
+   * Variable utilizadas por el componente asignacion de metas
+   */
+  public id_meta: number;
+  public metaselected: string;
+  public lineaselected: string;
+
+  /*
+   *Fin de variables para pasar al componente hijo
+   */ 
+
   public metas: Array<Meta> = [{
     id_meta: 1,
     id_linea: 1,
@@ -65,13 +76,6 @@ export class ListaMetasComponent implements OnInit{
   },
 ];
 
-  /*
-   * Variable utilizadas por el componente asignacion de metas
-   */
-
-  public id_meta: number;
-  public metaselected: string;
-  public descripcion_linea: string;
 
   
 
@@ -85,8 +89,17 @@ export class ListaMetasComponent implements OnInit{
 
 
   changeVisibility(meta:Meta) {
-    this.metaselected = meta.meta;
     event.preventDefault();
+
+    /*
+     * Update variable para mostrar
+     */ 
+    this.id_meta = meta.id_meta;
+    this.metaselected = meta.meta;
+    this.lineaselected = meta.descripcion_linea;
+    /*
+     * Fin de bloque
+     */ 
     this.status = this.status === 'inactive' ? 'active' : 'inactive';
     this.status_tabla = this.status_tabla === 'inactive' ? 'active' : 'inactive';
   }
