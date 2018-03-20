@@ -5,25 +5,38 @@
       <div class="card-panel">
         <h4 class="color_titulo center-align">ALTA DE METAS</h4>
         <div class="row">
-          <form class="col s12 m12 l12 xl12">
+          <form class="col s12 m12 l12 xl12" [formGroup]="formMeta" (ngSubmit)="openModalConfirmacion(meta, seccion)">
             <div class="row">
               <div class="col s12 m12 l12 xl12">
                 <label>Línea</label>
-                <select materialize="material_select">
-                  <option value="-1">Seleccione una opción...</option>
+                <select materialize="material_select"  formControlName="id_linea"  [materializeSelectOptions]="lineas">
+                    <option value="">Seleccione</option>
+                    <option *ngFor="let linea of lineas" [value]="linea.id_linea" >{{ linea.descripcion }}</option>
                 </select>
+                <div *ngIf="formMeta.controls.id_linea.errors?.required && (formMeta.controls.id_linea?.touched || submitted)"
+                class="error">
+                   Seleccione una linea
+              </div>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input id="meta" type="text">
+                <input id="meta" type="text" formControlName="meta" >
                 <label for="meta">Meta</label>
+                <div *ngIf="formMeta.controls.meta.errors?.required && (formMeta.controls.meta?.touched || submitted)"
+                  class="error">
+                  La meta es requerida
+                </div>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input id="medida" type="text">
+                <input id="medida" type="text" formControlName="medida" >
                 <label for="medida">Medida</label>
+                <div *ngIf="formMeta.controls.medida.errors?.required && (formMeta.controls.medida?.touched || submitted)"
+                class="error">
+                La medida es requerida
+              </div>
               </div>
             </div>
             <div class="row">
