@@ -1,7 +1,9 @@
 import {
   Component, Input,
   OnInit,
-  OnChanges, SimpleChanges, SimpleChange
+  OnChanges, SimpleChanges, SimpleChange,
+  EventEmitter,
+  Output
 } from '@angular/core';
 
 
@@ -9,7 +11,7 @@ import {
   selector: 'app-asginacion-metas',
   templateUrl: './asginacion-metas.component.html'
 })
-export class AsginacionMetasComponent implements OnChanges, OnInit {
+export class AsginacionMetasComponent implements OnChanges {
 
   /*
    * Bloque de variables que se requieren
@@ -20,6 +22,15 @@ export class AsginacionMetasComponent implements OnChanges, OnInit {
   /*
    *Fin de variables recibidas por el componente padre
    */
+
+   /*
+    * Variable para lanzar al padre
+    */ 
+   @Output() cancel = new EventEmitter();
+    /*
+     * Fin de variable para cancelar y cerrar el componente
+     */
+
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {  
@@ -29,5 +40,13 @@ export class AsginacionMetasComponent implements OnChanges, OnInit {
 
   ngOnInit() {
 
+  }
+
+  cancelar(event):void{
+    event.preventDefault();
+    /*
+     * Emite la accion al padre
+     */ 
+    this.cancel.emit();
   }
 }
