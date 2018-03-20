@@ -39,7 +39,7 @@
           <div class="switch">
             <label>
               No
-              <input type="checkbox">
+              <input type="checkbox" [checked]="meta.activo == 1" (change)="openModalConfirmacion(meta, 'activar', $event )">
               <span class="lever"></span>
               Si
             </label>
@@ -56,7 +56,7 @@
           </a>
         </td>
         <td class="center-align">
-          <a [routerLink]="" class="btn-floating red lighten-2">
+          <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(meta,'eliminar')">
             <i class="material-icons">delete</i>
           </a>
         </td>

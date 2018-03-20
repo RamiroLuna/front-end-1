@@ -27,17 +27,17 @@
               </div>
             </div>
             <div class="row">
-                <div class="row">
-                  <div class="input-field col  offset-m1 offset-l1 offset-xl1 s6 m4 l4 lx4">
-                    <a routerLink="../../metas" class="btn grey lighten-1 waves-effect waves-light right" name="action">Cancelar
-                    </a>
-                  </div>
-                  <div class="input-field col offset-m2 offset-l2 offset-xl2 s6 m4 l4 lx4">
-                    <button class="btn light-green lighten-1 waves-effect waves-light right" type="submit" name="action"> {{ seccion == 'add' ? 'Agregar' : 'Guardar cambio'}}
-                    </button>
-                  </div>
+              <div class="row">
+                <div class="input-field col  offset-m1 offset-l1 offset-xl1 s6 m4 l4 lx4">
+                  <a routerLink="../../metas" class="btn grey lighten-1 waves-effect waves-light right" name="action">Cancelar
+                  </a>
+                </div>
+                <div class="input-field col offset-m2 offset-l2 offset-xl2 s6 m4 l4 lx4">
+                  <button class="btn light-green lighten-1 waves-effect waves-light right" type="submit" name="action"> {{ seccion == 'add' ? 'Agregar' : 'Guardar cambio'}}
+                  </button>
                 </div>
               </div>
+            </div>
           </form>
         </div>
       </div>
@@ -46,9 +46,9 @@
 </div>
 
 <div class="container" *ngIf="loading">
-    <div id="loader-wrapper">
-      <div id="loader"></div>
-      <div class="loader-section section-left"></div>
-      <div class="loader-section section-right"></div>
-    </div>
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
   </div>
+</div>
