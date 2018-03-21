@@ -1,0 +1,109 @@
+<div class="container">
+  <div class="row">
+    <div class="col offset-l2 offset-xl0 s12 m12 l8 xl12">
+      <div class="card-panel">
+        <h5 class="color_titulo center-align">Reporte de Fallas</h5>
+        <div class="row">
+          <form class="col s12 m12 l12 xl12">
+            <div class="row">
+              <div class="input-field col s12 m12 l12 xl12">
+                <label for="dia">Día</label>
+                <input id="dia" type="text" class="datepicker">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col s12 m12 l4 xl4">
+                <label>Línea</label>
+                <select materialize="material_select">
+                  <option value="-1">Seleccione una opción...</option>
+                </select>
+              </div>
+
+              <div class="col s12 m12 l4 xl4">
+                <label>Grupo</label>
+                <select materialize="material_select">
+                  <option value="-1">Seleccione una opción...</option>
+                </select>
+              </div>
+
+              <div class="col s12 m12 l4 xl4">
+                <label>Turno</label>
+                <select materialize="material_select">
+                  <option value="-1">Seleccione una opción...</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col s12 m12 l4 xl4">
+                <label>Fuente de Paro</label>
+                <select materialize="material_select">
+                  <option value="-1">Seleccione una opción...</option>
+                </select>
+              </div>
+
+              <div class="col s12 m12 l4 xl4">
+                <label>Razón del Paro</label>
+                <select materialize="material_select">
+                  <option value="-1">Seleccione una opción...</option>
+                </select>
+              </div>
+
+              <div class="col s12 m12 l4 xl4">
+                <label>Equipo</label>
+                <select materialize="material_select">
+                  <option value="-1">Seleccione una opción...</option>
+                </select>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12 m12 l12 xl12">
+                <label for="nameEquipo">Nombre del Equipo</label>
+                <input id="nameEquipo" type="text" disabled="true">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12 m12 l4 xl4">
+                <label for="horainicio">Hora Inicio</label>
+                <input id="horainicio" type="text" class="timepicker">
+              </div>
+
+              <div class="input-field col s12 m12 l4 xl4">
+                <label for="horafin">Hora Fin</label>
+                <input id="horafin" type="text" class="timepicker">
+              </div>
+
+              <div class="input-field col s12 m12 l4 xl4">
+                <label for="horasparo">Horas Paro</label>
+                <input id="horasparo" type="text" disabled="true">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12 m12 l12 xl12">
+                <label for="problema">Descripción del Problema</label>
+                <textarea id="problema" class="materialize-textarea" data-length="120"></textarea>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col offset-s1 offset-m3 offset-l2 offset-xl3">
+                <a routerLink="../../fallas" class="col btn grey lighten-1  waves-effect waves-light" type="submit" name="cancelar">Cancelar
+                </a>
+              </div>
+
+              <div class="input-field col offset-m1 offset-l1 offset-xl2">
+                <button class="col btn light-green darken-1 waves-effect waves-light" type="submit" name="asignar">Agregar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -58,7 +58,6 @@ export class FormularioMetasComponent implements OnInit {
 
       if (this.seccion == 'edit') {
         this.service.getMeta(this.auth.getIdUsuario(), this.id).subscribe(result => {
-          console.log('consulta de meta ', result.data.metasDTO)
           if (result.response.sucessfull) {
             this.meta = result.data.metasDTO;
             /*
