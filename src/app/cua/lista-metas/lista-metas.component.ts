@@ -10,11 +10,14 @@ import {
   transition
 } from '@angular/animations';
 import { AuthService } from '../../auth/auth.service';
+import { ListaMetasService } from './lista-metas.service';
+
 declare var $: any;
 declare var Materialize: any;
 @Component({
   selector: 'app-lista-metas',
   templateUrl: './lista-metas.component.html',
+  providers: [ ListaMetasService ],
   animations: [
     trigger('visibility', [
       state('inactive', style({
@@ -80,11 +83,10 @@ export class ListaMetasComponent implements OnInit{
   },
 ];
 
-
-  
-
-
-  constructor(private auth: AuthService) { }
+  constructor(
+    private auth: AuthService,
+    private service: ListaMetasService
+  ) { }
 
   ngOnInit() {
     this.loading = true;
@@ -151,7 +153,7 @@ export class ListaMetasComponent implements OnInit{
       if (result.value) {
         switch (accion) {
           case 'activar':
-           /* this.service.update(this.auth.getIdUsuario(), meta).subscribe(result => {
+            this.service.update(this.auth.getIdUsuario(), meta).subscribe(result => {
               if (result.response.sucessfull) {
                 Materialize.toast('Actualización completa', 4000, 'green');
 
@@ -162,21 +164,19 @@ export class ListaMetasComponent implements OnInit{
             }, error => {
               meta.activo = !meta.activo?1:0;
               Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
-            });*/
-            alert('activar')
+            });
             break;
           case 'eliminar':
-          alert('eliminar')
-            /*this.service.delete(this.auth.getIdUsuario(), meta.id_meta).subscribe(result => {
+            this.service.delete(this.auth.getIdUsuario(), meta.id_meta).subscribe(result => {
               if (result.response.sucessfull) {
-                deleteItemArray(this.metas, meta.id_meta, 'id_usuario');
+                deleteItemArray(this.metas, meta.id_meta, 'id_meta');
                 Materialize.toast('Se eliminó correctamente ', 4000, 'green');
               } else {
                 Materialize.toast(result.response.message, 4000, 'red');
               }
             }, error => {
               Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
-            });*/
+            });
             break;
         } 
         /*

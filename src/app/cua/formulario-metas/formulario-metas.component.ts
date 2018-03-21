@@ -144,7 +144,7 @@ export class FormularioMetasComponent implements OnInit {
             this.service.agregar(this.auth.getIdUsuario(), meta).subscribe(result => {
               if (result.response.sucessfull) {
                 Materialize.toast('Se agregó correctamente', 4000, 'green');
-                this.router.navigate(['home/cua/metas']);
+                this.router.navigate(['../../metas']);
               } else {
                 Materialize.toast(result.response.message, 4000, 'red');
               }
