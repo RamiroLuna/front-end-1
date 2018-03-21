@@ -26,7 +26,7 @@ export class FormularioMetasService {
    * Consulta de catalogo de lineas. Its important for form of Line
    */ 
   getLineas(id_usuario: number): Observable<any> {
-    return this.http.get<Linea>(this.URL_LINEAS + '?action=getLineas&&id_usuario=' + id_usuario);
+    return this.http.get<Linea>(this.URL_LINEAS + '?action=getLineas&id_usuario=' + id_usuario);
   }
   /*
    * Fin de catalogos requeirdos

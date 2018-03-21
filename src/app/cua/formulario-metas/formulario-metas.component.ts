@@ -24,8 +24,8 @@ export class FormularioMetasComponent implements OnInit {
   public submitted: boolean;
   public mensajeModal: string;
   public texto_btn: string;
-  public id:any; //Id seleccionado
-  
+  public id: any; //Id seleccionado
+
 
   constructor(
     private service: FormularioMetasService,
@@ -55,38 +55,51 @@ export class FormularioMetasComponent implements OnInit {
      * Incia consulta
      */
     if (this.seccion != 'invalid') {
-      /*
-       * Consulta el elemento del catalogo
-       */
-      this.service.getLineas(this.auth.getIdUsuario()).subscribe(result => {
-        if (result.response.sucessfull) {
-          this.lineas = result.data.listLineasDTO;
-        } else {
-          Materialize.toast(result.response.message, 4000, 'red');
-        }
-      }, error => {
-        Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-      });
 
-      if(this.seccion == 'edit'){
+      if (this.seccion == 'edit') {
         this.service.getMeta(this.auth.getIdUsuario(), this.id).subscribe(result => {
+          console.log('consulta de meta ', result.data.metasDTO)
           if (result.response.sucessfull) {
             this.meta = result.data.metasDTO;
-            this.loading= false;
+            /*
+             * Solo carga la linea en modo de consulta para la vista
+             */
+            this.lineas = [{
+              id_linea: result.data.metasDTO.id_linea,
+              descripcion: result.data.metasDTO.linea,
+              activo: -1,
+              id_gpo_linea: -1,
+              descripcion_gpo_linea: 'default'
+            }];
+            this.loadFormulario();
+            this.loading = false;
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
-            this.loading= false;
+            this.loading = false;
           }
         }, error => {
           Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-          this.loading= false;
+          this.loading = false;
         });
-      }else if (this.seccion == 'add'){
-         this.meta = new Meta();
-         this.loading = false;
+      } else if (this.seccion == 'add') {
+        /*
+     * Consulta el elemento del catalogo
+     */
+        this.service.getLineas(this.auth.getIdUsuario()).subscribe(result => {
+          if (result.response.sucessfull) {
+            this.lineas = result.data.listLineasDTO || [];
+          } else {
+            Materialize.toast(result.response.message, 4000, 'red');
+          }
+        }, error => {
+          Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+        });
+        this.meta = new Meta();
+        this.loadFormulario();
+        this.loading = false;
       }
 
-      this.loadFormulario();
+
 
     } else {
       this.loading = false;
@@ -99,7 +112,7 @@ export class FormularioMetasComponent implements OnInit {
 
   loadFormulario(): void {
     this.formMeta = this.fb.group({
-      id_linea: new FormControl(this.meta.id_linea, [Validators.required]),
+      id_linea: new FormControl({ value: this.meta.id_linea, disabled: this.seccion == 'edit' }, [Validators.required]),
       meta: new FormControl(this.meta.meta, [Validators.required]),
       medida: new FormControl(this.meta.tipo_medida, [Validators.required]),
     });
@@ -114,7 +127,7 @@ export class FormularioMetasComponent implements OnInit {
 
       switch (accion) {
         case 'add':
-          this.mensajeModal = '¿Está seguro de agregar ? ';
+          this.mensajeModal = '¿ Está seguro de agregar ? ';
           break;
         case 'edit':
           this.mensajeModal = '¿ Está seguro de actualizar la información ? ';
@@ -126,7 +139,7 @@ export class FormularioMetasComponent implements OnInit {
       swal({
         title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
         type: 'question',
-        html: '<p style="color: #303f9f "> Elemento : <b> </b></p>',
+        html: '<p style="color: #303f9f "> Meta : ' + meta.meta + '<b> </b></p>',
         showCancelButton: true,
         confirmButtonColor: '#303f9f',
         cancelButtonColor: '#9fa8da ',
@@ -144,7 +157,7 @@ export class FormularioMetasComponent implements OnInit {
             this.service.agregar(this.auth.getIdUsuario(), meta).subscribe(result => {
               if (result.response.sucessfull) {
                 Materialize.toast('Se agregó correctamente', 4000, 'green');
-                this.router.navigate(['../../metas']);
+                this.router.navigate(['../../metas'], { relativeTo: this.route });
               } else {
                 Materialize.toast(result.response.message, 4000, 'red');
               }

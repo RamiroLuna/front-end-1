@@ -7,12 +7,15 @@ import { OptionsComponent } from './options/options.component';
 import { FormularioMetasComponent } from './formulario-metas/formulario-metas.component';
 import { ListaMetasComponent } from './lista-metas/lista-metas.component';
 import { AsginacionMetasComponent } from './asginacion-metas/asginacion-metas.component';
+import { ListaAsignacionComponent } from './lista-asignacion/lista-asignacion.component';
 
 
 const routesMetas: Routes = [
   { path: 'opciones', component: OptionsComponent },
   { path: 'opciones/metas', component: ListaMetasComponent },
-  { path: 'opciones/metas/:id', component: FormularioMetasComponent }
+  { path: 'opciones/metas/:id', component: FormularioMetasComponent },
+  { path: 'opciones/metas-asignaciones', component: ListaAsignacionComponent },
+  { path: 'opciones/metas-asignaciones/:id', component: AsginacionMetasComponent }
 ];
 
 @NgModule({
@@ -24,6 +27,6 @@ const routesMetas: Routes = [
     
     RouterModule.forChild(routesMetas)
   ],
-  declarations: [OptionsComponent, FormularioMetasComponent, ListaMetasComponent, AsginacionMetasComponent]
+  declarations: [OptionsComponent, FormularioMetasComponent, ListaMetasComponent, AsginacionMetasComponent, ListaAsignacionComponent]
 })
 export class CuaModule { }

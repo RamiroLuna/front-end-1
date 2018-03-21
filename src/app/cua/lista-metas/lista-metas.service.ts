@@ -28,13 +28,4 @@ export class ListaMetasService {
       .set('id_usuario', "" + id_usuario);
     return this.http.post(this.URL, body);
   }
-
-  delete(id_usuario: number, id_meta: number): Observable<any> {
-    const body = new HttpParams()
-      .set('action', 'deleteNewMetaCatalog')
-      .set('idMeta', ''+id_meta)
-      .set('id_usuario', '' + id_usuario)
-    return this.http.post(this.URL, body);
-  }
-
 }

@@ -1,14 +1,7 @@
-import { Directive, Component, OnInit, AfterViewInit,  OnChanges } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Meta } from '../../models/meta';
 import { deleteItemArray } from '../../utils';
 import swal from 'sweetalert2';
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition
-} from '@angular/animations';
 import { AuthService } from '../../auth/auth.service';
 import { ListaMetasService } from './lista-metas.service';
 
@@ -17,71 +10,13 @@ declare var Materialize: any;
 @Component({
   selector: 'app-lista-metas',
   templateUrl: './lista-metas.component.html',
-  providers: [ ListaMetasService ],
-  animations: [
-    trigger('visibility', [
-      state('inactive', style({
-        opacity: 0,
-        display: 'none'
-      })),
-      state('active',   style({
-        opacity: 1,
-        display: 'block',
-      })),
-      transition('inactive => active', animate('200ms ease-in')),
-      transition('active => inactive', animate('200ms ease-out'))
-    ])
-  ]
+  providers: [ ListaMetasService ]
 })
-export class ListaMetasComponent implements OnInit{
+export class ListaMetasComponent implements OnInit, AfterViewInit{
   public loading: boolean;
-  public status: string = 'inactive';
-  public status_tabla: string = 'active';
   public mensajeModal: string;
-  /*
-   * Variable utilizadas por el componente asignacion de metas
-   */
-  public id_meta: number;
-  public metaselected: string;
-  public lineaselected: string;
 
-  /*
-   *Fin de variables para pasar al componente hijo
-   */ 
-
-  public metas: Array<Meta> = [{
-    id_meta: 1,
-    id_linea: 1,
-    descripcion_linea: 'decripcion linea 1',
-    meta: 'meta uno 1',
-    tipo_medida: 'kilogramos',
-    posicion: 1,
-    activo: 1,
-    /*
-     *
-     */
-    dia: '20/03/2018',
-    turno: 'Turno 1',
-    grupo: 'grupo 2',
-    valor: 100
-  },
-  {
-    id_meta: 2,
-    id_linea: 2,
-    descripcion_linea: 'decripcion linea 2',
-    meta: 'meta uno 2',
-    tipo_medida: 'kilogramos 2',
-    posicion: 2,
-    activo: 1,
-    /*
-     *
-     */
-    dia: '20/03/2012',
-    turno: 'Turno 12',
-    grupo: 'grupo 22',
-    valor: 100
-  },
-];
+  public metas: Array<Meta>;
 
   constructor(
     private auth: AuthService,
@@ -90,29 +25,31 @@ export class ListaMetasComponent implements OnInit{
 
   ngOnInit() {
     this.loading = true;
-    this.loading = false;
+    this.service.getMetas(this.auth.getIdUsuario()).subscribe(result => {
+      if (result.response.sucessfull) {
+        this.metas = result.data.listMetas || [];
+        this.loading = false;
+      } else {
+        Materialize.toast('Ocurrió  un error al consultar las metas!', 4000, 'red');
+        this.loading = false;
+      }
+    }, error => {
+      Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+      this.loading = false;
+    });
+    
   }
 
-
-  changeVisibility(meta:Meta) {
-    event.preventDefault();
-
-    /*
-     * Update variable para mostrar
-     */ 
-    this.id_meta = meta.id_meta;
-    this.metaselected = meta.meta;
-    this.lineaselected = meta.descripcion_linea;
-    /*
-     * Fin de bloque
-     */ 
-    this.status = this.status === 'inactive' ? 'active' : 'inactive';
-    this.status_tabla = this.status_tabla === 'inactive' ? 'active' : 'inactive';
+  ngAfterViewInit(): void {
+    $('.tooltipped').tooltip({ delay: 50 });
   }
 
-  verMetas(){
-    this.status = this.status === 'inactive' ? 'active' : 'inactive';
-    this.status_tabla = this.status_tabla === 'inactive' ? 'active' : 'inactive';
+  agregar() {
+    $('.tooltipped').tooltip('hide');
+  }
+
+  regresar() {
+    $('.tooltipped').tooltip('hide');
   }
 
   /*
@@ -138,7 +75,7 @@ export class ListaMetasComponent implements OnInit{
     swal({
       title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
       type: 'question',
-      html: '<p style="color: #303f9f "> meta: <b>' + meta.meta + ' </b></p>',
+      html: '<p style="color: #303f9f "> Meta : <b>' + meta.meta + ' </b></p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
@@ -167,16 +104,6 @@ export class ListaMetasComponent implements OnInit{
             });
             break;
           case 'eliminar':
-            this.service.delete(this.auth.getIdUsuario(), meta.id_meta).subscribe(result => {
-              if (result.response.sucessfull) {
-                deleteItemArray(this.metas, meta.id_meta, 'id_meta');
-                Materialize.toast('Se eliminó correctamente ', 4000, 'green');
-              } else {
-                Materialize.toast(result.response.message, 4000, 'red');
-              }
-            }, error => {
-              Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
-            });
             break;
         } 
         /*
