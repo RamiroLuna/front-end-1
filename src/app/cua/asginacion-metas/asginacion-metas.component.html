@@ -1,81 +1,92 @@
-<div class="container"  *ngIf="!loading">
-    <div class="row">
-      <div class="col offset-l2 offset-xl2 s12 m12 l10 xl10">
-        <div class="card-panel">
-          <h5 class="color_titulo center-align">{{ seccion == 'add'? ' Asignar ' : ' Actualizar '}} valor</h5>
-          <div class="row">
-            <form class="col s12 m12 l12 xl12"  [formGroup]="formAsignacion" (ngSubmit)="openModalConfirmacion(asignacion, seccion)">
-              <div class="row">
-                <div class="col s12 m12 l12 xl12">
-                  <label>Línea</label>
-                  <select disabled materialize="material_select">
-                    <option>{{ lineaselected }}</option>
-                  </select>
+<div class="container" *ngIf="!loading">
+  <div class="row">
+    <div class="col offset-l2 offset-xl2 s12 m12 l10 xl10">
+      <div class="card-panel">
+        <h5 class="color_titulo center-align">{{ seccion == 'add'? ' Asignar ' : ' Actualizar '}} valor</h5>
+        <div class="row">
+          <form class="col s12 m12 l12 xl12" [formGroup]="formAsignacion" (ngSubmit)="openModalConfirmacion(asignacion, seccion)">
+            <div class="row">
+              <div class="col s12 m12 l12 xl12">
+                <label>Meta</label>
+                <select materialize="material_select" formControlName="id_meta" [materializeSelectOptions]="metas" [(ngModel)]="asignacion.id_meta">
+                  <option value="">Seleccione</option>
+                  <option *ngFor="let meta of metas" [value]="meta.id_meta">{{ meta.meta }}</option>
+                </select>
+                <div *ngIf="formAsignacion.controls.id_meta.errors?.required && (formAsignacion.controls.id_meta?.touched || submitted)"
+                  class="error">
+                  La meta es requerida
                 </div>
               </div>
-
-              <div class="row">
-                <div class="col s12 m12 l12 xl12">
-                  <label>Meta</label>
-                  <select disabled materialize="material_select">
-                    <option>{{ metaselected }}</option>
-                  </select>
+            </div>
+            <div class="row">
+              <div class="col s12 m12 l12 xl12">
+                <label>Turno</label>
+                <select materialize="material_select" formControlName="id_turno" [materializeSelectOptions]="turnos" [(ngModel)]="asignacion.id_turno">
+                  <option value="">Seleccione</option>
+                  <option *ngFor="let turno of turnos" [value]="turno.id">{{ turno.descripcion }}</option>
+                </select>
+                <div *ngIf="formAsignacion.controls.id_turno.errors?.required && (formAsignacion.controls.id_turno?.touched || submitted)"
+                  class="error">
+                  El turno es requerido
                 </div>
               </div>
-
-              <div class="row">
-                <div class="input-field col s12 m12 l12 xl12">
-                  <input id="dia" type="text" class="datepicker">
-                  <label for="dia">Día</label>
+            </div>
+            <div class="row">
+              <div class="col s12 m12 l12 xl12">
+                <label>Grupo</label>
+                <select materialize="material_select" formControlName="id_grupo" [materializeSelectOptions]="grupos" [(ngModel)]="asignacion.id_grupo">
+                  <option value="">Seleccione</option>
+                  <option *ngFor="let grupo of grupos" [value]="grupo.id">{{ grupo.descripcion }}</option>
+                </select>
+                <div *ngIf="formAsignacion.controls.id_grupo.errors?.required && (formAsignacion.controls.id_grupo?.touched || submitted)"
+                  class="error">
+                  El grupo es requerido
                 </div>
               </div>
-
-              <div class="row">
-                <div class="col s12 m12 l12 xl12">
-                  <label>Turno</label>
-                  <select materialize="material_select">
-                    <option value="-1">Seleccione una opción...</option>
-                  </select>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 m12 l12 xl12">
+                <input id="dia" type="text" class="datepicker" formControlName="dia" [(ngModel)]="asignacion.dia">
+                <label for="dia">Día</label>
+                <div *ngIf="formAsignacion.controls.dia.errors?.required && (formAsignacion.controls.dia?.touched || submitted)" class="error">
+                  El dia es requerido
                 </div>
               </div>
-
-              <div class="row">
-                <div class="col s12 m12 l12 xl12">
-                  <label>Grupo</label>
-                  <select materialize="material_select">
-                    <option value="-1">Seleccione una opción...</option>
-                  </select>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 m12 l12 xl12">
+                <input id="valor" type="text" [(ngModel)]="asignacion.valor" formControlName="valor">
+                <label for="valor">Valor de la meta en kilogramos</label>
+                <div *ngIf="formAsignacion.controls.valor.errors?.required && (formAsignacion.controls.valor?.touched || submitted)" class="error">
+                    El valor es requerido
+                </div>
+                <div *ngIf="formAsignacion.controls.valor.errors?.pattern && (formAsignacion.controls.valor?.pattern || submitted)" class="error">
+                   Número no valido
                 </div>
               </div>
+            </div>
 
-              <div class="row">
-                <div class="input-field col s12 m12 l12 xl12">
-                  <input id="meta" type="text">
-                  <label for="meta">Valor de la meta</label>
-                </div>
+            <div class="row">
+              <div class="input-field col offset-s1 offset-m3 offset-l2 offset-xl3">
+                <a routerLink="../../metas-asignaciones" class="col btn grey lighten-1  waves-effect waves-light" type="submit" name="cancelar">{{ texto_btn }}
+                </a>
               </div>
 
-              <div class="row">
-                <div class="input-field col offset-s1 offset-m3 offset-l2 offset-xl3">
-                  <a  routerLink="../../metas-asignaciones" class="col btn grey lighten-1  waves-effect waves-light" type="submit" name="cancelar">Cancelar
-                  </a>
-                </div>
-
-                <div class="input-field col offset-m1 offset-l1 offset-xl2">
-                  <button class="col btn light-green darken-1 waves-effect waves-light" type="submit" name="asignar">{{ seccion == 'add' ? 'Agregar' : 'Guardar cambio'}}
-                  </button>
-                </div>
+              <div class="input-field col offset-m1 offset-l1 offset-xl2">
+                <button class="col btn light-green darken-1 waves-effect waves-light" type="submit" name="asignar">{{ seccion == 'add' ? 'Asignar' : 'Guardar'}}
+                </button>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
-  <div class="container" *ngIf="loading">
-      <div  id="loader-wrapper" >
-          <div id="loader"></div>
-          <div class="loader-section section-left"></div>
-          <div class="loader-section section-right"></div>
-      </div>
-    </div>
+</div>
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>

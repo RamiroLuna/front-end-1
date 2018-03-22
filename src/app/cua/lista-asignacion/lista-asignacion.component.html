@@ -16,26 +16,11 @@
   </div>
   <!-- fin Solo para dispositivos moviles -->
   <!-- <div class="row">
-    <div class="col s12 m12 l12">
-      <div class="row">
-        <form class="col s12">        
-          <div class="row">
-            <div class="input-field col s4">
-              <i class="mdi-action-account-circle prefix"></i>
-              <input id="icon_prefix" type="text" class="datepicker">
-              <label for="icon_prefix">Año</label>
-            </div>
-            <div class="input-field col s4">
-              <div class="input-field col s12">
-                <button class="btn light-green darken-1 waves-effect waves-light" type="submit" name="action">
-                    <i class="material-icons">search</i></button>
-              </div>
-            </div>
-          </div>
-        </form>
+      <div class="input-field col s12 m12 l6 xl6  center-align">
+        <input id="anio" type="text">
+        <label for="anio">Año</label>
       </div>
-    </div>
-  </div> -->
+    </div> -->
 
   <table id="tabla" class="display" cellspacing="0" width="100%">
     <thead>
@@ -46,35 +31,28 @@
         <th class="center-align">Grupo</th>
         <th class="center-align">Meta</th>
         <th class="center-align">Valor</th>
-        <th class="center-align">Activo</th>
         <th class="center-align">Editar</th>
         <th class="center-align">Eliminar</th>
       </tr>
     </thead>
 
     <tbody>
-      <tr *ngFor="let meta of metas">
-        <td class="center-align">{{meta.linea}}</td>
-        <td class="center-align">{{meta.dia}}</td>
-        <td class="center-align">{{meta.turno}}</td>
-        <td class="center-align">{{meta.grupo}}</td>
-        <td class="center-align">{{meta.meta}}</td>
-        <td class="center-align">{{meta.valor}}</td>
-        <td>
-          <div class="switch">
-            <label>
-              No
-              <input type="checkbox">
-              <span class="lever"></span>
-              Si
-            </label>
-          </div>
+      <tr *ngFor="let asignacion of asignaciones">
+        <td class="center-align">{{asignacion.linea}}</td>
+        <td class="center-align">{{asignacion.dia}}</td>
+        <td class="center-align">{{asignacion.turno}}</td>
+        <td class="center-align">{{asignacion.grupo}}</td>
+        <td class="center-align">{{asignacion.meta}}</td>
+        <td class="center-align">{{asignacion.valor }} T</td>
+        <td class="center-align">
+          <a class="btn-floating light-green lighten-1" [routerLink]="asignacion.id_pro_meta">
+            <i class="material-icons">edit</i>
+          </a>
         </td>
         <td class="center-align">
-          <a href="#">Editar</a>
-        </td>
-        <td class="center align">
-          <a href="#">Eliminar</a>
+          <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(asignacion,'eliminar')">
+            <i class="material-icons">delete</i>
+          </a>
         </td>
       </tr>
     </tbody>
