@@ -6,6 +6,7 @@ import { AuthService } from '../../auth/auth.service';
 import { isValidId } from '../../utils';
 import { Producto } from '../../models/producto';
 import swal from 'sweetalert2';
+import { Linea } from '../../models/linea';
 
 declare var $: any;
 declare var Materialize: any;
@@ -22,6 +23,7 @@ export class FormularioProductoComponent implements OnInit {
   public texto_btn: string;
   public producto: Producto;
   public formProducto: FormGroup;
+  public lineas: Array<Linea>;
   public id: any; //Id seleccionado
   constructor(
     private service: FormularioProductoService,
@@ -32,6 +34,10 @@ export class FormularioProductoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loading = true;
+    this.submitted = false;
+    this.texto_btn = "Cancelar";
+    
     this.route.paramMap.subscribe(params => {
       if (params.get('id') == 'nuevo') {
         this.seccion = 'add';
@@ -43,16 +49,15 @@ export class FormularioProductoComponent implements OnInit {
       }
     });
 
-        /*
-     * Incia consulta
-     */
+    /*
+ * Incia consulta
+ */
     if (this.seccion != 'invalid') {
 
       if (this.seccion == 'edit') {
         this.service.getProducto(this.auth.getIdUsuario(), this.id).subscribe(result => {
           if (result.response.sucessfull) {
             this.producto = result.data.productoDTO;
-           
             this.loadFormulario();
             this.loading = false;
           } else {
@@ -64,7 +69,15 @@ export class FormularioProductoComponent implements OnInit {
           this.loading = false;
         });
       } else if (this.seccion == 'add') {
-        
+        this.service.getLineas(this.auth.getIdUsuario()).subscribe(result => {
+          if (result.response.sucessfull) {
+            this.lineas = result.data.listLineasDTO || [];
+          } else {
+            Materialize.toast(result.response.message, 4000, 'red');
+          }
+        }, error => {
+          Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+        });
         this.producto = new Producto();
         this.loadFormulario();
         this.loading = false;
@@ -78,9 +91,9 @@ export class FormularioProductoComponent implements OnInit {
 
   loadFormulario(): void {
     this.formProducto = this.fb.group({
-      // id_linea: new FormControl({ value: this.meta.id_linea, disabled: this.seccion == 'edit' }, [Validators.required]),
-      // meta: new FormControl(this.meta.meta, [Validators.required]),
-      // medida: new FormControl(this.meta.tipo_medida, [Validators.required]),
+      id_linea: new FormControl({ value: this.producto.id_linea}, [Validators.required]),
+      descripcion: new FormControl(this.producto.descripcion, [Validators.required]),
+      medida: new FormControl(this.producto.medida, [Validators.required]),
     });
   }
 

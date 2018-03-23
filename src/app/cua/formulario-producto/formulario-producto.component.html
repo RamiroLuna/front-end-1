@@ -5,34 +5,45 @@
       <div class="card-panel">
         <h5 class="color_titulo center-align">Alta De Productos</h5>
         <div class="row">
-          <form class="col s12 m12 l12 xl12">
+          <form class="col s12 m12 l12 xl12" [formGroup]="formProducto" (ngSubmit)="openModalConfirmacion(producto, seccion)">
             <div class="row">
               <div class="col s12 m12 l12 xl12">
                 <label>Línea</label>
-                <select materialize="material_select">
-                  <option value="-1">Seleccione una opción...</option>
+                <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="id_linea" [(ngModel)]="producto.id_linea">
+                  <option value="">Seleccione</option>
+                  <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{ linea.descripcion }}</option>
                 </select>
+                <div *ngIf="formProducto.controls.id_linea.errors?.required && (formProducto.controls.id_linea?.touched || submitted)" class="error">
+                  Seleccione una linea
+                </div>
               </div>
             </div>
 
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input id="producto" type="text">
+                <input id="producto" type="text" formControlName="descripcion" [(ngModel)]="producto.descripcion">
                 <label for="producto">Producto</label>
+                <div *ngIf="formProducto.controls.descripcion.errors?.required && (formProducto.controls.descripcion?.touched || submitted)"
+                  class="error">
+                  Se requiere nombre del producto
+                </div>
               </div>
             </div>
 
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input id="medida" type="text">
+                <input id="medida" type="text" formControlName="medida" [(ngModel)]="producto.medida">
                 <label for="medida">Medida</label>
+                <div *ngIf="formProducto.controls.medida.errors?.required && (formProducto.controls.medida?.touched || submitted)" class="error">
+                  Se requiere medida
+                </div>
               </div>
             </div>
 
             <div class="row">
               <div class="input-field col offset-s1 offset-m3 offset-l2 offset-xl3">
-                <button class="col btn grey lighten-1  waves-effect waves-light" type="submit" name="agregar">Cancelar
-                </button>
+                <a routerLink="../../productos" class="btn grey lighten-1 waves-effect waves-light right" name="action">{{ texto_btn }}
+                </a>
               </div>
 
               <div class="input-field col offset-m1 offset-l1 offset-xl2">
