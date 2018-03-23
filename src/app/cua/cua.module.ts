@@ -10,6 +10,8 @@ import { AsginacionMetasComponent } from './asginacion-metas/asginacion-metas.co
 import { ListaAsignacionComponent } from './lista-asignacion/lista-asignacion.component';
 import { ListaFallasComponent } from './lista-fallas/lista-fallas.component';
 import { FormularioFallasComponent } from './formulario-fallas/formulario-fallas.component';
+import { ListaProductsComponent } from './lista-products/lista-products.component';
+import { FormularioProductoComponent } from './formulario-producto/formulario-producto.component';
 
 
 const routesMetas: Routes = [
@@ -19,7 +21,9 @@ const routesMetas: Routes = [
   { path: 'opciones/metas-asignaciones', component: ListaAsignacionComponent },
   { path: 'opciones/metas-asignaciones/:id', component: AsginacionMetasComponent },
   { path: 'opciones/fallas', component: ListaFallasComponent },
-  { path: 'opciones/fallas/:id', component: FormularioFallasComponent }
+  { path: 'opciones/fallas/:id', component: FormularioFallasComponent },
+  { path: 'opciones/productos', component: ListaProductsComponent },
+  { path: 'opciones/productos/:id', component: FormularioProductoComponent }
 ];
 
 @NgModule({
@@ -31,6 +35,6 @@ const routesMetas: Routes = [
     
     RouterModule.forChild(routesMetas)
   ],
-  declarations: [OptionsComponent, FormularioMetasComponent, ListaMetasComponent, AsginacionMetasComponent, ListaAsignacionComponent, ListaFallasComponent, FormularioFallasComponent]
+  declarations: [OptionsComponent, FormularioMetasComponent, ListaMetasComponent, AsginacionMetasComponent, ListaAsignacionComponent, ListaFallasComponent, FormularioFallasComponent, ListaProductsComponent, FormularioProductoComponent]
 })
 export class CuaModule { }
