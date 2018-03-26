@@ -1,6 +1,6 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Meta } from '../../models/meta';
-import { deleteItemArray } from '../../utils';
+import { deleteItemArray,DataTable } from '../../utils';
 import swal from 'sweetalert2';
 import { AuthService } from '../../auth/auth.service';
 import { ListaMetasService } from './lista-metas.service';
@@ -12,7 +12,7 @@ declare var Materialize: any;
   templateUrl: './lista-metas.component.html',
   providers: [ ListaMetasService ]
 })
-export class ListaMetasComponent implements OnInit, AfterViewInit{
+export class ListaMetasComponent implements OnInit{
   public loading: boolean;
   public mensajeModal: string;
 
@@ -29,6 +29,7 @@ export class ListaMetasComponent implements OnInit, AfterViewInit{
       if (result.response.sucessfull) {
         this.metas = result.data.listMetas || [];
         this.loading = false;
+        setTimeout(()=>{this.ngAfterViewHttp()},200)
       } else {
         Materialize.toast('Ocurrió  un error al consultar las metas!', 4000, 'red');
         this.loading = false;
@@ -40,9 +41,15 @@ export class ListaMetasComponent implements OnInit, AfterViewInit{
     
   }
 
-  ngAfterViewInit(): void {
+  /*
+   * Carga plugins despues de cargar y mostrar objetos en el DOM
+   */
+  ngAfterViewHttp(): void {
+
+    DataTable('#tabla');
     $('.tooltipped').tooltip({ delay: 50 });
-  }
+  } 
+
 
   agregar() {
     $('.tooltipped').tooltip('hide');

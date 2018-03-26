@@ -58,13 +58,21 @@ export class FormularioProductoComponent implements OnInit {
         this.service.getProducto(this.auth.getIdUsuario(), this.id).subscribe(result => {
           if (result.response.sucessfull) {
             this.producto = result.data.productoDTO;
+            this.lineas = [{id_linea:1,
+              descripcion: 'default',
+              activo:-1,
+              id_gpo_linea:-1,
+              descripcion_gpo_linea: 'default'
+            }]
             this.loadFormulario();
             this.loading = false;
           } else {
+            this.seccion = "error";
             Materialize.toast(result.response.message, 4000, 'red');
             this.loading = false;
           }
         }, error => {
+          this.seccion = "error";
           Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
           this.loading = false;
         });

@@ -1,9 +1,9 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/user';
 import { ListEtadUsersService } from './list-etad-users.service';
 import { AuthService } from '../../auth/auth.service';
 import swal from 'sweetalert2';
-import { deleteItemArray } from '../../utils';
+import { deleteItemArray, DataTable} from '../../utils';
 
 declare var $: any;
 declare var Materialize: any;
@@ -13,7 +13,7 @@ declare var Materialize: any;
   providers: [ListEtadUsersService]
 })
 
-export class ListEtadUsersComponent implements OnInit, AfterViewInit {
+export class ListEtadUsersComponent implements OnInit {
 
 
   public usuarios_etad: Array<User> = [];
@@ -29,6 +29,7 @@ export class ListEtadUsersComponent implements OnInit, AfterViewInit {
       if (result.response.sucessfull) {
         this.usuarios_etad = result.data.listUserDTO || [];
         this.loading = false;
+        setTimeout(()=>{this.ngAfterViewHttp()},200)
       } else {
         Materialize.toast('Ocurrió  un error al consultar usuarios ETAD!', 4000, 'red');
         this.loading = false;
@@ -40,45 +41,23 @@ export class ListEtadUsersComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngAfterViewInit() {
-    // $('#tabla_usuarios_etad').DataTable({
-    //   "dom": '<lf<t>ip>',
-    //   "responsive": true,
-    //   "scrollX": true,
-    //   "bSort": false,
-    //   "bPaginate": true,
-    //   "bLengthChange": true,
-    //   "lengthChange": true,
-    //   "aLengthMenu": [[10, 25, 50, 75, -1], [10, 25, 50, 75, "Todos"]],
-    //   "iDisplayLength": 10,
-    //   "language": {
-    //     "zeroRecords": "No se encontrarón coincidencias",
-    //     "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
-    //     "infoEmpty": "Mostrando 0 a 0 de 0 registros",
-    //     "infoFiltered": "(filtrado de _MAX_ total registros)",
-    //     "lengthMenu": "Mostrar _MENU_ regitros",
-    //     "search": "Buscar:",
-    //     "paginate": {
-    //       "first": "Inicio",
-    //       "last": "Fin",
-    //       "next": "Sig.",
-    //       "previous": "Anterior"
-    //     }
-    //   }
-    // });
-
-
-    // $('select').val('10'); //seleccionar valor por defecto del select
-    // $('select').addClass("browser-default"); //agregar una clase de materializecss de esta forma ya no se pierde el select de numero de registros.
-    // $('select').material_select();
-
-    $('.tooltipped').tooltip({ delay: 50 });
-
-  }
 
   ocultarTooltip() {
     $('.tooltipped').tooltip('hide');
   }
+
+
+  /*
+   * Carga plugins despues de cargar y mostrar objetos en el DOM
+   */
+  ngAfterViewHttp(): void {
+
+    DataTable('#tabla_usuarios_etad');
+
+    $('.tooltipped').tooltip({ delay: 50 });
+  } 
+
+  
 
   openModalConfirmacion(usuario: User, accion: string, event?: any): void {
     this.mensajeModal = '';
@@ -132,6 +111,7 @@ export class ListEtadUsersComponent implements OnInit, AfterViewInit {
             this.service.delete(this.auth.getIdUsuario(), usuario.id_usuario).subscribe(result => {
               if (result.response.sucessfull) {
                 deleteItemArray(this.usuarios_etad, usuario.id_usuario, 'id_usuario');
+                $('#tabla_usuarios_etad').DataTable().row('.'+usuario.id_usuario).remove().draw( false );
                 Materialize.toast('Se eliminó correctamente ', 4000, 'green');
               } else {
                 Materialize.toast(result.response.message, 4000, 'red');

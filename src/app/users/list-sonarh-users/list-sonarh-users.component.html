@@ -12,7 +12,7 @@
     <!-- Fin solo para dispositivos moviles -->
     <div class="section"></div>
     <div class="row">
-      <table id="tabla_usuarios_sonarh" class="display" cellspacing="0" width="100%" style="overflow-x:auto;">
+      <table id="tabla_usuarios_sonarh"  class="display" cellspacing="0" width="100%">
         <thead>
           <tr>
             <th class="center-align">Id empleado</th>
@@ -25,7 +25,7 @@
         </thead>
 
         <tbody>
-          <tr *ngFor="let usuario of usuarios_sonarh">
+          <tr *ngFor="let usuario of usuarios_sonarh"  [class]="usuario.id_sonarh">
             <td class="center-align">{{ usuario.id_sonarh}}</td>
             <td class="center-align">{{ usuario.nombre_completo }}</td>
             <td class="center-align">{{ usuario.usuario_acceso}}</td>

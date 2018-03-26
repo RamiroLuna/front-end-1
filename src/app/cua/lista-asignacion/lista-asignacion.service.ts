@@ -11,8 +11,8 @@ export class ListaAsignacionService {
 
   constructor(private http: HttpClient) { }
 
-  getAllAsignacionesByYear(id_usuario:number): Observable<any> {
-    return this.http.get<MetaAsignacion>(this.URL + '?action=getAllAsignacionesByYear&id_usuario='+id_usuario);
+  getAllAsignacionesByYear(id_usuario:number,year:number): Observable<any> {
+    return this.http.get<MetaAsignacion>(this.URL + '?action=getAllAsignacionesByYear&year='+year+'&id_usuario='+id_usuario);
   }
 
   delete(id_usuario: number, id_pro_meta: number): Observable<any> {

@@ -27,7 +27,7 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let meta of metas">
+      <tr *ngFor="let meta of metas"  [class]="meta.id_meta">
         <td class="center-align">{{meta.linea}}</td>
         <td class="center-align">{{meta.meta}}</td>
         <td class="center-align">{{meta.tipo_medida}}</td>

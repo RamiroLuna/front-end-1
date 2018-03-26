@@ -1,9 +1,10 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { MetaAsignacion } from '../../models/meta-asignacion';
-import { deleteItemArray } from '../../utils';
+import { deleteItemArray, getAnioActual, DataTable, getYears} from '../../utils';
 import swal from 'sweetalert2';
 import { ListaAsignacionService } from './lista-asignacion.service';
+
 
 declare var $: any;
 declare var Materialize: any;
@@ -12,11 +13,11 @@ declare var Materialize: any;
   templateUrl: './lista-asignacion.component.html',
   providers: [ ListaAsignacionService ]
 })
-export class ListaAsignacionComponent implements OnInit, AfterViewInit{
+export class ListaAsignacionComponent implements OnInit{
   public loading: boolean;
   public mensajeModal: string;
-
   public asignaciones: Array<MetaAsignacion>;
+  public anio_actual:number;
 
   constructor(private auth: AuthService,
     private service: ListaAsignacionService
@@ -24,10 +25,13 @@ export class ListaAsignacionComponent implements OnInit, AfterViewInit{
 
   ngOnInit() {
     this.loading = true;
-    this.service.getAllAsignacionesByYear(this.auth.getIdUsuario()).subscribe(result => {
+    this.anio_actual = getAnioActual();
+    this.service.getAllAsignacionesByYear(this.auth.getIdUsuario(), this.anio_actual).subscribe(result => {
       if (result.response.sucessfull) {
         this.asignaciones = result.data.listMetasAsignacion || [];
         this.loading = false;
+        setTimeout(()=>{this.ngAfterViewHttp()},200)
+       
       } else {
         Materialize.toast('Ocurrió  un error al consultar las metas!', 4000, 'red');
         this.loading = false;
@@ -38,26 +42,15 @@ export class ListaAsignacionComponent implements OnInit, AfterViewInit{
     });
   }
 
-   /* 
-   * Carga de plugins para el componente
-   */ 
-  ngAfterViewInit(): void {
-    $('.datepicker').pickadate({
-      selectMonths: true, // Creates a dropdown to control month
-      selectYears: 15, // Creates a dropdown of 15 years to control year,
-      today: 'Hoy',
-      clear: 'Limpiar',
-      close: 'Ok',
-      monthsFull: [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ],
-      monthsShort: [ 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic' ],
-      weekdaysShort: [ 'Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab' ],
-      weekdaysLetter: [ 'D', 'L', 'M', 'M', 'J', 'V', 'S' ],
-      format: 'dd/mm/yyyy',
-      closeOnSelect: false // Close upon selecting a date,
-    });
+  /*
+   * Carga plugins despues de cargar y mostrar objetos en el DOM
+   */
+   ngAfterViewHttp(): void{
+
+    DataTable('#tabla');
 
     $('.tooltipped').tooltip({ delay: 50 });
-  }
+   } 
 
 
   agregar() {
@@ -66,6 +59,47 @@ export class ListaAsignacionComponent implements OnInit, AfterViewInit{
 
   regresar() {
     $('.tooltipped').tooltip('hide');
+  }
+
+  openModalYear(event):void{
+    event.preventDefault();
+    swal({
+      title: 'Seleccione el año',
+      input: 'select',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'OK',
+      inputOptions: getYears(),
+      inputPlaceholder: 'Seleccione año',
+      showCancelButton: true,
+      inputValidator: (value) => {
+        
+        return new Promise((resolve) => {
+         
+          if (value != '') {
+            resolve();
+            this.loading = true;
+            this.anio_actual = value;
+            this.asignaciones = [];
+            this.service.getAllAsignacionesByYear(this.auth.getIdUsuario(), this.anio_actual).subscribe(result => {
+              if (result.response.sucessfull) {
+                this.asignaciones = result.data.listMetasAsignacion || [];
+                this.loading = false;
+                setTimeout(()=>{this.ngAfterViewHttp()},200)
+               
+              } else {
+                Materialize.toast('Ocurrió  un error al consultar las metas!', 4000, 'red');
+                this.loading = false;
+              }
+            }, error => {
+              Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+              this.loading = false;
+            });
+          } else {
+            resolve('Seleccione un año')
+          }
+        })
+      }
+    })
   }
 
   openModalConfirmacion(asignacion: MetaAsignacion, accion: string, event?: any): void {

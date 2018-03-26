@@ -23,7 +23,7 @@
         </thead>
 
         <tbody>
-          <tr *ngFor="let usuario of usuarios_etad">
+          <tr *ngFor="let usuario of usuarios_etad" [class]="usuario.id_usuario">
             <td class="center-align">{{ usuario.id_usuario }}</td>
             <td class="center-align">{{ usuario.nombre }}</td>
             <td class="center-align">{{ usuario.usuario_acceso }}</td>

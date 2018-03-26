@@ -1,9 +1,6 @@
 <div class="container" *ngIf="!loading">
   <div class="section"></div>
-  <h4 class="color_titulo center-align">Asignaciones de metas
-       <a class="tooltipped" href=""  data-position="top"
-       data-delay="50" data-tooltip="Cambiar año" (click)="openModalYear($event)">{{ anio_actual }}</a>
-      </h4> 
+  <h4 class="color_titulo center-align">Asignaciones de productos</h4>
   <!-- Solo para dispositivos moviles -->
   <div class="hide-on-large-only right-align">
     <a routerLink="../../opciones" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
@@ -18,16 +15,25 @@
     </a>
   </div>
   <!-- fin Solo para dispositivos moviles -->
+  <div class="row">
+    <div class="col s1 m1 l2 xl2"></div>
+    <div class="input-field col s10 m10 l8 xl8">
+      <div class="center-align">
+        <input id="anio" class="datepicker" type="text">
+        <label for="anio">Año</label>
+      </div>
+    </div>
+  </div>
 
-  <table id="tabla" class="display" cellspacing="0" width="100%" style="overflow-x:auto;">
+  <table id="tabla" class="display" cellspacing="0" width="100%">
     <thead>
       <tr>
         <th class="center-align">Linea</th>
         <th class="center-align">Día</th>
         <th class="center-align">Turno</th>
         <th class="center-align">Grupo</th>
-        <th class="center-align">Meta</th>
         <th class="center-align">Valor</th>
+        <th class="center-align">Liberar</th>
         <th class="center-align">Editar</th>
         <th class="center-align">Eliminar</th>
       </tr>
@@ -39,8 +45,12 @@
         <td class="center-align">{{asignacion.dia}}</td>
         <td class="center-align">{{asignacion.turno}}</td>
         <td class="center-align">{{asignacion.grupo}}</td>
-        <td class="center-align">{{asignacion.meta}}</td>
         <td class="center-align">{{asignacion.valor }} T</td>
+        <td class="center-align">
+          <a class="btn-floating light-green lighten-1" [routerLink]="asignacion.id_pro_meta">
+            <i class="material-icons">done</i>
+          </a>
+        </td>
         <td class="center-align">
           <a class="btn-floating light-green lighten-1" [routerLink]="asignacion.id_pro_meta">
             <i class="material-icons">edit</i>
