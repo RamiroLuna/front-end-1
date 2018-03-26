@@ -1,4 +1,4 @@
-<div class="container"  *ngIf="!loading">
+<div class="container" *ngIf="!loading">
   <div class="section"></div>
   <h4 class="color_titulo center-align">Productos registrados</h4>
   <!-- Solo para dispositivos moviles -->
@@ -22,34 +22,30 @@
         <th class="center-align">Linea</th>
         <th class="center-align">Producto</th>
         <th class="center-align">Medida</th>
-        <th class="center-align">Posicion</th>
         <th class="center-align">Activo</th>
         <th class="center-align">Editar</th>
-        <th class="center-align">Eliminar</th>
       </tr>
     </thead>
 
     <tbody>
-      <tr *ngFor="let producto of productos">
+      <tr *ngFor="let producto of productos" [class]="producto.id_producto">
         <td class="center-align">{{producto.linea}}</td>
-        <td class="center-align">{{producto.productos}}</td>
-        <td class="center-align">{{producto.medida}}</td>
-        <td class="center-align">{{producto.posicion}}</td>
+        <td class="center-align">{{producto.producto}}</td>
+        <td class="center-align">{{producto.tipo_medida}}</td>
         <td class="center-align">
           <div class="switch">
             <label>
               No
-              <input type="checkbox">
+              <input type="checkbox" [checked]="producto.activo == 1" (change)="openModalConfirmacion(producto, 'activar', $event )">
               <span class="lever"></span>
               Si
             </label>
           </div>
         </td>
         <td class="center-align">
-          <a href="#">Editar</a>
-        </td>
-        <td class="center-align">
-          <a href="#">Eliminar</a>
+          <a class="btn-floating light-green lighten-1" [routerLink]="producto.id_producto">
+            <i class="material-icons">edit</i>
+          </a>
         </td>
       </tr>
     </tbody>

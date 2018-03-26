@@ -21,9 +21,9 @@
 
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input id="producto" type="text" formControlName="descripcion" [(ngModel)]="producto.descripcion">
+                <input id="producto" type="text" formControlName="producto" [(ngModel)]="producto.producto">
                 <label for="producto">Producto</label>
-                <div *ngIf="formProducto.controls.descripcion.errors?.required && (formProducto.controls.descripcion?.touched || submitted)"
+                <div *ngIf="formProducto.controls.producto.errors?.required && (formProducto.controls.producto?.touched || submitted)"
                   class="error">
                   Se requiere nombre del producto
                 </div>
@@ -32,9 +32,9 @@
 
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input id="medida" type="text" formControlName="medida" [(ngModel)]="producto.medida">
-                <label for="medida">Medida</label>
-                <div *ngIf="formProducto.controls.medida.errors?.required && (formProducto.controls.medida?.touched || submitted)" class="error">
+                <input id="tipo_medida" type="text" formControlName="tipo_medida" [(ngModel)]="producto.tipo_medida">
+                <label for="tipo_medida">Medida</label>
+                <div *ngIf="formProducto.controls.tipo_medida.errors?.required && (formProducto.controls.tipo_medida?.touched || submitted)" class="error">
                   Se requiere medida
                 </div>
               </div>

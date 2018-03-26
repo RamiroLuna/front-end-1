@@ -56,10 +56,11 @@ export class FormularioProductoComponent implements OnInit {
 
       if (this.seccion == 'edit') {
         this.service.getProducto(this.auth.getIdUsuario(), this.id).subscribe(result => {
+        
           if (result.response.sucessfull) {
-            this.producto = result.data.productoDTO;
-            this.lineas = [{id_linea:1,
-              descripcion: 'default',
+            this.producto = result.data.producto;
+            this.lineas = [{id_linea:this.producto.id_linea,
+              descripcion: this.producto.linea,
               activo:-1,
               id_gpo_linea:-1,
               descripcion_gpo_linea: 'default'
@@ -99,9 +100,9 @@ export class FormularioProductoComponent implements OnInit {
 
   loadFormulario(): void {
     this.formProducto = this.fb.group({
-      id_linea: new FormControl({ value: this.producto.id_linea}, [Validators.required]),
-      descripcion: new FormControl(this.producto.descripcion, [Validators.required]),
-      medida: new FormControl(this.producto.medida, [Validators.required]),
+      id_linea: new FormControl({ value: this.producto.id_linea, disabled: this.seccion == 'edit' }, [Validators.required]),
+      producto: new FormControl(this.producto.producto, [Validators.required]),
+      tipo_medida: new FormControl(this.producto.tipo_medida, [Validators.required]),
     });
   }
 
@@ -126,7 +127,7 @@ export class FormularioProductoComponent implements OnInit {
       swal({
         title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
         type: 'question',
-        html: '<p style="color: #303f9f "> Producto : ' + producto.descripcion + '<b> </b></p>',
+        html: '<p style="color: #303f9f "> Producto : ' + producto.producto + '<b> </b></p>',
         showCancelButton: true,
         confirmButtonColor: '#303f9f',
         cancelButtonColor: '#9fa8da ',

@@ -36,22 +36,29 @@ export class FormularioProductoService {
    */
   agregar(id_usuario: number, producto: Producto): Observable<any> {
     const body = new HttpParams()
-      .set('action', 'insertNewMetaCatalog')
-      .set('', '')
+      .set('action', 'insertNewCarProductos')
+      .set('id_linea', ''+producto.id_linea)
+      .set('tipo_medida', ''+producto.tipo_medida)
+      .set('producto', ''+producto.producto)
       .set('id_usuario', '' + id_usuario);
     return this.http.post(this.URL, body);
   }
 
   update(id_usuario: number,  producto: Producto): Observable<any> {
     const body = new HttpParams()
-      .set('action', 'updateNewMetaCatalog')
-      .set('', '')
+      .set('action', 'updateCarProductos')
+      .set('id_producto',''+producto.id_producto)
+      .set('id_linea',''+producto.id_linea)
+      .set('producto',''+producto.producto)
+      .set('tipo_medida',''+producto.tipo_medida)
+      .set('posicion',''+producto.posicion)
+      .set('activo',''+producto.activo)
       .set('id_usuario', "" + id_usuario);
     return this.http.post(this.URL, body);
   }
 
   
   getProducto(id_usuario: number, id_producto:number): Observable<any> {
-    return this.http.get<Producto>(this.URL + '?action=getProducto&&id_usuario=' + id_usuario + '&id_producto='+id_producto);
+    return this.http.get<Producto>(this.URL + '?action=getCarProductoById&id_usuario=' + id_usuario + '&id_producto='+id_producto);
   }
 }

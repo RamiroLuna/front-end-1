@@ -36,10 +36,12 @@ export class AsginacionMetasService {
 
   update(id_usuario: number, asignacion: MetaAsignacion): Observable<any> {
     const body = new HttpParams()
-      .set('action', 'asignaValorMeta')
+      .set('action', 'updateAsignacionMeta')
+      .set('id_pro_metas', '' + asignacion.id_pro_meta)
       .set('id_grupo', ''+asignacion.id_grupo)
       .set('id_turno', ''+asignacion.id_turno)
       .set('id_meta', ''+asignacion.id_meta)
+      .set('borrar', ''+asignacion.borrar)
       .set('dia_meta', ''+asignacion.dia)
       .set('valor_meta', '' + asignacion.valor)
       .set('id_usuario', '' + id_usuario);

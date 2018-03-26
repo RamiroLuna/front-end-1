@@ -164,10 +164,10 @@ export class AsginacionMetasComponent implements AfterViewInit {
       monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
       weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
       weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-      format: 'yyyy/mm/dd',
+      format: 'dd/mm/yyyy',
       closeOnSelect: false, // Close upon selecting a date,
-      onClose: function () {
-        this.get('select', 'dd/mm/yyyy')
+      onClose:  () =>{
+          this.asignacion.dia = $('#dia').val();
       }
     });
   }

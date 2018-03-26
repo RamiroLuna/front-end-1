@@ -27,13 +27,14 @@ export class ListaAsignacionComponent implements OnInit{
     this.loading = true;
     this.anio_actual = getAnioActual();
     this.service.getAllAsignacionesByYear(this.auth.getIdUsuario(), this.anio_actual).subscribe(result => {
+      console.log('asignaciones', result)
       if (result.response.sucessfull) {
         this.asignaciones = result.data.listMetasAsignacion || [];
         this.loading = false;
         setTimeout(()=>{this.ngAfterViewHttp()},200)
        
       } else {
-        Materialize.toast('Ocurrió  un error al consultar las metas!', 4000, 'red');
+        Materialize.toast(result.response.message, 4000, 'red');
         this.loading = false;
       }
     }, error => {
