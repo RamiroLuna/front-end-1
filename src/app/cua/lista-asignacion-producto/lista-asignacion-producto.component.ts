@@ -31,7 +31,7 @@ export class ListaAsignacionProductoComponent implements OnInit {
     this.inicio = getFechaActual();
     this.fin = getFechaActual();
     this.service.getAllAsignacionMetasByDays(this.auth.getIdUsuario(), this.inicio, this.fin).subscribe(result => {
-      console.log(result)
+      
       if (result.response.sucessfull) {
         this.asignaciones = result.data.listMetasAsignacion || [];
         this.loading = false;
@@ -80,7 +80,7 @@ export class ListaAsignacionProductoComponent implements OnInit {
     this.loading = true;
     if (getMilisegundos(this.inicio) <= getMilisegundos(this.fin)) {
       this.service.getAllAsignacionMetasByDays(this.auth.getIdUsuario(), this.inicio, this.fin).subscribe(result => {
-        console.log(result)
+      
         if (result.response.sucessfull) {
           this.asignaciones = result.data.listMetasAsignacion || [];
           this.loading = false;

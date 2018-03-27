@@ -51,7 +51,7 @@
         <td class="center-align">{{asignacion.grupo}}</td>
         <td class="center-align">{{asignacion.valor }} T</td>
         <td class="center-align">
-          <a class="btn-floating light-green lighten-1" [routerLink]="asignacion.id_pro_meta">
+          <a class="btn-floating light-green lighten-1" routerLink="nuevo" [queryParams]="{ asignacion:asignacion }">
             <i class="material-icons">description</i>
           </a>
         </td>
