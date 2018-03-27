@@ -11,8 +11,8 @@ export class ListaAsignacionProductoService {
 
   constructor(private http: HttpClient) { }
 
-  getAllAsignacionesByDay(id_usuario:number, fecha_inicio:string, fecha_fin:string): Observable<any> {
-    return this.http.get<ProductoAsignacion>(this.URL + '?action=getAllAsignacionesByDay&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&id_usuario='+id_usuario);
+  getAllAsignacionMetasByDays(id_usuario:number, fecha_inicio:string, fecha_fin:string): Observable<any> {
+    return this.http.get<ProductoAsignacion>(this.URL + '?action=getAllAsignacionMetasByDays&fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&id_usuario='+id_usuario);
   }
 
   delete(id_usuario: number, id: number): Observable<any> {

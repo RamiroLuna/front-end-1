@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { ProductoAsignacion } from '../../models/producto-asignacion';
 import { ListaAsignacionProductoService } from './lista-asignacion-producto.service';
-import { deleteItemArray, getFechaActual, DataTable } from '../../utils';
+import { deleteItemArray, getFechaActual, DataTable, getMilisegundos } from '../../utils';
 import swal from 'sweetalert2';
 
 declare var $: any;
@@ -20,7 +20,6 @@ export class ListaAsignacionProductoComponent implements OnInit {
 
   public inicio: string = "";
   public fin: string = "";
-  public texto_validacion_rango: string = "";
 
   constructor(private auth: AuthService,
     private service: ListaAsignacionProductoService
@@ -31,10 +30,10 @@ export class ListaAsignacionProductoComponent implements OnInit {
 
     this.inicio = getFechaActual();
     this.fin = getFechaActual();
-    this.service.getAllAsignacionesByDay(this.auth.getIdUsuario(), this.inicio, this.fin).subscribe(result => {
-      console.log('resultado de asignacion de productos', result)
+    this.service.getAllAsignacionMetasByDays(this.auth.getIdUsuario(), this.inicio, this.fin).subscribe(result => {
+      console.log(result)
       if (result.response.sucessfull) {
-        this.asignaciones = result.data.listProductosAsignacion || [];
+        this.asignaciones = result.data.listMetasAsignacion || [];
         this.loading = false;
         setTimeout(() => { this.ngAfterViewHttp() }, 200)
       } else {
@@ -66,11 +65,38 @@ export class ListaAsignacionProductoComponent implements OnInit {
       weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
       weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
       format: 'dd/mm/yyyy',
-      closeOnSelect: false
+      closeOnSelect: false,
+      onClose: () => {
+        this.inicio = $('#inicio').val();
+        this.fin = $('#fin').val();
+      }
     });
 
     $('.tooltipped').tooltip({ delay: 50 });
     Materialize.updateTextFields();
+  }
+
+  busqueda(): void {
+    this.loading = true;
+    if (getMilisegundos(this.inicio) <= getMilisegundos(this.fin)) {
+      this.service.getAllAsignacionMetasByDays(this.auth.getIdUsuario(), this.inicio, this.fin).subscribe(result => {
+        console.log(result)
+        if (result.response.sucessfull) {
+          this.asignaciones = result.data.listMetasAsignacion || [];
+          this.loading = false;
+          setTimeout(() => { this.ngAfterViewHttp() }, 200)
+        } else {
+          Materialize.toast(result.response.message, 4000, 'red');
+          this.loading = false;
+        }
+      }, error => {
+        Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+        this.loading = false;
+      });
+    } else {
+      this.loading = false;
+      Materialize.toast('La fecha de inicio debe ser menor a la fecha fin', 4000, 'red')
+    }
   }
 
 

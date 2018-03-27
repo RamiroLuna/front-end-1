@@ -1,4 +1,4 @@
-<div class="container" *ngIf="!loading">
+<div class="container">
   <div class="section"></div>
   <h4 class="color_titulo center-align">Asignaciones de productos</h4>
   <!-- Solo para dispositivos moviles -->
@@ -14,55 +14,45 @@
 
   <div class="row">
     <div class="input-field col s6">
-      <i class="material-icons prefix">date_range</i>
-      <input id="inicio" type="text" class="active" data-value="inicio"/>
+      <input id="inicio" type="text" class="active" data-value="inicio" />
       <label for="inicio">Inicio</label>
     </div>
 
+
     <div class="file-field input-field col s6">
-      <i class="material-icons prefix">date_range</i>
-      <input id="fin" type="text" class="active" data-value="fin" />
-      <label for="fin">Fin</label>
-      <a class="waves-effect waves-light btn right">button</a>
-    </div>
-    <div class="error center-align">
-      {{ texto_validacion_rango }}
+      <a class="col s4 m4 l1 xl1 waves-effect waves-light btn right light-green lighten-1" (click)="busqueda()">
+        <i class="material-icons">search</i>
+      </a>
+      <div class="file-path-wrapper">
+        <input id="fin" type="text" class="active" data-value="fin">
+        <label for="fin">Fin</label>
+      </div>
     </div>
   </div>
+</div>
+<div class="container" *ngIf="!loading">
   <table id="tabla" class="display" cellspacing="0" width="100%">
     <thead>
       <tr>
-        <th class="center-align">Linea</th>
         <th class="center-align">Día</th>
+        <th class="center-align">Linea</th>
         <th class="center-align">Turno</th>
         <th class="center-align">Grupo</th>
-        <th class="center-align">Valor</th>
-        <th class="center-align">Liberar</th>
-        <th class="center-align">Editar</th>
-        <th class="center-align">Eliminar</th>
+        <th class="center-align">Valor meta</th>
+        <th class="center-align">Ver</th>
       </tr>
     </thead>
 
     <tbody>
       <tr *ngFor="let asignacion of asignaciones">
-        <td class="center-align">{{asignacion.linea}}</td>
         <td class="center-align">{{asignacion.dia}}</td>
+        <td class="center-align">{{asignacion.linea}}</td>
         <td class="center-align">{{asignacion.turno}}</td>
         <td class="center-align">{{asignacion.grupo}}</td>
         <td class="center-align">{{asignacion.valor }} T</td>
         <td class="center-align">
           <a class="btn-floating light-green lighten-1" [routerLink]="asignacion.id_pro_meta">
-            <i class="material-icons">done</i>
-          </a>
-        </td>
-        <td class="center-align">
-          <a class="btn-floating light-green lighten-1" [routerLink]="asignacion.id_pro_meta">
-            <i class="material-icons">edit</i>
-          </a>
-        </td>
-        <td class="center-align">
-          <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(asignacion,'eliminar')">
-            <i class="material-icons">delete</i>
+            <i class="material-icons">description</i>
           </a>
         </td>
       </tr>

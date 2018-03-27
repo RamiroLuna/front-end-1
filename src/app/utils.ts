@@ -70,6 +70,18 @@ function getFechaActual(): string {
 }
 
 /**
+ * @function getMilisegundos
+ * @param date fecha 
+ * @return  {string} 
+ * @description Devuelve la fecha convertida en milisegundos
+ */
+function getMilisegundos(date:string): number {
+    let numbers = date.split("/");
+    let f = new Date(numbers[1] + "/" + numbers[0] + "/" +numbers[2]);
+    return f.getTime();
+}
+
+/**
  * @function DataTable
  * @param  {string} el - Elemento DOM. Tabla a la que se le cargará el plugin
  */
@@ -131,4 +143,4 @@ function getYears(): any{
 
 
 
-export { deleteItemArray, isValidId, getAnioActual, DataTable, getYears , getFechaActual}
+export { deleteItemArray, isValidId, getAnioActual, DataTable, getYears , getFechaActual, getMilisegundos}
