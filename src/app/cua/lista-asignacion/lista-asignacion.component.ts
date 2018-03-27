@@ -27,7 +27,6 @@ export class ListaAsignacionComponent implements OnInit{
     this.loading = true;
     this.anio_actual = getAnioActual();
     this.service.getAllAsignacionesByYear(this.auth.getIdUsuario(), this.anio_actual).subscribe(result => {
-      console.log('asignaciones', result)
       if (result.response.sucessfull) {
         this.asignaciones = result.data.listMetasAsignacion || [];
         this.loading = false;

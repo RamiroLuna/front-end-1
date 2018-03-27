@@ -60,6 +60,16 @@ function getAnioActual(): number {
 }
 
 /**
+ * @function getFechaActual
+ * @return  {string} 
+ * @description Devuelve la fecha actual del sistema
+ */
+function getFechaActual(): string {
+    const d: Date = new Date();
+    return d.getDate() + "/" + (d.getMonth() + 1 ) + "/"+ d.getFullYear();
+}
+
+/**
  * @function DataTable
  * @param  {string} el - Elemento DOM. Tabla a la que se le cargará el plugin
  */
@@ -121,4 +131,4 @@ function getYears(): any{
 
 
 
-export { deleteItemArray, isValidId, getAnioActual, DataTable, getYears }
+export { deleteItemArray, isValidId, getAnioActual, DataTable, getYears , getFechaActual}

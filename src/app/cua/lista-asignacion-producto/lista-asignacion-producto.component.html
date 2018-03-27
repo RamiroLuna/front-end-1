@@ -9,22 +9,26 @@
         <i class="material-icons">arrow_back</i>
       </i>
     </a>
-    <a routerLink="nuevo" class="btn-floating btn light-green darken-1 waves-effect waves-light tooltipped" data-position="top"
-      data-delay="50" data-tooltip="Agregar asignación" (click)="agregar()">
-      <i class="material-icons">add</i>
-    </a>
   </div>
   <!-- fin Solo para dispositivos moviles -->
+
   <div class="row">
-    <div class="col s1 m1 l2 xl2"></div>
-    <div class="input-field col s10 m10 l8 xl8">
-      <div class="center-align">
-        <input id="anio" class="datepicker" type="text">
-        <label for="anio">Año</label>
-      </div>
+    <div class="input-field col s6">
+      <i class="material-icons prefix">date_range</i>
+      <input id="inicio" type="text" class="active" data-value="inicio"/>
+      <label for="inicio">Inicio</label>
+    </div>
+
+    <div class="file-field input-field col s6">
+      <i class="material-icons prefix">date_range</i>
+      <input id="fin" type="text" class="active" data-value="fin" />
+      <label for="fin">Fin</label>
+      <a class="waves-effect waves-light btn right">button</a>
+    </div>
+    <div class="error center-align">
+      {{ texto_validacion_rango }}
     </div>
   </div>
-
   <table id="tabla" class="display" cellspacing="0" width="100%">
     <thead>
       <tr>
@@ -72,10 +76,6 @@
         <i class="material-icons">
           <i class="material-icons">arrow_back</i>
         </i>
-      </a>
-      <a routerLink="nuevo" class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped" data-position="top"
-        data-delay="50" data-tooltip="Agregar asignación" (click)="agregar()">
-        <i class="material-icons">add</i>
       </a>
     </div>
   </div>
