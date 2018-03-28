@@ -4,6 +4,7 @@ import { ProductoAsignacion } from '../../models/producto-asignacion';
 import { ListaAsignacionProductoService } from './lista-asignacion-producto.service';
 import { deleteItemArray, getFechaActual, DataTable, getMilisegundos } from '../../utils';
 import swal from 'sweetalert2';
+import { MetaAsignacion } from '../../models/meta-asignacion';
 
 declare var $: any;
 declare var Materialize: any;
@@ -16,10 +17,19 @@ export class ListaAsignacionProductoComponent implements OnInit {
 
   public loading: boolean;
   public mensajeModal: string;
-  public asignaciones: Array<ProductoAsignacion>;
+  public asignaciones: Array<MetaAsignacion>;
 
   public inicio: string = "";
   public fin: string = "";
+  public show_lista: boolean = true;
+
+  /*
+   * Variables que se enviarán al componente hijo
+   */
+  public asignacion_seleccionada: MetaAsignacion;
+  /*
+   * Fin de variables que se enviarán al hijo
+   */ 
 
   constructor(private auth: AuthService,
     private service: ListaAsignacionProductoService
@@ -27,7 +37,6 @@ export class ListaAsignacionProductoComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-
     this.inicio = getFechaActual();
     this.fin = getFechaActual();
     this.service.getAllAsignacionMetasByDays(this.auth.getIdUsuario(), this.inicio, this.fin).subscribe(result => {
@@ -97,6 +106,16 @@ export class ListaAsignacionProductoComponent implements OnInit {
       this.loading = false;
       Materialize.toast('La fecha de inicio debe ser menor a la fecha fin', 4000, 'red')
     }
+  }
+
+  asignarValorProducto(event, asignacion:MetaAsignacion):void{
+      this.asignacion_seleccionada = asignacion;
+      this.show_lista = false;
+  }
+
+  verListaAsignaciones():void{
+    this.asignacion_seleccionada = null;
+    this.show_lista = true;
   }
 
 

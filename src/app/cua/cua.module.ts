@@ -26,8 +26,7 @@ const routesMetas: Routes = [
   { path: 'opciones/fallas/:id', component: FormularioFallasComponent },
   { path: 'opciones/productos', component: ListaProductsComponent },
   { path: 'opciones/productos/:id', component: FormularioProductoComponent },
-  { path: 'opciones/productos-asignaciones', component:  ListaAsignacionProductoComponent},
-  { path: 'opciones/productos-asignaciones/:id', component: AsignacionProductosComponent }
+  { path: 'opciones/productos-asignaciones', component:  ListaAsignacionProductoComponent}
 ];
 
 @NgModule({
