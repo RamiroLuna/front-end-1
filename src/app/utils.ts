@@ -49,6 +49,21 @@ function isValidId(id: any): boolean {
     return /^[0-9]+$/.test(id);
 }
 
+
+/**
+ * @function isNumeroAsignacionValid
+ * @param  {int} numero - Numero ingresado 
+ * @return  boolean
+ */
+let isNumeroAsignacionValid = (numero) => {
+    if(numero == undefined || numero.trim() == ''){
+       return false;
+    }else{
+       return /^[0-9]*([.][0-9]+)?$/.test(numero.trim())
+    }
+   
+};
+
 /**
  * @function getAnioActual
  * @return  {number} 
@@ -66,7 +81,7 @@ function getAnioActual(): number {
  */
 function getFechaActual(): string {
     const d: Date = new Date();
-    return d.getDate() + "/" + (d.getMonth() + 1 ) + "/"+ d.getFullYear();
+    return d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
 }
 
 /**
@@ -75,9 +90,9 @@ function getFechaActual(): string {
  * @return  {string} 
  * @description Devuelve la fecha convertida en milisegundos
  */
-function getMilisegundos(date:string): number {
+function getMilisegundos(date: string): number {
     let numbers = date.split("/");
-    let f = new Date(numbers[1] + "/" + numbers[0] + "/" +numbers[2]);
+    let f = new Date(numbers[1] + "/" + numbers[0] + "/" + numbers[2]);
     return f.getTime();
 }
 
@@ -122,8 +137,8 @@ function DataTable(el): void {
  * @return  {Array} 
  * @description Contiene los años que serán mostrados en el combo
  */
-function getYears(): any{
-    let years:any = {
+function getYears(): any {
+    let years: any = {
         '2015': '2015',
         '2016': '2016',
         '2017': '2017',
@@ -141,6 +156,13 @@ function getYears(): any{
 }
 
 
-
-
-export { deleteItemArray, isValidId, getAnioActual, DataTable, getYears , getFechaActual, getMilisegundos}
+export {
+    deleteItemArray,
+    isValidId,
+    getAnioActual,
+    DataTable,
+    getYears,
+    getFechaActual,
+    getMilisegundos,
+    isNumeroAsignacionValid
+}

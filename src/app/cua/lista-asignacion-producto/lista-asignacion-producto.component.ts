@@ -39,8 +39,8 @@ export class ListaAsignacionProductoComponent implements OnInit {
     this.loading = true;
     this.inicio = getFechaActual();
     this.fin = getFechaActual();
-    this.service.getAllAsignacionMetasByDays(this.auth.getIdUsuario(), this.inicio, this.fin).subscribe(result => {
-      
+    this.service.getAllAsignacionMetasByDays(this.auth.getIdUsuario(), this.auth.getPerfil(), this.auth.getId_Grupo(), this.auth.getId_Linea(),this.inicio, this.fin).subscribe(result => {
+     
       if (result.response.sucessfull) {
         this.asignaciones = result.data.listMetasAsignacion || [];
         this.loading = false;
@@ -60,7 +60,7 @@ export class ListaAsignacionProductoComponent implements OnInit {
    * Carga plugins despues de cargar y mostrar objetos en el DOM
    */
   ngAfterViewHttp(): void {
-
+    
     DataTable('#tabla');
 
     $('#inicio,#fin').pickadate({
@@ -88,7 +88,7 @@ export class ListaAsignacionProductoComponent implements OnInit {
   busqueda(): void {
     this.loading = true;
     if (getMilisegundos(this.inicio) <= getMilisegundos(this.fin)) {
-      this.service.getAllAsignacionMetasByDays(this.auth.getIdUsuario(), this.inicio, this.fin).subscribe(result => {
+      this.service.getAllAsignacionMetasByDays(this.auth.getIdUsuario(), this.auth.getPerfil(), this.auth.getId_Grupo(), this.auth.getId_Linea(), this.inicio, this.fin).subscribe(result => {
       
         if (result.response.sucessfull) {
           this.asignaciones = result.data.listMetasAsignacion || [];

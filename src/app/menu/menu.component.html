@@ -24,7 +24,7 @@
   </li>
   <!-- menu para el admin -->
   <div *ngIf="sesion.id_perfil == 1">
-    <li>
+    <!-- <li>
       <ul class="collapsible collapsible-accordion">
         <li>
           <a class="collapsible-header">
@@ -59,31 +59,15 @@
           </div>
         </li>
       </ul>
-    </li>
+    </li> -->
   </div>
   <!-- Fin menu para el admin -->
   <!-- menu para el area -->
   <div *ngIf="sesion.id_perfil == 2">
-    <li>
-      <a class="waves-effect">
-        <i class="material-icons">flag</i>Metas</a>
-    </li>
-    <ul class="collapsible collapsible-accordion">
+    <ul>
       <li>
-        <a class="collapsible-header">
-          <i class="material-icons" style="padding-left: 15px">keyboard_arrow_down</i>&ensp;&ensp;Informes</a>
-        <div class="collapsible-body  light-green lighten-5">
-          <ul>
-            <li>
-              <a class="waves-effect">
-                <i class="material-icons" style="padding-left: 20px">assignment</i>Reportes</a>
-            </li>
-            <li>
-              <a class="waves-effect">
-                <i class="material-icons" style="padding-left: 20px">insert_chart</i>Graficas</a>
-            </li>
-          </ul>
-        </div>
+        <a class="waves-effect" routerLink="cua/opciones">
+          <i class="material-icons">class</i>CUA</a>
       </li>
     </ul>
   </div>
@@ -154,18 +138,14 @@
     </li>
   </div>
   <!-- Fin menu para el integrador -->
-  <!-- menu para el admin -->
+  <!-- menu para el consultor -->
   <div *ngIf="sesion.id_perfil == 6">
-    <li>
-      <a class="waves-effect">
-        <i class="material-icons">flag</i>Metas</a>
-    </li>
     <li>
       <a class="waves-effect">
         <i class="material-icons">timeline</i>Indicadores</a>
     </li>
   </div>
-  <!-- Fin menu para el admin -->
+  <!-- Fin menu para el consultor -->
   <li>
     <a class="waves-effect" href="#" (click)="logout($event)">
       <i class="material-icons">power_settings_new</i>Cerrar sesión</a>

@@ -1,4 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
+import { AuthService } from '../../auth/auth.service';
 declare var $: any;
 @Component({
   selector: 'app-options',
@@ -6,9 +7,12 @@ declare var $: any;
 })
 export class OptionsComponent  implements  AfterViewInit{
 
-  constructor() { }
+  public perfil: number;
+
+  constructor(private auth: AuthService) { }
 
   ngOnInit() {
+    this.perfil= this.auth.getPerfil();
   }
 
   ngAfterViewInit() {

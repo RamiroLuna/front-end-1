@@ -1,101 +1,67 @@
 <div class="container">
-  <div class="row">
-    <div class="col offset-l2 offset-xl1 s12 m12 l10 xl10">
-      <div class="card-panel">
-        <h5 class="color_titulo center-align">Asignación de Productos</h5>
-        <div class="row">
-          <form class="col s12 m12 l12 xl12">
-            <div class="row">
-              <div class="col s12 m12 l3 xl3">
-                <div class="input-field">
-                  <input id="dia" type="text" class="datepicker">
-                  <label for="dia">Día</label>
-                </div>
-              </div>
 
-              <div class="col s12 m12 l3 xl3">
-                <label>Linea</label>
-                <select materialize="material_select">
-                  <option>Seleccione</option>
-                  <option>Amut 1</option>
-                  <option>Amut 2</option>
-                </select>
-              </div>
+  <div class="col s12 m12 l12 xl12">
 
-              <div class="col s12 m12 l3 xl3">
-                <label>Grupo</label>
-                <select materialize="material_select">
-                  <option>Seleccione</option>
-                  <option>A</option>
-                  <option>B</option>
-                  <option>C</option>
-                  <option>D</option>
-                </select>
-              </div>
+    <h5 class="color_titulo center-align">Asignación de Productos</h5>
+    <div class="section"></div>
 
-              <div class="col s12 m12 l3 xl3">
-                <label>Turno</label>
-                <select materialize="material_select">
-                  <option>Seleccione</option>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                </select>
-              </div>              
-            </div>  
-            
-            <div class="row">
-              <table id="tabla" class="display" cellspacing="0" width="100%" style="overflow-x:auto;">
-                <thead>
-                  <tr>
-                    <th class="center-align">Productos</th>
-                    <th class="center-align">Valor</th>
-                    <th class="center-align">Liberado</th>
-                  </tr>
-                </thead>  
-                <tbody>
-                  <tr>
-                    <td class="center-align">Prueba Uno</td>
-                    <td class="center-align"><input type="text" class="col offset-s4 offset-m4 offset-l4 offset-xl4 s4 m4 l4 xl4"></td>
-                    <td class="center-align">
-                      <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(asignacion,'eliminar')">
-                        <i class="material-icons">close</i>
-                      </a>
-                    </td>
-                  </tr>
+    <form class="col s12 m12 l12 xl12" [formGroup]="formAsignaProducto">
+      <div class="row">
+        <div class="col s12 m12 l3 xl3">
+          <label for="dia">Día</label>
+          <input id="dia" type="text" formControlName="dia" [(ngModel)]="asignacion_seleccionada.dia">
+        </div>
 
-                  <tr>
-                    <td class="center-align">Prueba Dos</td>
-                    <td class="center-align"><input type="text" class="col offset-s4 offset-m4 offset-l4 offset-xl4 s4 m4 l4 xl4"></td>
-                    <td class="center-align">
-                      <a class="btn-floating green lighten-2" (click)="openModalConfirmacion(asignacion,'eliminar')">
-                        <i class="material-icons">done</i>
-                      </a>
-                    </td>  
-                  </tr>
-                </tbody>              
-              </table>
-            </div>
+        <div class="col s12 m12 l3 xl3">
+          <label>Linea</label>
+          <input id="linea" type="text" formControlName="linea" [(ngModel)]="asignacion_seleccionada.linea">
+        </div>
 
-            <div class="row">
-              <div class="input-field col offset-m1 offset-l1 offset-xl1">
-                <a  class="col btn grey lighten-1  waves-effect waves-light"name="cancelar" (click)="regresarLista($event)">Cancelar
-                </a>
-              </div>
+        <div class="col s12 m12 l3 xl3">
+          <label>Grupo</label>
+          <input type="text" formControlName="grupo" [(ngModel)]="asignacion_seleccionada.grupo">
+        </div>
 
-              <div class="input-field col offset-m2 offset-l2 offset-xl2">
-                <button class="col btn light-green darken-1 waves-effect waves-light" type="submit" name="asignar">Liberar
-                </button>
-              </div>
-
-              <div class="input-field col offset-m2 offset-l2 offset-xl2">
-                <button class="col btn light-green darken-1 waves-effect waves-light" type="submit" name="asignar">Guardar
-                </button>
-              </div>
-            </div>
-          </form>
+        <div class="col s12 m12 l3 xl3">
+          <label>Turno</label>
+          <input type="text" formControlName="turno" [(ngModel)]="asignacion_seleccionada.turno">
         </div>
       </div>
-    </div>
+
+      <div class="row">
+        <table id="tabla" class="display asignacion_productos" cellspacing="0" width="100%" style="overflow-x:auto;">
+          <thead>
+            <tr>
+              <th class="center-align">Producto</th>
+              <th class="center-align">Valor en Kilogramos</th>
+              <th class="center-align">Liberado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let producto of productos">
+              <td class="center-align">{{ producto.producto }}</td>
+              <td class="center-align">
+                <input type="text" [(ngModel)]="producto.valor" [ngModelOptions]="{standalone: true}">
+              </td>
+              <td class="center-align" [style.color]="false ? 'red' : 'green'">
+                <i class="material-icons">close</i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row">
+        <hr>
+        <a class="btn grey lighten-1  waves-effect waves-light btn col s3 m3 l3 xl3" (click)="regresarLista($event)">Cancelar</a>
+        <div class="col s1 m1 l1 xl1"></div>
+        <a class=" btn light-green darken-1 waves-effect waves-light btn col s4 m4 l4 xl4" (click)="openModalConfirmacion('liberar')">Liberar</a>
+        <div class="col s1 m1 l1 xl1"></div>
+        <a class="btn light-green darken-1 waves-effect waves-light btn col s3 m3 l3 xl3" (click)="openModalConfirmacion('asignar')">Guardar</a>
+      </div>
+    </form>
+
+
   </div>
+
 </div>

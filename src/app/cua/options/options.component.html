@@ -1,7 +1,7 @@
 <div class="container">
   <div class="section"></div>
   <h4 class="color_titulo center-align">Objetivo CUA</h4>
-  <div>
+  <div *ngIf="perfil == 3">
     <ul class="collapsible collection with-header" data-collapsible="accordion">
       <li>
         <div class="collapsible-header">
@@ -104,4 +104,33 @@
       </li>
     </ul>
   </div>
+  <div *ngIf="perfil == 2">
+      <ul class="collapsible collection with-header" data-collapsible="accordion">
+        <li>
+          <div class="collapsible-header">
+            <i class="material-icons">redeem</i>Productos</div>
+          <div class="collapsible-body light-green lighten-5">
+            <div class="row">
+              <div class="col s12 m12 l12 xl12">
+                <!-- Vista solo para moviles  -->
+                <div class="hide-on-large-only">
+                  <div class="col s1 m1 l1 xl1"></div>
+                  <a routerLink="productos" class=" col s4 m4 l4 xl4  waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                      REGISTRADOS
+                    </i>
+                  </a>
+                </div>
+                <!-- Fin solo para moviles -->
+                <!-- Inicio solo para pantallas-->
+                <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+                  <div class="col s1 m1 l1 xl1"></div>
+                  <a routerLink="productos" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">VER REGISTRADOS</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
 </div>

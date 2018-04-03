@@ -20,4 +20,15 @@ export class AuthService {
      return jwt_decode(this.getToken()).sub || -1;
      
   }
+
+  public getPerfil():number{
+    return jwt_decode(this.getToken()).id_perfil || -1;
+  }
+  public getId_Grupo():number{
+    return jwt_decode(this.getToken()).id_grupo || -1;
+  }
+
+  public getId_Linea():number{
+    return jwt_decode(this.getToken()).id_linea || -1;
+  }
 }
