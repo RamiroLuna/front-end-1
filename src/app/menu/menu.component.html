@@ -8,79 +8,37 @@
         <img class="circle" src="http://www.mejorafinanzas.com.mx/images/usuario.png">
       </a>
       <a href="#!name">
-        <span class="white-text name"> {{ sesion.nombre }}</span>
+        <span class="white-text name"> {{ session.nombre }}</span>
       </a>
       <a href="#!email">
-        <span class="white-text">{{ sesion.perfil | ucfirst }}</span>
+        <span class="white-text">{{ session.perfil | ucfirst }}</span>
       </a>
     </div>
   </li>
   <li>
-    <a class="waves-effect" [routerLink]="['usuarios/perfil/'+sesion.id_usuario]">
+    <a class="waves-effect" [routerLink]="['usuarios/perfil/'+id_usuario]">
       <i class="material-icons">perm_identity</i>Mi Perfil</a>
   </li>
   <li>
     <div class="divider"></div>
   </li>
   <!-- menu para el admin -->
-  <div *ngIf="sesion.id_perfil == 1">
-    <!-- <li>
-      <ul class="collapsible collapsible-accordion">
-        <li>
-          <a class="collapsible-header">
-            <i class="material-icons" style="padding-left: 15px">keyboard_arrow_down</i>&ensp;&ensp;Procesos</a>
-          <div class="collapsible-body  light-green lighten-5">
-            <ul>
-              <li>
-                <a class="waves-effect">
-                  <i class="material-icons" style="padding-left: 20px">fiber_manual_record</i>Proceso</a>
-              </li>
-            </ul>
-          </div>
-        </li>
-      </ul>
-    </li>
-    <li>
-      <ul class="collapsible collapsible-accordion">
-        <li>
-          <a class="collapsible-header">
-            <i class="material-icons" style="padding-left: 15px">keyboard_arrow_down</i>&ensp;&ensp;Informes</a>
-          <div class="collapsible-body  light-green lighten-5">
-            <ul>
-              <li>
-                <a class="waves-effect">
-                  <i class="material-icons" style="padding-left: 20px">assignment</i>Reportes</a>
-              </li>
-              <li>
-                <a class="waves-effect">
-                  <i class="material-icons" style="padding-left: 20px">insert_chart</i>Graficas</a>
-              </li>
-            </ul>
-          </div>
-        </li>
-      </ul>
-    </li> -->
+  <div *ngIf="perfil == 1">
   </div>
   <!-- Fin menu para el admin -->
   <!-- menu para el area -->
-  <div *ngIf="sesion.id_perfil == 2">
-    <ul>
-      <li>
-        <a class="waves-effect" routerLink="cua/opciones">
-          <i class="material-icons">class</i>CUA</a>
-      </li>
-    </ul>
+  <div *ngIf="perfil == 2">   
   </div>
   <!-- Fin menu para el area -->
   <!-- menu para el gerente -->
-  <div *ngIf="sesion.id_perfil == 3">
-    <li>
-      <a class="waves-effect" routerLink="catalogos/lista">
-        <i class="material-icons">library_books</i>Catalogos</a>
-    </li>
+  <div *ngIf="perfil == 3">
     <li>
       <a class="waves-effect" routerLink="cua/opciones">
         <i class="material-icons">class</i>CUA</a>
+    </li>
+    <li>
+      <a class="waves-effect" routerLink="">
+        <i class="material-icons">trending_up</i>KPI</a>
     </li>
     <li>
       <ul class="collapsible collapsible-accordion">
@@ -102,7 +60,7 @@
         </li>
       </ul>
     </li>
-    <ul class="collapsible collapsible-accordion">
+    <!-- <ul class="collapsible collapsible-accordion">
       <li>
         <a class="collapsible-header">
           <i class="material-icons" style="padding-left: 15px">keyboard_arrow_down</i>&ensp;&ensp;Informes</a>
@@ -119,38 +77,23 @@
           </ul>
         </div>
       </li>
-    </ul>
+    </ul> -->
   </div>
   <!-- Fin menu para el gerente -->
   <!-- menu para el facilitador -->
-  <div *ngIf="sesion.id_perfil == 4">
-    <li>
-      <a class="waves-effect">
-        <i class="material-icons">timeline</i>Indicadores</a>
-    </li>
+  <div *ngIf="perfil == 4">
   </div>
   <!-- Fin menu para el facilitador -->
   <!-- menu para el integrador -->
-  <div *ngIf="sesion.id_perfil == 5">
-    <li>
-      <a class="waves-effect">
-        <i class="material-icons">timeline</i>Indicadores</a>
-    </li>
+  <div *ngIf="perfil == 5">
   </div>
   <!-- Fin menu para el integrador -->
   <!-- menu para el consultor -->
-  <div *ngIf="sesion.id_perfil == 6">
-    <li>
-      <a class="waves-effect">
-        <i class="material-icons">timeline</i>Indicadores</a>
-    </li>
+  <div *ngIf="perfil == 6">
   </div>
   <!-- Fin menu para el consultor -->
   <li>
     <a class="waves-effect" href="#" (click)="logout($event)">
       <i class="material-icons">power_settings_new</i>Cerrar sesión</a>
   </li>
-
-
-
 </ul>
