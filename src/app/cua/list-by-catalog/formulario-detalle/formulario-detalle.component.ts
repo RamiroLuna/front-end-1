@@ -298,7 +298,7 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
                 this.service.agregar(this.auth.getIdUsuario(), this.nombre_tabla, this.itemCatalogo).subscribe(result => {
                   if (result.response.sucessfull) {
                     Materialize.toast('Se agregó correctamente', 4000, 'green');
-                    this.router.navigate(['home/catalogos/lista', this.link_back]);
+                    this.router.navigate(['home/cua/opciones/catalogos', this.link_back]);
                   } else {
                     Materialize.toast(result.response.message, 4000, 'red');
                   }

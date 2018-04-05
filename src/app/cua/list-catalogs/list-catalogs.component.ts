@@ -62,4 +62,8 @@ export class ListCatalogsComponent implements  AfterViewInit  {
     this.texto_busqueda="";
   }
 
+  regresar() {
+    $('.tooltipped').tooltip('hide');
+  }
+
 }

@@ -14,6 +14,11 @@ import { ListaProductsComponent } from './lista-products/lista-products.componen
 import { FormularioProductoComponent } from './formulario-producto/formulario-producto.component';
 import { ListaAsignacionProductoComponent } from './lista-asignacion-producto/lista-asignacion-producto.component';
 import { AsignacionProductosComponent } from './asignacion-productos/asignacion-productos.component';
+import { ListCatalogsComponent } from './list-catalogs/list-catalogs.component';
+import { ListByCatalogComponent } from './list-by-catalog/list-by-catalog.component';
+import { FormularioDetalleComponent } from './list-by-catalog/formulario-detalle/formulario-detalle.component';
+import { NgPipesModule } from 'ngx-pipes';
+
 
 
 const routesMetas: Routes = [
@@ -26,7 +31,11 @@ const routesMetas: Routes = [
   { path: 'opciones/fallas/:id', component: FormularioFallasComponent },
   { path: 'opciones/productos', component: ListaProductsComponent },
   { path: 'opciones/productos/:id', component: FormularioProductoComponent },
-  { path: 'opciones/productos-asignaciones', component:  ListaAsignacionProductoComponent}
+  { path: 'opciones/productos-asignaciones', component:  ListaAsignacionProductoComponent},
+  /* rutas de modulo de catalogos */
+  { path: 'opciones/catalogos', component: ListCatalogsComponent},
+  { path: 'opciones/catalogos/:name', component: ListByCatalogComponent },
+  { path: 'opciones/catalogos/:name/formulario/:id', component: FormularioDetalleComponent }
 ];
 
 @NgModule({
@@ -35,9 +44,24 @@ const routesMetas: Routes = [
     MaterializeModule,
     ReactiveFormsModule,
     FormsModule,
-    
+    NgPipesModule,
     RouterModule.forChild(routesMetas)
   ],
-  declarations: [OptionsComponent, FormularioMetasComponent, ListaMetasComponent, AsginacionMetasComponent, ListaAsignacionComponent, ListaFallasComponent, FormularioFallasComponent, ListaProductsComponent, FormularioProductoComponent, ListaAsignacionProductoComponent, AsignacionProductosComponent]
+  declarations: [
+    OptionsComponent, 
+    FormularioMetasComponent, 
+    ListaMetasComponent, 
+    AsginacionMetasComponent, 
+    ListaAsignacionComponent, 
+    ListaFallasComponent, 
+    FormularioFallasComponent, 
+    ListaProductsComponent, 
+    FormularioProductoComponent, 
+    ListaAsignacionProductoComponent, 
+    AsignacionProductosComponent,
+    ListCatalogsComponent, 
+    ListByCatalogComponent, 
+    FormularioDetalleComponent
+  ]
 })
 export class CuaModule { }

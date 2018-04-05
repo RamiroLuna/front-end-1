@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, AfterContentInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListByCatalogService } from './list-by-catalog.service';
 import { Catalogo } from '../../models/catalogo';
@@ -13,7 +13,7 @@ declare var Materialize: any;
   templateUrl: './list-by-catalog.component.html',
   providers: [ListByCatalogService]
 })
-export class ListByCatalogComponent implements OnInit, AfterViewInit {
+export class ListByCatalogComponent implements OnInit {
 
   public nombre_catalogo: string;
   public nombre_tabla: string;
@@ -112,6 +112,7 @@ export class ListByCatalogComponent implements OnInit, AfterViewInit {
         if (result.response.sucessfull) {
           this.items = result.data.listCatalogosDTO;
           this.loading = false;
+          setTimeout(() => {this.ngAfterViewHttp();},200)
         } else {
           Materialize.toast(result.response.message, 4000, 'red');
           this.loading = false;
@@ -126,6 +127,7 @@ export class ListByCatalogComponent implements OnInit, AfterViewInit {
         if (result.response.sucessfull) {
           this.items = result.data.listLineasDTO;
           this.loading = false;
+          setTimeout(() => {this.ngAfterViewHttp();},200)
         } else {
           Materialize.toast(result.response.message, 4000, 'red');
           this.loading = false;
@@ -140,6 +142,7 @@ export class ListByCatalogComponent implements OnInit, AfterViewInit {
         if (result.response.sucessfull) {
           this.items = result.data.listEquipoAmut;
           this.loading = false;
+          setTimeout(() => {this.ngAfterViewHttp();},200)
         } else {
           Materialize.toast(result.response.message, 4000, 'red');
           this.loading = false;
@@ -155,7 +158,10 @@ export class ListByCatalogComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngAfterViewInit() {
+   /*
+   * Carga plugins despues de cargar y mostrar objetos en el DOM
+   */
+  ngAfterViewHttp(): void {
     $('.tooltipped').tooltip({ delay: 50 });
   }
 

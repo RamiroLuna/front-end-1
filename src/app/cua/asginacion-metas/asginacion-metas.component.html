@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col offset-l2 offset-xl1 s12 m12 l10 xl10">
       <div class="card-panel">
-        <h5 class="color_titulo center-align">{{ seccion == 'add'? ' Asignar ' : ' Actualizar '}} valor</h5>
+        <h4 class="color_titulo center-align">{{ seccion == 'add'? ' Asignar ' : ' Actualizar '}} valor</h4>
         <div class="row">
           <form class="col s12 m12 l12 xl12" [formGroup]="formAsignacion" (ngSubmit)="openModalConfirmacion(asignacion, seccion)">
             <div class="row">

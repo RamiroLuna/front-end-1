@@ -1,5 +1,16 @@
 <div class="container">
-  <h3 class="color_titulo center-align">Lista de catalogos</h3>
+  <h4 class="color_titulo center-align">Catalogos CUA</h4>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <a routerLink="../../opciones" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">arrow_back</i>
+      </i>
+    </a>
+  </div>
+  <br>
+  <!-- Fin solo para dispositivos moviles -->
   <nav *ngIf="catalogos.length > 0">
     <div class="nav-wrapper grey lighten-5">
       <form>
@@ -14,8 +25,8 @@
       </form>
     </div>
   </nav>
-   <div>
-    <ul class="collapsible collection with-header"  data-collapsible="accordion">
+  <div>
+    <ul class="collapsible collection with-header" data-collapsible="accordion">
       <li *ngFor="let catalogo of catalogos | filterBy: ['descripcion']: texto_busqueda">
         <div class="collapsible-header">
           <i class="material-icons">keyboard_arrow_down</i>{{ catalogo.descripcion }}</div>
@@ -23,12 +34,13 @@
           <div class="row">
             <div class="col s12">
               <div class="secondary-content">
-                <a [routerLink]="['formulario/'+ catalogo.link + '/nuevo']" class="waves-effect waves-circle waves-light btn-floating  light-green darken-1" (click)="ocultarTooltip()">
+                <a [routerLink]="[catalogo.link + '/formulario/nuevo']" class="waves-effect waves-circle waves-light btn-floating  light-green darken-1"
+                  (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Agregar elemento">
                     <i class="material-icons">add</i>
                   </i>
                 </a>
-                <a [routerLink]="[catalogo.link]"  class="waves-effect waves-circle waves-light btn-floating indigo center-align" (click)="ocultarTooltip()">
+                <a [routerLink]="[catalogo.link]" class="waves-effect waves-circle waves-light btn-floating indigo center-align" (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver elementos">
                     <i class="material-icons">list</i>
                   </i>
@@ -46,6 +58,17 @@
       <h5 class="center-align" style="color:#9e9e9e">No hay catalogos registrados</h5>
     </div>
   </div>
+
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a routerLink="../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas-->
 </div>
-
-

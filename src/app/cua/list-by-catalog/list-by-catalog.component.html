@@ -1,16 +1,16 @@
 <div class="container" *ngIf="!loading && isCatalog">
-  <h3 class="color_titulo center-align">Catalogo de {{ nombre_catalogo }}</h3>
+  <h4 class="color_titulo center-align">Catalogo de {{ nombre_catalogo }}</h4>
   <!-- Solo para dispositivos moviles -->
   <div class="hide-on-large-only right-align">
-    <a [routerLink]="['../formulario/'+ tipo_catalogo + '/nuevo']" class="btn-floating btn light-green darken-1 waves-effect waves-light tooltipped"
+    <a [routerLink]="['../'+ tipo_catalogo + '/formulario/nuevo']" class="btn-floating btn light-green darken-1 waves-effect waves-light tooltipped"
       data-position="top" data-delay="50" data-tooltip="Agregar" (click)="agregar()">
       <i class="material-icons">add</i>
     </a>
 
-    <a routerLink="../../lista" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-      data-delay="50" data-tooltip="Ver catalogos" (click)="regresar()">
+    <a routerLink="../../catalogos" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      data-delay="50" data-tooltip="Catalogos" (click)="regresar()">
       <i class="material-icons">
-        <i class="material-icons">view_list</i>
+        <i class="material-icons">arrow_back</i>
       </i>
     </a>
   </div>
@@ -43,7 +43,7 @@
           </div>
         </td>
         <td>
-          <a class="btn-floating  light-green lighten-1" [routerLink]="['../formulario/'+ tipo_catalogo + '/' + item.id]">
+          <a class="btn-floating  light-green lighten-1" [routerLink]="['../'+ tipo_catalogo + '/formulario/' + item.id]">
             <i class="material-icons">edit</i>
           </a>
         </td>
@@ -146,14 +146,14 @@
   <!-- Inicio solo para pantallas-->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-      <a [routerLink]="['../formulario/'+ tipo_catalogo + '/nuevo']" class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped"
+      <a [routerLink]="['../'+ tipo_catalogo + '/formulario/nuevo']"  class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped"
         data-position="top" data-delay="50" data-tooltip="Agregar" (click)="agregar()">
         <i class="material-icons">add</i>
       </a>
-      <a routerLink="../../lista" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-        data-delay="50" data-tooltip="Ver catalogos" (click)="regresar()">
+      <a routerLink="../../catalogos" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Catalogos" (click)="regresar()">
         <i class="material-icons">
-          <i class="material-icons">view_list</i>
+          <i class="material-icons">arrow_back</i>
         </i>
       </a>
     </div>
