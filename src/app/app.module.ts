@@ -10,6 +10,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthService } from './auth/auth.service';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth/auth.guard';
+import { NotAuthGuard } from './auth/not.auth.guard';
 import { MenuComponent } from './menu/menu.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UsersModule } from './users/users.module'; 
@@ -19,8 +20,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full'},
+  { path: 'login', component: LoginComponent, canActivate: [NotAuthGuard] },
   {
     path: 'home', component: HomeComponent, canActivate: [AuthGuard], children: [
       { path: 'usuarios', loadChildren: './users/users.module#UsersModule' },
@@ -49,6 +50,7 @@ const routes: Routes = [
   ],
   providers: [
     AuthService,
+    NotAuthGuard,
     AuthGuard,
     {
     provide: HTTP_INTERCEPTORS,

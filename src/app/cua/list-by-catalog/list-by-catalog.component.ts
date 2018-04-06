@@ -62,12 +62,12 @@ export class ListByCatalogComponent implements OnInit {
           this.type_Catalogo = 'generico';
           break;
         case 'extrusores':
-          this.nombre_catalogo = 'Nombre de equipos extrusores';
+          this.nombre_catalogo = 'Equipos extrusores';
           this.nombre_tabla = 'pet_cat_equipos_extrusores_bulher';
           this.type_Catalogo = 'generico';
           break;
         case 'ssp':
-          this.nombre_catalogo = 'Nombre de equipos SSP';
+          this.nombre_catalogo = 'Equipos SSP';
           this.nombre_tabla = 'pet_cat_equipos_ssp';
           this.type_Catalogo = 'generico';
           break;
@@ -92,7 +92,7 @@ export class ListByCatalogComponent implements OnInit {
           this.type_Catalogo = 'generico';
           break;
         case 'lineas':
-          this.nombre_catalogo = 'Lineas';
+          this.nombre_catalogo = 'Lineas CUA´s';
           this.nombre_tabla = 'pet_cat_lineas';
           this.type_Catalogo = 'lineas';
           break;

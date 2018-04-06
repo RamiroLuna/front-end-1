@@ -21,12 +21,19 @@ export class ListCatalogsComponent implements  AfterViewInit  {
     { id : 3 , name:'pet_cat_noplaneado', descripcion: 'Paro No Planeado' , link: 'no_planeado', activo: true},
     { id : 4 , name:'pet_cat_reduc_velocidad', descripcion: 'Reducción velocidad' , link: 'reduccion', activo: true},
     { id : 5 , name:'pet_cat_calidad', descripcion: 'Calidad' , link: 'calidad', activo: true},
-    { id : 6 , name:'pet_cat_equipos_extrusores_bulher', descripcion: 'Nombre de equipos extrusores' , link: 'extrusores', activo: true},
-    { id : 7 , name:'pet_cat_equipos_ssp', descripcion: 'Nombre de equipos SSP' , link: 'ssp', activo: true},
+    { id : 6 , name:'pet_cat_equipos_extrusores_bulher', descripcion: 'Equipos extrusores' , link: 'extrusores', activo: true},
+    { id : 7 , name:'pet_cat_equipos_ssp', descripcion: 'Equipos SSP' , link: 'ssp', activo: true},
     { id : 8 , name:'pet_cat_gpo_linea', descripcion: 'Grupos de linea' , link: 'grupo-linea', activo: true},
     { id : 9 , name:'pet_cat_grupos', descripcion: 'Grupos' , link: 'grupos', activo: true},
     { id : 10 , name:'pet_cat_perfiles', descripcion: 'Perfiles' , link: 'perfiles', activo: true},
     { id : 11 , name:'pet_cat_turnos', descripcion: 'Turnos' , link: 'turnos', activo: true},
+
+    /* Falta programar */
+    { id : 14 , name:'pet_cat_equipo_ptar', descripcion: 'Equipos PTAR' , link: 'equipos_ptar', activo: true},
+    { id : 15 , name:'pet_cat_paro_por_calidad', descripcion: 'Paro por calidad' , link: 'paro_calidad', activo: true},
+    { id : 16 , name:'pet_cat_productos', descripcion: 'Productos' , link: 'productos', activo: true},
+    { id : 17 , name:'pet_cat_unidad_medida', descripcion: 'Unidad de medida' , link: 'unidad_medida', activo: true},
+    /* Fin falta programar*/
 
     /*
      * Catalogos especificos

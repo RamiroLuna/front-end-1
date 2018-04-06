@@ -125,7 +125,7 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
             this.itemCatalogo = new Catalogo();
             break;
           case 'lineas':
-            this.nombre_catalogo = 'Lineas';
+            this.nombre_catalogo = 'Lineas CUA´s';
             this.nombre_tabla = 'pet_cat_lineas';
             this.type_Catalogo = 'lineas';
             this.itemCatalogo = new Linea();

@@ -18,6 +18,7 @@ import { ListCatalogsComponent } from './list-catalogs/list-catalogs.component';
 import { ListByCatalogComponent } from './list-by-catalog/list-by-catalog.component';
 import { FormularioDetalleComponent } from './list-by-catalog/formulario-detalle/formulario-detalle.component';
 import { NgPipesModule } from 'ngx-pipes';
+import { ListaReportesComponent } from './lista-reportes/lista-reportes.component';
 
 
 
@@ -32,10 +33,14 @@ const routesMetas: Routes = [
   { path: 'opciones/productos', component: ListaProductsComponent },
   { path: 'opciones/productos/:id', component: FormularioProductoComponent },
   { path: 'opciones/productos-asignaciones', component:  ListaAsignacionProductoComponent},
-  /* rutas de modulo de catalogos */
+  /* rutas de catalogos */
   { path: 'opciones/catalogos', component: ListCatalogsComponent},
   { path: 'opciones/catalogos/:name', component: ListByCatalogComponent },
-  { path: 'opciones/catalogos/:name/formulario/:id', component: FormularioDetalleComponent }
+  { path: 'opciones/catalogos/:name/formulario/:id', component: FormularioDetalleComponent },
+  /* rutas de reportes */
+  { path: 'opciones/lista-reportes', component: ListaReportesComponent},
+
+
 ];
 
 @NgModule({
@@ -61,7 +66,7 @@ const routesMetas: Routes = [
     AsignacionProductosComponent,
     ListCatalogsComponent, 
     ListByCatalogComponent, 
-    FormularioDetalleComponent
+    FormularioDetalleComponent, ListaReportesComponent
   ]
 })
 export class CuaModule { }
