@@ -13,7 +13,7 @@
   <!-- Fin solo para dispositivos moviles -->
   <nav *ngIf="reportes.length > 0">
     <div class="nav-wrapper grey lighten-5">
-      <form>
+      <form autocomplete="off">
         <div class="input-field">
           <input id="search" type="search" placeholder="Escribe para buscar" [(ngModel)]="texto_busqueda" [ngModelOptions]="{standalone: true}"
             required>

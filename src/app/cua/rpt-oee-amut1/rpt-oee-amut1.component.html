@@ -17,6 +17,17 @@
 <div class="container center">
   <a href="#" (click)="verTablas($event)">{{ texto_link }}</a>
   <div class="section"></div>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">arrow_back</i>
+      </i>
+    </a>
+  </div>
+  <br>
+  <!-- Fin solo para dispositivos moviles -->
   <div class="row" *ngIf="ver_tabla && seccion == 0">
     <div class="col s12 m12 l6 xl6">
       <table>
@@ -57,23 +68,35 @@
   </div>
   <div class="row" *ngIf="ver_tabla && seccion == 1">
 
-      <div class="col s12 m12 l12 xl12">
-        <table>
-          <thead class="light-green darken-1 texto header">
-            <tr>
-              <th colspan="2" class="center">OEE</th>
-              <th>Real</th>
-            </tr>
-          </thead>
-  
-          <tbody>
-            <tr *ngFor="let item of item_oee">
-              <td>{{ item.descripcion }}</td>
-              <td>{{ item.oee }}</td>
-              <td>{{ item.real }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="col s12 m12 l12 xl12">
+      <table>
+        <thead class="light-green darken-1 texto header">
+          <tr>
+            <th colspan="2" class="center">OEE</th>
+            <th>Real</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let item of item_oee">
+            <td>{{ item.descripcion }}</td>
+            <td>{{ item.oee }}</td>
+            <td>{{ item.real }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a routerLink="../../lista-reportes" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped"
+        data-position="top" data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas-->
 </div>

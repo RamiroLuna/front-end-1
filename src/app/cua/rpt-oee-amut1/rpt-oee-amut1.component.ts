@@ -199,6 +199,8 @@ export class RptOeeAmut1Component implements OnInit {
       options: this.options2
     });
 
+    $('.tooltipped').tooltip({ delay: 50 });
+
   }
 
 
@@ -206,6 +208,15 @@ export class RptOeeAmut1Component implements OnInit {
     event.preventDefault();
     this.ver_tabla = !this.ver_tabla;
     this.texto_link = this.ver_tabla? "Ocultar tabla(s)": "Ver datos en tabla(s)";
+  }
+
+
+  agregar() {
+    $('.tooltipped').tooltip('hide');
+  }
+
+  regresar() {
+    $('.tooltipped').tooltip('hide');
   }
 
 
