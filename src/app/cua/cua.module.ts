@@ -20,6 +20,7 @@ import { FormularioDetalleComponent } from './list-by-catalog/formulario-detalle
 import { NgPipesModule } from 'ngx-pipes';
 import { ListaReportesComponent } from './lista-reportes/lista-reportes.component';
 import { RptOeeAmut1Component } from './rpt-oee-amut1/rpt-oee-amut1.component';
+import { RptJudoAmut12Component } from './rpt-judo-amut1-2/rpt-judo-amut1-2.component';
 
 
 
@@ -40,7 +41,8 @@ const routesMetas: Routes = [
   { path: 'opciones/catalogos/:name/formulario/:id', component: FormularioDetalleComponent },
   /* rutas de reportes */
   { path: 'opciones/lista-reportes', component: ListaReportesComponent},
-  { path: 'opciones/lista-reportes/oee-amut-1', component: RptOeeAmut1Component}
+  { path: 'opciones/lista-reportes/oee-amut-1', component: RptOeeAmut1Component},
+  { path: 'opciones/lista-reportes/judo-amut', component: RptJudoAmut12Component}
 
 
 ];
@@ -68,7 +70,7 @@ const routesMetas: Routes = [
     AsignacionProductosComponent,
     ListCatalogsComponent, 
     ListByCatalogComponent, 
-    FormularioDetalleComponent, ListaReportesComponent, RptOeeAmut1Component
+    FormularioDetalleComponent, ListaReportesComponent, RptOeeAmut1Component, RptJudoAmut12Component
   ]
 })
 export class CuaModule { }

@@ -29,7 +29,7 @@ export class ListaReportesComponent implements  AfterViewInit {
     { id : 14 , nombre_reporte: 'ETAD Buhler (E1 y E2)' , link:'' , activo: true},
     { id : 15 , nombre_reporte: 'ETAD PTAR' , link:'' , activo: true},
     { id : 16 , nombre_reporte: 'ETAD Buhler SSP' , link:'' , activo: true},
-    { id : 17 , nombre_reporte: 'Diario de Producción JUDO  Amut (A1 y A2)' , link:'' , activo: true},
+    { id : 17 , nombre_reporte: 'Diario de Producción JUDO  Amut (A1 y A2)' , link:'judo-amut' , activo: true},
     { id : 18 , nombre_reporte: 'Diario de Producción JUDO Buhler (E1 y E2)' , link:'' , activo: true},
     { id : 19 , nombre_reporte: 'Diario de Producción JUDO PTAR' , link:'' , activo: true},
     { id : 20 , nombre_reporte: 'Diario de Producción SSP' , link:'' , activo: true},
