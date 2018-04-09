@@ -156,6 +156,18 @@ function getYears(): any {
 }
 
 
+/**
+ * @function getLabels
+ * @param arg Arreglo de los datos 
+ * @return  {Array} 
+ * @description Esta funcion devuelve las etiquetas que serán graficadas
+ */
+function getLabels(arg: Array<any>): any {
+
+    return [];
+}
+
+
 export {
     deleteItemArray,
     isValidId,
@@ -164,5 +176,6 @@ export {
     getYears,
     getFechaActual,
     getMilisegundos,
-    isNumeroAsignacionValid
+    isNumeroAsignacionValid,
+    getLabels
 }

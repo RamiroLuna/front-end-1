@@ -1,0 +1,54 @@
+<div class="carousel carousel-slider center">
+  <div class="carousel-item white" href="#one!">
+    <div class="container">
+      <canvas id="myChart" width="50" height="20">
+        Su navegador no soporta canvas
+      </canvas>
+    </div>
+  </div>
+  <div class="carousel-item white " href="#two!">
+    <h4 class="color_titulo">OEE Amut 1</h4>
+  </div>
+</div>
+<div class="container center">
+  <a href="#" (click)="verTablas($event)">{{ texto_link }}</a>
+  <div class="section"></div>
+  <div class="row" *ngIf="seccion == 0 && ver_tabla">
+    <div class="col s12 m12 l6 xl6">
+      <table>
+        <thead class="light-green darken-1 texto header">
+          <tr>
+            <th>Tiempo</th>
+            <th>Hrs</th>
+            <th>%</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let tiempo of tiempos" [ngClass]="{total:tiempo.type == 'total'}">
+            <td>{{ tiempo.tiempo }}</td>
+            <td>{{ tiempo.hrs }}</td>
+            <td>{{ tiempo.porcentaje }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+    </div>
+    <div class="col s12 m12 l6 xl6">
+      <table>
+        <thead class="light-green darken-1 texto header">
+          <tr>
+            <th colspan="2">Datos Producción</th>           
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let produccion of producciones">
+            <td>{{ produccion.produccion }}</td>
+            <td>{{ produccion.hrs }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
