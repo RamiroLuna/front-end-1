@@ -7,13 +7,17 @@
     </div>
   </div>
   <div class="carousel-item white " href="#two!">
-    <h4 class="color_titulo">OEE Amut 1</h4>
+    <div class="container">
+      <canvas id="oee" width="50" height="20">
+        Su navegador no soporta canvas
+      </canvas>
+    </div>
   </div>
 </div>
 <div class="container center">
   <a href="#" (click)="verTablas($event)">{{ texto_link }}</a>
   <div class="section"></div>
-  <div class="row" *ngIf="seccion == 0 && ver_tabla">
+  <div class="row" *ngIf="ver_tabla && seccion == 0">
     <div class="col s12 m12 l6 xl6">
       <table>
         <thead class="light-green darken-1 texto header">
@@ -38,7 +42,7 @@
       <table>
         <thead class="light-green darken-1 texto header">
           <tr>
-            <th colspan="2">Datos Producción</th>           
+            <th colspan="2">Datos Producción</th>
           </tr>
         </thead>
 
@@ -51,4 +55,25 @@
       </table>
     </div>
   </div>
+  <div class="row" *ngIf="ver_tabla && seccion == 1">
+
+      <div class="col s12 m12 l12 xl12">
+        <table>
+          <thead class="light-green darken-1 texto header">
+            <tr>
+              <th colspan="2" class="center">OEE</th>
+              <th>Real</th>
+            </tr>
+          </thead>
+  
+          <tbody>
+            <tr *ngFor="let item of item_oee">
+              <td>{{ item.descripcion }}</td>
+              <td>{{ item.oee }}</td>
+              <td>{{ item.real }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 </div>

@@ -43,6 +43,66 @@ export class RptOeeAmut1Component implements OnInit {
     }
   };
 
+  public options2: any = {
+    scales: {
+      xAxes: [{
+
+        ticks: {
+          autoSkip: false
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        },
+        scaleLabel: {
+          display: true,
+          labelString: '%',
+        }
+      }]
+    },
+    legend: {
+      display: false,
+    },
+    title: {
+      display: true,
+      text: 'OEE Amut 1',
+      fontColor: '#303f9f',
+      fontStyle: 'bold',
+      fontSize: 26
+    }
+  };
+
+  public data2: any = {
+    labels: ["Disponibiliad",
+      "Utilizacion",
+      "Calidad",
+      "OEE",
+      "TEEP",
+      "TM"
+    ],
+    datasets: [{
+      label: '# of Votes',
+      data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1
+    }]
+  };
   public data: any = {
     labels: ["Tiempo Disponible Total",
       "No Ventas",
@@ -98,16 +158,27 @@ export class RptOeeAmut1Component implements OnInit {
     { produccion: 'Produccion total', hrs: 2284.0 }
   ]
 
+  public item_oee: Array<any> = [
+    { descripcion: 'Disponibilidad', oee: 632.0, real: '84.9%'},
+    { descripcion: 'Utilizacion', oee: 3.541, real: '101.2%'},
+    { descripcion: 'Calidad', oee: 0, real: '98.0%'},
+    { descripcion: 'OEE', oee: 0, real: '84.2%'},
+    { descripcion: 'TEM', oee: 622.6, real: '83.7%'},
+    { descripcion: 'TM', oee: 121.4, real: '16.3%'},
+  ]
+
   constructor() { }
 
   ngOnInit() {
     $('.carousel.carousel-slider').carousel({
       fullWidth: true,
       indicators: true,
-      onCycleTo: function (ele, dragged) {
-        this.ver_tabla = true;
+      onCycleTo:  (ele, dragged) =>{
         this.texto_link = "Ver datos en tabla(s)";
+        this.ver_tabla = false;
         this.seccion = $(ele).index();
+        $('.carousel li').css('background-color', '#bdbdbd');
+        $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
       }
     });
 
@@ -121,13 +192,20 @@ export class RptOeeAmut1Component implements OnInit {
       options: this.options
     });
 
+    var ctx = $('#oee').get(0).getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: this.data2,
+      options: this.options2
+    });
+
   }
 
 
   verTablas(event): void {
     event.preventDefault();
-    this.texto_link = "Ocultar tabla(s)";
     this.ver_tabla = !this.ver_tabla;
+    this.texto_link = this.ver_tabla? "Ocultar tabla(s)": "Ver datos en tabla(s)";
   }
 
 
