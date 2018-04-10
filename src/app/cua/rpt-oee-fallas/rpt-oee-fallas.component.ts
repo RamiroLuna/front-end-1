@@ -3,11 +3,11 @@ import * as Chart from 'chart.js';
 
 declare var $: any;
 @Component({
-  selector: 'app-rpt-oee-amut1',
-  templateUrl: './rpt-oee-amut1.component.html',
-  styleUrls: ['./rpt-oee-amut1.component.css']
+  selector: 'app-rpt-oee-fallas',
+  templateUrl: './rpt-oee-fallas.component.html',
+  styleUrls: ['./rpt-oee-fallas.component.css']
 })
-export class RptOeeAmut1Component implements OnInit {
+export class RptOeeFallasComponent implements OnInit {
 
   public texto_link: string = "Ver datos en tabla";
   public seccion: number = 0;
