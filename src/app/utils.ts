@@ -165,9 +165,9 @@ function DataTableReporte(el): void {
         }
     });
 
-    $('select').val('10'); //seleccionar valor por defecto del select
-    $('select').addClass("browser-default"); //agregar una clase de materializecss de esta forma ya no se pierde el select de numero de registros.
-    $('select').material_select();
+    $('table > select').val('10'); //seleccionar valor por defecto del select
+    $('table > select').addClass("browser-default"); //agregar una clase de materializecss de esta forma ya no se pierde el select de numero de registros.
+    $('table > select').material_select();
 }
 
 /**

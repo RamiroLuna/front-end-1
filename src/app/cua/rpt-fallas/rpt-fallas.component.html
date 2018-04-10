@@ -1,0 +1,141 @@
+<div class="container">
+  <div class="section"></div>
+  <h4 class="color_titulo center-align">Reportes de fallas por turnos</h4>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">arrow_back</i>
+      </i>
+    </a>
+    <br>
+  </div>
+  <form class="col s12 m12 l12 xl12" autocomplete="off">
+    <fieldset>
+      <legend class="color_titulo">
+        <b>Capture para generar reporte:</b>
+      </legend>
+      <div class="row">
+        <div class="input-field col s12 m12 l4 xl4">
+          <input placeholder="" id="de" type="text" class="validate">
+          <label for="de">De:</label>
+        </div>
+        <div class="input-field col s12 m12 l4 xl4">
+          <input placeholder="" id="hasta" type="text" class="validate">
+          <label for="hasta">Hasta:</label>
+        </div>
+        <div class="input-field col s12 m12 l4 xl4">
+          <select class="opciones">
+            <option value="" selected>Seleccione</option>
+            <option value="1">A</option>
+            <option value="1">B</option>
+            <option value="1">C</option>
+            <option value="1">D</option>
+            <option value="1">TODOS</option>
+          </select>
+          <label>Grupo</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field col s12 m12 l4 xl4">
+          <select class="opciones">
+            <option value="" selected>Seleccione</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="1">TODOS</option>
+          </select>
+          <label>Turno</label>
+        </div>
+
+        <div class="input-field col s12 m12 l4 xl4">
+          <select class="opciones">
+            <option value="" selected>Seleccione</option>
+            <option value="1">AMUT1</option>
+            <option value="1">TODOS</option>
+          </select>
+          <label>Linea</label>
+        </div>
+
+        <div class="input-field col s12 m12 l4 xl4">
+          <select class="opciones">
+            <option value="" selected>Seleccione</option>
+            <option value="1">Equipo 1</option>
+            <option value="1">TODOS</option>
+          </select>
+          <label>Equipo</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12 l12 xl12">
+          <div class="col s12 m12 l8 xl8"></div>
+          <a class="col s12 m12 l4 xl4 waves-effect waves-light btn  btn-small light-green darken-1">
+            Generar reporte</a>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  <br>
+  <div class="section"></div>
+  <!-- Fin solo para dispositivos moviles -->
+  <table id="tabla_fallas" class="display" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th class="center-align">Día</th>
+        <th class="center-align">Grupo</th>
+        <th class="center-align">Turno</th>
+        <th class="center-align">Linea</th>
+        <th class="center-align">Fuente del Paro</th>
+        <th class="center-align">Razón del Paro</th>
+        <th class="center-align">Equipo</th>
+        <th class="center-align">Nombre del Equipo</th>
+        <th class="center-align">Problema (motivo del paro)</th>
+        <th class="center-align">Hrs I</th>
+        <th class="center-align">Min I</th>
+        <th class="center-align">Hrs F</th>
+        <th class="center-align">Min F</th>
+        <th class="center-align">Hrs de paro</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let falla of fallas">
+        <td class="center-align">{{falla.dia}}</td>
+        <td class="center-align">{{falla.grupo}}</td>
+        <td class="center-align">{{falla.turno}}</td>
+        <td class="center-align">{{falla.linea}}</td>
+        <td class="center-align">{{falla.fuente}}</td>
+        <td class="center-align">{{falla.razon}}</td>
+        <td class="center-align">{{falla.equipo}}</td>
+        <td class="center-align">{{falla.nombre_equipo}}</td>
+        <td class="center-align">{{falla.problema}}</td>
+        <td class="center-align">{{falla.hrs_i}}</td>
+        <td class="center-align">{{falla.min_i}}</td>
+        <td class="center-align">{{falla.hrs_f}}</td>
+        <td class="center-align">{{falla.min_f}}</td>
+        <td class="center-align">{{falla.hrs_paro}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a routerLink="../../lista-reportes" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped"
+        data-position="top" data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas-->
+</div>
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>
