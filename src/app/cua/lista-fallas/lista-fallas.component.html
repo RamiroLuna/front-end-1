@@ -25,7 +25,7 @@
         <th class="center-align">Fuente del Paro</th>
         <th class="center-align">Razón del Paro</th>
         <th class="center-align">Nombre del Equipo</th>
-        <th class="center-align">Ver</th>
+        <th class="center-align">Editar</th>
         <th class="center-align">Eliminar</th>
       </tr>
     </thead>
@@ -39,12 +39,12 @@
         <td class="center-align">{{falla.razon}}</td>
         <td class="center-align">{{falla.equipo}}</td>
         <td class="center-align">
-          <a class="btn-floating light-green lighten-1" [routerLink]="meta.id_meta">
+          <a class="btn-floating light-green lighten-1" [routerLink]="falla.id">
               <i class="material-icons">description</i>
           </a>
         </td>
         <td class="center-align">
-          <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(usuario,'eliminar')">
+          <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(falla,'eliminar')">
             <i class="material-icons">delete</i>
           </a>
         </td>

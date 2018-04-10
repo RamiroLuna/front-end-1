@@ -1,22 +1,36 @@
 <div class="container">
   <div class="row">
     <div class="col offset-l2 offset-xl0 s12 m12 l8 xl12">
-      <div class="card-panel">
-        <h4 class="color_titulo center-align">Reporte de Fallas</h4>
-        <div class="row">
-          <form class="col s12 m12 l12 xl12">
+      <h4 class="color_titulo center-align">Registro de fallas por turno</h4>
+      <div class="section"></div>
+      <!-- Solo para dispositivos moviles -->
+      <div class="hide-on-large-only right-align">
+        <a routerLink="../../fallas" class="tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+          Regresar lista de fallas
+        </a>
+      </div>
+      <br>
+      <!-- Fin solo para dispositivos moviles -->
+      <div class="row">
+        <form class="col s12 m12 l12 xl12">
+          <fieldset>
+            <legend class="color_titulo">
+              <b>Capture datos para registrar la falla del turno:</b>
+            </legend>
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
                 <label for="dia">Día</label>
                 <input id="dia" type="text" class="datepicker">
               </div>
             </div>
-
             <div class="row">
               <div class="col s12 m12 l4 xl4">
                 <label>Línea</label>
                 <select materialize="material_select">
                   <option value="-1">Seleccione una opción...</option>
+                  <option value="-1">AMUT 1</option>
+                  <option value="-1">AMUT 2</option>
                 </select>
               </div>
 
@@ -24,6 +38,8 @@
                 <label>Grupo</label>
                 <select materialize="material_select">
                   <option value="-1">Seleccione una opción...</option>
+                  <option value="-1">A</option>
+                  <option value="-1">B</option>
                 </select>
               </div>
 
@@ -31,6 +47,9 @@
                 <label>Turno</label>
                 <select materialize="material_select">
                   <option value="-1">Seleccione una opción...</option>
+                  <option value="-1">1</option>
+                  <option value="-1">2</option>
+                  <option value="-1">3</option>
                 </select>
               </div>
             </div>
@@ -91,19 +110,24 @@
             </div>
 
             <div class="row">
-              <div class="input-field col offset-s1 offset-m3 offset-l2 offset-xl3">
-                <a routerLink="../../fallas" class="col btn grey lighten-1  waves-effect waves-light" type="submit" name="cancelar">Cancelar
-                </a>
-              </div>
-
-              <div class="input-field col offset-m1 offset-l1 offset-xl2">
-                <button class="col btn light-green darken-1 waves-effect waves-light" type="submit" name="asignar">Agregar
+              <div class="input-field center">
+                <button class="btn light-green darken-1 waves-effect waves-light" type="submit" name="asignar" routerLink="../../fallas">Agregar
                 </button>
               </div>
             </div>
-          </form>
-        </div>
+          </fieldset>
+        </form>
       </div>
     </div>
   </div>
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a routerLink="../../fallas" class="btn blue darken-3 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+        data-tooltip="Ir" (click)="regresar()">
+        Lista fallas
+      </a>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas-->
 </div>

@@ -8,7 +8,7 @@
     <form class="col s12 m12 l12 xl12" autocomplete="off">
       <fieldset>
         <legend class="color_titulo">
-          <b>Datos para el regiStro de producción:</b>
+          <b>Capture datos para el registro de producción:</b>
         </legend>
         <div class="section"></div>
         <div class="row">
@@ -55,8 +55,8 @@
       <table id="tabla" class="display asignacion_productos" cellspacing="0" width="100%" style="overflow-x:auto;">
         <thead>
           <tr>
-            <th class="center-align">Producto</th>
-            <th class="center-align">Valor en Kilogramos</th>
+            <th class="">Producto</th>
+            <th class="">Valor</th>
             <!-- <th class="center-align">Liberado</th> -->
           </tr>
         </thead>
@@ -77,9 +77,9 @@
     <div class="row">
       <hr>
       <div class="col s2 m2 l2 xl2"></div>
-      <a class="btn grey lighten-1  waves-effect waves-light btn col s3 m3 l3 xl3">Cancelar</a>
+      <a class="btn grey lighten-1  waves-effect waves-light btn col s3 m3 l3 xl3" routerLink="../../produccion">Cancelar</a>
       <div class="col s1 m1 l1 xl1"></div>
-      <a class="btn light-green darken-1 waves-effect waves-light btn col s3 m3 l3 xl3">Guardar</a>
+      <a class="btn light-green darken-1 waves-effect waves-light btn col s3 m3 l3 xl3" (click)="modalQuestionFails()">Guardar</a>
     </div>
   </div>
 

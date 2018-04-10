@@ -42,7 +42,7 @@
       </li>
       <li>
         <div class="collapsible-header">
-          <i class="material-icons">multiline_chart</i>Registro de producción</div>
+          <i class="material-icons">multiline_chart</i>Registro de indicadores</div>
         <div class="collapsible-body light-green lighten-5">
           <div class="row">
             <div class="col s12 m12 l12 xl12">
@@ -51,7 +51,13 @@
                 <div class="col s1 m1 l1 xl1"></div>
                 <a routerLink="produccion" class=" col s4 m4 l4 xl4  waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ir">
-                    REGISTRAR
+                    PRODUCCION 
+                  </i>
+                </a>
+                <div class="col s1 m1 l1 xl1"></div>
+                <a routerLink="fallas" class=" col s4 m4 l4 xl4  waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ir">
+                    FALLAS 
                   </i>
                 </a>
               </div>
@@ -60,7 +66,11 @@
               <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
                 <div class="col s1 m1 l1 xl1"></div>
                 <a routerLink="produccion" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">
-                    REGISTRAR
+                    PRODUCCION
+                </a>
+                <div class="col s1 m1 l1 xl1"></div>
+                <a routerLink="fallas" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">
+                    FALLAS
                 </a>
               </div>
             </div>

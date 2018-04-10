@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
+import swal from 'sweetalert2';
 
 declare var $: any;
 declare var Materialize: any;
@@ -21,7 +22,7 @@ export class FormularioProduccionComponent implements OnInit {
     { producto: 'Produccion Pacas SAE', valor: '', liberado: 0 }
   ];
 
-  constructor() { }
+  constructor(private router: Router,) { }
 
   ngOnInit() {
     setTimeout(()=>{ this.ngAfterViewInit() },200);
@@ -49,6 +50,38 @@ export class FormularioProduccionComponent implements OnInit {
     });
 
     $('select').material_select();
+  }
+
+  modalQuestionFails():void{
+
+     /* 
+       * Configuración del modal de confirmación
+       */
+      swal({
+        title: '<span style="color: #303f9f "> ¿ Registrar fallas del turno? </span>',
+        type: 'question',
+        //html: '<p style="color: #303f9f "> Linea : ' + meta.meta + '<b> </b></p>',
+        showCancelButton: true,
+        confirmButtonColor: '#303f9f',
+        cancelButtonColor: '#9fa8da ',
+        cancelButtonText: 'No hubo fallas',
+        confirmButtonText: 'Si, registrar',
+        allowOutsideClick: false,
+        allowEnterKey: false
+      }).then((result) => {
+        /*
+         * Si acepta
+         */
+        if (result.value) {
+          this.router.navigate(['home/cua/opciones/fallas/nuevo']);
+          /*
+          * Si cancela accion
+          */
+        } else if (result.dismiss === swal.DismissReason.cancel) {
+          this.router.navigate(['home/cua/opciones/produccion']);
+        }
+      })
+   
   }
 
 }
