@@ -23,6 +23,8 @@ import { RptOeeAmut1Component } from './rpt-oee-amut1/rpt-oee-amut1.component';
 import { RptJudoAmut12Component } from './rpt-judo-amut1-2/rpt-judo-amut1-2.component';
 import { RptFallasComponent } from './rpt-fallas/rpt-fallas.component';
 import { MetaMasivaComponent } from './meta-masiva/meta-masiva.component';
+import { FormularioProduccionComponent } from './formulario-produccion/formulario-produccion.component';
+import { ListaProduccionComponent } from './lista-produccion/lista-produccion.component';
 
 
 
@@ -47,7 +49,13 @@ const routesMetas: Routes = [
   { path: 'opciones/lista-reportes', component: ListaReportesComponent},
   { path: 'opciones/lista-reportes/oee-amut-1', component: RptOeeAmut1Component},
   { path: 'opciones/lista-reportes/judo-amut', component: RptJudoAmut12Component},
-  { path: 'opciones/lista-reportes/fallas', component: RptFallasComponent}
+  { path: 'opciones/lista-reportes/fallas', component: RptFallasComponent},
+  
+  /* Registro de produccion */
+  { path: 'opciones/produccion', component: ListaProduccionComponent},
+  { path: 'opciones/produccion/:id', component: FormularioProduccionComponent}
+
+  
 
 ];
 
@@ -74,7 +82,14 @@ const routesMetas: Routes = [
     AsignacionProductosComponent,
     ListCatalogsComponent, 
     ListByCatalogComponent, 
-    FormularioDetalleComponent, ListaReportesComponent, RptOeeAmut1Component, RptJudoAmut12Component, RptFallasComponent, MetaMasivaComponent
+    FormularioDetalleComponent, 
+    ListaReportesComponent, 
+    RptOeeAmut1Component,
+    RptJudoAmut12Component, 
+    RptFallasComponent, 
+    MetaMasivaComponent, 
+    FormularioProduccionComponent,
+    ListaProduccionComponent
   ]
 })
 export class CuaModule { }

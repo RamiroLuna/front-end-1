@@ -1,0 +1,74 @@
+<div class="container" *ngIf="!loading">
+    <div class="section"></div>
+    <h4 class="color_titulo center-align">Registros de producción</h4>
+    <!-- Solo para dispositivos moviles -->
+    <div class="hide-on-large-only right-align">
+      <a routerLink="../../opciones" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+    <!-- fin Solo para dispositivos moviles -->
+  
+    <div class="row">
+      <div class="input-field col s6">
+        <input id="inicio" type="text" class="active" data-value="inicio" />
+        <label for="inicio">Inicio</label>
+      </div>
+  
+  
+      <div class="file-field input-field col s6">
+        <a class="col s4 m4 l1 xl1 waves-effect waves-light btn right light-green lighten-1" (click)="busqueda()">
+          <i class="material-icons">search</i>
+        </a>
+        <div class="file-path-wrapper">
+          <input id="fin" type="text" class="active" data-value="fin">
+          <label for="fin">Fin</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <table id="tabla" class="display" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th class="center-align">Día</th>
+          <th class="center-align">Linea</th>
+          <th class="center-align">Turno</th>
+          <th class="center-align">Grupo</th>
+          <th class="center-align">Producción</th>
+          <th class="center-align">Ver</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+        <tr *ngFor="let asignacion of asignaciones">
+          <td class="center-align">{{asignacion.dia}}</td>
+          <td class="center-align">{{asignacion.linea}}</td>
+          <td class="center-align">{{asignacion.turno}}</td>
+          <td class="center-align">{{asignacion.grupo}}</td>
+          <td class="center-align">{{asignacion.produccion }}</td>
+          <td class="center-align">
+            <a class="btn-floating light-green lighten-1" (click)="asignarValorProducto($event, asignacion)">
+              <i class="material-icons">description</i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Inicio solo para pantallas-->
+    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a routerLink="../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
+    </div>
+    <!-- Fin solo para pantallas-->
+  </div>
+  
