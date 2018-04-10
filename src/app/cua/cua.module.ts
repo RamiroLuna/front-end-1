@@ -22,6 +22,7 @@ import { ListaReportesComponent } from './lista-reportes/lista-reportes.componen
 import { RptOeeAmut1Component } from './rpt-oee-amut1/rpt-oee-amut1.component';
 import { RptJudoAmut12Component } from './rpt-judo-amut1-2/rpt-judo-amut1-2.component';
 import { RptFallasComponent } from './rpt-fallas/rpt-fallas.component';
+import { MetaMasivaComponent } from './meta-masiva/meta-masiva.component';
 
 
 
@@ -36,6 +37,8 @@ const routesMetas: Routes = [
   { path: 'opciones/productos', component: ListaProductsComponent },
   { path: 'opciones/productos/:id', component: FormularioProductoComponent },
   { path: 'opciones/productos-asignaciones', component:  ListaAsignacionProductoComponent},
+  /* Carga de metas */
+  { path: 'opciones/metas-carga-masiva', component: MetaMasivaComponent },
   /* rutas de catalogos */
   { path: 'opciones/catalogos', component: ListCatalogsComponent},
   { path: 'opciones/catalogos/:name', component: ListByCatalogComponent },
@@ -71,7 +74,7 @@ const routesMetas: Routes = [
     AsignacionProductosComponent,
     ListCatalogsComponent, 
     ListByCatalogComponent, 
-    FormularioDetalleComponent, ListaReportesComponent, RptOeeAmut1Component, RptJudoAmut12Component, RptFallasComponent
+    FormularioDetalleComponent, ListaReportesComponent, RptOeeAmut1Component, RptJudoAmut12Component, RptFallasComponent, MetaMasivaComponent
   ]
 })
 export class CuaModule { }

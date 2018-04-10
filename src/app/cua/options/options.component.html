@@ -12,15 +12,15 @@
               <!-- Vista solo para moviles  -->
               <div class="hide-on-large-only">
                 <div class="col s1 m1 l1 xl1"></div>
-                <a routerLink="metas" class=" col s4 m4 l4 xl4  waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                <a routerLink="metas-asignaciones" class=" col s4 m4 l4 xl4  waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                    REGISTRADAS
+                    MANUAL
                   </i>
                 </a>
                 <div class="col s2 m2 l2 xl2"></div>
-                <a routerLink="metas-asignaciones" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                <a routerLink="metas-carga-masiva" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                    ASIGNADAS
+                      MASIVA
                   </i>
                 </a>
               </div>
@@ -28,9 +28,13 @@
               <!-- Inicio solo para pantallas-->
               <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
                 <div class="col s1 m1 l1 xl1"></div>
-                <a routerLink="metas" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">VER REGISTRADAS</a>
+                <a routerLink="metas-asignaciones" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">
+                  CARGA MANUAL
+                </a>
                 <div class="col s2 m2 l2 xl2"></div>
-                <a routerLink="metas-asignaciones" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">VER ASIGNACIONES</a>
+                <a routerLink="metas-carga-masiva" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">
+                  CARGA MASIVA
+                </a>
               </div>
             </div>
           </div>

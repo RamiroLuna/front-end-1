@@ -1,0 +1,73 @@
+<div class="container">
+  <div class="section"></div>
+  <h4 class="color_titulo center-align">Carga masiva de metas</h4>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <a routerLink="../../opciones" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">arrow_back</i>
+      </i>
+    </a>
+    <br>
+  </div>
+  <!-- Fin Solo para dispositivos moviles -->
+  <!-- Inicio de formulario -->
+  <form class="col s12 m12 l12 xl12" autocomplete="off">
+    <fieldset>
+      <legend class="color_titulo">
+        <b>Ingrese los datos para la carga masiva:</b>
+      </legend>
+      <div class="section"></div>
+      <div class="row">
+        <div class="col s12 m12 l2 xl2"></div>
+        <div class="input-field col s12 m12 l8 xl8">
+          <input placeholder="Abril 2018" id="mes" type="text">
+          <label for="mes" class="active">Mes y año:</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12 l2 xl2"></div>
+        <div class="file-field input-field input-field col s12 m12 l8 xl8">
+          <div class="btn">
+            <span>
+              <i class="material-icons">file_upload</i>
+            </span>
+            <input type="file">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="row center">
+        <div class="col s12">
+          <div class="input-field">
+            <a class="waves-effect waves-light btn light-green darken-1">CARGAR ARCHIVO</a>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  <!-- Fin del formulario de carga -->
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a routerLink="../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas-->
+</div>
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>
