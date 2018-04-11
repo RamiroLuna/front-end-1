@@ -24,6 +24,7 @@
     "angular2-jwt": "^0.2.3",
     "angular2-materialize": "^15.1.10",
     "chart.js": "^2.7.1",
+    "classlist.js": "^1.1.20150312",
     "core-js": "^2.4.1",
     "datatables.net": "^1.10.16",
     "datatables.net-dt": "^1.10.16",
