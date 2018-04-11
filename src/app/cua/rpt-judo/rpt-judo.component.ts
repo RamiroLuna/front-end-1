@@ -4,10 +4,10 @@ import { DataTableReporte } from '../../utils';
 declare var $: any;
 declare var Materialize: any;
 @Component({
-  selector: 'app-rpt-judo-amut1-2',
-  templateUrl: './rpt-judo-amut1-2.component.html'
+  selector: 'app-rpt-judo',
+  templateUrl: './rpt-judo.component.html'
 })
-export class RptJudoAmut12Component implements OnInit {
+export class RptJudoComponent implements OnInit {
 
   public inicio: string = "";
   public fin: string = "";
@@ -102,6 +102,7 @@ export class RptJudoAmut12Component implements OnInit {
  * Carga plugins despues de cargar y mostrar objetos en el DOM
  */
   ngAfterViewHttp(): void {
+    $('.opciones').material_select();
     DataTableReporte('#tabla');
     $('.tooltipped').tooltip({ delay: 50 });
     $('#inicio,#fin').pickadate({

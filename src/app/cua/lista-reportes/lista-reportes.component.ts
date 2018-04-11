@@ -15,18 +15,12 @@ export class ListaReportesComponent implements  AfterViewInit {
   public reportes: Array<any>=[
     { id : 1 , nombre_reporte: 'OEE y Fallas' , link:'oee-fallas' , activo: true},
     { id : 2 , nombre_reporte: 'Fallas por turnos' , link:'fallas' , activo: true},
-    { id : 3 , nombre_reporte: 'ETAD Amut (A1 y A2)' , link:'' , activo: true},
-    { id : 4 , nombre_reporte: 'ETAD Buhler (E1 y E2)' , link:'' , activo: true},
-    { id : 5 , nombre_reporte: 'ETAD PTAR' , link:'' , activo: true},
-    { id : 6 , nombre_reporte: 'ETAD Buhler SSP' , link:'' , activo: true},
-    { id : 7 , nombre_reporte: 'Diario de Producción JUDO  Amut (A1 y A2)' , link:'judo-amut' , activo: true},
-    { id : 8 , nombre_reporte: 'Diario de Producción JUDO Buhler (E1 y E2)' , link:'' , activo: true},
-    { id : 9 , nombre_reporte: 'Diario de Producción JUDO PTAR' , link:'' , activo: true},
-    { id : 10 , nombre_reporte: 'Diario de Producción SSP' , link:'' , activo: true},
-    { id : 11 , nombre_reporte: 'OEE Anual Amut ' , link:'' , activo: true},
-    { id : 12 , nombre_reporte: 'OEE Anual Buhler (E1 y E2)' , link:'' , activo: true},
-    { id : 13 , nombre_reporte: 'OEE Anual PTAR' , link:'' , activo: true},
-    { id : 14 , nombre_reporte: 'OEE Anual SSP' , link:'' , activo: true}
+    { id : 3 , nombre_reporte: 'ETAD' , link:'etad' , activo: true},
+    { id : 4 , nombre_reporte: 'Diario de Producción JUDO' , link:'judo' , activo: true},
+    { id : 5 , nombre_reporte: 'OEE Anual Amut ' , link:'' , activo: true},
+    { id : 6 , nombre_reporte: 'OEE Anual Buhler (E1 y E2)' , link:'' , activo: true},
+    { id : 7 , nombre_reporte: 'OEE Anual PTAR' , link:'' , activo: true},
+    { id : 8 , nombre_reporte: 'OEE Anual SSP' , link:'' , activo: true}
   ];
 
   constructor() { }

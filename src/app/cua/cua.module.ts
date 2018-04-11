@@ -20,7 +20,7 @@ import { FormularioDetalleComponent } from './list-by-catalog/formulario-detalle
 import { NgPipesModule } from 'ngx-pipes';
 import { ListaReportesComponent } from './lista-reportes/lista-reportes.component';
 import { RptOeeFallasComponent } from './rpt-oee-fallas/rpt-oee-fallas.component';
-import { RptJudoAmut12Component } from './rpt-judo-amut1-2/rpt-judo-amut1-2.component';
+import { RptJudoComponent } from './rpt-judo/rpt-judo.component';
 import { RptFallasComponent } from './rpt-fallas/rpt-fallas.component';
 import { MetaMasivaComponent } from './meta-masiva/meta-masiva.component';
 import { FormularioProduccionComponent } from './formulario-produccion/formulario-produccion.component';
@@ -48,7 +48,7 @@ const routesMetas: Routes = [
   /* rutas de reportes */
   { path: 'opciones/lista-reportes', component: ListaReportesComponent},
   { path: 'opciones/lista-reportes/oee-fallas', component: RptOeeFallasComponent},
-  { path: 'opciones/lista-reportes/judo-amut', component: RptJudoAmut12Component},
+  { path: 'opciones/lista-reportes/judo', component: RptJudoComponent},
   { path: 'opciones/lista-reportes/fallas', component: RptFallasComponent},
   
   /* Registro de produccion */
@@ -85,7 +85,7 @@ const routesMetas: Routes = [
     FormularioDetalleComponent, 
     ListaReportesComponent, 
     RptOeeFallasComponent,
-    RptJudoAmut12Component, 
+    RptJudoComponent, 
     RptFallasComponent, 
     MetaMasivaComponent, 
     FormularioProduccionComponent,

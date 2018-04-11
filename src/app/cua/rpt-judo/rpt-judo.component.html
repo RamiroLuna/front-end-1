@@ -1,7 +1,7 @@
 <div class="container">
 
   <div class="section"></div>
-  <h4 class="color_titulo center-align">Reporte diario de producción JUDO A1 y A2</h4>
+  <h4 class="color_titulo center-align">Reporte diario de producción JUDO</h4>
   <!-- Solo para dispositivos moviles -->
   <div class="hide-on-large-only right-align">
     <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
@@ -13,13 +13,22 @@
   </div>
   <!-- Fin solo para dispositivos moviles -->
   <div class="row">
-      <div class="input-field col s6">
+      <div class="input-field col s3">
+          <select class="opciones">
+            <option value="" selected>Seleccione</option>
+            <option value="" >AMUT</option>
+            <option value="">BUHLER</option>
+            <option value="">PTAR</option>
+          </select>
+          <label>Linea</label>
+        </div>
+      <div class="input-field col s4">
         <input id="inicio" type="text" class="active" data-value="inicio" />
         <label for="inicio">Inicio</label>
       </div>
   
-      <div class="file-field input-field col s6">
-        <a class="col s4 m4 l1 xl1 waves-effect waves-light btn right light-green lighten-1" (click)="busqueda()">
+      <div class="file-field input-field col s5">
+        <a class="col s4 m4 l2 xl2 waves-effect waves-light btn right light-green lighten-1" (click)="busqueda()">
           <i class="material-icons">search</i>
         </a>
         <div class="file-path-wrapper">
