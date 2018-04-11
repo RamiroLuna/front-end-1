@@ -51,13 +51,13 @@
                 <div class="col s1 m1 l1 xl1"></div>
                 <a routerLink="produccion" class=" col s4 m4 l4 xl4  waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ir">
-                    PRODUCCION 
+                    PRODUCCION
                   </i>
                 </a>
                 <div class="col s1 m1 l1 xl1"></div>
                 <a routerLink="fallas" class=" col s4 m4 l4 xl4  waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ir">
-                    FALLAS 
+                    FALLAS
                   </i>
                 </a>
               </div>
@@ -66,11 +66,11 @@
               <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
                 <div class="col s1 m1 l1 xl1"></div>
                 <a routerLink="produccion" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">
-                    PRODUCCION
+                  PRODUCCION
                 </a>
                 <div class="col s1 m1 l1 xl1"></div>
                 <a routerLink="fallas" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">
-                    FALLAS
+                  FALLAS
                 </a>
               </div>
             </div>
@@ -89,4 +89,29 @@
       </li>
     </ul>
   </div>
+
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only center-align">
+    <a routerLink="/home" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      data-delay="50" data-tooltip="Ir a home" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">home</i>
+      </i>
+    </a>
+  </div>
+  <!-- Fin solo para dispositivos moviles -->
+
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a routerLink="/home" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Ir a home" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">home</i>
+        </i>
+      </a>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas-->
+
 </div>

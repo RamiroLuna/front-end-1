@@ -25,4 +25,8 @@ export class OptionsComponent  implements  AfterViewInit{
     $('.tooltipped').tooltip('hide');
   }
 
+  regresar() {
+    $('.tooltipped').tooltip('hide');
+  }
+
 }

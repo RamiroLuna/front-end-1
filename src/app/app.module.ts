@@ -17,6 +17,7 @@ import { UsersModule } from './users/users.module';
 import { CuaModule } from './cua/cua.module'; 
 import { NgPipesModule } from 'ngx-pipes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MenuPrincipalComponent } from './menu-principal/menu-principal.component';
 
 
 const routes: Routes = [
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [NotAuthGuard] },
   {
     path: 'home', component: HomeComponent, canActivate: [AuthGuard], children: [
+      { path: '', component:  MenuPrincipalComponent},
       { path: 'usuarios', loadChildren: './users/users.module#UsersModule' },
       { path: 'cua', loadChildren: './cua/cua.module#CuaModule' }
     ]
@@ -36,7 +38,8 @@ const routes: Routes = [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    MenuComponent
+    MenuComponent,
+    MenuPrincipalComponent
   ],
   imports: [
     BrowserModule,
