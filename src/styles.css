@@ -8,6 +8,14 @@
 }
 
 /*
+ * Estilo para mostrar scroll en ejex
+ */
+ .scroll_ejex_tabla_reporte{
+    overflow: hidden; 
+    overflow-x: scroll;
+ }
+
+/*
  * Contenido para animar spinner
  */
  #loader-wrapper {

@@ -1,3 +1,353 @@
-<p>
-  rpt-etad works!
-</p>
+<div class="container">
+  <div class="section"></div>
+  <h4 class="color_titulo center-align">Reporte ETAD - Tiempo muerto</h4>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">arrow_back</i>
+      </i>
+    </a>
+    <a class="btn-floating light-green lighten-2 waves-effect waves-light tooltipped" data-position="top" data-delay="50" data-tooltip="Descargar excel">
+      <i class="material-icons">
+        <i class="material-icons">file_download</i>
+      </i>
+    </a>
+  </div>
+  <div class="row">
+    <form autocomplete="off">
+      <fieldset>
+        <legend class="color_titulo">Capture los datos para generar reporte:</legend>
+        <div class="input-field col s6">
+          <input id="inicio" type="text" class="active" data-value="inicio" />
+          <label for="inicio">Inicio</label>
+        </div>
+
+        <div class="file-field input-field col s6">
+          <a class="col s4 m4 l2 xl2 waves-effect waves-light btn right light-green lighten-1" (click)="busqueda()">
+            <i class="material-icons">search</i>
+          </a>
+          <div class="file-path-wrapper">
+            <input id="fin" type="text" class="active" data-value="fin">
+            <label for="fin">Fin</label>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <div class="section"></div>
+  <div id="contenedor_reporte" class="scroll_ejex_tabla_reporte">
+    <table class="striped">
+      <tr class="light-green darken-1">
+        <th class="">Fuentes de Perdida</th>
+        <th class="center-align">A</th>
+        <th class="center-align">B</th>
+        <th class="center-align">C</th>
+        <th class="center-align">D</th>
+        <th class="center-align">Total</th>
+        <th></th>
+        <th class="center-align">A</th>
+        <th class="center-align">B</th>
+        <th class="center-align">C</th>
+        <th class="center-align">D</th>
+        <th class="center-align">Total</th>
+      </tr>
+
+      <tr>
+        <td class="">Mantto planeado (TMP)</td>
+        <td class="center-align">7.00</td>
+        <td class="center-align">2.67</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">9.67</td>
+        <td></td>
+        <td class="center-align">87.50</td>
+        <td class="center-align">33.33</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+      </tr>
+
+      <tr>
+        <td class="">Otro Planeado</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td></td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+      </tr>
+
+      <tr>
+        <td class="">Falla de Equipo (TMNP)</td>
+        <td class="center-align">-</td>
+        <td class="center-align">0.72</td>
+        <td class="center-align">-</td>
+        <td class="center-align">0.52</td>
+        <td class="center-align">1.23</td>
+        <td></td>
+        <td class="center-align">-</td>
+        <td class="center-align">8.96</td>
+        <td class="center-align">-</td>
+        <td class="center-align">6.46</td>
+        <td class="center-align">15.42</td>
+      </tr>
+
+      <tr>
+        <td class="">Falla de Operación (TMO)</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td></td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+      </tr>
+
+      <tr>
+        <td class="">Limpieza (TMO)</td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+      </tr>
+
+      <tr>
+        <td class="">Condiciones de Operaciones</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td></td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+      </tr>
+
+      <tr>
+        <td class="">Falla de Energia Electrica</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td></td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+      </tr>
+
+      <tr>
+        <td class="">Otros</td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+      </tr>
+
+      <tr>
+        <td class="">Falta de Materia Prima</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td></td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+      </tr>
+
+      <tr>
+        <td class="">Nivelación de Inventarios</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td></td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+      </tr>
+
+      <tr>
+        <td class="">Arranque</td>
+        <td class="center-align">-</td>
+        <td class="center-align">0.17</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">0.17</td>
+        <td></td>
+        <td class="center-align">-</td>
+        <td class="center-align">2.08</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">2.08</td>
+      </tr>
+
+      <tr>
+        <td class="">Problema con Sillos de Mexclado (RVPE)</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td></td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+      </tr>
+
+      <tr>
+        <td class="">Problemas en equipos (RVPE)</td>
+        <td class="center-align">-</td>
+        <td class="center-align">0.33</td>
+        <td class="center-align">-</td>
+        <td class="center-align">0.17</td>
+        <td class="center-align">0.50</td>
+        <td></td>
+        <td class="center-align">-</td>
+        <td class="center-align">4.17</td>
+        <td class="center-align">-</td>
+        <td class="center-align">2.08</td>
+        <td class="center-align">6.25</td>
+      </tr>
+
+      <tr>
+        <td class="">Alto amperaje en molinos (RVPF)</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td></td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+      </tr>
+
+      <tr>
+        <td class="">Fuera de especificación (Df Interno)</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td></td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+        <td class="center-align">-</td>
+      </tr>
+
+      <tr>
+        <td class="">Pruebas</td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+      </tr>
+
+      <tr>
+        <td class="">Subproductos</td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+        <td class="center-align"></td>
+      </tr>
+
+      <tr class="light-green darken-1">
+        <td class="">Total</td>
+        <td class="center-align">7.00</td>
+        <td class="center-align">3.88</td>
+        <td class="center-align">-</td>
+        <td class="center-align">0.68</td>
+        <td class="center-align">11.57</td>
+        <td></td>
+        <td class="center-align">0.88</td>
+        <td class="center-align">0.49</td>
+        <td class="center-align">-</td>
+        <td class="center-align">0.09</td>
+        <td class="center-align">1.45</td>
+      </tr>
+    </table>
+  </div>
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a routerLink="../../lista-reportes" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped"
+        data-position="top" data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+      <a class="btn-floating btn-large  light-green lighten-2 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+        data-tooltip="Descargar excel">
+        <i class="material-icons">
+          <i class="material-icons">file_download</i>
+        </i>
+      </a>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas-->
+</div>
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>
