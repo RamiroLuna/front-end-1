@@ -25,6 +25,7 @@ import { RptFallasComponent } from './rpt-fallas/rpt-fallas.component';
 import { MetaMasivaComponent } from './meta-masiva/meta-masiva.component';
 import { FormularioProduccionComponent } from './formulario-produccion/formulario-produccion.component';
 import { ListaProduccionComponent } from './lista-produccion/lista-produccion.component';
+import { RptEtadComponent } from './rpt-etad/rpt-etad.component';
 
 
 
@@ -50,6 +51,7 @@ const routesMetas: Routes = [
   { path: 'opciones/lista-reportes/oee-fallas', component: RptOeeFallasComponent},
   { path: 'opciones/lista-reportes/judo', component: RptJudoComponent},
   { path: 'opciones/lista-reportes/fallas', component: RptFallasComponent},
+  { path: 'opciones/lista-reportes/etad', component: RptEtadComponent},
   
   /* Registro de produccion */
   { path: 'opciones/produccion', component: ListaProduccionComponent},
@@ -89,7 +91,8 @@ const routesMetas: Routes = [
     RptFallasComponent, 
     MetaMasivaComponent, 
     FormularioProduccionComponent,
-    ListaProduccionComponent
+    ListaProduccionComponent,
+    RptEtadComponent
   ]
 })
 export class CuaModule { }
