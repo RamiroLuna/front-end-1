@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as Chart from 'chart.js';
 
 declare var $: any;
+declare var Materialize: any;
 @Component({
   selector: 'app-rpt-oee-fallas',
   templateUrl: './rpt-oee-fallas.component.html',
@@ -11,7 +12,7 @@ export class RptOeeFallasComponent implements OnInit {
 
   public texto_link: string = "Ver datos en tabla";
   public seccion: number = 0;
-  public ver_tabla:boolean = false;
+  public ver_tabla: boolean = false;
 
   public options: any = {
     scales: {
@@ -19,6 +20,10 @@ export class RptOeeFallasComponent implements OnInit {
 
         ticks: {
           autoSkip: false
+        },
+        scaleLabel: {
+          display: true,
+          labelString: 'Horas',
         }
       }],
       yAxes: [{
@@ -27,7 +32,7 @@ export class RptOeeFallasComponent implements OnInit {
         },
         scaleLabel: {
           display: true,
-          labelString: 'Horas',
+          // labelString: 'Horas',
         }
       }]
     },
@@ -36,11 +41,14 @@ export class RptOeeFallasComponent implements OnInit {
     },
     title: {
       display: true,
-      text: 'Disponibilidad Amut 1',
+      text: 'Disponibilidad',
       fontColor: '#303f9f',
       fontStyle: 'bold',
       fontSize: 26
-    }
+    },
+
+    responsive: true
+  
   };
 
   public options2: any = {
@@ -62,46 +70,69 @@ export class RptOeeFallasComponent implements OnInit {
       }]
     },
     legend: {
+      display: true,
+    },
+    title: {
+      display: true,
+      text: 'OEE',
+      fontColor: '#303f9f',
+      fontStyle: 'bold',
+      fontSize: 26
+    },
+    responsive: true
+  };
+  public options3: any = {
+    scales: {
+      xAxes: [{
+
+        ticks: {
+          autoSkip: false
+        }, scaleLabel: {
+          display: true,
+          labelString: 'Horas muertas',
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        },
+        scaleLabel: {
+          display: false,
+          // labelString: '%',
+        }
+      }]
+    },
+    legend: {
       display: false,
     },
     title: {
       display: true,
-      text: 'OEE Amut 1',
+      text: 'OEE Fallas',
       fontColor: '#303f9f',
       fontStyle: 'bold',
       fontSize: 26
-    }
+    },
+    responsive: true
   };
 
   public data2: any = {
-    labels: ["Disponibiliad",
-      "Utilizacion",
-      "Calidad",
-      "OEE",
-      "TEEP",
-      "TM"
-    ],
-    datasets: [{
-      label: '# of Votes',
+    labels: ["Disponibiliad","Utilizacion", "Calidad", "OEE","TEEP", "TM"],
+    datasets: [
+      {
+      label: 'Meta alcanzada',
       data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)'
-      ],
-      borderColor: [
-        'rgba(255,99,132,1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      borderColor: 'rgba(75, 192, 192, 1)',
       borderWidth: 1
-    }]
+    },{
+      type: 'line',
+      label: 'Meta esperada',
+      data: [12, 19, 3, 5],
+      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+      borderColor: 'rgba(54, 162, 235, 1)',
+      borderWidth: 1
+    }
+  ]
   };
   public data: any = {
     labels: ["Tiempo Disponible Total",
@@ -117,22 +148,22 @@ export class RptOeeFallasComponent implements OnInit {
     datasets: [{
       label: '# of Votes',
       data: [12, 19, 3, 5, 2, 3, 2, 3, 4],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)'
-      ],
-      borderColor: [
-        'rgba(255,99,132,1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
+      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+      borderColor: 'rgba(54, 162, 235, 1)',
+      borderWidth: 1
+    }]
+  };
+
+  public data3: any = {
+    labels: ["Mantto planeado (TMP)", "Otro Planeado", "Falla de Equipo (TMNP)", "Falla de Operación (TMO)",
+      "Limpieza (TMO)", "Condiciones de Operación", "Falla de Energia Electrica", "Otros", "Falta de Materia Prima",
+      "Nivelación de inventarios", "Arranque (RVA)", "Problema con Silos de Mezclado (RVPE)", "Problemas en equipos (RVPE)",
+      "Alto amperaje en molinos (RVPE)", "Fuera de especificación (Df Interno)", "Pruebas", "Subproductos"],
+    datasets: [{
+      label: 'Horas muertas',
+      data: [72.4, 0.0, 32.4, 0.0, 0.0, 1.3, 4.5, 1.4, 0.0, 0.0, 2.3, 0.7, 4.2, 0.0, 0.0, 0.0, 2.2],
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      borderColor: 'rgba(255,99,132,1)',
       borderWidth: 1
     }]
   };
@@ -159,26 +190,40 @@ export class RptOeeFallasComponent implements OnInit {
   ]
 
   public item_oee: Array<any> = [
-    { descripcion: 'Disponibilidad', oee: 632.0, real: '84.9%'},
-    { descripcion: 'Utilizacion', oee: 3.541, real: '101.2%'},
-    { descripcion: 'Calidad', oee: 0, real: '98.0%'},
-    { descripcion: 'OEE', oee: 0, real: '84.2%'},
-    { descripcion: 'TEM', oee: 622.6, real: '83.7%'},
-    { descripcion: 'TM', oee: 121.4, real: '16.3%'},
+    { descripcion: 'Disponibilidad', oee: 632.0, real: '84.9%' },
+    { descripcion: 'Utilizacion', oee: 3.541, real: '101.2%' },
+    { descripcion: 'Calidad', oee: 0, real: '98.0%' },
+    { descripcion: 'OEE', oee: 0, real: '84.2%' },
+    { descripcion: 'TEM', oee: 622.6, real: '83.7%' },
+    { descripcion: 'TM', oee: 121.4, real: '16.3%' },
   ]
 
   constructor() { }
 
   ngOnInit() {
+    $('select').material_select();
+
     $('.carousel.carousel-slider').carousel({
       fullWidth: true,
       indicators: true,
-      onCycleTo:  (ele, dragged) =>{
+      onCycleTo: (ele, dragged) => {
         this.texto_link = "Ver datos en tabla(s)";
         this.ver_tabla = false;
         this.seccion = $(ele).index();
         $('.carousel li').css('background-color', '#bdbdbd');
         $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
+
+        switch (this.seccion) {
+          case 1:
+            disp.update();
+            break;
+          case 2:
+            oee.update();
+            break;
+          case 3:
+            fallas.update();
+            break;
+        }
       }
     });
 
@@ -186,20 +231,29 @@ export class RptOeeFallasComponent implements OnInit {
     $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
 
     var ctx = $('#myChart').get(0).getContext('2d');
-    new Chart(ctx, {
-      type: 'bar',
+    var disp = new Chart(ctx, {
+      type: 'horizontalBar',
       data: this.data,
       options: this.options
     });
 
     var ctx = $('#oee').get(0).getContext('2d');
-    new Chart(ctx, {
+    var oee = new Chart(ctx, {
       type: 'bar',
       data: this.data2,
       options: this.options2
     });
 
+    var ctx = $('#fallas').get(0).getContext('2d');
+    var fallas = new Chart(ctx, {
+      type: 'horizontalBar',
+      data: this.data3,
+      options: this.options3
+    });
+
     $('.tooltipped').tooltip({ delay: 50 });
+
+   
 
   }
 
@@ -207,7 +261,7 @@ export class RptOeeFallasComponent implements OnInit {
   verTablas(event): void {
     event.preventDefault();
     this.ver_tabla = !this.ver_tabla;
-    this.texto_link = this.ver_tabla? "Ocultar tabla(s)": "Ver datos en tabla(s)";
+    this.texto_link = this.ver_tabla ? "Ocultar tabla(s)" : "Ver datos en tabla(s)";
   }
 
 
