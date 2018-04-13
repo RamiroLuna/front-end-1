@@ -22,9 +22,11 @@ import { MenuPrincipalComponent } from './menu-principal/menu-principal.componen
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full'},
+  // { path: 'login', component: LoginComponent, canActivate: [NotAuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [NotAuthGuard] },
   {
-    path: 'home', component: HomeComponent, canActivate: [AuthGuard], children: [
+    // path: 'home', component: HomeComponent, canActivate: [AuthGuard],children: [
+    path: 'home', component: HomeComponent, children: [
       { path: '', component:  MenuPrincipalComponent},
       { path: 'usuarios', loadChildren: './users/users.module#UsersModule' },
       { path: 'cua', loadChildren: './cua/cua.module#CuaModule' }
@@ -49,7 +51,7 @@ const routes: Routes = [
     BrowserAnimationsModule,
     NgPipesModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, { useHash: true })
   ],
   providers: [
     AuthService,
