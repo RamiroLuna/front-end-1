@@ -9,6 +9,12 @@
         <i class="material-icons">arrow_back</i>
       </i>
     </a>
+    <a class="btn-floating light-green darken-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50" data-tooltip="Subir archivo"
+      (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">cloud_upload</i>
+      </i>
+    </a>
     <br>
   </div>
   <!-- Fin Solo para dispositivos moviles -->
@@ -20,15 +26,35 @@
       </legend>
       <div class="section"></div>
       <div class="row">
-        <div class="col s12 m12 l2 xl2"></div>
-        <div class="input-field col s12 m12 l8 xl8">
+        <div class="col s12 m12 l1 xl1"></div>
+        <div class="input-field col s12 m12 l5 xl5">
+          <select class="opciones">
+            <option value="" selected>Seleccione</option>
+            <option value="1">ENERO</option>
+            <option value="2">FEBRERO</option>
+            <option value="3">MARZO </option>
+            <option value="4">ABRIL</option>
+          </select>
+          <label>Periodo</label>
+        </div>
+        <div class="input-field col s12 m12 l5 xl5">
           <input placeholder="Abril 2018" id="mes" type="text">
           <label for="mes" class="active">Mes y año:</label>
         </div>
       </div>
       <div class="row">
-        <div class="col s12 m12 l2 xl2"></div>
-        <div class="file-field input-field input-field col s12 m12 l8 xl8">
+        <div class="col s12 m12 l1 xl1"></div>
+        <div class="input-field col s12 m12 l5 xl5">
+          <select class="opciones">
+            <option value="" selected>Seleccione</option>
+            <option value="1">AMUT 1</option>
+            <option value="2">AMUT 2</option>
+            <option value="3">EXTRUSOR 1</option>
+            <option value="4">EXTRUSOR 2</option>
+          </select>
+          <label>Linea</label>
+        </div>
+        <div class="file-field input-field input-field col s12 m12 l5 xl5">
           <div class="btn">
             <span>
               <i class="material-icons">file_upload</i>
@@ -40,15 +66,45 @@
           </div>
         </div>
       </div>
-      <div class="row center">
-        <div class="col s12">
-          <div class="input-field">
-            <a class="waves-effect waves-light btn light-green darken-1">CARGAR ARCHIVO</a>
-          </div>
-        </div>
-      </div>
     </fieldset>
   </form>
+  <div class="section"></div>
+  <div class="scroll_ejex_tabla_reporte">
+    <form class="col s12 m12 l12 xl12" autocomplete="off">
+      <fieldset>
+        <legend class="color_titulo">
+          <b>Metas cargadas:</b>
+        </legend>
+        <table class="striped">
+          <thead>
+            <tr>
+              <th>Dia</th>
+              <th>Turno</th>
+              <th>Grupo</th>
+              <th>Meta</th>
+              <th>T dia</th>
+              <th>TMP</th>
+              <th>T disp</th>
+              <th>Vel</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let meta of metas">
+              <td>{{meta.dia}}</td>
+              <td>{{meta.turno}}</td>
+              <td>{{meta.grupo}}</td>
+              <td>{{meta.meta}}</td>
+              <td>{{meta.t_dia}}</td>
+              <td>{{meta.tmp}}</td>
+              <td>{{meta.tdisp}}</td>
+              <td>{{meta.vel}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </fieldset>
+    </form>
+  </div>
   <!-- Fin del formulario de carga -->
   <!-- Inicio solo para pantallas-->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
@@ -57,6 +113,12 @@
         data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">
         <i class="material-icons">
           <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+      <a class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+        data-tooltip="Subir archivo" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">cloud_upload</i>
         </i>
       </a>
     </div>

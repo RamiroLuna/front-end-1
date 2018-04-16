@@ -9,6 +9,14 @@ declare var Materialize: any;
 })
 export class MetaMasivaComponent implements OnInit {
 
+  public metas:Array<any>= [
+    { dia: '1',  turno:'1', grupo: 'A',meta:'23.23', t_dia:'8', tmp:'12', tdisp:'12', vel:'12'},
+    { dia: '1',  turno:'2', grupo: 'A',meta:'23.23', t_dia:'8', tmp:'12', tdisp:'12', vel:'12'},
+    { dia: '1',  turno:'3', grupo: 'A',meta:'23.23', t_dia:'8', tmp:'12', tdisp:'12', vel:'12'},
+    { dia: '2',  turno:'1', grupo: 'A',meta:'23.23', t_dia:'8', tmp:'12', tdisp:'12', vel:'12'},
+    { dia: '2',  turno:'2', grupo: 'A',meta:'23.23', t_dia:'8', tmp:'12', tdisp:'12', vel:'12'},
+    { dia: '2',  turno:'3', grupo: 'A',meta:'23.23', t_dia:'8', tmp:'12', tdisp:'12', vel:'12'}
+  ];
   constructor() { }
 
   ngOnInit() {
@@ -35,7 +43,7 @@ export class MetaMasivaComponent implements OnInit {
       //     this.asignacion.dia = $('#dia').val();
       // }
     });
-
+    $('.opciones').material_select();
     $('.tooltipped').tooltip({ delay: 50 });
 
   }
