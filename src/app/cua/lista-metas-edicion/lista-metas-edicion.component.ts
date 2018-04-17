@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { MetaAsignacion } from '../../models/meta-asignacion';
-import { deleteItemArray, getAnioActual, DataTable, getYears } from '../../utils';
+import { deleteItemArray, getAnioActual, getYears } from '../../utils';
 import swal from 'sweetalert2';
 import { ListaMetasEdicionService } from './lista-metas-edicion.service';
 
@@ -49,11 +49,32 @@ export class ListaMetasEdicionComponent implements OnInit {
   ngAfterViewHttp(): void {
     $('.periodo, .linea').material_select();
  
-    DataTable('#tabla');
+
+    $("table tr").editable({
+      maintainWidth: true,
+      keyboard: true,
+      dblclick: false,
+      button: true,
+      buttonSelector: ".edit",
+      dropdowns: {
+        "grupo":['A','B','C','D'],
+        "turno":[1,2,3]
+      },
+      edit: function(values) {
+        $('#tabla select').material_select();
+      },
+      save: function(values) {
+        console.log('valores',values)
+       
+      },
+      cancel: function(values) {
+        alert( ' cancel ')
+      }
+  });
 
     $('.tooltipped').tooltip({ delay: 50 });
 
-
+    
   }
 
 
@@ -63,6 +84,13 @@ export class ListaMetasEdicionComponent implements OnInit {
 
   regresar() {
     $('.tooltipped').tooltip('hide');
+  }
+
+  changeIcono(event):void{
+    let icono = $(event.target).html();
+    $(event.target).html(icono == 'edit' ? 'save' : 'edit');
+
+
   }
 
   openModalYear(event): void {
@@ -121,7 +149,7 @@ export class ListaMetasEdicionComponent implements OnInit {
     swal({
       title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
       type: 'question',
-      html: '<p style="color: #303f9f "> Asignación para el día: <b>' + asignacion.dia + ' </b></p>',
+      html: '<p style="color: #303f9f "> Dia : <b>' + asignacion.dia + ' </b>Turno: <b>'+ asignacion.turno +'</b> Grupo: <b>'+ asignacion.grupo +'</b></p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',

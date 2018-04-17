@@ -52,36 +52,34 @@
       <label></label>
     </div>
   </div>
-  <div class="row" *ngIf="!datos_tabla">
-    <table id="tabla" class="display" cellspacing="0" width="100%" style="overflow-x:auto;">
+  <div class="row scroll_ejex_tabla_reporte" *ngIf="!datos_tabla">
+    <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;">
       <thead>
         <tr>
-          <th class="center-align">Linea</th>
+          
           <th class="center-align">Día</th>
           <th class="center-align">Turno</th>
           <th class="center-align">Grupo</th>
           <th class="center-align">Meta</th>
-          <th class="center-align">Valor</th>
+          <th class="center-align">TMP</th>
+          <th class="center-align">Vel</th>
           <th class="center-align">Editar</th>
           <th class="center-align">Eliminar</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr *ngFor="let asignacion of asignaciones">
-          <td class="center-align">{{asignacion.linea}}</td>
-          <td class="center-align">{{asignacion.dia}}</td>
-          <td class="center-align">{{asignacion.turno}}</td>
-          <td class="center-align">{{asignacion.grupo}}</td>
-          <td class="center-align">{{asignacion.meta}}</td>
-          <td class="center-align">{{asignacion.valor }} T</td>
+        <tr *ngFor="let asignacion of asignaciones">      
+          <td class="center-align" data-field="dia">{{asignacion.dia}}</td>
+          <td class="center-align" data-field="turno">{{asignacion.turno}}</td>
+          <td class="center-align" data-field="grupo">{{asignacion.grupo}}</td>
+          <td class="center-align" data-field="meta">{{asignacion.valor }}</td>
+          <td class="center-align" data-field="tmp">1.50</td>
+          <td class="center-align" data-field="velocidad">3.55</td>
           <td class="center-align">
-            <a class="btn-floating light-green lighten-1" (click)="editar(asignacion)">
+            <a class="btn-floating light-green lighten-1 edit" (click)="changeIcono($event)">
               <i class="material-icons">edit</i>
             </a>
-            <!-- <a class="btn-floating light-green lighten-1" [routerLink]="asignacion.id_pro_meta">
-              <i class="material-icons">edit</i>
-            </a> -->
           </td>
           <td class="center-align">
             <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(asignacion,'eliminar')">
