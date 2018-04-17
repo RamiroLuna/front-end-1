@@ -37,8 +37,8 @@ const routesMetas: Routes = [
   { path: 'opciones/productos/:id', component: FormularioProductoComponent },
   { path: 'opciones/productos-asignaciones', component:  ListaAsignacionProductoComponent},
   /* rutas de metas */
-  { path: 'opciones/metas', component: ListaMetasComponent },
-  { path: 'opciones/metas/:id', component: FormularioMetasComponent },
+  // { path: 'opciones/metas', component: ListaMetasComponent }, estos componente ya no irian
+  // { path: 'opciones/metas/:id', component: FormularioMetasComponent },
   { path: 'opciones/metas-lista-edicion', component: ListaMetasEdicionComponent },
   { path: 'opciones/metas-carga-manual/:id', component: MetaManualComponent },
   { path: 'opciones/metas-carga-masiva', component: MetaMasivaComponent },

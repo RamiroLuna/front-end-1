@@ -11,34 +11,40 @@
             <div class="col s12 m12 l12 xl12">
               <!-- Vista solo para moviles  -->
               <div class="hide-on-large-only">
-                <div class="col s1 m1 l1 xl1"></div>
-                <a routerLink="metas-asignaciones" class=" col s4 m4 l4 xl4  waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                <a routerLink="metas-carga-manual/nuevo" class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     MANUAL
                   </i>
                 </a>
-                <div class="col s2 m2 l2 xl2"></div>
-                <a routerLink="metas-carga-masiva" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                <div class="col s1 m1 l1 xl1"></div>
+                <a routerLink="metas-carga-masiva" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     MASIVA
+                  </i>
+                </a>
+                <div class="col s1 m1 l1 xl1"></div>
+                <a routerLink="metas-lista-edicion" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                    EDICIÓN
                   </i>
                 </a>
               </div>
               <!-- Fin solo para moviles -->
               <!-- Inicio solo para pantallas-->
               <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+                  <div class="col s1 m1 l1 xl1"></div>
                 <a routerLink="metas-carga-manual/nuevo" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   CARGA MANUAL
                 </a>
-                <div class="col s1 m1 l1 xl1"></div>
+                <div class="col s2 m2 l2 xl2"></div>
                 <a routerLink="metas-carga-masiva" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   CARGA MASIVA
                 </a>
-                <div class="col s1 m1 l1 xl1"></div>
+                <!-- <div class="col s1 m1 l1 xl1"></div>
                 <a routerLink="nuevo" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green lighten-2">
                  CARGA CONCEPTOS
-                </a>
-                <div class="col s1 m1 l1 xl1"></div>
+                </a> -->
+                <div class="col s2 m2 l2 xl2"></div>
                 <a routerLink="metas-lista-edicion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                  EDICION
                 </a>
