@@ -6,8 +6,8 @@ import { MaterializeModule } from 'angular2-materialize';
 import { OptionsComponent } from './options/options.component';
 import { FormularioMetasComponent } from './formulario-metas/formulario-metas.component';
 import { ListaMetasComponent } from './lista-metas/lista-metas.component';
-import { AsginacionMetasComponent } from './asginacion-metas/asginacion-metas.component';
-import { ListaAsignacionComponent } from './lista-asignacion/lista-asignacion.component';
+import { MetaManualComponent } from './meta-manual/meta-manual.component';
+import { ListaMetasEdicionComponent } from './lista-metas-edicion/lista-metas-edicion.component';
 import { ListaFallasComponent } from './lista-fallas/lista-fallas.component';
 import { FormularioFallasComponent } from './formulario-fallas/formulario-fallas.component';
 import { ListaProductsComponent } from './lista-products/lista-products.component';
@@ -31,16 +31,16 @@ import { RptEtadComponent } from './rpt-etad/rpt-etad.component';
 
 const routesMetas: Routes = [
   { path: 'opciones', component: OptionsComponent },
-  { path: 'opciones/metas', component: ListaMetasComponent },
-  { path: 'opciones/metas/:id', component: FormularioMetasComponent },
-  { path: 'opciones/metas-asignaciones', component: ListaAsignacionComponent },
-  { path: 'opciones/metas-asignaciones/:id', component: AsginacionMetasComponent },
   { path: 'opciones/fallas', component: ListaFallasComponent },
   { path: 'opciones/fallas/:id', component: FormularioFallasComponent },
   { path: 'opciones/productos', component: ListaProductsComponent },
   { path: 'opciones/productos/:id', component: FormularioProductoComponent },
   { path: 'opciones/productos-asignaciones', component:  ListaAsignacionProductoComponent},
-  /* Carga de metas */
+  /* rutas de metas */
+  { path: 'opciones/metas', component: ListaMetasComponent },
+  { path: 'opciones/metas/:id', component: FormularioMetasComponent },
+  { path: 'opciones/metas-lista-edicion', component: ListaMetasEdicionComponent },
+  { path: 'opciones/metas-carga-manual/:id', component: MetaManualComponent },
   { path: 'opciones/metas-carga-masiva', component: MetaMasivaComponent },
   /* rutas de catalogos */
   { path: 'opciones/catalogos', component: ListCatalogsComponent},
@@ -74,8 +74,8 @@ const routesMetas: Routes = [
     OptionsComponent, 
     FormularioMetasComponent, 
     ListaMetasComponent, 
-    AsginacionMetasComponent, 
-    ListaAsignacionComponent, 
+    MetaManualComponent, 
+    ListaMetasEdicionComponent, 
     ListaFallasComponent, 
     FormularioFallasComponent, 
     ListaProductsComponent, 

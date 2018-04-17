@@ -1,26 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { MetaAsignacion } from '../../models/meta-asignacion';
-import { deleteItemArray, getAnioActual, DataTable, getYears} from '../../utils';
+import { deleteItemArray, getAnioActual, DataTable, getYears } from '../../utils';
 import swal from 'sweetalert2';
-import { ListaAsignacionService } from './lista-asignacion.service';
+import { ListaMetasEdicionService } from './lista-metas-edicion.service';
 
 
 declare var $: any;
 declare var Materialize: any;
 @Component({
-  selector: 'app-lista-asignacion',
-  templateUrl: './lista-asignacion.component.html',
-  providers: [ ListaAsignacionService ]
+  selector: 'app-lista-metas-edicion',
+  templateUrl: './lista-metas-edicion.component.html',
+  providers: [ListaMetasEdicionService]
 })
-export class ListaAsignacionComponent implements OnInit{
+export class ListaMetasEdicionComponent implements OnInit {
   public loading: boolean;
+  public datos_tabla: boolean = false;
   public mensajeModal: string;
   public asignaciones: Array<MetaAsignacion>;
-  public anio_actual:number;
+  public anio_actual: number;
 
   constructor(private auth: AuthService,
-    private service: ListaAsignacionService
+    private service: ListaMetasEdicionService
   ) { }
 
   ngOnInit() {
@@ -30,8 +31,8 @@ export class ListaAsignacionComponent implements OnInit{
       if (result.response.sucessfull) {
         this.asignaciones = result.data.listMetasAsignacion || [];
         this.loading = false;
-        setTimeout(()=>{this.ngAfterViewHttp()},200)
-       
+        setTimeout(() => { this.ngAfterViewHttp() }, 200)
+
       } else {
         Materialize.toast(result.response.message, 4000, 'red');
         this.loading = false;
@@ -45,12 +46,15 @@ export class ListaAsignacionComponent implements OnInit{
   /*
    * Carga plugins despues de cargar y mostrar objetos en el DOM
    */
-   ngAfterViewHttp(): void{
-
+  ngAfterViewHttp(): void {
+    $('.periodo, .linea').material_select();
+ 
     DataTable('#tabla');
 
     $('.tooltipped').tooltip({ delay: 50 });
-   } 
+
+
+  }
 
 
   agregar() {
@@ -61,7 +65,7 @@ export class ListaAsignacionComponent implements OnInit{
     $('.tooltipped').tooltip('hide');
   }
 
-  openModalYear(event):void{
+  openModalYear(event): void {
     event.preventDefault();
     swal({
       title: 'Seleccione el año',
@@ -72,9 +76,9 @@ export class ListaAsignacionComponent implements OnInit{
       inputPlaceholder: 'Seleccione año',
       showCancelButton: true,
       inputValidator: (value) => {
-        
+
         return new Promise((resolve) => {
-         
+
           if (value != '') {
             resolve();
             this.loading = true;
@@ -84,8 +88,8 @@ export class ListaAsignacionComponent implements OnInit{
               if (result.response.sucessfull) {
                 this.asignaciones = result.data.listMetasAsignacion || [];
                 this.loading = false;
-                setTimeout(()=>{this.ngAfterViewHttp()},200)
-               
+                setTimeout(() => { this.ngAfterViewHttp() }, 200)
+
               } else {
                 Materialize.toast('Ocurrió  un error al consultar las metas!', 4000, 'red');
                 this.loading = false;
@@ -151,6 +155,10 @@ export class ListaAsignacionComponent implements OnInit{
       }
     })
 
+  }
+
+  editar(asignacion: MetaAsignacion): void {
+   
   }
 
 }

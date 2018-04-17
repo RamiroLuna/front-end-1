@@ -5,7 +5,7 @@ import { BASE_URL_SERVICE } from '../../constants';
 import { MetaAsignacion } from '../../models/meta-asignacion';
 
 @Injectable()
-export class AsginacionMetasService {
+export class MetaManualService {
 
   /* 
    * URL del servicio del componente

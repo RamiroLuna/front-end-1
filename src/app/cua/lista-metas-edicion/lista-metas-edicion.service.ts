@@ -5,7 +5,7 @@ import { MetaAsignacion } from '../../models/meta-asignacion';
 import { BASE_URL_SERVICE } from '../../constants';
 
 @Injectable()
-export class ListaAsignacionService {
+export class ListaMetasEdicionService {
 
   private URL = BASE_URL_SERVICE + '/Metas';
 

@@ -127,9 +127,9 @@ function DataTable(el): void {
         }
     });
 
-    $('select').val('10'); //seleccionar valor por defecto del select
-    $('select').addClass("browser-default"); //agregar una clase de materializecss de esta forma ya no se pierde el select de numero de registros.
-    $('select').material_select();
+    $('#tabla_wrapper select').val('10'); //seleccionar valor por defecto del select
+    $('#tabla_wrapper select').addClass("browser-default"); //agregar una clase de materializecss de esta forma ya no se pierde el select de numero de registros.
+    $('#tabla_wrapper select').material_select();
 }
 
 

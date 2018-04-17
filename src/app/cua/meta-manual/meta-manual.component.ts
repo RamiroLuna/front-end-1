@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { AsginacionMetasService } from './asginacion-metas.service';
+import { MetaManualService } from './meta-manual.service';
 import { AuthService } from '../../auth/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Catalogo } from '../../models/catalogo';
@@ -15,11 +15,11 @@ declare var $: any;
 declare var Materialize: any;
 
 @Component({
-  selector: 'app-asginacion-metas',
-  templateUrl: './asginacion-metas.component.html',
-  providers: [AsginacionMetasService]
+  selector: 'app-meta-manual',
+  templateUrl: './meta-manual.component.html',
+  providers: [MetaManualService]
 })
-export class AsginacionMetasComponent implements AfterViewInit {
+export class MetaManualComponent implements AfterViewInit {
 
 
 
@@ -48,7 +48,7 @@ export class AsginacionMetasComponent implements AfterViewInit {
   public seccion: string;
   public id: any; //Id seleccionado
 
-  constructor(private service: AsginacionMetasService,
+  constructor(private service: MetaManualService,
     private auth: AuthService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
