@@ -59,12 +59,14 @@ export class FormularioProductoComponent implements OnInit {
         
           if (result.response.sucessfull) {
             this.producto = result.data.producto;
-            this.lineas = [{id_linea:this.producto.id_linea,
-              descripcion: this.producto.linea,
-              activo:-1,
-              id_gpo_linea:-1,
-              descripcion_gpo_linea: 'default'
-            }]
+            this.lineas = [
+            //   {id_linea:this.producto.id_linea,
+            //   descripcion: this.producto.linea,
+            //   activo:-1,
+            //   id_gpo_linea:-1,
+            //   descripcion_gpo_linea: 'default'
+            // }
+          ]
             this.loadFormulario();
             this.loading = false;
           } else {

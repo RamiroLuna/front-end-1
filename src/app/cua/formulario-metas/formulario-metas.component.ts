@@ -63,13 +63,15 @@ export class FormularioMetasComponent implements OnInit {
             /*
              * Solo carga la linea en modo de consulta para la vista
              */
-            this.lineas = [{
-              id_linea: result.data.metasDTO.id_linea,
-              descripcion: result.data.metasDTO.linea,
-              activo: -1,
-              id_gpo_linea: -1,
-              descripcion_gpo_linea: 'default'
-            }];
+            this.lineas = [
+            //   {
+            //   id_linea: result.data.metasDTO.id_linea,
+            //   descripcion: result.data.metasDTO.linea,
+            //   activo: -1,
+            //   id_gpo_linea: -1,
+            //   descripcion_gpo_linea: 'default'
+            // }
+          ];
             this.loadFormulario();
             this.loading = false;
           } else {

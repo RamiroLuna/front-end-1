@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="!loading">
   <div class="section"></div>
   <h4 class="color_titulo center-align">Carga masiva de metas</h4>
   <!-- Solo para dispositivos moviles -->
@@ -10,7 +10,7 @@
       </i>
     </a>
     <a class="btn-floating light-green darken-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50" data-tooltip="Subir archivo"
-      (click)="regresar()">
+      (click)="regresar()" *ngIf="bVistaPre">
       <i class="material-icons">
         <i class="material-icons">cloud_upload</i>
       </i>
@@ -19,7 +19,7 @@
   </div>
   <!-- Fin Solo para dispositivos moviles -->
   <!-- Inicio de formulario -->
-  <form class="col s12 m12 l12 xl12" autocomplete="off">
+  <form class="col s12 m12 l12 xl12" [formGroup]="formCargaMasiva" (ngSubmit)="uploadMetasCSV()" autocomplete="off">
     <fieldset>
       <legend class="color_titulo">
         <b>Ingrese los datos para la carga masiva:</b>
@@ -28,52 +28,72 @@
       <div class="row">
         <div class="col s12 m12 l1 xl1"></div>
         <div class="input-field col s12 m12 l5 xl5">
-          <select class="opciones">
-            <option value="" selected>Seleccione</option>
-            <option value="1">ENERO</option>
-            <option value="2">FEBRERO</option>
-            <option value="3">MARZO </option>
-            <option value="4">ABRIL</option>
+          <select materialize="material_select" formControlName="anioSeleccionado" [materializeSelectOptions]="anios" [(ngModel)]="anioSeleccionado"
+            (ngModelChange)="changeAnio()">
+            <option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</option>
           </select>
-          <label>Periodo</label>
+          <label>Año</label>
+          <div *ngIf="formCargaMasiva.controls.anioSeleccionado.errors?.required && (formCargaMasiva.controls.anioSeleccionado?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
         </div>
         <div class="input-field col s12 m12 l5 xl5">
-          <input placeholder="Abril 2018" id="mes" type="text">
-          <label for="mes" class="active">Mes y año:</label>
+          <select materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="idPeriodo">
+            <option value="" selected>SELECCIONE</option>
+            <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
+          </select>
+          <label>Mes</label>
+          <div *ngIf="formCargaMasiva.controls.idPeriodo.errors?.required && (formCargaMasiva.controls.idPeriodo?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
         </div>
       </div>
       <div class="row">
         <div class="col s12 m12 l1 xl1"></div>
         <div class="input-field col s12 m12 l5 xl5">
-          <select class="opciones">
+          <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="idLinea" [(ngModel)]="idLinea">
             <option value="" selected>Seleccione</option>
-            <option value="1">AMUT 1</option>
-            <option value="2">AMUT 2</option>
-            <option value="3">EXTRUSOR 1</option>
-            <option value="4">EXTRUSOR 2</option>
+            <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{linea.descripcion}}</option>
           </select>
           <label>Linea</label>
+          <div *ngIf="formCargaMasiva.controls.idLinea.errors?.required && (formCargaMasiva.controls.idLinea?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
         </div>
         <div class="file-field input-field input-field col s12 m12 l5 xl5">
           <div class="btn">
             <span>
-              <i class="material-icons">file_upload</i>
+                <i class="material-icons">attach_file</i>
             </span>
-            <input type="file">
+            <input type="file" accept=".csv" (change)="seleccionaArchivo($event)">
+            <input  type='hidden' formControlName='archivoCsv' [(ngModel)]='archivoCsv' /> <!-- important -->
           </div>
           <div class="file-path-wrapper">
             <input class="file-path validate" type="text">
           </div>
+          <div *ngIf="formCargaMasiva.controls.archivoCsv.errors?.required && (formCargaMasiva.controls.archivoCsv?.touched || submitted)"
+            class="error">
+            Seleccione un archivo
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12 l12 xl12 center-align">
+          <button type='submit' class="waves-effect waves-light btn light-green darken-1" [disabled]="disabled">
+           {{ textoBtn }}</button>
         </div>
       </div>
     </fieldset>
   </form>
   <div class="section"></div>
-  <div class="scroll_ejex_tabla_reporte">
+  <div class="scroll_ejex_tabla_reporte" *ngIf="bVistaPre">
     <form class="col s12 m12 l12 xl12" autocomplete="off">
       <fieldset>
         <legend class="color_titulo">
-          <b>Metas cargadas:</b>
+          <b>Vista previa:</b>
         </legend>
         <table class="striped">
           <thead>
@@ -82,9 +102,7 @@
               <th>Turno</th>
               <th>Grupo</th>
               <th>Meta</th>
-              <th>T dia</th>
               <th>TMP</th>
-              <th>T disp</th>
               <th>Vel</th>
             </tr>
           </thead>
@@ -95,10 +113,8 @@
               <td>{{meta.turno}}</td>
               <td>{{meta.grupo}}</td>
               <td>{{meta.meta}}</td>
-              <td>{{meta.t_dia}}</td>
               <td>{{meta.tmp}}</td>
-              <td>{{meta.tdisp}}</td>
-              <td>{{meta.vel}}</td>
+              <td>{{meta.velocidad}}</td>
             </tr>
           </tbody>
         </table>
@@ -109,16 +125,16 @@
   <!-- Inicio solo para pantallas-->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+        data-tooltip="Subir archivo" (click)="regresar()" *ngIf="bVistaPre">
+        <i class="material-icons">
+          <i class="material-icons">cloud_upload</i>
+        </i>
+      </a>
       <a routerLink="../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
         data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">
         <i class="material-icons">
           <i class="material-icons">arrow_back</i>
-        </i>
-      </a>
-      <a class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
-        data-tooltip="Subir archivo" (click)="regresar()">
-        <i class="material-icons">
-          <i class="material-icons">cloud_upload</i>
         </i>
       </a>
     </div>

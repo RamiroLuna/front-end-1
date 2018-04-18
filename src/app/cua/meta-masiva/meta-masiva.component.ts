@@ -1,55 +1,158 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { MetaMasivaService } from './meta-masiva.service';
+import { getAnioActual } from '../../utils';
+import { AuthService } from '../../auth/auth.service';
+import { Linea } from '../../models/linea';
+import { Periodo } from '../../models/periodo';
+import { Forecast } from '../../models/forecast';
 
 
 declare var $: any;
 declare var Materialize: any;
 @Component({
   selector: 'app-meta-masiva',
-  templateUrl: './meta-masiva.component.html'
+  templateUrl: './meta-masiva.component.html',
+  providers: [MetaMasivaService]
 })
 export class MetaMasivaComponent implements OnInit {
 
-  public metas:Array<any>= [
-    { dia: '1',  turno:'1', grupo: 'A',meta:'23.23', t_dia:'8', tmp:'12', tdisp:'12', vel:'12'},
-    { dia: '1',  turno:'2', grupo: 'A',meta:'23.23', t_dia:'8', tmp:'12', tdisp:'12', vel:'12'},
-    { dia: '1',  turno:'3', grupo: 'A',meta:'23.23', t_dia:'8', tmp:'12', tdisp:'12', vel:'12'},
-    { dia: '2',  turno:'1', grupo: 'A',meta:'23.23', t_dia:'8', tmp:'12', tdisp:'12', vel:'12'},
-    { dia: '2',  turno:'2', grupo: 'A',meta:'23.23', t_dia:'8', tmp:'12', tdisp:'12', vel:'12'},
-    { dia: '2',  turno:'3', grupo: 'A',meta:'23.23', t_dia:'8', tmp:'12', tdisp:'12', vel:'12'}
-  ];
-  constructor() { }
+  public periodos: Array<Periodo> = [];
+  public lineas: Array<Linea> = [];
+  public anios: Array<any> = [];
+  public meses: Array<any> = [];
+  public metas: Array<Forecast> = [];
+
+  public formCargaMasiva: FormGroup;
+  public anioSeleccionado: number;
+  public idLinea: number;
+  public idPeriodo: number;
+  public archivoCsv: any;
+  public bVistaPre: boolean;
+  public loading: boolean;
+  public submitted: boolean;
+  public disabled: boolean;
+  public textoBtn: string;
+
+
+
+
+  constructor(private service: MetaMasivaService,
+    private fb: FormBuilder,
+    private auth: AuthService) { }
 
   ngOnInit() {
-    setTimeout(()=>{this.ngAfterViewInitHttp();},20);
+    this.anioSeleccionado = getAnioActual();
+    this.bVistaPre = false;
+    this.submitted = false;
+    this.loading = true;
+    this.disabled = false;
+    this.textoBtn = " SUBIR ARCHIVO";
+
+    this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
+
+      if (result.response.sucessfull) {
+        this.lineas = result.data.listLineas || [];
+        this.periodos = result.data.listPeriodos || [];
+
+        let tmpAnios = this.periodos.map(el => el.anio);
+        this.anios = this.periodos.filter((el, index) => {
+          return tmpAnios.indexOf(el.anio) === index;
+        });
+
+        this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
+
+        this.loading = false;
+        this.loadFormulario();
+        setTimeout(() => { this.ngAfterViewInitHttp() }, 200)
+      } else {
+        Materialize.toast('Ocurrió  un error al consultar catalogos!', 4000, 'red');
+        this.loading = false;
+      }
+    }, error => {
+      Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+      this.loading = false;
+    });
+
   }
 
   /* 
    * Carga de plugins para el componente
    */
   ngAfterViewInitHttp(): void {
-    $('#mes').pickadate({
-      selectMonths: true, // Creates a dropdown to control month
-      selectYears: 15, // Creates a dropdown of 15 years to control year,
-      today: '',
-      clear: 'Limpiar',
-      close: 'OK',
-      monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-      monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-      weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-      weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-      format: 'mm/yyyy',
-      closeOnSelect: false, // Close upon selecting a date,
-      // onClose:  () =>{
-      //     this.asignacion.dia = $('#dia').val();
-      // }
-    });
-    $('.opciones').material_select();
     $('.tooltipped').tooltip({ delay: 50 });
 
   }
 
   regresar() {
     $('.tooltipped').tooltip('hide');
+  }
+
+  loadFormulario(): void {
+    this.formCargaMasiva = this.fb.group({
+      idLinea: new FormControl({ value: this.idLinea }, [Validators.required]),
+      anioSeleccionado: new FormControl({ value: this.anioSeleccionado }, [Validators.required]),
+      idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required]),
+      archivoCsv: new FormControl({ value: this.archivoCsv }, [Validators.required])
+    });
+  }
+
+  seleccionaArchivo(evt): void {
+    this.bVistaPre = false;
+    //Si existe archivo cargado
+    if (evt.target.files.length > 0) {
+      let file = evt.target.files[0]; // FileList object
+
+      let reader = new FileReader();
+
+      reader.readAsDataURL(file);
+
+      //Se leyó correctamente el file
+      reader.onload = () => {
+        this.archivoCsv = reader.result.split(',')[1];
+      }
+
+      //Ocurrio un error al leer file
+      reader.onerror = (error) => {
+        this.archivoCsv = "";
+      };
+    } else {
+      this.archivoCsv = "";
+    }
+  }
+
+  changeAnio(): void {
+    this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
+  }
+
+  uploadMetasCSV(): void {
+
+    this.submitted = true;
+
+    if (this.formCargaMasiva.valid) {
+      this.disabled = true;
+      this.textoBtn = "CARGANDO ...";
+      this.service.uploadMetasCSV(this.auth.getIdUsuario(), this.archivoCsv, this.idPeriodo, this.idLinea).subscribe(result => {
+        if (result.response.sucessfull) {
+          this.metas = result.data.listMetas || [];
+          this.textoBtn = "SUBIR ARCHIVO";
+          this.bVistaPre = true;
+
+        } else {
+          this.textoBtn = "SUBIR ARCHIVO";
+          Materialize.toast('Error al cargar archivo!', 4000, 'red');
+        }
+        this.disabled = false;
+      }, error => {
+        this.textoBtn = "SUBIR ARCHIVO";
+        this.disabled = false;
+        Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+      });
+
+    } else {
+      Materialize.toast('Se encontrarón errores!', 4000, 'red');
+    }
+
   }
 
 }
