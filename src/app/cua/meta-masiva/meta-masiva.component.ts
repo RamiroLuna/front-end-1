@@ -24,10 +24,10 @@ declare var Materialize: any;
   animations: [
     trigger('visibility', [
       state('inactive', style({
-        opacity:0
+        opacity: 0
       })),
-      state('active',   style({
-        opacity:1
+      state('active', style({
+        opacity: 1
       })),
       transition('inactive => active', animate('1s ease-in')),
       transition('active => inactive', animate('500ms ease-out'))
@@ -67,7 +67,7 @@ export class MetaMasivaComponent implements OnInit {
     this.loading = true;
     this.disabled = false;
     this.status = "inactive";
-    this.textoBtn = " SUBIR ARCHIVO";
+    this.textoBtn = " VISTA PREVIA ";
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
@@ -144,6 +144,12 @@ export class MetaMasivaComponent implements OnInit {
 
   changeAnio(): void {
     this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
+    this.bVistaPre = false;
+  }
+
+  changeCombo(): void {
+    this.bVistaPre = false;
+    this.status = "inactive";
   }
 
   uploadMetasCSV(): void {
@@ -158,17 +164,17 @@ export class MetaMasivaComponent implements OnInit {
       this.service.uploadMetasCSV(this.auth.getIdUsuario(), this.archivoCsv, this.idPeriodo, this.idLinea).subscribe(result => {
         if (result.response.sucessfull) {
           this.metas = result.data.listMetas || [];
-          this.textoBtn = "SUBIR ARCHIVO";
+          this.textoBtn = " VISTA PREVIA ";
           this.bVistaPre = true;
-          setTimeout(()=>{ this.status = 'active'; },20) 
+          setTimeout(() => { this.status = 'active'; }, 20)
 
         } else {
-          this.textoBtn = "SUBIR ARCHIVO";
+          this.textoBtn = " VISTA PREVIA ";
           Materialize.toast(result.response.message, 4000, 'red');
         }
         this.disabled = false;
       }, error => {
-        this.textoBtn = "SUBIR ARCHIVO";
+        this.textoBtn = " VISTA PREVIA ";
         this.disabled = false;
         Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
       });
@@ -177,6 +183,27 @@ export class MetaMasivaComponent implements OnInit {
       Materialize.toast('Se encontrarón errores!', 4000, 'red');
     }
 
+  }
+
+  procesarFile(): void {
+   
+    this.service.procesarFile(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea).subscribe(result => {
+      if (result.response.sucessfull) {
+        Materialize.toast('Metas cargadas correctamente', 4000, 'green');
+        this.bVistaPre = true;
+        this.status = "inactive";
+        $('.file-path').val('')
+        this.formCargaMasiva.reset();
+        this.submitted = false;
+        
+      } else {
+        Materialize.toast(result.response.message, 4000, 'red');
+      }
+
+    }, error => {
+
+      Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+    });
   }
 
 }

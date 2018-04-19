@@ -10,7 +10,7 @@
       </i>
     </a>
     <a class="btn-floating light-green darken-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50" data-tooltip="Subir archivo"
-      (click)="regresar()" *ngIf="bVistaPre">
+        (click)="procesarFile()" *ngIf="bVistaPre">
       <i class="material-icons">
         <i class="material-icons">cloud_upload</i>
       </i>
@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="input-field col s12 m12 l5 xl5">
-          <select materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="idPeriodo">
+          <select materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="idPeriodo" (ngModelChange)="changeCombo()">
             <option value="" selected>SELECCIONE</option>
             <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
           </select>
@@ -53,14 +53,14 @@
       <div class="row">
         <div class="col s12 m12 l1 xl1"></div>
         <div class="input-field col s12 m12 l5 xl5">
-          <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="idLinea" [(ngModel)]="idLinea">
-            <option value="" selected>Seleccione</option>
+          <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="idLinea" [(ngModel)]="idLinea"  (ngModelChange)="changeCombo()">
+            <option value="" selected>SELECCIONE</option>
             <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{linea.descripcion}}</option>
           </select>
           <label>Linea</label>
           <div *ngIf="formCargaMasiva.controls.idLinea.errors?.required && (formCargaMasiva.controls.idLinea?.touched || submitted)"
             class="error">
-            Seleccione una opcion
+            SELECCIONE
           </div>
         </div>
         <div class="file-field input-field input-field col s12 m12 l5 xl5">
@@ -127,7 +127,7 @@
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
       <a class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
-        data-tooltip="Subir archivo" (click)="regresar()" *ngIf="bVistaPre">
+        data-tooltip="Subir archivo" (click)="procesarFile()" *ngIf="bVistaPre">
         <i class="material-icons">
           <i class="material-icons">cloud_upload</i>
         </i>
