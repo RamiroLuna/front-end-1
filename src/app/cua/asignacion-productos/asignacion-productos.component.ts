@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, SimpleChanges, SimpleChange, Output, EventEmitter } from '@angular/core';
-import { MetaAsignacion } from '../../models/meta-asignacion';
+// import { MetaAsignacion } from '../../models/meta-asignacion';
 import swal from 'sweetalert2';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ProductoAsignacion } from '../../models/producto-asignacion';
@@ -18,7 +18,7 @@ export class AsignacionProductosComponent implements OnInit {
   /*
    * Bloque de variables que se requieren
    */
-  @Input() asignacion_seleccionada: MetaAsignacion;
+  @Input() asignacion_seleccionada: any;
   /*
    *Fin de variables recibidas por el componente padre
    */

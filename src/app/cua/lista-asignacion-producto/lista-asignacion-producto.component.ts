@@ -4,7 +4,7 @@ import { ProductoAsignacion } from '../../models/producto-asignacion';
 import { ListaAsignacionProductoService } from './lista-asignacion-producto.service';
 import { deleteItemArray, getFechaActual, DataTable, getMilisegundos } from '../../utils';
 import swal from 'sweetalert2';
-import { MetaAsignacion } from '../../models/meta-asignacion';
+// import { any } from '../../models/meta-asignacion';
 
 declare var $: any;
 declare var Materialize: any;
@@ -17,7 +17,7 @@ export class ListaAsignacionProductoComponent implements OnInit {
 
   public loading: boolean;
   public mensajeModal: string;
-  public asignaciones: Array<MetaAsignacion>;
+  public asignaciones: Array<any>;
 
   public inicio: string = "";
   public fin: string = "";
@@ -26,7 +26,7 @@ export class ListaAsignacionProductoComponent implements OnInit {
   /*
    * Variables que se enviarán al componente hijo
    */
-  public asignacion_seleccionada: MetaAsignacion;
+  public asignacion_seleccionada: any;
   /*
    * Fin de variables que se enviarán al hijo
    */ 
@@ -108,7 +108,7 @@ export class ListaAsignacionProductoComponent implements OnInit {
     }
   }
 
-  asignarValorProducto(event, asignacion:MetaAsignacion):void{
+  asignarValorProducto(event, asignacion:any):void{
       this.asignacion_seleccionada = asignacion;
       this.show_lista = false;
   }

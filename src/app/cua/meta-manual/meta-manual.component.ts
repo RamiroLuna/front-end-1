@@ -3,8 +3,8 @@ import { MetaManualService } from './meta-manual.service';
 import { AuthService } from '../../auth/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Catalogo } from '../../models/catalogo';
-import { Meta } from '../../models/meta';
-import { MetaAsignacion } from '../../models/meta-asignacion';
+import { Linea } from '../../models/linea';
+import { Forecast } from '../../models/forecast';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { isValidId } from '../../utils';
 import swal from 'sweetalert2';
@@ -27,19 +27,19 @@ export class MetaManualComponent implements AfterViewInit {
    * Listas requeridas para el formulario de metas
    */
   public turnos: Array<Catalogo>;
-  public lineas: Array<Catalogo>;
+  public lineas: Array<Linea>;
   public grupos: Array<Catalogo>;
-  public metas: Array<Meta>;
+
   /*
    * Fin
    */
 
   public loading: boolean;
-  public formAsignacion: FormGroup;
+  public formCargaManual: FormGroup;
   public submitted: boolean;
   public mensajeModal: string;
   public texto_btn: string;
-  public asignacion: MetaAsignacion;
+  public rowForecast: Forecast;
 
 
   /*
@@ -64,9 +64,6 @@ export class MetaManualComponent implements AfterViewInit {
     this.route.paramMap.subscribe(params => {
       if (params.get('id') == 'nuevo') {
         this.seccion = 'add';
-      } else if (isValidId(params.get('id'))) {
-        this.seccion = 'edit';
-        this.id = params.get('id');
       } else {
         this.seccion = 'invalid';
       }
@@ -77,62 +74,36 @@ export class MetaManualComponent implements AfterViewInit {
  */
     if (this.seccion != 'invalid') {
 
-      if (this.seccion == 'edit') {
-        this.service.getAsignacionById(this.auth.getIdUsuario(), this.id).subscribe(result => {
-          
-          if (result.response.sucessfull) {
-            this.asignacion = result.data.metasAsignacion;
-            /*
-             * Catalogos para mostrar en el formulario de edicio
-             */ 
-            this.turnos = [{id: this.asignacion.id_turno , descripcion: this.asignacion.turno, activo:-1}];
-            this.grupos = [{id: this.asignacion.id_grupo , descripcion: this.asignacion.turno, activo:-1}];
-            this.metas = [{id_meta: this.asignacion.id_meta,
-                          id_linea: -1,
-                          linea: 'default',
-                          meta: this.asignacion.meta,
-                          tipo_medida:'default',
-                          posicion:-1,
-                          activo:-1 }];
-             /*
-              * Fin catalogos de edicion
-              */ 
-            this.loading= false;
-            this.loadFormulario();
-
-          } else {
-            Materialize.toast(result.response.message, 4000, 'red');
-            this.loading= false;
-          }
-        }, error => {
-          Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-          this.loading= false;
-        });
-
-      
-
-      } else if (this.seccion == 'add') {
+      if (this.seccion == 'add') {
         /*
         * Consulta el elemento del catalogo
         */
         this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
+          debugger
+          console.log('catalogos', result)
           if (result.response.sucessfull) {
             this.turnos = result.data.listTurnos;
             this.grupos = result.data.listGrupos;
             this.lineas = result.data.listLineas;
-            this.metas = result.data.listMetas;
+
+       
+            this.rowForecast = new Forecast();
+            this.loading = false;
+            this.loadFormulario();
+
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
+            this.loading = false;
           }
         }, error => {
+          this.loading = false;
           Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
         });
         /*
          * Fin carga de catalogos necesarios para el formulario
          */
-        this.asignacion = new MetaAsignacion();
-        this.loadFormulario();
-        this.loading = false;
+       
+   
       }
     } else {
       this.loading = false;
@@ -141,12 +112,11 @@ export class MetaManualComponent implements AfterViewInit {
   }
 
   loadFormulario(): void {
-    this.formAsignacion = this.fb.group({
-      id_meta: new FormControl({ value: this.asignacion.id_meta, disabled: this.seccion == 'edit' }, [Validators.required]),
-      id_turno: new FormControl({ value: this.asignacion.id_turno, disabled: this.seccion == 'edit' }, [Validators.required]),
-      id_grupo: new FormControl({ value: this.asignacion.id_grupo, disabled: this.seccion == 'edit' }, [Validators.required]),
-      dia: new FormControl({ value: this.asignacion.dia , disabled: this.seccion == 'edit' }, [Validators.required]),
-      valor: new FormControl(this.asignacion.valor, [Validators.required, Validators.pattern(/^\d*(\.[0-9]{1,10})*$/)]),
+    this.formCargaManual = this.fb.group({
+      id_turno: new FormControl({ value: this.rowForecast.id_turno}, [Validators.required]),
+      id_grupo: new FormControl({ value: this.rowForecast.id_grupo}, [Validators.required]),
+      dia: new FormControl({ value: this.rowForecast.dia }, [Validators.required]),
+      meta: new FormControl(this.rowForecast.meta, [Validators.required, Validators.pattern(/^\d*(\.[0-9]{1,10})*$/)]),
     });
   }
 
@@ -167,17 +137,17 @@ export class MetaManualComponent implements AfterViewInit {
       format: 'dd/mm/yyyy',
       closeOnSelect: false, // Close upon selecting a date,
       onClose:  () =>{
-          this.asignacion.dia = $('#dia').val();
+          this.rowForecast.dia = $('#dia').val();
       }
     });
   }
 
-  openModalConfirmacion(asginacion: MetaAsignacion, accion: string, type: string): void {
-    this.asignacion.dia = $('#dia').val();
+  openModalConfirmacion(asginacion: Forecast, accion: string, type: string): void {
+    this.rowForecast.dia = $('#dia').val();
     this.submitted = true;
     this.mensajeModal = '';
 
-    if (this.formAsignacion.valid) {
+    if (this.formCargaManual.valid) {
 
       switch (accion) {
         case 'add':
@@ -212,7 +182,7 @@ export class MetaManualComponent implements AfterViewInit {
               console.log('result', result)             
               if (result.response.sucessfull) {
                 Materialize.toast('Se agregó correctamente', 4000, 'green');
-                this.router.navigate(['../../metas-asignaciones'], { relativeTo: this.route });
+                this.router.navigate(['../../metas-rowForecastes'], { relativeTo: this.route });
 
               } else {
                 Materialize.toast(result.response.message, 4000, 'red');

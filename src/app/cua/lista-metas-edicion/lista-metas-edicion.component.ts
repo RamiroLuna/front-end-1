@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
-import { MetaAsignacion } from '../../models/meta-asignacion';
+import { Forecast } from '../../models/forecast';
 import { deleteItemArray, getAnioActual, getYears } from '../../utils';
 import swal from 'sweetalert2';
 import { ListaMetasEdicionService } from './lista-metas-edicion.service';
@@ -17,7 +17,7 @@ export class ListaMetasEdicionComponent implements OnInit {
   public loading: boolean;
   public datos_tabla: boolean = false;
   public mensajeModal: string;
-  public asignaciones: Array<MetaAsignacion>;
+  public forecast: Array<Forecast>;
   public anio_actual: number;
 
   constructor(private auth: AuthService,
@@ -29,7 +29,7 @@ export class ListaMetasEdicionComponent implements OnInit {
     this.anio_actual = getAnioActual();
     this.service.getAllAsignacionesByYear(this.auth.getIdUsuario(), this.anio_actual).subscribe(result => {
       if (result.response.sucessfull) {
-        this.asignaciones = result.data.listMetasAsignacion || [];
+        this.forecast = result.data.listMetasAsignacion || [];
         this.loading = false;
         setTimeout(() => { this.ngAfterViewHttp() }, 200)
 
@@ -111,10 +111,10 @@ export class ListaMetasEdicionComponent implements OnInit {
             resolve();
             this.loading = true;
             this.anio_actual = value;
-            this.asignaciones = [];
+            this.forecast = [];
             this.service.getAllAsignacionesByYear(this.auth.getIdUsuario(), this.anio_actual).subscribe(result => {
               if (result.response.sucessfull) {
-                this.asignaciones = result.data.listMetasAsignacion || [];
+                this.forecast = result.data.listMetasAsignacion || [];
                 this.loading = false;
                 setTimeout(() => { this.ngAfterViewHttp() }, 200)
 
@@ -134,7 +134,7 @@ export class ListaMetasEdicionComponent implements OnInit {
     })
   }
 
-  openModalConfirmacion(asignacion: MetaAsignacion, accion: string, event?: any): void {
+  openModalConfirmacion(rowForecast: Forecast, accion: string, event?: any): void {
     this.mensajeModal = '';
 
     switch (accion) {
@@ -149,7 +149,7 @@ export class ListaMetasEdicionComponent implements OnInit {
     swal({
       title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
       type: 'question',
-      html: '<p style="color: #303f9f "> Dia : <b>' + asignacion.dia + ' </b>Turno: <b>'+ asignacion.turno +'</b> Grupo: <b>'+ asignacion.grupo +'</b></p>',
+      html: '<p style="color: #303f9f "> Dia : <b>' + rowForecast.dia + ' </b>Turno: <b>'+ rowForecast.turno +'</b> Grupo: <b>'+ rowForecast.grupo +'</b></p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
@@ -164,9 +164,9 @@ export class ListaMetasEdicionComponent implements OnInit {
       if (result.value) {
         switch (accion) {
           case 'eliminar':
-            this.service.delete(this.auth.getIdUsuario(), asignacion.id_pro_meta).subscribe(result => {
+            this.service.delete(this.auth.getIdUsuario(), rowForecast.id_meta).subscribe(result => {
               if (result.response.sucessfull) {
-                deleteItemArray(this.asignaciones, asignacion.id_pro_meta, 'id_pro_meta');
+                deleteItemArray(this.forecast, rowForecast.id_meta, 'id_pro_meta');
                 Materialize.toast('Se eliminó correctamente ', 4000, 'green');
               } else {
                 Materialize.toast(result.response.message, 4000, 'red');
@@ -185,7 +185,7 @@ export class ListaMetasEdicionComponent implements OnInit {
 
   }
 
-  editar(asignacion: MetaAsignacion): void {
+  editar(rowForecast: Forecast): void {
    
   }
 

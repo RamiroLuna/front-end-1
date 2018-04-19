@@ -4,8 +4,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { MaterializeModule } from 'angular2-materialize';
 import { OptionsComponent } from './options/options.component';
-import { FormularioMetasComponent } from './formulario-metas/formulario-metas.component';
-import { ListaMetasComponent } from './lista-metas/lista-metas.component';
 import { MetaManualComponent } from './meta-manual/meta-manual.component';
 import { ListaMetasEdicionComponent } from './lista-metas-edicion/lista-metas-edicion.component';
 import { ListaFallasComponent } from './lista-fallas/lista-fallas.component';
@@ -37,8 +35,6 @@ const routesMetas: Routes = [
   { path: 'opciones/productos/:id', component: FormularioProductoComponent },
   { path: 'opciones/productos-asignaciones', component:  ListaAsignacionProductoComponent},
   /* rutas de metas */
-  // { path: 'opciones/metas', component: ListaMetasComponent }, estos componente ya no irian
-  // { path: 'opciones/metas/:id', component: FormularioMetasComponent },
   { path: 'opciones/metas-lista-edicion', component: ListaMetasEdicionComponent },
   { path: 'opciones/metas-carga-manual/:id', component: MetaManualComponent },
   { path: 'opciones/metas-carga-masiva', component: MetaMasivaComponent },
@@ -72,8 +68,6 @@ const routesMetas: Routes = [
   ],
   declarations: [
     OptionsComponent, 
-    FormularioMetasComponent, 
-    ListaMetasComponent, 
     MetaManualComponent, 
     ListaMetasEdicionComponent, 
     ListaFallasComponent, 

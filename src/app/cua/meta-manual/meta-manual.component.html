@@ -4,76 +4,59 @@
       <div class="card-panel">
         <h4 class="color_titulo center-align">{{ seccion == 'add'? ' Carga manual de meta' : ' Edición de meta '}}</h4>
         <div class="row">
-          <form class="col s12 m12 l12 xl12" [formGroup]="formAsignacion" (ngSubmit)="openModalConfirmacion(asignacion, seccion)">
-            <div class="row">
-              <div class="col s12 m12 l12 xl12">
-                <label>Meta</label>
-                <select materialize="material_select" formControlName="id_meta" [materializeSelectOptions]="metas" [(ngModel)]="asignacion.id_meta">
-                  <option value="">Seleccione</option>
-                  <option *ngFor="let meta of metas" [value]="meta.id_meta">{{ meta.meta }}</option>
-                </select>
-                <div *ngIf="formAsignacion.controls.id_meta.errors?.required && (formAsignacion.controls.id_meta?.touched || submitted)"
-                  class="error">
-                  La meta es requerida
-                </div>
-              </div>
-            </div>
+          <form class="col s12 m12 l12 xl12" [formGroup]="formCargaManual" (ngSubmit)="openModalConfirmacion(asignacion, seccion)">
             <div class="row">
               <div class="col s12 m12 l12 xl12">
                 <label>Linea</label>
                 <select materialize="material_select" [materializeSelectOptions]="lineas">
                   <option value="">Seleccione</option>
-                  <option *ngFor="let linea of lineas" [value]="linea.id">{{ linea.descripcion }}</option>
+                  <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{ linea.valor }}</option>
                 </select>
-                <!-- <div *ngIf="formAsignacion.controls.id_grupo.errors?.required && (formAsignacion.controls.id_grupo?.touched || submitted)"
-                    class="error">
-                    El grupo es requerido
-                  </div> -->
               </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
               <div class="col s12 m12 l12 xl12">
                 <label>Turno</label>
                 <select materialize="material_select" formControlName="id_turno" [materializeSelectOptions]="turnos" [(ngModel)]="asignacion.id_turno">
                   <option value="">Seleccione</option>
-                  <option *ngFor="let turno of turnos" [value]="turno.id">{{ turno.descripcion }}</option>
+                  <option *ngFor="let turno of turnos" [value]="turno.id">{{ turno.valor }}</option>
                 </select>
-                <div *ngIf="formAsignacion.controls.id_turno.errors?.required && (formAsignacion.controls.id_turno?.touched || submitted)"
+                <div *ngIf="formCargaManual.controls.id_turno.errors?.required && (formCargaManual.controls.id_turno?.touched || submitted)"
                   class="error">
                   El turno es requerido
                 </div>
               </div>
-            </div>
-            <div class="row">
+            </div> -->
+            <!-- <div class="row">
               <div class="col s12 m12 l12 xl12">
                 <label>Grupo</label>
                 <select materialize="material_select" formControlName="id_grupo" [materializeSelectOptions]="grupos" [(ngModel)]="asignacion.id_grupo">
                   <option value="">Seleccione</option>
-                  <option *ngFor="let grupo of grupos" [value]="grupo.id">{{ grupo.descripcion }}</option>
+                  <option *ngFor="let grupo of grupos" [value]="grupo.id">{{ grupo.valor }}</option>
                 </select>
-                <div *ngIf="formAsignacion.controls.id_grupo.errors?.required && (formAsignacion.controls.id_grupo?.touched || submitted)"
+                <div *ngIf="formCargaManual.controls.id_grupo.errors?.required && (formCargaManual.controls.id_grupo?.touched || submitted)"
                   class="error">
                   El grupo es requerido
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
                 <input id="dia" type="text" class="datepicker" formControlName="dia" [(ngModel)]="asignacion.dia">
                 <label for="dia">Día</label>
-                <div *ngIf="formAsignacion.controls.dia.errors?.required && (formAsignacion.controls.dia?.touched || submitted)" class="error">
+                <div *ngIf="formCargaManual.controls.dia.errors?.required && (formCargaManual.controls.dia?.touched || submitted)" class="error">
                   El dia es requerido
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input id="valor" type="text" [(ngModel)]="asignacion.valor" formControlName="valor">
-                <label for="valor">Valor de la meta en kilogramos</label>
-                <div *ngIf="formAsignacion.controls.valor.errors?.required && (formAsignacion.controls.valor?.touched || submitted)" class="error">
-                  El valor es requerido
+                <input id="meta" type="text" [(ngModel)]="asignacion.meta" formControlName="meta">
+                <label for="meta">Valor de la meta en kilogramos</label>
+                <div *ngIf="formCargaManual.controls.meta.errors?.required && (formCargaManual.controls.meta?.touched || submitted)" class="error">
+                  La meta es requerido
                 </div>
-                <div *ngIf="formAsignacion.controls.valor.errors?.pattern && (formAsignacion.controls.valor?.pattern || submitted)" class="error">
+                <div *ngIf="formCargaManual.controls.meta.errors?.pattern && (formCargaManual.controls.meta?.pattern || submitted)" class="error">
                   Número no valido
                 </div>
               </div>
