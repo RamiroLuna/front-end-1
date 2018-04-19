@@ -89,8 +89,9 @@
     </fieldset>
   </form>
   <div class="section"></div>
+ 
   <div class="scroll_ejex_tabla_reporte" *ngIf="bVistaPre">
-    <form class="col s12 m12 l12 xl12" autocomplete="off">
+    <form class="col s12 m12 l12 xl12" autocomplete="off"  [@visibility]="status">
       <fieldset>
         <legend class="color_titulo">
           <b>Vista previa:</b>
