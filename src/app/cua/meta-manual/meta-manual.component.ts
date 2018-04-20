@@ -1,7 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { MetaManualService } from './meta-manual.service';
+import { MetamanualService } from './metamanual.service';
 import { AuthService } from '../../auth/auth.service';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Catalogo } from '../../models/catalogo';
 import { Linea } from '../../models/linea';
 import { Forecast } from '../../models/forecast';
@@ -9,18 +8,14 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { isValidId } from '../../utils';
 import swal from 'sweetalert2';
 
-
-
 declare var $: any;
 declare var Materialize: any;
-
 @Component({
   selector: 'app-meta-manual',
   templateUrl: './meta-manual.component.html',
-  providers: [MetaManualService]
+  providers: [MetamanualService]
 })
-export class MetaManualComponent implements AfterViewInit {
-
+export class MetaManualComponent implements OnInit {
 
 
   /*
@@ -48,82 +43,59 @@ export class MetaManualComponent implements AfterViewInit {
   public seccion: string;
   public id: any; //Id seleccionado
 
-  constructor(private service: MetaManualService,
+  constructor(private service: MetamanualService,
     private auth: AuthService,
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router
+    private fb: FormBuilder
   ) { }
 
-
   ngOnInit() {
+    this.seccion = 'add';
     this.loading = true;
     this.submitted = false;
     this.texto_btn = "Cancelar";
-
-    this.route.paramMap.subscribe(params => {
-      if (params.get('id') == 'nuevo') {
-        this.seccion = 'add';
-      } else {
-        this.seccion = 'invalid';
-      }
-    });
+    this.rowForecast = new Forecast();
 
     /*
- * Incia consulta
- */
-    if (this.seccion != 'invalid') {
-
-      if (this.seccion == 'add') {
-        /*
         * Consulta el elemento del catalogo
         */
-        this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-          debugger
-          console.log('catalogos', result)
-          if (result.response.sucessfull) {
-            this.turnos = result.data.listTurnos;
-            this.grupos = result.data.listGrupos;
-            this.lineas = result.data.listLineas;
+    this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
+     
+      if (result.response.sucessfull) {
+        this.turnos = result.data.listTurnos;
+        this.grupos = result.data.listGrupos;
+        this.lineas = result.data.listLineas;
 
-       
-            this.rowForecast = new Forecast();
-            this.loading = false;
-            this.loadFormulario();
 
-          } else {
-            Materialize.toast(result.response.message, 4000, 'red');
-            this.loading = false;
-          }
-        }, error => {
-          this.loading = false;
-          Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-        });
-        /*
-         * Fin carga de catalogos necesarios para el formulario
-         */
-       
-   
+
+        this.loading = false;
+        this.loadFormulario();
+        setTimeout(() => { this.ngAfterViewInitHttp() }, 200)
+      } else {
+        Materialize.toast(result.response.message, 4000, 'red');
+        this.loading = false;
       }
-    } else {
+    }, error => {
       this.loading = false;
-    }
-
+      Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+    });
+    /*
+     * Fin carga de catalogos necesarios para el formulario
+     */
   }
 
   loadFormulario(): void {
     this.formCargaManual = this.fb.group({
-      id_turno: new FormControl({ value: this.rowForecast.id_turno}, [Validators.required]),
-      id_grupo: new FormControl({ value: this.rowForecast.id_grupo}, [Validators.required]),
+      id_turno: new FormControl({ value: this.rowForecast.id_turno }, [Validators.required]),
+      id_linea: new FormControl({ value: this.rowForecast.id_linea }, [Validators.required]),
+      id_grupo: new FormControl({ value: this.rowForecast.id_grupo }, [Validators.required]),
       dia: new FormControl({ value: this.rowForecast.dia }, [Validators.required]),
       meta: new FormControl(this.rowForecast.meta, [Validators.required, Validators.pattern(/^\d*(\.[0-9]{1,10})*$/)]),
+      tmp: new FormControl(this.rowForecast.tmp, [Validators.required, Validators.pattern(/^\d*(\.[0-9]{1,10})*$/)]),
+      vel: new FormControl(this.rowForecast.velocidad, [Validators.required, Validators.pattern(/^\d*(\.[0-9]{1,10})*$/)]),
     });
   }
 
-  /* 
-   * Carga de plugins para el componente
-   */
-  ngAfterViewInit(): void {
+  ngAfterViewInitHttp(): void {
     $('#dia').pickadate({
       selectMonths: true, // Creates a dropdown to control month
       selectYears: 15, // Creates a dropdown of 15 years to control year,
@@ -136,25 +108,26 @@ export class MetaManualComponent implements AfterViewInit {
       weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
       format: 'dd/mm/yyyy',
       closeOnSelect: false, // Close upon selecting a date,
-      onClose:  () =>{
-          this.rowForecast.dia = $('#dia').val();
+      onClose: () => {
+        this.rowForecast.dia = $('#dia').val();
       }
     });
   }
 
-  openModalConfirmacion(asginacion: Forecast, accion: string, type: string): void {
+
+  openModalConfirmacion(rowforecast: Forecast, accion: string, type: string): void {
     this.rowForecast.dia = $('#dia').val();
     this.submitted = true;
     this.mensajeModal = '';
+
+    let descriptivoGrupo = this.obtenerDescriptivo(this.grupos,rowforecast.id_grupo);
+    let descriptivoLinea = this.obtenerDescriptivoLinea(this.lineas,rowforecast.id_linea);
 
     if (this.formCargaManual.valid) {
 
       switch (accion) {
         case 'add':
           this.mensajeModal = '¿Está seguro de agregar ? ';
-          break;
-        case 'edit':
-          this.mensajeModal = '¿ Está seguro de actualizar la información ? ';
           break;
       }
       /* 
@@ -163,7 +136,7 @@ export class MetaManualComponent implements AfterViewInit {
       swal({
         title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
         type: 'question',
-        html: '<p style="color: #303f9f "> Asignación para el día : <b> ' + asginacion.dia + ' </b></p>',
+        html: '<p style="color: #303f9f "> Meta para el día : <b> ' + rowforecast.dia + ' </b> Linea: <b>'+ descriptivoLinea +'</b> Grupo: <b>'+ descriptivoGrupo +'</b> Valor: <b>'+ rowforecast.meta+'</b></p>',
         showCancelButton: true,
         confirmButtonColor: '#303f9f',
         cancelButtonColor: '#9fa8da ',
@@ -175,35 +148,19 @@ export class MetaManualComponent implements AfterViewInit {
         /*
          * Si acepta
          */
-        if (result.value) {
-
-          if (this.seccion == 'add') {
-            this.service.agregar(this.auth.getIdUsuario(), asginacion).subscribe(result => { 
-              console.log('result', result)             
+        if (result.value) {        
+            this.service.agregar(this.auth.getIdUsuario(), rowforecast).subscribe(result => { 
+              console.log('result insert', result)             
               if (result.response.sucessfull) {
                 Materialize.toast('Se agregó correctamente', 4000, 'green');
-                this.router.navigate(['../../metas-rowForecastes'], { relativeTo: this.route });
-
+                this.formCargaManual.reset();
+                this.submitted = false;
               } else {
                 Materialize.toast(result.response.message, 4000, 'red');
               }
             }, eror => {
               Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
             });
-          } else if (this.seccion == 'edit') {
-             this.service.update(this.auth.getIdUsuario(), asginacion).subscribe(
-              result => {
-                console.log('aada->',result)
-                if (result.response.sucessfull) {
-                  Materialize.toast('Actualización completa', 4000, 'green');
-                  this.texto_btn = 'Cerrar ficha';
-                } else {
-                  Materialize.toast(result.response.message, 4000, 'red');
-                }
-              }, error => {
-                Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-              });
-          }
 
           /*
           * Si cancela accion
@@ -217,5 +174,29 @@ export class MetaManualComponent implements AfterViewInit {
     }
 
   }
+
+  obtenerDescriptivo(array:Array<Catalogo>, id:number):string{
+    let el = array.filter((el)=>el.id == id);
+
+    if(el.length > 0){
+      return el[0].descripcion;
+    }else{
+      return "No especificado";
+    }
+     
+  }
+  obtenerDescriptivoLinea(array:Array<Linea>, id:number):string{
+    let el = array.filter((el)=>el.id_linea == id);
+
+    if(el.length > 0){
+      return el[0].descripcion;
+    }else{
+      return "No especificado";
+    }
+     
+  }
+
+
+
 
 }

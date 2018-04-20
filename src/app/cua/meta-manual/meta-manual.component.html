@@ -4,20 +4,24 @@
       <div class="card-panel">
         <h4 class="color_titulo center-align">{{ seccion == 'add'? ' Carga manual de meta' : ' Edición de meta '}}</h4>
         <div class="row">
-          <form class="col s12 m12 l12 xl12" [formGroup]="formCargaManual" (ngSubmit)="openModalConfirmacion(asignacion, seccion)">
+          <form class="col s12 m12 l12 xl12" [formGroup]="formCargaManual" (ngSubmit)="openModalConfirmacion(rowForecast, seccion)">
             <div class="row">
               <div class="col s12 m12 l12 xl12">
                 <label>Linea</label>
-                <select materialize="material_select" [materializeSelectOptions]="lineas">
+                <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="id_linea" [(ngModel)]="rowForecast.id_linea">
                   <option value="">Seleccione</option>
                   <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{ linea.valor }}</option>
                 </select>
+                <div *ngIf="formCargaManual.controls.id_linea.errors?.required && (formCargaManual.controls.id_linea?.touched || submitted)"
+                  class="error">
+                  La linea es requerida
+                </div>
               </div>
             </div>
-            <!-- <div class="row">
+            <div class="row">
               <div class="col s12 m12 l12 xl12">
                 <label>Turno</label>
-                <select materialize="material_select" formControlName="id_turno" [materializeSelectOptions]="turnos" [(ngModel)]="asignacion.id_turno">
+                <select materialize="material_select" formControlName="id_turno" [materializeSelectOptions]="turnos" [(ngModel)]="rowForecast.id_turno">
                   <option value="">Seleccione</option>
                   <option *ngFor="let turno of turnos" [value]="turno.id">{{ turno.valor }}</option>
                 </select>
@@ -26,11 +30,11 @@
                   El turno es requerido
                 </div>
               </div>
-            </div> -->
-            <!-- <div class="row">
+            </div>
+            <div class="row">
               <div class="col s12 m12 l12 xl12">
                 <label>Grupo</label>
-                <select materialize="material_select" formControlName="id_grupo" [materializeSelectOptions]="grupos" [(ngModel)]="asignacion.id_grupo">
+                <select materialize="material_select" formControlName="id_grupo" [materializeSelectOptions]="grupos" [(ngModel)]="rowForecast.id_grupo">
                   <option value="">Seleccione</option>
                   <option *ngFor="let grupo of grupos" [value]="grupo.id">{{ grupo.valor }}</option>
                 </select>
@@ -39,10 +43,10 @@
                   El grupo es requerido
                 </div>
               </div>
-            </div> -->
+            </div>
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input id="dia" type="text" class="datepicker" formControlName="dia" [(ngModel)]="asignacion.dia">
+                <input id="dia" type="text" class="datepicker" formControlName="dia" [(ngModel)]="rowForecast.dia">
                 <label for="dia">Día</label>
                 <div *ngIf="formCargaManual.controls.dia.errors?.required && (formCargaManual.controls.dia?.touched || submitted)" class="error">
                   El dia es requerido
@@ -51,12 +55,36 @@
             </div>
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input id="meta" type="text" [(ngModel)]="asignacion.meta" formControlName="meta">
+                <input id="meta" type="text" [(ngModel)]="rowForecast.meta" formControlName="meta">
                 <label for="meta">Valor de la meta en kilogramos</label>
                 <div *ngIf="formCargaManual.controls.meta.errors?.required && (formCargaManual.controls.meta?.touched || submitted)" class="error">
                   La meta es requerido
                 </div>
                 <div *ngIf="formCargaManual.controls.meta.errors?.pattern && (formCargaManual.controls.meta?.pattern || submitted)" class="error">
+                  Número no valido
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 m12 l12 xl12">
+                <input id="meta" type="text" [(ngModel)]="rowForecast.tmp" formControlName="tmp">
+                <label for="meta">Tiempo muerto planeado</label>
+                <div *ngIf="formCargaManual.controls.tmp.errors?.required && (formCargaManual.controls.tmp?.touched || submitted)" class="error">
+                  Tiempo muerto planeado
+                </div>
+                <div *ngIf="formCargaManual.controls.tmp.errors?.pattern && (formCargaManual.controls.tmp?.pattern || submitted)" class="error">
+                  Número no valido
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 m12 l12 xl12">
+                <input id="velocidad" type="text" [(ngModel)]="rowForecast.velocidad" formControlName="vel">
+                <label for="velocidad">Velocidad</label>
+                <div *ngIf="formCargaManual.controls.vel.errors?.required && (formCargaManual.controls.vel?.touched || submitted)" class="error">
+                  La velocidad es requerida
+                </div>
+                <div *ngIf="formCargaManual.controls.vel.errors?.pattern && (formCargaManual.controls.vel?.pattern || submitted)" class="error">
                   Número no valido
                 </div>
               </div>
