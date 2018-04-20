@@ -1,7 +1,7 @@
 <div class="container" *ngIf="!loading">
   <div class="section"></div>
   <h4 class="color_titulo center-align">Edición de metas
-    <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar año" (click)="openModalYear($event)">{{ anio_actual }}</a>
+    <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar año" (click)="openModalYear($event)">{{ anioSeleccionado }}</a>
   </h4>
   <!-- Solo para dispositivos moviles -->
   <div class="hide-on-large-only right-align">
@@ -15,48 +15,44 @@
   <!-- fin Solo para dispositivos moviles -->
 
   <div class="row">
-    <div class="input-field col s12 m12 l6 xl6">
-      <select class="periodo">
-        <option value="">SELECCIONE</option>
-        <option value="1">ENERO</option>
-        <option value="2">FEBRERO</option>
-        <option value="3">MARZO</option>
-        <option value="4">ABRIL</option>
-        <option value="5">MAYO</option>
-        <option value="6">JUNIO</option>
-        <option value="7">JULIO</option>
-        <option value="8">AGOSTO</option>
-        <option value="9">SEPTIEMBRE</option>
-        <option value="10">OCTUBRE</option>
-        <option value="11">NOVIEMBRE</option>
-        <option value="12">DICIEMBRE</option>
-      </select>
-      <label for="periodo">Periodo</label>
-    </div>
-    <div class="input-field col s12 m12 l5 xl5">
-      <select class="linea">
-        <option value="">SELECCIONE</option>
-        <option value="1">AMUT 1</option>
-        <option value="2">AMUT 2</option>
-        <option value="3">EXT 1</option>
-        <option value="4">EXT 2</option>
-        <option value="5">SSP</option>
-
-      </select>
-      <label for="linea">Linea</label>
-    </div>
-    <div class="input-field col s12 m12 l1 xl1">
-      <a class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" (click)="busqueda()">
-        <i class="material-icons">search</i>
-      </a>
-      <label></label>
-    </div>
+    <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="consultaPeriodo()" autocomplete="off">
+      <div class="input-field col s12 m12 l6 xl6">
+        <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="idPeriodo"
+          (ngModelChange)="changeCombo()">
+          <option value="">SELECCIONE</option>
+          <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
+        </select>
+        <label for="mes">mes</label>
+        <div *ngIf="formConsultaPeriodo.controls.idPeriodo.errors?.required && (formConsultaPeriodo.controls.idPeriodo?.touched || submitted)"
+          class="error">
+          Seleccione una opcion
+        </div>
+      </div>
+      <div class="input-field col s12 m12 l5 xl5">
+        <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="idLinea" [(ngModel)]="idLinea"
+          (ngModelChange)="changeCombo()">
+          <option value="">SELECCIONE</option>
+          <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{linea.descripcion}}</option>
+        </select>
+        <label for="linea">Linea</label>
+        <div *ngIf="formConsultaPeriodo.controls.idLinea.errors?.required && (formConsultaPeriodo.controls.idLinea?.touched || submitted)"
+          class="error">
+          Seleccione una opcion
+        </div>
+      </div>
+      <div class="input-field col s12 m12 l1 xl1">
+        <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
+          <i class="material-icons">search</i>
+        </button>
+        <label></label>
+      </div>
+    </form>
   </div>
-  <div class="row scroll_ejex_tabla_reporte" *ngIf="!datos_tabla">
-    <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;">
+  <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
+    <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
       <thead>
         <tr>
-          
+
           <th class="center-align">Día</th>
           <th class="center-align">Turno</th>
           <th class="center-align">Grupo</th>
@@ -69,20 +65,23 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let asignacion of asignaciones">      
-          <td class="center-align" data-field="dia">{{asignacion.dia}}</td>
-          <td class="center-align" data-field="turno">{{asignacion.turno}}</td>
-          <td class="center-align" data-field="grupo">{{asignacion.grupo}}</td>
-          <td class="center-align" data-field="meta">{{asignacion.valor }}</td>
-          <td class="center-align" data-field="tmp">1.50</td>
-          <td class="center-align" data-field="velocidad">3.55</td>
+        <tr *ngIf="metas.length == 0 ">
+            <th colspan="8" class="center">No hay registros</th>
+        </tr>
+        <tr *ngFor="let meta of metas">
+          <td class="center-align" data-field="dia">{{meta.dia}}</td>
+          <td class="center-align" data-field="turno">{{meta.id_turno}}</td>
+          <td class="center-align" data-field="grupo">{{meta.nombre_grupo}}</td>
+          <td class="center-align" data-field="meta">{{meta.meta }}</td>
+          <td class="center-align" data-field="tmp">{{meta.tmp }}</td>
+          <td class="center-align" data-field="velocidad">{{meta.velocidad }}</td>
           <td class="center-align">
             <a class="btn-floating light-green lighten-1 edit" (click)="changeIcono($event)">
               <i class="material-icons">edit</i>
             </a>
           </td>
           <td class="center-align">
-            <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(asignacion,'eliminar')">
+            <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(meta,'eliminar')">
               <i class="material-icons">delete</i>
             </a>
           </td>
