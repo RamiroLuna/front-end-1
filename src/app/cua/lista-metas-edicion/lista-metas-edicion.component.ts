@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
-import { Forecast } from '../../models/forecast';
+import { Meta } from '../../models/meta';
 import { deleteItemArray, getAnioActual, calculaDiaPorMes, isNumeroAsignacionValid } from '../../utils';
 import swal from 'sweetalert2';
 import { ListaMetasEdicionService } from './lista-metas-edicion.service';
@@ -40,7 +40,7 @@ export class ListaMetasEdicionComponent implements OnInit {
   public loading: boolean;
   public datos_tabla: boolean;
   public mensajeModal: string;
-  public forecast: Array<Forecast>;
+
   public anioSeleccionado: number;
   public submitted: boolean;
   public disabled: boolean;
@@ -51,7 +51,7 @@ export class ListaMetasEdicionComponent implements OnInit {
   public turnos: Array<Catalogo> = [];
   public anios: any = {};
   public meses: Array<any> = [];
-  public metas: Array<Forecast> = [];
+  public metas: Array<Meta> = [];
   public formConsultaPeriodo: FormGroup;
   public status: string;
 
@@ -235,7 +235,7 @@ export class ListaMetasEdicionComponent implements OnInit {
           this.submitted = false;
           this.status = "inactive";
           this.datos_tabla = false;
-          this.forecast = [];
+
 
           if (value != '') {
             resolve();
@@ -266,7 +266,7 @@ export class ListaMetasEdicionComponent implements OnInit {
       this.datos_tabla = false;
 
       this.service.getAllMetas(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea).subscribe(result => {
-        console.log(result)
+      
         if (result.response.sucessfull) {
           this.metas = result.data.listMetas || [];
           this.datos_tabla = true;
@@ -293,7 +293,7 @@ export class ListaMetasEdicionComponent implements OnInit {
 
   }
 
-  openModalConfirmacion(rowForecast: Forecast, accion: string, event?: any): void {
+  openModalConfirmacion(rowForecast: Meta, accion: string, event?: any): void {
     this.mensajeModal = '';
 
     switch (accion) {
@@ -308,7 +308,7 @@ export class ListaMetasEdicionComponent implements OnInit {
     swal({
       title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
       type: 'question',
-      html: '<p style="color: #303f9f "> Dia : <b>' + rowForecast.dia + ' </b>Turno: <b>' + rowForecast.turno + '</b> Grupo: <b>' + rowForecast.grupo + '</b></p>',
+      html: '<p style="color: #303f9f "> Dia : <b>' + rowForecast.dia_string + ' </b>Turno: <b>' + rowForecast.id_turno + '</b> Grupo: <b>' + rowForecast.nombre_grupo + '</b></p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
@@ -325,7 +325,7 @@ export class ListaMetasEdicionComponent implements OnInit {
           case 'eliminar':
             this.service.delete(this.auth.getIdUsuario(), rowForecast.id_meta).subscribe(result => {
               if (result.response.sucessfull) {
-                deleteItemArray(this.forecast, rowForecast.id_meta, 'id_pro_meta');
+                deleteItemArray(this.metas, rowForecast.id_meta, 'id_meta');
                 Materialize.toast('Se eliminó correctamente ', 4000, 'green');
               } else {
           
@@ -368,8 +368,8 @@ export class ListaMetasEdicionComponent implements OnInit {
 
   }
 
-  findRowForecast(metas:Array<Forecast>, id_meta:number):Forecast{
-      let meta: Forecast;
+  findRowForecast(metas:Array<Meta>, id_meta:number):Meta{
+      let meta: Meta;
       let el = metas.filter(el=>el.id_meta == id_meta);
       if(el.length > 0){
         meta = el[0];

@@ -28,10 +28,10 @@ export class ListaMetasEdicionService {
     return this.http.post<any>(this.URL,body);
   }
 
-  delete(id_usuario: number, id_pro_meta: number): Observable<any> {
+  delete(id_usuario: number, id_meta: number): Observable<any> {
     const body = new HttpParams()
-      .set('action', 'deleteAsignacionMeta')
-      .set('id_pro_meta', '' + id_pro_meta)
+      .set('action', 'deleteMeta')
+      .set('id_meta', '' + id_meta)
       .set('id_usuario', '' + id_usuario)
     return this.http.post(this.URL, body);
   }
