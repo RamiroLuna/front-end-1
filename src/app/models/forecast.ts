@@ -5,6 +5,7 @@ export class Forecast {
     id_turno?: number;
     grupo: string;
     id_grupo?:number;
+    nombre_grupo?:string;
     id_linea:number;
     meta:number;
     tmp:number;

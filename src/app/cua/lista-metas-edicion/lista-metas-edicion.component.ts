@@ -7,6 +7,7 @@ import swal from 'sweetalert2';
 import { ListaMetasEdicionService } from './lista-metas-edicion.service';
 import { Periodo } from '../../models/periodo';
 import { Linea } from '../../models/linea';
+import { Catalogo } from '../../models/catalogo';
 import {
   trigger,
   state,
@@ -46,6 +47,8 @@ export class ListaMetasEdicionComponent implements OnInit {
 
   public periodos: Array<Periodo> = [];
   public lineas: Array<Linea> = [];
+  public grupos: Array<Catalogo> = [];
+  public turnos: Array<Catalogo> = [];
   public anios: any = {};
   public meses: Array<any> = [];
   public metas: Array<Forecast> = [];
@@ -54,6 +57,8 @@ export class ListaMetasEdicionComponent implements OnInit {
 
   public idLinea: number;
   public idPeriodo: number;
+
+
 
   constructor(private auth: AuthService,
     private service: ListaMetasEdicionService,
@@ -69,10 +74,12 @@ export class ListaMetasEdicionComponent implements OnInit {
     this.anioSeleccionado = getAnioActual();
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-
+      
       if (result.response.sucessfull) {
         this.lineas = result.data.listLineas || [];
         this.periodos = result.data.listPeriodos || [];
+        this.grupos = result.data.listGrupos || [];
+        this.turnos = result.data.listTurnos || [];
         let tmpAnios = this.periodos.map(el => el.anio);
         this.periodos.filter((el, index) => {
           return tmpAnios.indexOf(el.anio) === index;
@@ -96,7 +103,7 @@ export class ListaMetasEdicionComponent implements OnInit {
     });
   }
 
-  public variableGlobal: any;
+
 
   /*
    * Carga plugins despues de cargar y mostrar objetos en el DOM
@@ -105,11 +112,10 @@ export class ListaMetasEdicionComponent implements OnInit {
 
     let mes: number = this.obtenerMesDelPeriodo(this.periodos, this.idPeriodo);
     let totalDias = calculaDiaPorMes(this.anioSeleccionado, mes);
+    let argDias = [];
 
-    let disable: Array<any> = [];
-    disable.push(true);
     for (let i = 1; i <= totalDias; i++) {
-      disable.push(new Date(this.anioSeleccionado, mes - 1, i));
+      argDias.push(i < 9 ? "0" + i : i);
     }
 
     $("table tr").editable({
@@ -119,52 +125,42 @@ export class ListaMetasEdicionComponent implements OnInit {
       button: true,
       buttonSelector: ".edit",
       dropdowns: {
-        "grupo": ['A', 'B', 'C', 'D'],
-        "turno": [1, 2, 3]
+        "grupo": this.arrayDescriptivo(this.grupos),
+        "turno": this.arrayDescriptivo(this.turnos),
+        "dia": argDias
       },
       edit: function (values) {
-
-        $('td#' + values.index + ' input[type="text"]').attr("data-value", values.dia);
-
-        // $('td[data-field="meta"] input[type="text"]').keyup(function() {
-        //   alert( "Handler for .keyup() called." );
-        // });
-
         $('#tabla select').material_select();
-
-        $('td#' + values.index + ' input[type="text"]').pickadate({
-          selectYears: false,
-          selectMonths: false,
-          clear: '',
-          format: 'dd/mm/yyyy',
-          monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-          monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-          weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-          weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-          disable: disable,
-          onClose: function (context) {
-
-          },
-          onSet: (context) => {
-
-            this.variableGlobal = $('td#' + values.index + ' input[type="text"]').val();
-
-          }
-        });
-
-
-
       },
-      save: function (values) {
-        values.dia = this.variableGlobal;
-        if (values.dia == undefined || values.dia == "") {
-          values.dia = values.dia_string;
-        }
+      save: (values) => {
+        values.dia = values.dia + "/" + (mes < 9 ? "0" + mes : mes) + "/" + this.anioSeleccionado;
+        values.grupo = this.idItemCombo(this.grupos, values.grupo);
 
-        console.log(values)
-        setTimeout(() => {
-          $('td#' + values.index).html(values.dia), 10
+        this.service.updateMeta(this.auth.getIdUsuario(), values).subscribe(result => {
+
+          if (result.response.sucessfull) {
+            Materialize.toast('Actualización completa', 4000, 'green');
+          } else {
+            let resetValues = this.findRowForecast(this.metas, values.id_meta);
+            $('td[scope="3,'+values.index+'"]').html(resetValues.dia_string);
+            $('td[scope="4,'+values.index+'"]').html(resetValues.id_turno);
+            $('td[scope="5,'+values.index+'"]').html(resetValues.nombre_grupo);
+            $('td[scope="6,'+values.index+'"]').html(resetValues.meta);
+            $('td[scope="7,'+values.index+'"]').html(resetValues.tmp);
+            $('td[scope="8,'+values.index+'"]').html(resetValues.velocidad);
+            Materialize.toast(result.response.message, 4000, 'red');
+          }
+        }, error => {
+          let resetValues = this.findRowForecast(this.metas, values.id_meta);
+          $('td[scope="3,'+values.index+'"]').html(resetValues.dia_string);
+          $('td[scope="4,'+values.index+'"]').html(resetValues.id_turno);
+          $('td[scope="5,'+values.index+'"]').html(resetValues.nombre_grupo);
+          $('td[scope="6,'+values.index+'"]').html(resetValues.meta);
+          $('td[scope="7,'+values.index+'"]').html(resetValues.tmp);
+          $('td[scope="8,'+values.index+'"]').html(resetValues.velocidad);
+          Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
         });
+
 
 
 
@@ -194,6 +190,10 @@ export class ListaMetasEdicionComponent implements OnInit {
 
     });
 
+    $('.container').bind("contextmenu", function (e) {
+      return false;
+    });
+
   }
 
 
@@ -208,7 +208,6 @@ export class ListaMetasEdicionComponent implements OnInit {
   }
 
   changeIcono(event): void {
-
     let icono = $(event.target).html();
     $(event.target).html(icono == 'edit' ? 'save' : 'edit');
 
@@ -267,7 +266,7 @@ export class ListaMetasEdicionComponent implements OnInit {
       this.datos_tabla = false;
 
       this.service.getAllMetas(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea).subscribe(result => {
-
+        console.log(result)
         if (result.response.sucessfull) {
           this.metas = result.data.listMetas || [];
           this.datos_tabla = true;
@@ -329,6 +328,7 @@ export class ListaMetasEdicionComponent implements OnInit {
                 deleteItemArray(this.forecast, rowForecast.id_meta, 'id_pro_meta');
                 Materialize.toast('Se eliminó correctamente ', 4000, 'green');
               } else {
+          
                 Materialize.toast(result.response.message, 4000, 'red');
               }
             }, error => {
@@ -354,8 +354,27 @@ export class ListaMetasEdicionComponent implements OnInit {
     }
   }
 
-  editar(rowForecast: Forecast): void {
+  arrayDescriptivo(arg: Array<Catalogo>): Array<string> {
+    return arg.map((el) => el.valor);
+  }
 
+  idItemCombo(arg: Array<Catalogo>, valor: string): number {
+    let element = arg.filter((el) => el.valor == valor.trim());
+    if (element.length > 0) {
+      return element[0].id;
+    } else {
+      return -1;
+    }
+
+  }
+
+  findRowForecast(metas:Array<Forecast>, id_meta:number):Forecast{
+      let meta: Forecast;
+      let el = metas.filter(el=>el.id_meta == id_meta);
+      if(el.length > 0){
+        meta = el[0];
+      }
+      return meta;
   }
 
 }
