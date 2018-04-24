@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
 import { Forecast } from '../../models/forecast';
-import { deleteItemArray, getAnioActual, calculaDiaPorMes } from '../../utils';
+import { deleteItemArray, getAnioActual, calculaDiaPorMes, isNumeroAsignacionValid } from '../../utils';
 import swal from 'sweetalert2';
 import { ListaMetasEdicionService } from './lista-metas-edicion.service';
 import { Periodo } from '../../models/periodo';
@@ -96,17 +96,25 @@ export class ListaMetasEdicionComponent implements OnInit {
     });
   }
 
+  public variableGlobal: any;
+
   /*
    * Carga plugins despues de cargar y mostrar objetos en el DOM
    */
   ngAfterViewInitHttp(): void {
 
-    let mes:number = this.obtenerMesDelPeriodo(this.periodos, this.idPeriodo);
+    let mes: number = this.obtenerMesDelPeriodo(this.periodos, this.idPeriodo);
     let totalDias = calculaDiaPorMes(this.anioSeleccionado, mes);
+
+    let disable: Array<any> = [];
+    disable.push(true);
+    for (let i = 1; i <= totalDias; i++) {
+      disable.push(new Date(this.anioSeleccionado, mes - 1, i));
+    }
 
     $("table tr").editable({
       maintainWidth: true,
-      keyboard: true,
+      keyboard: false,
       dblclick: false,
       button: true,
       buttonSelector: ".edit",
@@ -114,32 +122,81 @@ export class ListaMetasEdicionComponent implements OnInit {
         "grupo": ['A', 'B', 'C', 'D'],
         "turno": [1, 2, 3]
       },
-      edit:  function (values) {
-    
+      edit: function (values) {
+
+        $('td#' + values.index + ' input[type="text"]').attr("data-value", values.dia);
+
+        // $('td[data-field="meta"] input[type="text"]').keyup(function() {
+        //   alert( "Handler for .keyup() called." );
+        // });
+
         $('#tabla select').material_select();
-        $('td[data-field="dia"] input[type="text"]').pickadate({
+
+        $('td#' + values.index + ' input[type="text"]').pickadate({
           selectYears: false,
           selectMonths: false,
-          disable: [
-            true,
-            [2018]
-        ]
+          clear: '',
+          format: 'dd/mm/yyyy',
+          monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+          weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+          weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+          disable: disable,
+          onClose: function (context) {
+
+          },
+          onSet: (context) => {
+
+            this.variableGlobal = $('td#' + values.index + ' input[type="text"]').val();
+
+          }
         });
+
+
 
       },
       save: function (values) {
-        console.log('valores', values)
+        values.dia = this.variableGlobal;
+        if (values.dia == undefined || values.dia == "") {
+          values.dia = values.dia_string;
+        }
+
+        console.log(values)
+        setTimeout(() => {
+          $('td#' + values.index).html(values.dia), 10
+        });
+
+
 
       },
-      cancel: function (values) {
-        alert(' cancel ')
+      onSet: function (context) {
+
       }
+
     });
 
     $('.tooltipped').tooltip({ delay: 50 });
 
+    /* Carga de evento para identificar quien esta siendo editado en la captura de meta*/
+    $('.container').on('keyup', 'td[data-field="meta"] input[type="text"] , td[data-field="tmp"] input[type="text"] ,  td[data-field="velocidad"] input[type="text"] ', function () {
+
+      let numero_renglon = $(this).parent('td').attr('scope').split(',')[1];
+
+      let meta = $('td[scope="6,' + numero_renglon + '"] input[type="text"]').val().trim();
+      let tmp = $('td[scope="7,' + numero_renglon + '"] input[type="text"]').val().trim();
+      let velocidad = $('td[scope="8,' + numero_renglon + '"] input[type="text"]').val().trim();
+
+      if (!isNumeroAsignacionValid(meta) || !isNumeroAsignacionValid(tmp) || !isNumeroAsignacionValid(velocidad)) {
+        $('#btn' + numero_renglon).attr("disabled", true);
+      } else {
+        $('#btn' + numero_renglon).attr("disabled", false);
+      }
+
+    });
 
   }
+
+
 
 
   agregar() {
@@ -151,9 +208,9 @@ export class ListaMetasEdicionComponent implements OnInit {
   }
 
   changeIcono(event): void {
+
     let icono = $(event.target).html();
     $(event.target).html(icono == 'edit' ? 'save' : 'edit');
-
 
   }
 
@@ -210,17 +267,17 @@ export class ListaMetasEdicionComponent implements OnInit {
       this.datos_tabla = false;
 
       this.service.getAllMetas(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea).subscribe(result => {
-        console.log('getLista Metas', result)
+
         if (result.response.sucessfull) {
           this.metas = result.data.listMetas || [];
           this.datos_tabla = true;
           this.disabled = false;
 
-          setTimeout(() => { 
+          setTimeout(() => {
             this.ngAfterViewInitHttp();
-            this.status = 'active'; 
+            this.status = 'active';
           }, 20);
-          
+
 
         } else {
           Materialize.toast('Ocurrió  un error al consultar las metas!', 4000, 'red');
@@ -288,11 +345,11 @@ export class ListaMetasEdicionComponent implements OnInit {
 
   }
 
-  obtenerMesDelPeriodo(arg:Array<Periodo>,idPeriodo:number):number{
-    let result = arg.filter((el)=>el.id_periodo == idPeriodo);   
-    if(result.length > 0 ){
+  obtenerMesDelPeriodo(arg: Array<Periodo>, idPeriodo: number): number {
+    let result = arg.filter((el) => el.id_periodo == idPeriodo);
+    if (result.length > 0) {
       return result[0].mes;
-    }else{
+    } else {
       return -1;
     }
   }

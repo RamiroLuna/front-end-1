@@ -9,5 +9,6 @@ export class Forecast {
     meta:number;
     tmp:number;
     velocidad:number;
+    dia_string?:string;
 
 }

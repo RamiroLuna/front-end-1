@@ -51,8 +51,9 @@
   <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
     <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
       <thead>
-        <tr>
-
+        <tr>        
+          <th style="display:none"></th>
+          <th style="display:none"></th>
           <th class="center-align">Día</th>
           <th class="center-align">Turno</th>
           <th class="center-align">Grupo</th>
@@ -68,15 +69,17 @@
         <tr *ngIf="metas.length == 0 ">
             <th colspan="8" class="center">No hay registros</th>
         </tr>
-        <tr *ngFor="let meta of metas">
-          <td class="center-align" data-field="dia">{{meta.dia}}</td>
+        <tr *ngFor="let meta of metas;let i = index">
+          <td style="display:none" data-field="index">{{ i }}</td>
+          <td style="display:none" data-field="dia_string">{{meta.dia_string}}</td>
+          <td class="center-align" data-field="dia"  [id]="i">{{meta.dia_string}}</td>
           <td class="center-align" data-field="turno">{{meta.id_turno}}</td>
           <td class="center-align" data-field="grupo">{{meta.nombre_grupo}}</td>
-          <td class="center-align" data-field="meta">{{meta.meta }}</td>
-          <td class="center-align" data-field="tmp">{{meta.tmp }}</td>
-          <td class="center-align" data-field="velocidad">{{meta.velocidad }}</td>
+          <td class="center-align" data-field="meta" [scope]="'6,'+i">{{meta.meta }}</td>
+          <td class="center-align" data-field="tmp" [scope]="'7,'+i">{{meta.tmp }}</td>
+          <td class="center-align" data-field="velocidad" [scope]="'8,'+i">{{meta.velocidad }}</td>
           <td class="center-align">
-            <a class="btn-floating light-green lighten-1 edit" (click)="changeIcono($event)">
+            <a class="btn-floating light-green lighten-1 edit" (click)="changeIcono($event)" [id]="'btn'+i">
               <i class="material-icons">edit</i>
             </a>
           </td>
