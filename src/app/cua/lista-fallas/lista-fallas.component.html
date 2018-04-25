@@ -15,6 +15,36 @@
       <i class="material-icons">add</i>
     </a>
   </div>
+  <div class="row">
+      <form class="col s12 m12 l12 xl12">
+          <div class="input-field col s12 m12 l3 xl3">
+              <input type="text" value="25/04/2018">
+              <label for="">Fecha inicio</label>
+          </div>
+          <div class="input-field col s12 m12 l3 xl3">
+              <input type="text" value="25/05/2018">
+              <label for="">Fecha fin</label>
+          </div>
+        <div class="input-field col s12 m12 l3 xl3">
+            <select materialize="material_select">
+                <option value="">AMUT 2</option>
+              </select>
+              <label for="">Linea</label>
+        </div>
+        <div class="input-field col s12 m12 l2 xl2">
+            <select materialize="material_select">
+              <option value="">B</option>
+            </select>
+            <label for="">Grupo</label>
+        </div>
+        <div class="input-field col s12 m12 l1 xl1">
+          <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
+            <i class="material-icons">search</i>
+          </button>
+          <label></label>
+        </div>
+      </form>
+    </div>
   <!-- Fin solo para dispositivos moviles -->
   <table id="tabla" class="display" cellspacing="0" width="100%">
     <thead>

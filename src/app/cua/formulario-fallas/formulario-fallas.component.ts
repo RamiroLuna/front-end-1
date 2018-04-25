@@ -94,13 +94,16 @@ export class FormularioFallasComponent implements OnInit {
           console.log('resultado de catalogos', result)
 
           if (result.response.sucessfull) {           
-            this.lineas = [];
-            this.grupos = [];
-            this.turnos = [];
+            this.lineas = result.data.listLineas || [];
+            this.grupos = result.data.listGrupos || [];
+            this.turnos = result.data.listTurnos || [];
             this.todasRazones = result.data.listRazonesParo || [];
             this.fuentes = result.data.listFuentesParo || [];
             this.equipos =  result.data.listEquipos || [];
             this.falla.dia = result.data.metasDTO.dia_string || ""; 
+            this.falla.id_turno = result.data.metasDTO.id_turno;
+            this.falla.id_grupo = result.data.metasDTO.id_grupo;
+            this.falla.id_linea = result.data.metasDTO.id_linea;
   
             this.seccion = "ok";
             this.loading = false;  
@@ -148,9 +151,10 @@ export class FormularioFallasComponent implements OnInit {
   ngAfterViewHttp(): void {
     $('textarea#problema').characterCounter();
     $('.tooltipped').tooltip({ delay: 50 });
-    $('.timepicker').pickatime({
-      clear: ''
-    })
+
+    var picker = $('.timepicker').pickatime();
+    picker.set('select', '04-30', { format: 'hh-i' })
+    
   }
 
   agregar() {

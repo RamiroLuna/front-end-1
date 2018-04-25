@@ -31,7 +31,7 @@
                 <label>Línea</label>
                 <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="id_linea" [(ngModel)]="falla.id_linea">
                   <option value="">SELECCIONE</option>
-                  <option *ngFor="let linea of lineas" [value]="">{{ linea.valor }}</option>
+                  <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{ linea.valor }}</option>
                 </select>
                 <div *ngIf="formFalla.controls.id_linea.errors?.required && (formFalla.controls.id_linea?.touched || submitted)" class="error">
                     Se requiere la linea
@@ -40,9 +40,9 @@
 
               <div class="col s12 m12 l4 xl4">
                 <label>Grupo</label>
-                <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="id_grupo" [(ngModel)]="falla.id_grupo">
-                  <option value="">SELECCIONE</option>
-                  <option *ngFor="let grupo of grupos" [value]="">{{ grupo.valor }}</option>
+                <select materialize="material_select" [materializeSelectOptions]="grupos" formControlName="id_grupo" [(ngModel)]="falla.id_grupo">
+                    <option value="">SELECCIONE</option>
+                  <option *ngFor="let grupo of grupos" [value]="grupo.id">{{ grupo.valor }}</option>
                 </select>
                 <div *ngIf="formFalla.controls.id_grupo.errors?.required && (formFalla.controls.id_grupo?.touched || submitted)" class="error">
                     Se requiere el grupo
@@ -53,7 +53,7 @@
                 <label>Turno</label>
                 <select materialize="material_select" [materializeSelectOptions]="turnos" formControlName="id_turno" [(ngModel)]="falla.id_turno">
                     <option value="">SELECCIONE</option>
-                    <option *ngFor="let turno of turnos" [value]="">{{ turno.valor }}</option>
+                    <option *ngFor="let turno of turnos" [value]="turno.id">{{ turno.valor }}</option>
                 </select>
                 <div *ngIf="formFalla.controls.id_turno.errors?.required && (formFalla.controls.id_turno?.touched || submitted)" class="error">
                     Se requiere el turno

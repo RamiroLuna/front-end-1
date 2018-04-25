@@ -56,36 +56,36 @@
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
                 <input id="meta" type="text" [(ngModel)]="rowForecast.meta" formControlName="meta">
-                <label for="meta">Valor de la meta en kilogramos</label>
+                <label for="meta">Meta de producción (kilogramos) </label>
                 <div *ngIf="formCargaManual.controls.meta.errors?.required && (formCargaManual.controls.meta?.touched || submitted)" class="error">
                   La meta es requerido
                 </div>
                 <div *ngIf="formCargaManual.controls.meta.errors?.pattern && (formCargaManual.controls.meta?.pattern || submitted)" class="error">
-                  Número no valido
+                  Valor no valido
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
                 <input id="meta" type="text" [(ngModel)]="rowForecast.tmp" formControlName="tmp">
-                <label for="meta">Tiempo muerto planeado</label>
+                <label for="meta">Meta Tiempo muerto planeado (Hrs)</label>
                 <div *ngIf="formCargaManual.controls.tmp.errors?.required && (formCargaManual.controls.tmp?.touched || submitted)" class="error">
-                  Tiempo muerto planeado
+                  Se requiere tiempo muerto planeado
                 </div>
                 <div *ngIf="formCargaManual.controls.tmp.errors?.pattern && (formCargaManual.controls.tmp?.pattern || submitted)" class="error">
-                  Número no valido
+                  Valor no valido
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
                 <input id="velocidad" type="text" [(ngModel)]="rowForecast.velocidad" formControlName="vel">
-                <label for="velocidad">Velocidad</label>
+                <label for="velocidad">Meta Velocidad (T / Hrs)</label>
                 <div *ngIf="formCargaManual.controls.vel.errors?.required && (formCargaManual.controls.vel?.touched || submitted)" class="error">
-                  La velocidad es requerida
+                  Se requiere la velocidad
                 </div>
                 <div *ngIf="formCargaManual.controls.vel.errors?.pattern && (formCargaManual.controls.vel?.pattern || submitted)" class="error">
-                  Número no valido
+                  Valor no valido
                 </div>
               </div>
             </div>
