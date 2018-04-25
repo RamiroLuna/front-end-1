@@ -25,23 +25,24 @@
         <div class="row">
           <div class="input-field col s12 m12 l6 xl6">
             <label for="">Fecha inicio</label>
-            <input type="text" class="inicio" formControlName="inicio" [(ngModel)]="paramsBusqueda.inicio">
+            <input type="text" class="inicio" formControlName="inicio" [(ngModel)]="paramsBusqueda.inicio" (ngModelChange)="changeCombo()">
             <div *ngIf="formBusqueda.controls.inicio.errors?.required && (formBusqueda.controls.inicio?.touched || submitted)" class="error">
-                Se requiere fecha inicio
+              Se requiere fecha inicio
             </div>
           </div>
           <div class="input-field col s12 m12 l6 xl6">
             <label for="">Fecha fin</label>
-            <input type="text" class="fin" formControlName="fin" [(ngModel)]="paramsBusqueda.fin">
+            <input type="text" class="fin" formControlName="fin" [(ngModel)]="paramsBusqueda.fin" (ngModelChange)="changeCombo()">
             <div *ngIf="formBusqueda.controls.fin.errors?.required && (formBusqueda.controls.fin?.touched || submitted)" class="error">
-                Se requiere fecha fin
+              Se requiere fecha fin
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col s12 m12 l4 xl4">
             <label for="">Linea</label>
-            <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="id_linea" [(ngModel)]="paramsBusqueda.id_linea">
+            <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="id_linea" [(ngModel)]="paramsBusqueda.id_linea"
+              (ngModelChange)="changeCombo()">
               <option value="">SELECCIONE</option>
               <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{ linea.valor }}</option>
             </select>
@@ -51,7 +52,8 @@
           </div>
           <div class="col s12 m12 l4 xl4">
             <label for="">Grupo</label>
-            <select materialize="material_select" [materializeSelectOptions]="grupos" formControlName="id_grupo" [(ngModel)]="paramsBusqueda.id_grupo">
+            <select materialize="material_select" [materializeSelectOptions]="grupos" formControlName="id_grupo" [(ngModel)]="paramsBusqueda.id_grupo"
+              (ngModelChange)="changeCombo()">
               <option value="">SELECCIONE</option>
               <option *ngFor="let grupo of grupos" [value]="grupo.id">{{ grupo.valor }}</option>
             </select>
@@ -61,7 +63,8 @@
           </div>
           <div class="col s12 m12 l3 xl3">
             <label for="">Turno</label>
-            <select materialize="material_select" [materializeSelectOptions]="turnos" formControlName="id_turno" [(ngModel)]="paramsBusqueda.id_turno">
+            <select materialize="material_select" [materializeSelectOptions]="turnos" formControlName="id_turno" [(ngModel)]="paramsBusqueda.id_turno"
+              (ngModelChange)="changeCombo()">
               <option value="">SELECCIONE</option>
               <option *ngFor="let turno of turnos" [value]="turno.id">{{ turno.valor }}</option>
             </select>
@@ -79,43 +82,46 @@
       </fieldset>
     </form>
   </div>
-
+  <div class="section"></div>
   <div class="row" *ngIf="bVistaPre">
-    <table id="tabla" class="display" cellspacing="0" width="100%" autocomplete="off" [@visibility]="status">
-      <thead>
-        <tr>
-          <th class="center-align">Día</th>
-          <th class="center-align">Grupo</th>
-          <th class="center-align">Turno</th>
-          <th class="center-align">Fuente del Paro</th>
-          <th class="center-align">Razón del Paro</th>
-          <th class="center-align">Nombre del Equipo</th>
-          <th class="center-align">Editar</th>
-          <th class="center-align">Eliminar</th>
-        </tr>
-      </thead>
+    <div class="row" [@visibility]="status">
+      <table id="tabla" class="display" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th class="center-align">Día</th>
+            <th class="center-align">Fuente del Paro</th>
+            <th class="center-align">Razón del Paro</th>
+            <th class="center-align">Nombre del Equipo</th>
+            <th class="center-align">Tiempo paro</th>
+            <th class="center-align">Editar</th>
+            <th class="center-align">Eliminar</th>
+          </tr>
+        </thead>
 
-      <tbody>
-        <tr *ngFor="let falla of fallas">
-          <td class="center-align">{{falla.dia}}</td>
-          <td class="center-align">{{falla.grupo}}</td>
-          <td class="center-align">{{falla.turno}}</td>
-          <td class="center-align">{{falla.fuente}}</td>
-          <td class="center-align">{{falla.razon}}</td>
-          <td class="center-align">{{falla.equipo}}</td>
-          <td class="center-align">
-            <a class="btn-floating light-green lighten-1" [routerLink]="falla.id">
-              <i class="material-icons">description</i>
-            </a>
-          </td>
-          <td class="center-align">
-            <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(falla,'eliminar')">
-              <i class="material-icons">delete</i>
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+        <tbody>
+          <tr *ngIf="fallas.length == 0">
+            <td class="center-align" colspan="7">NO HAY FALLAS REGISTRADAS</td>
+          </tr>
+          <tr *ngFor="let falla of fallas"  [class]="falla.id_falla">
+            <td class="center-align">{{falla.diaString}}</td>
+            <td class="center-align">{{falla.valor_fuente}}</td>
+            <td class="center-align">{{falla.valor_razon}}</td>
+            <td class="center-align">{{falla.valor_equipo}}</td>
+            <td class="center-align">{{falla.tiempo_paro + ' Hrs'}}</td>
+            <td class="center-align">
+              <a class="btn-floating light-green lighten-1" [routerLink]="falla.id">
+                <i class="material-icons">description</i>
+              </a>
+            </td>
+            <td class="center-align">
+              <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(falla,'eliminar')">
+                <i class="material-icons">delete</i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <!-- Inicio solo para pantallas-->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
