@@ -147,6 +147,7 @@ export class ListaFallasComponent implements OnInit {
 
   busqueda(parametrosBusqueda: any) {
     this.status = 'inactive';
+    this.bVistaPre = false;
     this.submitted = true;
 
     if (this.formBusqueda.valid) {

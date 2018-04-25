@@ -1,7 +1,7 @@
 <div class="container" *ngIf="!loading && seccion!='invalid' &&  seccion!='error' ">
   <div class="row">
     <div class="col offset-l2 offset-xl0 s12 m12 l8 xl12">
-      <h4 class="color_titulo center-align">Registro de falla por turno</h4>
+      <h4 class="color_titulo center-align">{{ titulo }} de falla por turno</h4>
       <div class="section"></div>
       <!-- Solo para dispositivos moviles -->
       <div class="hide-on-large-only right-align">
@@ -20,8 +20,8 @@
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
                 <label for="dia">Día</label>
-                <input id="dia" type="text" formControlName="dia" [(ngModel)]="falla.dia">
-                <div *ngIf="formFalla.controls.dia.errors?.required && (formFalla.controls.dia?.touched || submitted)" class="error">
+                <input id="dia" type="text" formControlName="diaString" [(ngModel)]="falla.diaString">
+                <div *ngIf="formFalla.controls.diaString.errors?.required && (formFalla.controls.diaString?.touched || submitted)" class="error">
                     Se requiere el día
                 </div>
               </div>
@@ -142,7 +142,7 @@
 
             <div class="row">
               <div class="input-field center">
-                <button class="btn light-green darken-1 waves-effect waves-light" type="submit" name="asignar" >Agregar
+                <button class="btn light-green darken-1 waves-effect waves-light" type="submit" name="asignar" >{{ textoBtn }}
                 </button>
               </div>
             </div>

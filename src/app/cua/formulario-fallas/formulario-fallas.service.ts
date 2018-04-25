@@ -31,7 +31,7 @@ export class FormularioFallasService {
     * Consulta  falla consultada
     */ 
   getFalla(id_usuario: number, id_falla:number): Observable<any> {
-    return this.http.get<Falla>(this.URL + '?action=getCarProductoById&id_usuario=' + id_usuario + '&id_falla='+id_falla);
+    return this.http.get<Falla>(this.URL + '?action=getFallaById&id_usuario=' + id_usuario + '&id_falla='+id_falla);
   }
     /*
     * Fin de la falla consultada
@@ -51,6 +51,23 @@ export class FormularioFallasService {
       .set('id_equipo', ''+falla.id_equipo)
       .set('id_meta', ''+falla.id_meta)
       .set('id_usuario', '' + id_usuario);
+    return this.http.post(this.URL, body);
+  }
+
+    /*
+   * Bloque de codigo para peticiones CRUD fallas
+   */
+  update(id_usuario: number, falla: Falla): Observable<any> {
+    const body = new HttpParams()
+    .set('action', 'updateFalla')
+    .set('descripcion', ''+falla.descripcion)
+    .set('hora_inicio', ''+falla.hora_inicio)
+    .set('hora_final', ''+falla.hora_final)
+    .set('id_falla', ''+falla.id_falla)
+    .set('id_razon', ''+falla.id_razon)
+    .set('id_equipo', ''+falla.id_equipo)
+    .set('id_meta', ''+falla.id_meta)
+    .set('id_usuario', '' + id_usuario);
     return this.http.post(this.URL, body);
   }
 

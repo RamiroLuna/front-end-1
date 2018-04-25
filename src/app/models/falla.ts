@@ -17,7 +17,14 @@ export class Falla {
     id_grupo:number;
     id_turno:number;
     dia:string;
+    diaString:string;
 
     descripcion_equipo?:string ="";
+
+    valor_grupo?:string;
+    valor_linea?:string;
+    valor_razon?:string;
+    valor_turno?:string;
+
 
 }

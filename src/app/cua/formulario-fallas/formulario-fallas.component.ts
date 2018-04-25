@@ -23,7 +23,8 @@ export class FormularioFallasComponent implements OnInit {
   public seccion: string;
   public submitted: boolean;
   public mensajeModal: string;
-  public texto_btn: string;
+  public textoBtn: string;
+  public titulo: string;
   public textoFormulario: string;
   public falla: Falla;
   public formFalla: FormGroup;
@@ -47,7 +48,8 @@ export class FormularioFallasComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.submitted = false;
-    this.texto_btn = "Cancelar";
+    this.textoBtn = "";
+    this.titulo = "";
     this.textoFormulario = "";
     this.falla = new Falla();
 
@@ -55,10 +57,14 @@ export class FormularioFallasComponent implements OnInit {
       if (params.get('id') == 'nuevo') {
         this.textoFormulario = "Capture datos para registrar la falla del turno:";
         this.seccion = 'add';
+        this.textoBtn = 'AGREGAR';
+        this.titulo = 'Registro';
       } else if (isValidId(params.get('id'))) {
         this.textoFormulario = "Actualice datos de la falla:";
         this.seccion = 'edit';
         this.id = params.get('id');
+        this.textoBtn = 'EDITAR';
+        this.titulo = 'Edición';
       } else {
         this.seccion = 'invalid';
       }
@@ -71,11 +77,18 @@ export class FormularioFallasComponent implements OnInit {
 
       if (this.seccion == 'edit') {
         this.service.getFalla(this.auth.getIdUsuario(), this.id).subscribe(result => {
-
+         console.log(result)
           if (result.response.sucessfull) {
-
-            this.loadFormulario();
+            this.lineas = result.data.listLineas || [];
+            this.grupos = result.data.listGrupos || [];
+            this.turnos = result.data.listTurnos || [];
+            this.todasRazones = result.data.listRazonesParo || [];
+            this.fuentes = result.data.listFuentesParo || [];
+            this.equipos =  result.data.listEquipos || [];
+            this.falla = result.data.fallasDTO || new Falla();
             this.loading = false;
+            this.loadFormulario();
+            setTimeout(()=>this.ngAfterViewHttp(),20);
 
           } else {
             this.seccion = "error";
@@ -98,7 +111,7 @@ export class FormularioFallasComponent implements OnInit {
             this.todasRazones = result.data.listRazonesParo || [];
             this.fuentes = result.data.listFuentesParo || [];
             this.equipos =  result.data.listEquipos || [];
-            this.falla.dia = result.data.metasDTO.dia_string || ""; 
+            this.falla.diaString = result.data.metasDTO.dia_string || ""; 
             this.falla.id_turno = result.data.metasDTO.id_turno;
             this.falla.id_grupo = result.data.metasDTO.id_grupo;
             this.falla.id_linea = result.data.metasDTO.id_linea;
@@ -129,7 +142,7 @@ export class FormularioFallasComponent implements OnInit {
 
   loadFormulario(): void {
     this.formFalla = this.fb.group({
-      dia: new FormControl({ value: this.falla.dia, disabled: true}, [Validators.required]),
+      diaString: new FormControl({ value: this.falla.diaString, disabled: true}, [Validators.required]),
       id_linea: new FormControl({value: this.falla.id_linea, disabled: true}, [Validators.required]),
       id_grupo: new FormControl({value: this.falla.id_grupo, disabled: true}, [Validators.required]),
       id_turno: new FormControl({value: this.falla.id_grupo,disabled: true} , [Validators.required]),
@@ -169,9 +182,9 @@ export class FormularioFallasComponent implements OnInit {
         if( this.falla.hora_inicio != "" &&  this.falla.hora_final ){
           
          
-          let milisegundos_inicio = getMilisegundosHoras(this.falla.dia , this.falla.hora_inicio);
-          let milisegundos_fin = getMilisegundosHoras(this.falla.dia , this.falla.hora_final);
-
+          let milisegundos_inicio = getMilisegundosHoras(this.falla.diaString , this.falla.hora_inicio);
+          let milisegundos_fin = getMilisegundosHoras(this.falla.diaString , this.falla.hora_final);
+         
           if(milisegundos_fin >= milisegundos_inicio){ 
             let total = milisegundos_fin - milisegundos_inicio;
 
@@ -268,17 +281,16 @@ export class FormularioFallasComponent implements OnInit {
               Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
             });
           } else if (this.seccion == 'edit') {
-            // this.service.update(this.auth.getIdUsuario(), producto).subscribe(
-            //   result => {
-            //     if (result.response.sucessfull) {
-            //       Materialize.toast('Actualización completa', 4000, 'green');
-            //       this.texto_btn = 'Cerrar ficha';
-            //     } else {
-            //       Materialize.toast(result.response.message, 4000, 'red');
-            //     }
-            //   }, error => {
-            //     Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-            //   });
+            this.service.update(this.auth.getIdUsuario(), falla).subscribe(
+              result => {
+                if (result.response.sucessfull) {
+                  Materialize.toast('Actualización completa', 4000, 'green');
+                } else {
+                  Materialize.toast(result.response.message, 4000, 'red');
+                }
+              }, error => {
+                Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+              });
           }
 
           /*

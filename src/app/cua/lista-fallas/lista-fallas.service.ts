@@ -31,7 +31,7 @@ export class ListaFallasService {
 
   delete(id_usuario: number, id_falla: number): Observable<any> {
     const body = new HttpParams()
-      .set('action', '')
+      .set('action', 'deleteFalla')
       .set('id_falla', '' + id_falla)
       .set('id_usuario', '' + id_usuario)
     return this.http.post(this.URL, body);
