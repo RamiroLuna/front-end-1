@@ -95,6 +95,20 @@ function getMilisegundos(date: string): number {
     let f = new Date(numbers[1] + "/" + numbers[0] + "/" + numbers[2]);
     return f.getTime();
 }
+/**
+ * @function getMilisegundosHoras
+ * @param date fecha 
+ * @param hora HH:i 
+ * @return  {string} 
+ * @description Devuelve la fecha con hora convertida en milisegundos
+ */
+function getMilisegundosHoras(date: string, time:string): number {
+    let numbers = date.split("/");
+    let hora = time.split(":");
+
+    let f = new Date(parseInt(numbers[2]) ,  parseInt(numbers[1] ) ,parseInt(numbers[0]), parseInt(hora[0]), parseInt(hora[1]));
+    return f.getTime();
+}
 
 /**
  * @function DataTable
@@ -250,5 +264,6 @@ export {
     isNumeroAsignacionValid,
     DataTableReporte,
     calculaDiaPorMes,
+    getMilisegundosHoras,
     getLabels
 }

@@ -38,4 +38,21 @@ export class FormularioFallasService {
     */ 
 
 
+    /*
+   * Bloque de codigo para peticiones CRUD fallas
+   */
+  agregar(id_usuario: number, falla: Falla): Observable<any> {
+    const body = new HttpParams()
+      .set('action', 'insertFalla')
+      .set('descripcion', ''+falla.descripcion)
+      .set('hora_inicio', ''+falla.hora_inicio)
+      .set('hora_final', ''+falla.hora_final)
+      .set('id_razon', ''+falla.id_razon)
+      .set('id_equipo', ''+falla.id_equipo)
+      .set('id_meta', ''+falla.id_meta)
+      .set('id_usuario', '' + id_usuario);
+    return this.http.post(this.URL, body);
+  }
+
+
 }

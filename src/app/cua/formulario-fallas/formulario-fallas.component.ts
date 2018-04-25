@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FormularioFallasService } from './formulario-fallas.service';
 import { AuthService } from '../../auth/auth.service';
-import { isValidId } from '../../utils';
+import { isValidId, getMilisegundosHoras } from '../../utils';
 import { Falla } from '../../models/falla';
 import { Catalogo } from '../../models/catalogo';
 import swal from 'sweetalert2';
@@ -91,8 +91,6 @@ export class FormularioFallasComponent implements OnInit {
       
         this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {    
 
-          console.log('resultado de catalogos', result)
-
           if (result.response.sucessfull) {           
             this.lineas = result.data.listLineas || [];
             this.grupos = result.data.listGrupos || [];
@@ -104,11 +102,12 @@ export class FormularioFallasComponent implements OnInit {
             this.falla.id_turno = result.data.metasDTO.id_turno;
             this.falla.id_grupo = result.data.metasDTO.id_grupo;
             this.falla.id_linea = result.data.metasDTO.id_linea;
+            this.falla.id_meta = result.data.metasDTO.id_meta || -1;
   
-            this.seccion = "ok";
+            this.seccion = "add";
             this.loading = false;  
             this.loadFormulario();
-            setTimeout(()=>this.ngAfterViewHttp(),100);
+            setTimeout(()=>this.ngAfterViewHttp(),20);
           } else {
             this.seccion = "error";
             this.loading = false;
@@ -140,21 +139,58 @@ export class FormularioFallasComponent implements OnInit {
       descripcion_equipo: new FormControl({value: this.falla.descripcion_equipo , disabled:true}),
       hora_inicio: new FormControl(this.falla.hora_inicio, [Validators.required]),
       hora_final: new FormControl(this.falla.hora_final, [Validators.required]),
-      tiempo_paro: new FormControl(this.falla.tiempo_paro, [Validators.required]),
+      tiempo_paro: new FormControl({ vallue: this.falla.tiempo_paro, disabled:true}, [Validators.required]),
       descripcion: new FormControl(this.falla.descripcion, [Validators.required]),
     });
+    
   }
 
   /*
    * Carga plugins despues de cargar y mostrar objetos en el DOM
    */
   ngAfterViewHttp(): void {
+    
     $('textarea#problema').characterCounter();
     $('.tooltipped').tooltip({ delay: 50 });
+    $('.hora_inicio, .hora_final').pickatime({
+      default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+      fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+      twelvehour: false, // Use AM/PM or 24-hour format
+      donetext: 'OK', // text for done-button
+      cleartext: '', // text for clear-button
+      canceltext: '', // Text for cancel-button
+      autoclose: false, // automatic close timepicker
+      ampmclickable: true, // make AM PM clickable
+      aftershow: function(){}, //Function for after opening timepicker
+      afterDone: (Element, Time)=> {
+        this.falla.hora_inicio = $('.hora_inicio').val();
+        this.falla.hora_final = $('.hora_final').val();
 
-    var picker = $('.timepicker').pickatime();
-    picker.set('select', '04-30', { format: 'hh-i' })
-    
+        if( this.falla.hora_inicio != "" &&  this.falla.hora_final ){
+          
+         
+          let milisegundos_inicio = getMilisegundosHoras(this.falla.dia , this.falla.hora_inicio);
+          let milisegundos_fin = getMilisegundosHoras(this.falla.dia , this.falla.hora_final);
+
+          if(milisegundos_fin >= milisegundos_inicio){ 
+            let total = milisegundos_fin - milisegundos_inicio;
+
+            let horas = (((total/1000)/60)/60).toFixed(2);
+           
+            this.falla.tiempo_paro = ""+horas;
+            
+          }else{
+            this.falla.tiempo_paro = "";
+            Materialize.toast('La hora de inicio es mayor a la hora final!', 4000, 'red');
+          
+          }
+         
+       
+        
+        }
+
+      }
+    });
   }
 
   agregar() {
@@ -188,6 +224,7 @@ export class FormularioFallasComponent implements OnInit {
     this.submitted = true;
     this.mensajeModal = '';
 
+
     if (this.formFalla.valid) {
 
       switch (accion) {
@@ -219,16 +256,17 @@ export class FormularioFallasComponent implements OnInit {
         if (result.value) {
 
           if (this.seccion == 'add') {
-            // this.service.agregar(this.auth.getIdUsuario(), producto).subscribe(result => {
-            //   if (result.response.sucessfull) {
-            //     Materialize.toast('Se agregó correctamente', 4000, 'green');
-            //     this.router.navigate(['../../productos'], { relativeTo: this.route });
-            //   } else {
-            //     Materialize.toast(result.response.message, 4000, 'red');
-            //   }
-            // }, eror => {
-            //   Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-            // });
+            this.service.agregar(this.auth.getIdUsuario(), falla).subscribe(result => {
+             
+              if (result.response.sucessfull) {
+                Materialize.toast('Se agregó correctamente', 4000, 'green');
+                this.router.navigate(['../../fallas'], { relativeTo: this.route });
+              } else {
+                Materialize.toast(result.response.message, 4000, 'red');
+              }
+            }, eror => {
+              Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+            });
           } else if (this.seccion == 'edit') {
             // this.service.update(this.auth.getIdUsuario(), producto).subscribe(
             //   result => {

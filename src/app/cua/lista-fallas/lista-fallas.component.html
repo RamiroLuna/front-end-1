@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="!loading">
 
   <div class="section"></div>
   <h4 class="color_titulo center-align">Fallas registradas</h4>
@@ -15,72 +15,108 @@
       <i class="material-icons">add</i>
     </a>
   </div>
-  <div class="row">
-      <form class="col s12 m12 l12 xl12">
-          <div class="input-field col s12 m12 l3 xl3">
-              <input type="text" value="25/04/2018">
-              <label for="">Fecha inicio</label>
-          </div>
-          <div class="input-field col s12 m12 l3 xl3">
-              <input type="text" value="25/05/2018">
-              <label for="">Fecha fin</label>
-          </div>
-        <div class="input-field col s12 m12 l3 xl3">
-            <select materialize="material_select">
-                <option value="">AMUT 2</option>
-              </select>
-              <label for="">Linea</label>
-        </div>
-        <div class="input-field col s12 m12 l2 xl2">
-            <select materialize="material_select">
-              <option value="">B</option>
-            </select>
-            <label for="">Grupo</label>
-        </div>
-        <div class="input-field col s12 m12 l1 xl1">
-          <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
-            <i class="material-icons">search</i>
-          </button>
-          <label></label>
-        </div>
-      </form>
-    </div>
   <!-- Fin solo para dispositivos moviles -->
-  <table id="tabla" class="display" cellspacing="0" width="100%">
-    <thead>
-      <tr>
-        <th class="center-align">Día</th>
-        <th class="center-align">Grupo</th>
-        <th class="center-align">Turno</th>
-        <th class="center-align">Fuente del Paro</th>
-        <th class="center-align">Razón del Paro</th>
-        <th class="center-align">Nombre del Equipo</th>
-        <th class="center-align">Editar</th>
-        <th class="center-align">Eliminar</th>
-      </tr>
-    </thead>
+  <div class="row">
+    <form class="col s12 m12 l12 xl12" [formGroup]="formBusqueda" (ngSubmit)="busqueda(paramsBusqueda)">
+      <fieldset>
+        <legend class="color_titulo">
+          <b>Ingrese los datos para mostrar fallas:</b>
+        </legend>
+        <div class="row">
+          <div class="input-field col s12 m12 l6 xl6">
+            <label for="">Fecha inicio</label>
+            <input type="text" class="inicio" formControlName="inicio" [(ngModel)]="paramsBusqueda.inicio">
+            <div *ngIf="formBusqueda.controls.inicio.errors?.required && (formBusqueda.controls.inicio?.touched || submitted)" class="error">
+                Se requiere fecha inicio
+            </div>
+          </div>
+          <div class="input-field col s12 m12 l6 xl6">
+            <label for="">Fecha fin</label>
+            <input type="text" class="fin" formControlName="fin" [(ngModel)]="paramsBusqueda.fin">
+            <div *ngIf="formBusqueda.controls.fin.errors?.required && (formBusqueda.controls.fin?.touched || submitted)" class="error">
+                Se requiere fecha fin
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12 m12 l4 xl4">
+            <label for="">Linea</label>
+            <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="id_linea" [(ngModel)]="paramsBusqueda.id_linea">
+              <option value="">SELECCIONE</option>
+              <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{ linea.valor }}</option>
+            </select>
+            <div *ngIf="formBusqueda.controls.id_linea.errors?.required && (formBusqueda.controls.id_linea?.touched || submitted)" class="error">
+              Se requiere la linea
+            </div>
+          </div>
+          <div class="col s12 m12 l4 xl4">
+            <label for="">Grupo</label>
+            <select materialize="material_select" [materializeSelectOptions]="grupos" formControlName="id_grupo" [(ngModel)]="paramsBusqueda.id_grupo">
+              <option value="">SELECCIONE</option>
+              <option *ngFor="let grupo of grupos" [value]="grupo.id">{{ grupo.valor }}</option>
+            </select>
+            <div *ngIf="formBusqueda.controls.id_grupo.errors?.required && (formBusqueda.controls.id_grupo?.touched || submitted)" class="error">
+              Se requiere el grupo
+            </div>
+          </div>
+          <div class="col s12 m12 l3 xl3">
+            <label for="">Turno</label>
+            <select materialize="material_select" [materializeSelectOptions]="turnos" formControlName="id_turno" [(ngModel)]="paramsBusqueda.id_turno">
+              <option value="">SELECCIONE</option>
+              <option *ngFor="let turno of turnos" [value]="turno.id">{{ turno.valor }}</option>
+            </select>
+            <div *ngIf="formBusqueda.controls.id_turno.errors?.required && (formBusqueda.controls.id_turno?.touched || submitted)" class="error">
+              Se requiere el turno
+            </div>
+          </div>
+          <div class="input-field col s12 m12 l1 xl1">
+            <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
+              <i class="material-icons">search</i>
+            </button>
+            <label></label>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
 
-    <tbody>
-      <tr *ngFor="let falla of fallas">
-        <td class="center-align">{{falla.dia}}</td>
-        <td class="center-align">{{falla.grupo}}</td>
-        <td class="center-align">{{falla.turno}}</td>
-        <td class="center-align">{{falla.fuente}}</td>
-        <td class="center-align">{{falla.razon}}</td>
-        <td class="center-align">{{falla.equipo}}</td>
-        <td class="center-align">
-          <a class="btn-floating light-green lighten-1" [routerLink]="falla.id">
+  <div class="row" *ngIf="bVistaPre">
+    <table id="tabla" class="display" cellspacing="0" width="100%" autocomplete="off" [@visibility]="status">
+      <thead>
+        <tr>
+          <th class="center-align">Día</th>
+          <th class="center-align">Grupo</th>
+          <th class="center-align">Turno</th>
+          <th class="center-align">Fuente del Paro</th>
+          <th class="center-align">Razón del Paro</th>
+          <th class="center-align">Nombre del Equipo</th>
+          <th class="center-align">Editar</th>
+          <th class="center-align">Eliminar</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let falla of fallas">
+          <td class="center-align">{{falla.dia}}</td>
+          <td class="center-align">{{falla.grupo}}</td>
+          <td class="center-align">{{falla.turno}}</td>
+          <td class="center-align">{{falla.fuente}}</td>
+          <td class="center-align">{{falla.razon}}</td>
+          <td class="center-align">{{falla.equipo}}</td>
+          <td class="center-align">
+            <a class="btn-floating light-green lighten-1" [routerLink]="falla.id">
               <i class="material-icons">description</i>
-          </a>
-        </td>
-        <td class="center-align">
-          <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(falla,'eliminar')">
-            <i class="material-icons">delete</i>
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+            </a>
+          </td>
+          <td class="center-align">
+            <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(falla,'eliminar')">
+              <i class="material-icons">delete</i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <!-- Inicio solo para pantallas-->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">

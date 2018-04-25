@@ -106,7 +106,7 @@
             <div class="row">
               <div class="input-field col s12 m12 l4 xl4">
                 <label for="horainicio">Hora Inicio</label>
-                <input id="horainicio" type="text" class="timepicker" formControlName="hora_inicio" [(ngModel)]="falla.hora_inicio">
+                <input id="horainicio" type="text" class="hora_inicio" formControlName="hora_inicio" [(ngModel)]="falla.hora_inicio">
                 <div *ngIf="formFalla.controls.hora_inicio.errors?.required && (formFalla.controls.hora_inicio?.touched || submitted)" class="error">
                     Se requiere hora de inicio
                 </div>
@@ -121,8 +121,9 @@
               </div>
 
               <div class="input-field col s12 m12 l4 xl4">
-                <label for="horasparo">Horas Paro</label>
-                <input id="horasparo" type="text" disabled formControlName="tiempo_paro" [(ngModel)]="falla.tiempo_paro">
+               
+                <input id="horasparo" type="text"  formControlName="tiempo_paro" [(ngModel)]="falla.tiempo_paro" disabled>
+                <label for="horasparo" class="active">Horas Paro</label>
                 <div *ngIf="formFalla.controls.tiempo_paro.errors?.required && (formFalla.controls.tiempo_paro?.touched || submitted)" class="error">
                     Se requiere total de  horas de paro
                 </div>
@@ -132,7 +133,7 @@
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
                 <label for="problema">Descripción del Problema</label>
-                <textarea id="problema" class="materialize-textarea" data-length="120" formControlName="descripcion" [(ngModel)]="falla.descripcion"></textarea>
+                <textarea maxlength="250" id="problema" class="materialize-textarea" data-length="250" formControlName="descripcion" [(ngModel)]="falla.descripcion"></textarea>
                 <div *ngIf="formFalla.controls.descripcion.errors?.required && (formFalla.controls.descripcion?.touched || submitted)" class="error">
                     Se requiere una descripción
                 </div>

@@ -4,7 +4,7 @@ export class Falla {
     descripcion:string;
     hora_inicio:string;
     hora_final:string;
-    tiempo_paro:string;
+    tiempo_paro:string ="0";
     id_meta:number;
     id_razon:number;
     id_equipo:number;
