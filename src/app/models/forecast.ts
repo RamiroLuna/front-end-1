@@ -6,4 +6,6 @@ export class Forecast {
     meta:number;
     tmp:number;
     velocidad:number;
+    id_turno?:number;
+    id_grupo?:number;
 }
