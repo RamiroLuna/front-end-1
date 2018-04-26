@@ -1,275 +1,227 @@
-<div class="container">
-    <form class="col s12 m12 l12 xl12" autocomplete="off">
-        <fieldset>
-          <legend class="color_titulo">
-            <b>Capture para generar reporte:</b>
-          </legend>
-          <div class="row">
-            <div class="input-field col s12 m12 l4 xl4">
-              <input placeholder="" id="de" type="text" class="validate">
-              <label for="de">De:</label>
-            </div>
-            <div class="input-field col s12 m12 l4 xl4">
-              <input placeholder="" id="hasta" type="text" class="validate">
-              <label for="hasta">Hasta:</label>
-            </div>
-            <div class="input-field col s12 m12 l3 xl3">
-              <select>
-                <option value="" selected>Seleccione</option>
-                <option value="1">Amut 1</option>
-                <option value="1">Amut 2</option>
-              </select>
-              <label>Linea</label>
-            </div>
-            <div class="input-field col s12 m12 l1 xl1">
-                <a class="btn col s12 m12 l12 xl12 waves-effect waves-light light-green darken-1">
-                    <i class="material-icons">play_arrow</i>
-                </a>
+<div *ngIf="!loading">
+  <div class="container">
+    <div class="section"></div>
+    <form class="col s12 m12 l12 xl12" autocomplete="off" [formGroup]="formBusqueda" (ngSubmit)="busqueda(paramsBusqueda)">
+      <fieldset>
+        <legend class="color_titulo">
+          <b>Capture para generar reporte:</b>
+        </legend>
+        <div class="row">
+          <div class="input-field col s12 m12 l4 xl4">
+            <label for="">Fecha inicio</label>
+            <input type="text" class="inicio" formControlName="inicio" [(ngModel)]="paramsBusqueda.inicio" (ngModelChange)="changeCombo()">
+            <div *ngIf="formBusqueda.controls.inicio.errors?.required && (formBusqueda.controls.inicio?.touched || submitted)" class="error">
+              Se requiere fecha inicio
             </div>
           </div>
-        </fieldset>
-      </form>
-</div>
-<div class="section"></div>
-<div class="carousel carousel-slider center">
-  <div class="carousel-item white" href="#one!">
-    <div class="container">
-      <canvas id="myChart" width="50" height="20">
-        Su navegador no soporta canvas
-      </canvas>
-    </div>
+          <div class="input-field col s12 m12 l4 xl4">
+            <label for="">Fecha fin</label>
+            <input type="text" class="fin" formControlName="fin" [(ngModel)]="paramsBusqueda.fin" (ngModelChange)="changeCombo()">
+            <div *ngIf="formBusqueda.controls.fin.errors?.required && (formBusqueda.controls.fin?.touched || submitted)" class="error">
+              Se requiere fecha fin
+            </div>
+          </div>
+          <div class="col s12 m12 l3 xl3">
+            <label for="">Linea</label>
+            <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="id_linea" [(ngModel)]="paramsBusqueda.id_linea"
+              (ngModelChange)="changeCombo()">
+              <option value="">SELECCIONE</option>
+              <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{ linea.valor }}</option>
+            </select>
+            <div *ngIf="formBusqueda.controls.id_linea.errors?.required && (formBusqueda.controls.id_linea?.touched || submitted)" class="error">
+              Se requiere la linea
+            </div>
+          </div>
+          <div class="input-field col s12 m12 l1 xl1">
+            <button type="submit" class="btn col s12 m12 l12 xl12 waves-effect waves-light light-green darken-1">
+              <i class="material-icons">play_arrow</i>
+            </button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
   </div>
-  <div class="carousel-item white " href="#two!">
-    <div class="container">
-      <canvas id="oee" width="50" height="20">
-        Su navegador no soporta canvas
-      </canvas>
-    </div>
-  </div>
-  <div class="carousel-item white " href="#tree!">
-    <div class="container">
-      <canvas id="fallas" width="50" height="20">
-        Su navegador no soporta canvas
-      </canvas>
-    </div>
-  </div>
-</div>
-<div class="container center">
-  <a href="#" (click)="verTablas($event)">{{ texto_link }}</a>
   <div class="section"></div>
-  <!-- Solo para dispositivos moviles -->
-  <div class="hide-on-large-only right-align">
-    <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-      data-delay="50" data-tooltip="Reportes" (click)="regresar()">
-      <i class="material-icons">
-        <i class="material-icons">arrow_back</i>
-      </i>
-    </a>
-  </div>
-  <br>
-  <!-- Fin solo para dispositivos moviles -->
-  <div class="row" *ngIf="ver_tabla && seccion == 0">
-    <div class="col s12 m12 l6 xl6">
-      <table>
-        <thead class="light-green darken-1 texto header">
-          <tr>
-            <th>Tiempo</th>
-            <th>Hrs</th>
-            <th>%</th>
-          </tr>
-        </thead>
+  <div *ngIf="viewReport">
+    <div class="carousel carousel-slider center">
+      <div class="carousel-item white" href="#one!">
+        <div class="container">
+          <canvas id="chartFails" width="50" height="20">
+            Su navegador no soporta canvas
+          </canvas>
+        </div>
+      </div>
+    </div>
+    <div class="container center">
+      <a href="#" (click)="verTablas($event)">{{ texto_link }}</a>
+      <div class="section"></div>
+      <div class="row" *ngIf="ver_tabla && seccion == 0">
+        <div class="col s12 m12 l12 xl12">
+          <table>
+            <tr class="light-green darken-1 texto header">
+              <th>Fuentes de pérdida</th>
+              <th>Hrs</th>
+              <th>%</th>
+            </tr>
 
-        <tbody>
-          <tr *ngFor="let tiempo of tiempos" [ngClass]="{total:tiempo.type == 'total'}">
-            <td>{{ tiempo.tiempo }}</td>
-            <td>{{ tiempo.hrs }}</td>
-            <td>{{ tiempo.porcentaje }}</td>
-          </tr>
-        </tbody>
-      </table>
+            <tr class="total">
+              <td colspan="3">Tiempo Muerto Planeado</td>
+            </tr>
+
+            <tr>
+              <td>Mantto planeado (TMP)</td>
+              <td class="center-align">53.5</td>
+              <td class="center-align">7.2%</td>
+            </tr>
+
+            <tr>
+              <td>Otro Planeado</td>
+              <td class="center-align">4.7</td>
+              <td class="center-align">0.6%</td>
+            </tr>
+
+            <tr class="total">
+              <td colspan="3">Tiempo Muerto NO Planeado</td>
+            </tr>
+
+            <tr>
+              <td>Falla de Equipo (TMNP)</td>
+              <td class="center-align">25.5</td>
+              <td class="center-align">3.4%</td>
+            </tr>
+
+            <tr>
+              <td>Falla de Operación (TMO)</td>
+              <td class="center-align">0.0</td>
+              <td class="center-align">0.0%</td>
+            </tr>
+
+            <tr>
+              <td>Limpieza (TMO)</td>
+              <td class="center-align">0.0</td>
+              <td class="center-align">0.0%</td>
+            </tr>
+
+            <tr>
+              <td>Condiciones de Operación</td>
+              <td class="center-align">1.1</td>
+              <td class="center-align">0.1%</td>
+            </tr>
+
+            <tr>
+              <td>Falla de Energia Electrica</td>
+              <td class="center-align">4.6</td>
+              <td class="center-align">0.6%</td>
+            </tr>
+
+            <tr>
+              <td>Otros</td>
+              <td class="center-align">0.2</td>
+              <td class="center-align">0.0%</td>
+            </tr>
+
+            <tr class="total">
+              <td colspan="3">Reducción de Velocidad</td>
+            </tr>
+
+            <tr>
+              <td>Falta de Materia Prima</td>
+              <td class="center-align">0.0</td>
+              <td class="center-align">0.0%</td>
+            </tr>
+
+            <tr>
+              <td>Nivelación de inventarios</td>
+              <td class="center-align">0.0</td>
+              <td class="center-align">0.0%</td>
+            </tr>
+
+            <tr>
+              <td>Arranque (RVA)</td>
+              <td class="center-align">1.7</td>
+              <td class="center-align">0.2%</td>
+            </tr>
+
+            <tr>
+              <td>Problema con Silos de Mezclado (RVPE)</td>
+              <td class="center-align">3.2</td>
+              <td class="center-align">0.4%</td>
+            </tr>
+
+            <tr>
+              <td>Problemas en equipos (RVPE)</td>
+              <td class="center-align">7.7</td>
+              <td class="center-align">1.0%</td>
+            </tr>
+
+            <tr>
+              <td>Alto amperaje en molinos (RVPE)</td>
+              <td class="center-align">0.0</td>
+              <td class="center-align">0.0%</td>
+            </tr>
+
+            <tr class="total">
+              <td colspan="3">Por Calidad</td>
+            </tr>
+
+            <tr>
+              <td>Fuera de especificación (Df Interno)</td>
+              <td class="center-align">0.0</td>
+              <td class="center-align">0.0%</td>
+            </tr>
+
+            <tr>
+              <td>Pruebas</td>
+              <td class="center-align">0.0</td>
+              <td class="center-align">0.0%</td>
+            </tr>
+
+            <tr>
+              <td>Subproductos</td>
+              <td class="center-align">2.5</td>
+              <td class="center-align">0.3%</td>
+            </tr>
+
+
+            <tr>
+              <td class="right-align">Total</td>
+              <td class="center-align">104.5</td>
+              <td class="center-align">14.0%</td>
+            </tr>
+          </table>
+          <br>
+        </div>
+      </div>
+      <!-- Solo para dispositivos moviles -->
+      <div class="hide-on-large-only right-align">
+        <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
       <br>
-    </div>
-    <div class="col s12 m12 l6 xl6">
-      <table>
-        <thead class="light-green darken-1 texto header">
-          <tr>
-            <th colspan="2">Datos Producción</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr *ngFor="let produccion of producciones">
-            <td>{{ produccion.produccion }}</td>
-            <td>{{ produccion.hrs }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- Fin solo para dispositivos moviles -->
+      <!-- Inicio solo para pantallas-->
+      <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+          <a routerLink="../../lista-reportes" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped"
+            data-position="top" data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+            <i class="material-icons">
+              <i class="material-icons">arrow_back</i>
+            </i>
+          </a>
+        </div>
+      </div>
+      <!-- Fin solo para pantallas-->
     </div>
   </div>
-  <div class="row" *ngIf="ver_tabla && seccion == 1">
-    <div class="col s12 m12 l12 xl12">
-      <table>
-        <thead class="light-green darken-1 texto header">
-          <tr>
-            <th colspan="2" class="center">OEE</th>
-            <th>Real</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr *ngFor="let item of item_oee">
-            <td>{{ item.descripcion }}</td>
-            <td>{{ item.oee }}</td>
-            <td>{{ item.real }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+</div>
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
   </div>
-  <div class="row" *ngIf="ver_tabla && seccion == 2">
-    <table>
-      <tr class="light-green darken-1 texto header">
-        <th>Fuentes de pérdida</th>
-        <th>Hrs</th>
-        <th>%</th>
-      </tr>
-
-      <tr class="total">
-        <td colspan="3">Tiempo Muerto Planeado</td>
-      </tr>
-
-      <tr>
-        <td>Mantto planeado (TMP)</td>
-        <td class="center-align">53.5</td>
-        <td class="center-align">7.2%</td>
-      </tr>
-
-      <tr>
-        <td>Otro Planeado</td>
-        <td class="center-align">4.7</td>
-        <td class="center-align">0.6%</td>
-      </tr>
-
-      <tr class="total">
-        <td colspan="3">Tiempo Muerto NO Planeado</td>
-      </tr>
-
-      <tr>
-        <td>Falla de Equipo (TMNP)</td>
-        <td class="center-align">25.5</td>
-        <td class="center-align">3.4%</td>
-      </tr>
-
-      <tr>
-        <td>Falla de Operación (TMO)</td>
-        <td class="center-align">0.0</td>
-        <td class="center-align">0.0%</td>
-      </tr>
-
-      <tr>
-        <td>Limpieza (TMO)</td>
-        <td class="center-align">0.0</td>
-        <td class="center-align">0.0%</td>
-      </tr>
-
-      <tr>
-        <td>Condiciones de Operación</td>
-        <td class="center-align">1.1</td>
-        <td class="center-align">0.1%</td>
-      </tr>
-
-      <tr>
-        <td>Falla de Energia Electrica</td>
-        <td class="center-align">4.6</td>
-        <td class="center-align">0.6%</td>
-      </tr>
-
-      <tr>
-        <td>Otros</td>
-        <td class="center-align">0.2</td>
-        <td class="center-align">0.0%</td>
-      </tr>
-
-      <tr class="total">
-        <td colspan="3">Reducción de Velocidad</td>
-      </tr>
-
-      <tr>
-        <td>Falta de Materia Prima</td>
-        <td class="center-align">0.0</td>
-        <td class="center-align">0.0%</td>
-      </tr>
-
-      <tr>
-        <td>Nivelación de inventarios</td>
-        <td class="center-align">0.0</td>
-        <td class="center-align">0.0%</td>
-      </tr>
-
-      <tr>
-        <td>Arranque (RVA)</td>
-        <td class="center-align">1.7</td>
-        <td class="center-align">0.2%</td>
-      </tr>
-
-      <tr>
-        <td>Problema con Silos de Mezclado (RVPE)</td>
-        <td class="center-align">3.2</td>
-        <td class="center-align">0.4%</td>
-      </tr>
-
-      <tr>
-        <td>Problemas en equipos (RVPE)</td>
-        <td class="center-align">7.7</td>
-        <td class="center-align">1.0%</td>
-      </tr>
-
-      <tr>
-        <td>Alto amperaje en molinos (RVPE)</td>
-        <td class="center-align">0.0</td>
-        <td class="center-align">0.0%</td>
-      </tr>
-
-      <tr class="total">
-        <td colspan="3">Por Calidad</td>
-      </tr>
-
-      <tr>
-        <td>Fuera de especificación (Df Interno)</td>
-        <td class="center-align">0.0</td>
-        <td class="center-align">0.0%</td>
-      </tr>
-
-      <tr>
-        <td>Pruebas</td>
-        <td class="center-align">0.0</td>
-        <td class="center-align">0.0%</td>
-      </tr>
-
-      <tr>
-        <td>Subproductos</td>
-        <td class="center-align">2.5</td>
-        <td class="center-align">0.3%</td>
-      </tr>
-
-
-      <tr>
-        <td class="right-align">Total</td>
-        <td class="center-align">104.5</td>
-        <td class="center-align">14.0%</td>
-      </tr>
-    </table>
-  </div>
-  <!-- Inicio solo para pantallas-->
-  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
-    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-      <a routerLink="../../lista-reportes" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped"
-        data-position="top" data-delay="50" data-tooltip="Reportes" (click)="regresar()">
-        <i class="material-icons">
-          <i class="material-icons">arrow_back</i>
-        </i>
-      </a>
-    </div>
-  </div>
-  <!-- Fin solo para pantallas-->
 </div>

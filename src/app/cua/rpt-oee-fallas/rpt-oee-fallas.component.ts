@@ -1,87 +1,32 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { RptOeeFallasService } from "./rpt-oee-fallas.service";
+import { Linea } from '../../models/linea';
 import * as Chart from 'chart.js';
+import { AuthService } from '../../auth/auth.service';
 
 declare var $: any;
 declare var Materialize: any;
 @Component({
   selector: 'app-rpt-oee-fallas',
   templateUrl: './rpt-oee-fallas.component.html',
-  styleUrls: ['./rpt-oee-fallas.component.css']
+  styleUrls: ['./rpt-oee-fallas.component.css'],
+  providers: [RptOeeFallasService]
 })
 export class RptOeeFallasComponent implements OnInit {
+
+  public loading: boolean;
+  public submitted: boolean;
+  public viewReport: boolean;
+  public formBusqueda: FormGroup;
+  public paramsBusqueda: any;
+  public lineas: Array<Linea>;
 
   public texto_link: string = "Ver datos en tabla";
   public seccion: number = 0;
   public ver_tabla: boolean = false;
 
   public options: any = {
-    scales: {
-      xAxes: [{
-
-        ticks: {
-          autoSkip: false
-        },
-        scaleLabel: {
-          display: true,
-          labelString: 'Horas',
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        },
-        scaleLabel: {
-          display: true,
-          // labelString: 'Horas',
-        }
-      }]
-    },
-    legend: {
-      display: false,
-    },
-    title: {
-      display: true,
-      text: 'Disponibilidad',
-      fontColor: '#303f9f',
-      fontStyle: 'bold',
-      fontSize: 26
-    },
-
-    responsive: true
-  
-  };
-
-  public options2: any = {
-    scales: {
-      xAxes: [{
-
-        ticks: {
-          autoSkip: false
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        },
-        scaleLabel: {
-          display: true,
-          labelString: '%',
-        }
-      }]
-    },
-    legend: {
-      display: true,
-    },
-    title: {
-      display: true,
-      text: 'OEE',
-      fontColor: '#303f9f',
-      fontStyle: 'bold',
-      fontSize: 26
-    },
-    responsive: true
-  };
-  public options3: any = {
     scales: {
       xAxes: [{
 
@@ -115,46 +60,8 @@ export class RptOeeFallasComponent implements OnInit {
     responsive: true
   };
 
-  public data2: any = {
-    labels: ["Disponibiliad","Utilizacion", "Calidad", "OEE","TEEP", "TM"],
-    datasets: [
-      {
-      label: 'Meta alcanzada',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: 'rgba(75, 192, 192, 0.2)',
-      borderColor: 'rgba(75, 192, 192, 1)',
-      borderWidth: 1
-    },{
-      type: 'line',
-      label: 'Meta esperada',
-      data: [12, 19, 3, 5],
-      backgroundColor: 'rgba(54, 162, 235, 0.2)',
-      borderColor: 'rgba(54, 162, 235, 1)',
-      borderWidth: 1
-    }
-  ]
-  };
-  public data: any = {
-    labels: ["Tiempo Disponible Total",
-      "No Ventas",
-      "Tiempo Disponible",
-      "Paros planeados",
-      "Paros no planeados",
-      "Reduccion de velocidad",
-      "Por calidad",
-      "Desempeño efectivo total de equipos",
-      "Total de hora de paro"
-    ],
-    datasets: [{
-      label: '# of Votes',
-      data: [12, 19, 3, 5, 2, 3, 2, 3, 4],
-      backgroundColor: 'rgba(54, 162, 235, 0.2)',
-      borderColor: 'rgba(54, 162, 235, 1)',
-      borderWidth: 1
-    }]
-  };
 
-  public data3: any = {
+  public data: any = {
     labels: ["Mantto planeado (TMP)", "Otro Planeado", "Falla de Equipo (TMNP)", "Falla de Operación (TMO)",
       "Limpieza (TMO)", "Condiciones de Operación", "Falla de Energia Electrica", "Otros", "Falta de Materia Prima",
       "Nivelación de inventarios", "Arranque (RVA)", "Problema con Silos de Mezclado (RVPE)", "Problemas en equipos (RVPE)",
@@ -168,41 +75,79 @@ export class RptOeeFallasComponent implements OnInit {
     }]
   };
 
-  public tiempos: Array<any> = [
-    { tiempo: 'Tiempo Disponible Total', porcentaje: 744, hrs: 10, type: 'subtotal' },
-    { tiempo: 'No Ventas', porcentaje: 1, hrs: 0.0, type: 'subtotal' },
-    { tiempo: 'Tiempo Disponible', porcentaje: 1, hrs: 744, type: 'subtotal' },
-    { tiempo: 'Paros planeados', porcentaje: 1, hrs: 72.4, type: 'subtotal' },
-    { tiempo: 'Paros no planeados', porcentaje: 1, hrs: 39.6, type: 'subtotal' },
-    { tiempo: 'Reduccion de velocidad', porcentaje: 1, hrs: 7.2, type: 'subtotal' },
-    { tiempo: 'Por calidad', porcentaje: 1, hrs: 2.2, type: 'subtotal' },
-    { tiempo: 'Desempeño efectivo total de equipos', porcentaje: 1, hrs: 622.6, type: 'total' },
-    { tiempo: 'Total de hora de paro', porcentaje: 1, hrs: 112.0, type: 'total' },
-  ]
-
-  public producciones: Array<any> = [
-    { produccion: 'Velocidad Ideal (hora)', hrs: 3.5 },
-    { produccion: 'Capacidad productiva', hrs: 28.0 },
-    { produccion: 'Tiempo Disponible', hrs: 744 },
-    { produccion: 'Tiempo operacion', hrs: 632.0 },
-    { produccion: 'Produccion buena', hrs: 2238.2 },
-    { produccion: 'Produccion total', hrs: 2284.0 }
-  ]
-
-  public item_oee: Array<any> = [
-    { descripcion: 'Disponibilidad', oee: 632.0, real: '84.9%' },
-    { descripcion: 'Utilizacion', oee: 3.541, real: '101.2%' },
-    { descripcion: 'Calidad', oee: 0, real: '98.0%' },
-    { descripcion: 'OEE', oee: 0, real: '84.2%' },
-    { descripcion: 'TEM', oee: 622.6, real: '83.7%' },
-    { descripcion: 'TM', oee: 121.4, real: '16.3%' },
-  ]
-
-  constructor() { }
+  constructor(
+    private service: RptOeeFallasService,
+    private auth: AuthService,
+    private fb: FormBuilder) { }
 
   ngOnInit() {
+
+    this.loading = true;
+    this.submitted = false;
+    this.viewReport = false;
+    this.paramsBusqueda = {};
+
+    this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
+
+      if (result.response.sucessfull) {
+        this.lineas = result.data.listLineas || [];
+        this.loading = false;
+        this.loadFormulario();
+
+        setTimeout(() => { this.ngAfterViewHttp(); }, 200)
+      } else {
+
+        this.loading = false;
+        Materialize.toast(result.response.message, 4000, 'red');
+      }
+    }, error => {
+
+      this.loading = false;
+      Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+    });
+
+
+  }
+
+  loadFormulario(): void {
+    this.formBusqueda = this.fb.group({
+      inicio: new FormControl({ value: this.paramsBusqueda.inicio, disabled: false }, [Validators.required]),
+      fin: new FormControl({ value: this.paramsBusqueda.fin, disabled: false }, [Validators.required]),
+      id_linea: new FormControl({ value: this.paramsBusqueda.id_linea, disabled: false }, [Validators.required])
+    });
+
+  }
+
+  /*
+   * Carga plugins despues de cargar y mostrar objetos en el DOM cuando carga la pagina
+   */
+  ngAfterViewHttp(): void {
+    $('.tooltipped').tooltip({ delay: 50 });
     $('select').material_select();
 
+    $('.inicio, .fin').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 15, // Creates a dropdown of 15 years to control year,
+      today: '',
+      clear: 'Limpiar',
+      close: 'OK',
+      monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+      weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+      weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+      format: 'dd/mm/yyyy',
+      closeOnSelect: false, // Close upon selecting a date,
+      onClose: () => {
+        this.paramsBusqueda.inicio = $('.inicio').val();
+        this.paramsBusqueda.fin = $('.fin').val();
+      }
+    });
+  }
+
+  /*
+   * Carga plugins para mostrar grafica 
+   */
+  ngAfterViewHttpRpt(): void {
     $('.carousel.carousel-slider').carousel({
       fullWidth: true,
       indicators: true,
@@ -217,12 +162,6 @@ export class RptOeeFallasComponent implements OnInit {
           case 1:
             disp.update();
             break;
-          case 2:
-            oee.update();
-            break;
-          case 3:
-            fallas.update();
-            break;
         }
       }
     });
@@ -230,30 +169,12 @@ export class RptOeeFallasComponent implements OnInit {
     $('.carousel li').css('background-color', '#bdbdbd');
     $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
 
-    var ctx = $('#myChart').get(0).getContext('2d');
-    var disp = new Chart(ctx, {
+    let ctx = $('#chartFails').get(0).getContext('2d');
+    let disp = new Chart(ctx, {
       type: 'horizontalBar',
       data: this.data,
       options: this.options
     });
-
-    var ctx = $('#oee').get(0).getContext('2d');
-    var oee = new Chart(ctx, {
-      type: 'bar',
-      data: this.data2,
-      options: this.options2
-    });
-
-    var ctx = $('#fallas').get(0).getContext('2d');
-    var fallas = new Chart(ctx, {
-      type: 'horizontalBar',
-      data: this.data3,
-      options: this.options3
-    });
-
-    $('.tooltipped').tooltip({ delay: 50 });
-
-   
 
   }
 
@@ -271,6 +192,42 @@ export class RptOeeFallasComponent implements OnInit {
 
   regresar() {
     $('.tooltipped').tooltip('hide');
+  }
+
+  changeCombo(): void {
+    this.viewReport = false;
+  }
+
+  busqueda(parametrosBusqueda: any) {
+
+    this.viewReport = false;
+    this.submitted = true;
+
+    if (this.formBusqueda.valid) {
+      this.viewReport = true;
+      setTimeout(()=>{
+        this.ngAfterViewHttpRpt();
+      },200);
+      // this.service.getAllFallasByDays(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
+
+      //   if (result.response.sucessfull) {
+
+      //     this.bVistaPre = true;
+
+      //   } else {
+
+      //     this.bVistaPre = false;
+      //     Materialize.toast(result.response.message, 4000, 'red');
+      //   }
+      // }, error => {
+
+      //   this.bVistaPre = false;
+      //   Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+      // });
+    } else {
+      this.viewReport = false;
+      Materialize.toast('Ingrese todos los datos para mostrar reporte!', 4000, 'red');
+    }
   }
 
 

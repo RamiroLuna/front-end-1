@@ -54,7 +54,7 @@ export class ListaFallasComponent implements OnInit {
   constructor(
     private service: ListaFallasService,
     private auth: AuthService,
-    private fb: FormBuilder, ) { }
+    private fb: FormBuilder ) { }
 
   ngOnInit() {
 
@@ -198,7 +198,7 @@ export class ListaFallasComponent implements OnInit {
     swal({
       title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
       type: 'question',
-      html: '<p style="color: #303f9f "><b> Día: </b>' + falla.dia + '<b> Tiempo total de paro: </b>' + falla.tiempo_paro + '</p>',
+      html: '<p style="color: #303f9f "><b> Día: </b>' + falla.dia + '<b> Tiempo total de paro: </b>' + falla.tiempo_paro + ' Hrs</p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
