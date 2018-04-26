@@ -17,5 +17,11 @@ export class RptOeeFallasService {
   getCatalogos(id_usuario: number): Observable<any> {
     return this.http.get<any>(this.URL + '?action=loadCombobox&id_usuario=' + id_usuario);
   }
+  /*
+   * Consulta reporte de fallas
+   */
+  getOEEFallasByLinea(id_usuario: number, params:any): Observable<any> {
+    return this.http.get<any>(this.URL + '?action=getOEEFallasByLinea&id_usuario=' + id_usuario + '&fecha_inicio='+params.inicio +'&fecha_termino='+params.fin+'&id_linea='+params.id_linea);
+  }
 
 }

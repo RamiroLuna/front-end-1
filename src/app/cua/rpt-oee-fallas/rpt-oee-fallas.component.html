@@ -60,133 +60,19 @@
           <table>
             <tr class="light-green darken-1 texto header">
               <th>Fuentes de pérdida</th>
-              <th>Hrs</th>
-              <th>%</th>
+              <th class="center-align">Hrs</th>
+              <th class="center-align">%</th>
             </tr>
-
-            <tr class="total">
-              <td colspan="3">Tiempo Muerto Planeado</td>
-            </tr>
-
-            <tr>
-              <td>Mantto planeado (TMP)</td>
-              <td class="center-align">53.5</td>
-              <td class="center-align">7.2%</td>
-            </tr>
-
-            <tr>
-              <td>Otro Planeado</td>
-              <td class="center-align">4.7</td>
-              <td class="center-align">0.6%</td>
-            </tr>
-
-            <tr class="total">
-              <td colspan="3">Tiempo Muerto NO Planeado</td>
-            </tr>
-
-            <tr>
-              <td>Falla de Equipo (TMNP)</td>
-              <td class="center-align">25.5</td>
-              <td class="center-align">3.4%</td>
-            </tr>
-
-            <tr>
-              <td>Falla de Operación (TMO)</td>
-              <td class="center-align">0.0</td>
-              <td class="center-align">0.0%</td>
-            </tr>
-
-            <tr>
-              <td>Limpieza (TMO)</td>
-              <td class="center-align">0.0</td>
-              <td class="center-align">0.0%</td>
-            </tr>
-
-            <tr>
-              <td>Condiciones de Operación</td>
-              <td class="center-align">1.1</td>
-              <td class="center-align">0.1%</td>
-            </tr>
-
-            <tr>
-              <td>Falla de Energia Electrica</td>
-              <td class="center-align">4.6</td>
-              <td class="center-align">0.6%</td>
-            </tr>
-
-            <tr>
-              <td>Otros</td>
-              <td class="center-align">0.2</td>
-              <td class="center-align">0.0%</td>
-            </tr>
-
-            <tr class="total">
-              <td colspan="3">Reducción de Velocidad</td>
-            </tr>
-
-            <tr>
-              <td>Falta de Materia Prima</td>
-              <td class="center-align">0.0</td>
-              <td class="center-align">0.0%</td>
-            </tr>
-
-            <tr>
-              <td>Nivelación de inventarios</td>
-              <td class="center-align">0.0</td>
-              <td class="center-align">0.0%</td>
-            </tr>
-
-            <tr>
-              <td>Arranque (RVA)</td>
-              <td class="center-align">1.7</td>
-              <td class="center-align">0.2%</td>
-            </tr>
-
-            <tr>
-              <td>Problema con Silos de Mezclado (RVPE)</td>
-              <td class="center-align">3.2</td>
-              <td class="center-align">0.4%</td>
-            </tr>
-
-            <tr>
-              <td>Problemas en equipos (RVPE)</td>
-              <td class="center-align">7.7</td>
-              <td class="center-align">1.0%</td>
-            </tr>
-
-            <tr>
-              <td>Alto amperaje en molinos (RVPE)</td>
-              <td class="center-align">0.0</td>
-              <td class="center-align">0.0%</td>
-            </tr>
-
-            <tr class="total">
-              <td colspan="3">Por Calidad</td>
-            </tr>
-
-            <tr>
-              <td>Fuera de especificación (Df Interno)</td>
-              <td class="center-align">0.0</td>
-              <td class="center-align">0.0%</td>
-            </tr>
-
-            <tr>
-              <td>Pruebas</td>
-              <td class="center-align">0.0</td>
-              <td class="center-align">0.0%</td>
-            </tr>
-
-            <tr>
-              <td>Subproductos</td>
-              <td class="center-align">2.5</td>
-              <td class="center-align">0.3%</td>
-            </tr>
-
-
-            <tr>
-              <td class="right-align">Total</td>
-              <td class="center-align">104.5</td>
-              <td class="center-align">14.0%</td>
+           
+            <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
+              <ng-template [ngIf]="row.padre == 1">
+                <td colspan="3">Tiempo Muerto Planeado</td>
+              </ng-template>
+              <ng-template [ngIf]="row.padre == 0">
+                <td>{{ row.fuente }}</td>
+                <td class="center-align">{{ row.hrs }}</td>
+                <td class="center-align">{{ row.porcentaje }}</td>
+              </ng-template>
             </tr>
           </table>
           <br>

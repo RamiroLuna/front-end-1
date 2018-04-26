@@ -25,6 +25,7 @@ export class RptOeeFallasComponent implements OnInit {
   public texto_link: string = "Ver datos en tabla";
   public seccion: number = 0;
   public ver_tabla: boolean = false;
+  public rows: Array<any> = [];
 
   public options: any = {
     scales: {
@@ -62,13 +63,10 @@ export class RptOeeFallasComponent implements OnInit {
 
 
   public data: any = {
-    labels: ["Mantto planeado (TMP)", "Otro Planeado", "Falla de Equipo (TMNP)", "Falla de Operación (TMO)",
-      "Limpieza (TMO)", "Condiciones de Operación", "Falla de Energia Electrica", "Otros", "Falta de Materia Prima",
-      "Nivelación de inventarios", "Arranque (RVA)", "Problema con Silos de Mezclado (RVPE)", "Problemas en equipos (RVPE)",
-      "Alto amperaje en molinos (RVPE)", "Fuera de especificación (Df Interno)", "Pruebas", "Subproductos"],
+    labels: [],
     datasets: [{
-      label: 'Horas muertas',
-      data: [72.4, 0.0, 32.4, 0.0, 0.0, 1.3, 4.5, 1.4, 0.0, 0.0, 2.3, 0.7, 4.2, 0.0, 0.0, 0.0, 2.2],
+      label: '',
+      data: [],
       backgroundColor: 'rgba(255, 99, 132, 0.2)',
       borderColor: 'rgba(255,99,132,1)',
       borderWidth: 1
@@ -204,26 +202,31 @@ export class RptOeeFallasComponent implements OnInit {
     this.submitted = true;
 
     if (this.formBusqueda.valid) {
-      this.viewReport = true;
-      setTimeout(()=>{
-        this.ngAfterViewHttpRpt();
-      },200);
-      // this.service.getAllFallasByDays(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
 
-      //   if (result.response.sucessfull) {
+      this.service.getOEEFallasByLinea(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
+     
+        if (result.response.sucessfull) {
+          this.rows = result.data.listaOEEFallas || [];
+          let labels = this.rows.filter((el) => el.padre == 0).map((el) => el.fuente);
+          let horas = this.rows.filter((el) => el.padre == 0).map((el) => el.hrs);
+    
+          this.data.labels = labels;
+          this.data.datasets[0].label = 'Horas Muertas';
+          this.data.datasets[0].data = horas;
 
-      //     this.bVistaPre = true;
+          this.viewReport = true;
+          setTimeout(() => { this.ngAfterViewHttpRpt(); }, 200);
 
-      //   } else {
+        } else {
 
-      //     this.bVistaPre = false;
-      //     Materialize.toast(result.response.message, 4000, 'red');
-      //   }
-      // }, error => {
+          this.viewReport = false;
+          Materialize.toast(result.response.message, 4000, 'red');
+        }
+      }, error => {
 
-      //   this.bVistaPre = false;
-      //   Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-      // });
+        this.viewReport = false;
+        Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+      });
     } else {
       this.viewReport = false;
       Materialize.toast('Ingrese todos los datos para mostrar reporte!', 4000, 'red');
