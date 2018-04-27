@@ -66,12 +66,17 @@
            
             <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
               <ng-template [ngIf]="row.padre == 1">
-                <td colspan="3">Tiempo Muerto Planeado</td>
+                <td colspan="3">{{ row.fuente }}</td>
               </ng-template>
               <ng-template [ngIf]="row.padre == 0">
                 <td>{{ row.fuente }}</td>
                 <td class="center-align">{{ row.hrs }}</td>
                 <td class="center-align">{{ row.porcentaje }}</td>
+              </ng-template>
+              <ng-template  [ngIf]="row.padre == 2">
+                      <td class="right-align"><b>{{ row.fuente }}</b></td>
+                      <td class="center-align"><b>{{ row.hrs }}</b></td>
+                      <td class="center-align"><b>{{ row.porcentaje }}</b></td>
               </ng-template>
             </tr>
           </table>
