@@ -6,6 +6,7 @@ import { Catalogo } from '../../models/catalogo';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import swal from 'sweetalert2';
+import { Linea } from '../../models/linea';
 
 declare var $: any;
 declare var Materialize: any;
@@ -19,11 +20,13 @@ export class PerfilEtadComponent implements OnInit {
 
   public usuario: User;
   public loading: boolean;
-  public perfiles: Array<Catalogo> = [];
-  public turnos: Array<Catalogo> = [];
   public formPerfilEtad: FormGroup;
   public submitted: boolean;
   public usuario_en_etad: boolean;
+
+  public perfiles: Array<Catalogo> = [];
+  public grupos: Array<Catalogo> = [];
+  public lineas: Array<Linea> = [];
 
   constructor(
     private auth: AuthService,
@@ -38,37 +41,21 @@ export class PerfilEtadComponent implements OnInit {
     this.loading = true;
     this.usuario_en_etad = false;
 
-    this.service.getCatalogo(this.auth.getIdUsuario(), 'pet_cat_perfiles').subscribe(result => {
-
-      if (result.response.sucessfull) {
-        this.perfiles = result.data.listCatalogosDTO || [];
-
-      } else {
-        Materialize.toast('Error al cargar catalogo de perfiles', 4000, 'red');
-      }
-    }, error => {
-      Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-    });
-
-    this.service.getCatalogo(this.auth.getIdUsuario(), 'pet_cat_turnos').subscribe(result => {
-      if (result.response.sucessfull) {
-        this.turnos = result.data.listCatalogosDTO || [];
-
-      } else {
-        Materialize.toast(result.response.message, 4000, 'red');
-      }
-    }, error => {
-      Materialize.toast('Error al cargar catalogo de turnos', 4000, 'red');
-    });
-
     this.route.paramMap.subscribe(params => {
       let id_usuario_etad = parseInt(params.get('id'));
       this.service.getPerfilEtad(this.auth.getIdUsuario(), id_usuario_etad).subscribe(result => {
-        console.log('resultado para el perfil de etad ', result)
         if (result.response.sucessfull) {
-          this.loading = false;
-          this.usuario = result.data.userDTO || new User();
+          this.perfiles = result.data.ListPerfiles || [];
+          this.lineas = result.data.listLineas || [];
+          this.grupos = result.data.listGrupos || [];
+          this.usuario = result.data.userETAD || new User();
+          let perfiles = result.data.userETAD.perfiles.split(",").map(function (item) {
+            return parseInt(item);
+          });
+          this.usuario.id_perfiles = perfiles;
+
           this.usuario_en_etad = true;
+          this.loading = false;
           this.loadFormulario();
         } else {
           Materialize.toast(result.response.message, 4000, 'red');
@@ -83,11 +70,15 @@ export class PerfilEtadComponent implements OnInit {
     });
   }
 
+
   loadFormulario(): void {
-    // this.formPerfilEtad = this.fb.group({
-    //   turno: new FormControl(this.usuario.id_turno, [Validators.required]),
-    //   perfil: new FormControl(this.usuario.id_perfil, [Validators.required])
-    // });
+    this.formPerfilEtad = this.fb.group({
+      nombre: new FormControl({ value: this.usuario.nombre, disabled: true }, [Validators.required]),
+      usuario_sonarh: new FormControl({ value: this.usuario.usuario_sonarh, disabled: true }, [Validators.required]),
+      id_grupo: new FormControl({ value: this.usuario.id_grupo, disabled: true }, [Validators.required]),
+      id_linea: new FormControl({ value: this.usuario.id_linea, disabled: false }, [Validators.required]),
+      id_perfiles: new FormControl({ value: this.usuario.id_perfiles, disabled: false }, [Validators.required])
+    });
   }
 
   modalConfirmacion(usuario: User): void {
@@ -114,12 +105,12 @@ export class PerfilEtadComponent implements OnInit {
          * Si acepta
          */
         if (result.value) {
-          
+
           this.submitted = false;
 
           this.service.update(this.auth.getIdUsuario(), usuario).subscribe(
             result => {
-              
+
 
               if (result.response.sucessfull) {
 

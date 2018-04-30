@@ -3,9 +3,10 @@ export class User {
     usuario_sonarh:number;
     nombre:string;
     valor_grupo:string;
+    id_grupo:number;
     valor_linea:string;
+    id_linea:number;
     activo:number;
-    constructor(){}
-
+    id_perfiles:Array<number>;
 
 }

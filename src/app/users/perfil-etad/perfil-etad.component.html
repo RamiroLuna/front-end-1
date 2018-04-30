@@ -9,46 +9,49 @@
           <form class="col s12 m12 l12 xl12" [formGroup]="formPerfilEtad" autocomplete="off" (ngSubmit)="modalConfirmacion(usuario)">
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input disabled id="nombre" type="text" [value]="usuario?.nombre">
+                <input id="nombre" type="text" [value]="usuario?.nombre" formControlName="nombre">
                 <label for="nombre" class="active">Nombre</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input disabled id="usuario_nomina" type="text" [value]="usuario?.usuario_acceso">
+                <input id="usuario_nomina" type="text" [value]="usuario?.usuario_sonarh" formControlName="usuario_sonarh">
                 <label for="usuario_nomina" class="active">Usuario(nomina)</label>
               </div>
             </div>
             <div class="row">
-              <div class="input-field col s12 m12 l6 xl6">
-                <input disabled id="linea" type="text" [value]="usuario?.linea">
-                <label for="linea" class="active">Linea</label>
-              </div>
-              <div class="input-field col s12 m12 l6 xl6">
-                <input disabled id="grupo" type="text" [value]="usuario?.grupo">
-                <label for="grupo" class="active">Grupo</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col s12 m12 l12 xl12">
-                <label>Asigna turno</label>
-                <select materialize="material_select" formControlName="turno" [materializeSelectOptions]="turnos" [(ngModel)]="usuario.id_turno">
-                  <option value="">Seleccione</option>
-                  <option *ngFor="let turno of turnos" [value]="turno.id"  [selected]="turno.id == usuario.id_turno">{{turno.descripcion}}</option>
-                </select>
-                <div *ngIf="formPerfilEtad.controls.turno.errors?.required && (formPerfilEtad.controls.turno?.touched || submitted)"
-                  class="error">
-                  Seleccione un turno
+                <div class="col s12 m12 l12 xl12">
+                  <label>Grupo</label>
+                  <select materialize="material_select" formControlName="id_grupo" [materializeSelectOptions]="id_grupo" [(ngModel)]="usuario.id_grupo">
+                    <option value="">Seleccione</option>
+                    <option *ngFor="let grupo of grupos" [value]="grupo.id">{{grupo.valor}}</option>
+                  </select>
+                  <div *ngIf="formPerfilEtad.controls.id_grupo.errors?.required && (formPerfilEtad.controls.id_grupo?.touched || submitted)"
+                    class="error">
+                    Seleccione grupo
+                  </div>
                 </div>
               </div>
-            </div>
+              <div class="row">
+                <div class="col s12 m12 l12 xl12">
+                  <label>Linea</label>
+                  <select materialize="material_select" formControlName="id_linea" [materializeSelectOptions]="lineas" [(ngModel)]="usuario.id_linea">
+                    <option value="" selected>SELECCIONE</option>
+                    <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{linea.valor}}</option>
+                  </select>
+                  <div *ngIf="formPerfilEtad.controls.id_linea.errors?.required && (formPerfilEtad.controls.id_linea?.touched || submitted)"
+                    class="error">
+                    Seleccione una linea
+                  </div>
+                </div>
+              </div>
             <div class="row">
               <div class="col s12 m12 l12 xl12">
-                <label>Asigna perfil para ETAD</label>
-                <select materialize="material_select" formControlName="perfil" [materializeSelectOptions]="perfiles" [(ngModel)]="usuario.id_perfil">
-                  <option *ngFor="let perfil of perfiles" [value]="perfil.id" [selected]="perfil.id == usuario.id_perfil">{{perfil.descripcion}}</option>
+                <label>Perfil</label>
+                <select materialize="material_select" formControlName="id_perfiles" [materializeSelectOptions]="id_perfiles" [(ngModel)]="usuario.id_perfiles" multiple>
+                  <option *ngFor="let perfil of perfiles" [value]="perfil.id">{{perfil.valor}}</option>
                 </select>
-                <div *ngIf="formPerfilEtad.controls.perfil.errors?.required && (formPerfilEtad.controls.perfil?.touched || submitted)"
+                <div *ngIf="formPerfilEtad.controls.id_perfiles.errors?.required && (formPerfilEtad.controls.id_perfiles?.touched || submitted)"
                   class="error">
                   Seleccione un perfil
                 </div>
