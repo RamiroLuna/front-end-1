@@ -20,14 +20,11 @@ export class PerfilSonarhService {
 
   altaUsuario(id_usuario:number, usuario:UserSonarh): Observable<any>{
     const body = new HttpParams()
-    // .set('action', 'insertUsers')
-    // .set('nombre', usuario.nombre_completo)
-    // .set('id_sonarh', ''+usuario.id_sonarh)
-    // .set('id_linea', ''+usuario.id_linea)
-    // .set('id_grupo', ''+usuario.id_grupo)
-    // .set('id_perfil', ''+usuario.id_perfil)
-    // .set('id_turno', ''+usuario.id_turno)
-    // .set('usuario_acceso', usuario.usuario_acceso)
+    .set('action', 'insertUserETAD')
+    .set('numero_empleado', ''+usuario.NumEmpleado)
+    .set('id_linea', ''+usuario.id_linea)
+    .set('id_grupo', ''+usuario.id_grupo)
+    .set('perfiles', ''+usuario.id_perfiles)
     .set('id_usuario', ""+id_usuario);
     return this.http.post(this.URL,body);
   }
