@@ -196,6 +196,10 @@ export class MetaManualComponent implements OnInit {
      
   }
 
+  regresar() {
+    $('.tooltipped').tooltip('hide');
+  }
+
 
 
 
