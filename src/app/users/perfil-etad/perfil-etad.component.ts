@@ -84,10 +84,10 @@ export class PerfilEtadComponent implements OnInit {
   }
 
   loadFormulario(): void {
-    this.formPerfilEtad = this.fb.group({
-      turno: new FormControl(this.usuario.id_turno, [Validators.required]),
-      perfil: new FormControl(this.usuario.id_perfil, [Validators.required])
-    });
+    // this.formPerfilEtad = this.fb.group({
+    //   turno: new FormControl(this.usuario.id_turno, [Validators.required]),
+    //   perfil: new FormControl(this.usuario.id_perfil, [Validators.required])
+    // });
   }
 
   modalConfirmacion(usuario: User): void {
@@ -101,7 +101,7 @@ export class PerfilEtadComponent implements OnInit {
       swal({
         title: '<span style="color: #303f9f "> ¿ Está seguro de actualizar información ?</span>',
         type: 'question',
-        html: '<p style="color: #303f9f "> Usuario: <b>' + usuario.nombre + ' </b></p>',
+        // html: '<p style="color: #303f9f "> Usuario: <b>' + usuario.nombre + ' </b></p>',
         showCancelButton: true,
         confirmButtonColor: '#303f9f',
         cancelButtonColor: '#9fa8da ',

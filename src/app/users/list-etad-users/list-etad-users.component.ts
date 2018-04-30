@@ -79,7 +79,7 @@ export class ListEtadUsersComponent implements OnInit {
     swal({
       title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
       type: 'question',
-      html: '<p style="color: #303f9f "> Usuario: <b>' + usuario.nombre + ' </b></p>',
+      // html: '<p style="color: #303f9f "> Usuario: <b>' + usuario.nombre + ' </b></p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
@@ -108,17 +108,17 @@ export class ListEtadUsersComponent implements OnInit {
             });
             break;
           case 'eliminar':
-            this.service.delete(this.auth.getIdUsuario(), usuario.id_usuario).subscribe(result => {
-              if (result.response.sucessfull) {
-                deleteItemArray(this.usuarios_etad, usuario.id_usuario, 'id_usuario');
-                $('#tabla_usuarios_etad').DataTable().row('.'+usuario.id_usuario).remove().draw( false );
-                Materialize.toast('Se eliminó correctamente ', 4000, 'green');
-              } else {
-                Materialize.toast(result.response.message, 4000, 'red');
-              }
-            }, error => {
-              Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
-            });
+            // this.service.delete(this.auth.getIdUsuario(), usuario.id_usuario).subscribe(result => {
+            //   if (result.response.sucessfull) {
+            //     deleteItemArray(this.usuarios_etad, usuario.id_usuario, 'id_usuario');
+            //     $('#tabla_usuarios_etad').DataTable().row('.'+usuario.id_usuario).remove().draw( false );
+            //     Materialize.toast('Se eliminó correctamente ', 4000, 'green');
+            //   } else {
+            //     Materialize.toast(result.response.message, 4000, 'red');
+            //   }
+            // }, error => {
+            //   Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+            // });
             break;
         }
         /*

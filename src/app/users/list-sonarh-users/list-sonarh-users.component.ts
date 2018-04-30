@@ -30,7 +30,7 @@ export class ListSonarhUsersComponent implements OnInit {
     this.loading = true;
     this.service.getSonarhUsuarios(this.auth.getIdUsuario()).subscribe(result => {
       if (result.response.sucessfull) {
-        this.usuarios_sonarh = result.data.list || [];
+        this.usuarios_sonarh = result.data.listUserSonarh || [];
         this.loading = false;
         setTimeout(() => { this.ngAfterViewHttp() }, 200)
       } else {

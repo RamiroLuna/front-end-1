@@ -15,24 +15,22 @@
       <table id="tabla_usuarios_sonarh"  class="display" cellspacing="0" width="100%">
         <thead>
           <tr>
-            <th class="center-align">Id empleado</th>
+            <th class="center-align">Num empleado</th>
             <th class="center-align">Nombre de empleado</th>
-            <th class="center-align">Usuario</th>
             <th class="center-align">Grupo</th>
-            <th class="center-align">Linea</th>
+            <th class="center-align">Area</th>
             <th class="center-align">Activar en ETAD</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr *ngFor="let usuario of usuarios_sonarh"  [class]="usuario.id_sonarh">
-            <td class="center-align">{{ usuario.id_sonarh}}</td>
-            <td class="center-align">{{ usuario.nombre_completo }}</td>
-            <td class="center-align">{{ usuario.usuario_acceso}}</td>
-            <td class="center-align">{{ usuario.grupo}}</td>
-            <td class="center-align">{{ usuario.linea}}</td>
+          <tr *ngFor="let usuario of usuarios_sonarh"  [class]="usuario.NumEmpleado">
+            <td class="center-align">{{ usuario.NumEmpleado }}</td>
+            <td class="center-align">{{ usuario.Nombre + ' '+ usuario.Paterno + ' '+ usuario.Materno }}</td>
+            <td class="center-align">{{ usuario.Grupo}}</td>
+            <td class="center-align">{{ usuario.Area }}</td>
             <td class="center-align">
-              <a *ngIf="!usuario.activo_etad" [routerLink]="['../usuario-sonarh/' + usuario.id_sonarh]" class="btn-floating waves-effect waves-light light-green lighten-1">
+              <a *ngIf="!usuario.activo_etad" [routerLink]="['../usuario-sonarh/' + usuario.NumEmpleado]" class="btn-floating waves-effect waves-light light-green lighten-1">
                 <i class="material-icons">add</i>
               </a>
               <p *ngIf="usuario.activo_etad"> Activo </p>

@@ -106,27 +106,27 @@ export class PerfilComponent implements OnInit, AfterViewInit {
   }
 
   changePassword() {
-    this.submitted = true;
-    if (this.formCambioPassword.valid) {
-      this.service.postChangePasword(
-        this.contrasenia_nueva,
-        this.contrasenia_anterior,
-        this.usuario.id_usuario
-      ).subscribe(result => {
-        this.submitted = false;
-        this.formCambioPassword.reset();
-        if (result.response.sucessfull) {
-          this.cambio_password = false;
-          Materialize.toast('Contraseña actualizada!', 4000, 'green');
-          $('#modal_cambio_password').modal('close');
-        } else {
-          Materialize.toast(result.response.message, 4000, 'red');
-        }
-      });
-    }
-    else {
-      Materialize.toast('Se encontrarón errores!', 4000, 'red');
-    }
+    // this.submitted = true;
+    // if (this.formCambioPassword.valid) {
+    //   this.service.postChangePasword(
+    //     this.contrasenia_nueva,
+    //     this.contrasenia_anterior,
+    //     this.usuario.id_usuario
+    //   ).subscribe(result => {
+    //     this.submitted = false;
+    //     this.formCambioPassword.reset();
+    //     if (result.response.sucessfull) {
+    //       this.cambio_password = false;
+    //       Materialize.toast('Contraseña actualizada!', 4000, 'green');
+    //       $('#modal_cambio_password').modal('close');
+    //     } else {
+    //       Materialize.toast(result.response.message, 4000, 'red');
+    //     }
+    //   });
+    // }
+    // else {
+    //   Materialize.toast('Se encontrarón errores!', 4000, 'red');
+    // }
 
 
   }

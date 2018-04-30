@@ -68,7 +68,7 @@ export class PerfilSonarhComponent implements OnInit {
           if(result.data.usuarioSonarth){
             this.loading = false;
             this.usuario = result.data.usuarioSonarth || new UserSonarh();
-            this.usuario.id_perfil = 6;
+            // this.usuario.id_perfil = 6;
             this.usuario_en_etad = false;
             this.existe_user=true;
             this.loadFormulario();
@@ -93,10 +93,10 @@ export class PerfilSonarhComponent implements OnInit {
 
 
   loadFormulario(): void {
-    this.formPerfilSonarh = this.fb.group({
-      turno: new FormControl(this.usuario.id_turno, [Validators.required]),
-      perfil: new FormControl(this.usuario.id_perfil, [Validators.required])
-    });
+    // this.formPerfilSonarh = this.fb.group({
+    //   turno: new FormControl(this.usuario.id_turno, [Validators.required]),
+    //   perfil: new FormControl(this.usuario.id_perfil, [Validators.required])
+    // });
   }
 
 
