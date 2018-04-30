@@ -26,8 +26,9 @@ export class ListEtadUsersComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     this.service.getEtadUsuarios(this.auth.getIdUsuario()).subscribe(result => {
+      console.log('resultados', result)
       if (result.response.sucessfull) {
-        this.usuarios_etad = result.data.listUserDTO || [];
+        this.usuarios_etad = result.data.listUserETAD || [];
         this.loading = false;
         setTimeout(()=>{this.ngAfterViewHttp()},200)
       } else {
@@ -79,7 +80,7 @@ export class ListEtadUsersComponent implements OnInit {
     swal({
       title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
       type: 'question',
-      // html: '<p style="color: #303f9f "> Usuario: <b>' + usuario.nombre + ' </b></p>',
+      html: '<p style="color: #303f9f "> Usuario: <b>' + usuario.nombre + ' </b></p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',

@@ -1,17 +1,9 @@
 export class User {
-    id_usuario:number;
+    id_acceso:number;
+    usuario_sonarh:number;
     nombre:string;
-    id_turno:number;
-    id_linea:number;
-    id_grupo:number;
-    usuario_acceso:string;
-    id_perfil:number;
-    token:string;
-    turno:string;
-    linea:string;
-    grupo:string;
-    perfil:string;
-    clave_accesos:string;
+    valor_grupo:string;
+    valor_linea:string;
     activo:number;
     constructor(){}
 

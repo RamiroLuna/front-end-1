@@ -12,10 +12,10 @@
       <table id="tabla_usuarios_etad" class="display" cellspacing="0" width="100%">
         <thead>
           <tr>
-            <th class="center-align">Id</th>
+            <th class="center-align">Num Empleado</th>
             <th class="center-align">Empleado</th>
-            <th class="center-align">Usuario</th>
             <th class="center-align">Grupo</th>
+            <th class="center-align">Linea</th>
             <th class="center-align">Activo</th>
             <th class="center-align">Editar</th>
             <th class="center-align">Eliminar</th>
@@ -23,11 +23,11 @@
         </thead>
 
         <tbody>
-          <tr *ngFor="let usuario of usuarios_etad" [class]="usuario.id_usuario">
-            <td class="center-align">{{ usuario.id_usuario }}</td>
+          <tr *ngFor="let usuario of usuarios_etad" [class]="usuario.id_acceso">
+            <td class="center-align">{{ usuario.usuario_sonarh }}</td>
             <td class="center-align">{{ usuario.nombre }}</td>
-            <td class="center-align">{{ usuario.usuario_acceso }}</td>
-            <td class="center-align">{{ usuario.grupo }}</td>
+            <td class="center-align">{{ usuario.valor_grupo }}</td>
+            <td class="center-align">{{ usuario.valor_linea }}</td>
             <td class="center-align">
               <div class="switch">
                 <label>
@@ -39,7 +39,7 @@
               </div>
             </td>
             <td  class="center-align">
-              <a class="btn-floating light-green lighten-1"  [routerLink]="['../usuario-etad/' + usuario.id_usuario]"><i class="material-icons">edit</i></a>
+              <a class="btn-floating light-green lighten-1"  [routerLink]="['../usuario-etad/' + usuario.id_acceso]"><i class="material-icons">edit</i></a>
             </td>
             <td class="center-align">
               <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(usuario,'eliminar')">
