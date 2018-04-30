@@ -97,7 +97,7 @@ export class PerfilSonarhComponent implements OnInit {
 
 
   modalConfirmacion(usuario: UserSonarh) {
-    console.log(usuario)
+    
     this.submitted = true;
     if (this.formPerfilSonarh.valid) {
 
@@ -106,8 +106,7 @@ export class PerfilSonarhComponent implements OnInit {
           this.submitted = false;
 
           if (result.response.sucessfull) {
-
-            Materialize.toast('Alta exitosa!', 4000, 'green');
+            Materialize.toast('Se agrego nuevo usuario a ETAD!', 4000, 'green');
             this.router.navigate(['home/usuarios/etad']);
 
           } else {

@@ -41,7 +41,7 @@
                 <label>Asigna Linea</label>
                 <select materialize="material_select" formControlName="id_linea" [materializeSelectOptions]="lineas" [(ngModel)]="usuario.id_linea">
                   <option value="" selected>SELECCIONE</option>
-                  <option *ngFor="let linea of lineas" [value]="linea.id">{{linea.valor}}</option>
+                  <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{linea.valor}}</option>
                 </select>
                 <div *ngIf="formPerfilSonarh.controls.id_linea.errors?.required && (formPerfilSonarh.controls.id_linea?.touched || submitted)"
                   class="error">
