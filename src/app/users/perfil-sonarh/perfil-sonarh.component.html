@@ -9,48 +9,55 @@
           <form class="col s12 m12 l12 xl12" [formGroup]="formPerfilSonarh" autocomplete="off" (ngSubmit)="modalConfirmacion(usuario)">
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input disabled id="nombre" type="text" [value]="usuario.nombre_completo">
+                <input id="nombre" type="text" formControlName="nombre" [value]="usuario.Nombre +' '+ usuario.Paterno + ' ' + usuario.Materno">
                 <label for="nombre" class="active">Nombre</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12 m12 l6 xl6">
-                <input disabled id="usuario_nomina" type="text" [value]="usuario.usuario_acceso">
+                <input id="usuario_nomina" type="text" formControlName="NumEmpleado"  [value]="usuario.NumEmpleado">
                 <label for="usuario_nomina" class="active">Usuario(nomina)</label>
               </div>
               <div class="input-field col s12 m12 l6 xl6">
-                <input disabled [value]="usuario.linea" id="linea" type="text">
-                <label for="linea" class="active">Linea</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="input-field col s12 m12 l12 xl12">
-                <input disabled id="grupo" type="text" [value]="usuario.grupo">
-                <label for="grupo" class="active">Grupo</label>
+                <input [value]="usuario.Area" id="Area" type="text"  formControlName="Area" >
+                <label for="Area" class="active">Area</label>
               </div>
             </div>
             <div class="row">
               <div class="col s12 m12 l12 xl12">
-                <label>Asigna turno</label>
-                <select materialize="material_select" formControlName="turno" [materializeSelectOptions]="turnos" [(ngModel)]="usuario.id_turno">
-                  <option value="" selected>Seleccione</option>
-                  <option *ngFor="let turno of turnos" [value]="turno.id">{{turno.descripcion}}</option>
+                <label>Grupo</label>
+                <select materialize="material_select" formControlName="id_grupo" [materializeSelectOptions]="id_grupo" [(ngModel)]="usuario.id_grupo">
+                  <option value="">Seleccione</option>
+                  <option *ngFor="let grupo of grupos" [value]="grupo.id">{{grupo.valor}}</option>
                 </select>
-                <div *ngIf="formPerfilSonarh.controls.turno.errors?.required && (formPerfilSonarh.controls.turno?.touched || submitted)"
+                <div *ngIf="formPerfilSonarh.controls.id_grupo.errors?.required && (formPerfilSonarh.controls.id_grupo?.touched || submitted)"
                   class="error">
-                  Seleccione un turno
+                  Seleccione grupo
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 m12 l12 xl12">
+                <label>Asigna Linea</label>
+                <select materialize="material_select" formControlName="id_linea" [materializeSelectOptions]="lineas" [(ngModel)]="usuario.id_linea">
+                  <option value="" selected>SELECCIONE</option>
+                  <option *ngFor="let linea of lineas" [value]="linea.id">{{linea.valor}}</option>
+                </select>
+                <div *ngIf="formPerfilSonarh.controls.id_linea.errors?.required && (formPerfilSonarh.controls.id_linea?.touched || submitted)"
+                  class="error">
+                  Seleccione una linea
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col s12 m12 l12 xl12">
                 <label>Asigna perfil para ETAD</label>
-                <select materialize="material_select" formControlName="perfil" [materializeSelectOptions]="perfiles" [(ngModel)]="usuario.id_perfil">
-                  <option *ngFor="let perfil of perfiles" [value]="perfil.id" [selected]="perfil.id == usuario.id_perfil">{{perfil.descripcion}}</option>
+                <select materialize="material_select" formControlName="id_perfiles" [materializeSelectOptions]="id_perfiles" [(ngModel)]="usuario.id_perfiles" multiple>
+                  <option *ngFor="let perfil of perfiles" [value]="perfil.id">{{perfil.valor}}</option>
                 </select>
-                <div *ngIf="formPerfilSonarh.controls.perfil.errors?.required && (formPerfilSonarh.controls.perfil?.touched || submitted)"
+                <div *ngIf="formPerfilSonarh.controls.id_perfiles.errors?.required && (formPerfilSonarh.controls.id_perfiles?.touched || submitted)"
                   class="error">
-                  Seleccione un perfil
+                  Seleccione perfiles
                 </div>
               </div>
             </div>
@@ -81,13 +88,17 @@
 </div>
 
 <div class="container" *ngIf="!loading && usuario_en_etad">
-    <div class="section"></div>
-    <h5 class="color_titulo center-align">USUARIO YA ESTA DADO DE ALTA EN ETAD</h5>
-    <h6 class="center-align"><a routerLink="../../sonarh"  >Volver a usuarios en SONARH</a></h6>
+  <div class="section"></div>
+  <h5 class="color_titulo center-align">USUARIO YA ESTA DADO DE ALTA EN ETAD</h5>
+  <h6 class="center-align">
+    <a routerLink="../../sonarh">Volver a usuarios en SONARH</a>
+  </h6>
 </div>
 
 <div class="container" *ngIf="!loading && !usuario_en_etad && !existe_user">
-    <div class="section"></div>
-    <h5 class="color_titulo center-align">EL USUARIO NO EXISTE EN SONARH</h5>
-    <h6 class="center-align"><a routerLink="../../sonarh"  >Volver a usuarios disponibles en SONARH</a></h6>
+  <div class="section"></div>
+  <h5 class="color_titulo center-align">EL USUARIO NO EXISTE EN SONARH</h5>
+  <h6 class="center-align">
+    <a routerLink="../../sonarh">Volver a usuarios disponibles en SONARH</a>
+  </h6>
 </div>

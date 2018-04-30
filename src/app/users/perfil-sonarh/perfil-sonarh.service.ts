@@ -13,12 +13,9 @@ export class PerfilSonarhService {
 
   constructor(private http: HttpClient) { }
 
-  getCatalogo(id_usuario: number, tableName: string): Observable<any> {
-    return this.http.get<Catalogo>(this.URL_CATALOGOS + '?action=getCatalogosData&tableName=' + tableName + '&id_usuario=' + id_usuario);
-  }
 
-  getDetalleUsuarioSonarh(id_usuario: number, id_usuario_sonarh: number): Observable<any> {
-    return this.http.get<UserSonarh>(this.URL + '?action=getPerfilSonarh&id_usuario=' + id_usuario + '&id_usuario_sonarh=' + id_usuario_sonarh);
+  getDetalleUsuarioSonarh(id_usuario: number, numero_empleado: number): Observable<any> {
+    return this.http.get<UserSonarh>(this.URL + '?action=getPerfilSonarh&id_usuario=' + id_usuario + '&numero_empleado=' + numero_empleado);
   }
 
   altaUsuario(id_usuario:number, usuario:UserSonarh): Observable<any>{

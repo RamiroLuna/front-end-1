@@ -5,6 +5,7 @@ import { AuthService } from '../../auth/auth.service';
 import { PerfilSonarhService } from './perfil-sonarh.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Linea } from '../../models/linea';
 
 declare var $: any;
 declare var Materialize: any;
@@ -18,7 +19,8 @@ export class PerfilSonarhComponent implements OnInit {
   public usuario: UserSonarh;
   public loading: boolean;
   public perfiles: Array<Catalogo> = [];
-  public turnos: Array<Catalogo> = [];
+  public grupos: Array<Catalogo> = [];
+  public lineas: Array<Linea> = [];
   public formPerfilSonarh: FormGroup;
   public submitted: boolean;
   public usuario_en_etad: boolean;
@@ -36,41 +38,25 @@ export class PerfilSonarhComponent implements OnInit {
     this.existe_user = false;
     this.loading = true;
     this.usuario_en_etad = false;
-    this.service.getCatalogo(this.auth.getIdUsuario(), 'pet_cat_perfiles').subscribe(result => {
 
-      if (result.response.sucessfull) {
-        this.perfiles = result.data.listCatalogosDTO || [];
-
-      } else {
-        Materialize.toast('Error al cargar catalogo de perfiles', 4000, 'red');
-      }
-    }, error => {
-      Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-    });
-
-    this.service.getCatalogo(this.auth.getIdUsuario(), 'pet_cat_turnos').subscribe(result => {
-      if (result.response.sucessfull) {
-        this.turnos = result.data.listCatalogosDTO || [];
-
-      } else {
-        Materialize.toast(result.response.message, 4000, 'red');
-      }
-    }, error => {
-      Materialize.toast('Error al cargar catalogo de turnos', 4000, 'red');
-    });
 
     this.route.paramMap.subscribe(params => {
     
-      let id_usuario_sonarh = parseInt(params.get('id'));
-      this.service.getDetalleUsuarioSonarh(this.auth.getIdUsuario(), id_usuario_sonarh).subscribe(result => {
-        
+      let numero_empleado = parseInt(params.get('id'));
+      this.service.getDetalleUsuarioSonarh(this.auth.getIdUsuario(), numero_empleado).subscribe(result => {
+          
         if (result.response.sucessfull) {
-          if(result.data.usuarioSonarth){
-            this.loading = false;
-            this.usuario = result.data.usuarioSonarth || new UserSonarh();
-            // this.usuario.id_perfil = 6;
+          if(result.data.usuarioSonarh){
+            this.grupos = result.data.listGrupos || [];
+            this.perfiles = result.data.listPerfiles || [];
+            this.lineas = result.data.listLineas || [];
+            this.usuario = result.data.usuarioSonarh || new UserSonarh();
+            /* Por default es consulta */
+            this.usuario.id_perfiles = [6];
+            
             this.usuario_en_etad = false;
             this.existe_user=true;
+            this.loading = false;
             this.loadFormulario();
           }else{
             this.loading = false;
@@ -90,18 +76,28 @@ export class PerfilSonarhComponent implements OnInit {
     });
 
   }
-
+  
+  
+  
+  
+  
+  
 
   loadFormulario(): void {
-    // this.formPerfilSonarh = this.fb.group({
-    //   turno: new FormControl(this.usuario.id_turno, [Validators.required]),
-    //   perfil: new FormControl(this.usuario.id_perfil, [Validators.required])
-    // });
+    this.formPerfilSonarh = this.fb.group({
+      nombre: new FormControl({value: this.usuario.Nombre, disabled:true}, [Validators.required]),
+      NumEmpleado: new FormControl({value: this.usuario.NumEmpleado, disabled:true}, [Validators.required]),
+      Area: new FormControl({value: this.usuario.Area, disabled:true}, [Validators.required]),
+      id_grupo: new FormControl({value: this.usuario.id_grupo, disabled:true}, [Validators.required]),
+      id_linea: new FormControl({value: this.usuario.id_linea}, [Validators.required]),
+      id_perfiles: new FormControl({value: this.usuario.id_perfiles}, [Validators.required])
+
+    });
   }
 
 
   modalConfirmacion(usuario: UserSonarh) {
-
+    console.log(usuario)
     this.submitted = true;
     if (this.formPerfilSonarh.valid) {
 
@@ -123,7 +119,7 @@ export class PerfilSonarhComponent implements OnInit {
       );
     }
     else {
-      Materialize.toast('Se encontrarón errores!', 4000, 'red');
+      Materialize.toast('Verifique los datos capturados!', 4000, 'red');
     }
 
 
