@@ -242,14 +242,17 @@ function calculaDiaPorMes(anio: number, mes: number): number {
 
 
 /**
- * @function getLabels
- * @param arg Arreglo de los datos 
- * @return  {Array} 
- * @description Esta funcion devuelve las etiquetas que serán graficadas
+ * @function contraseniaValida
+ * @param {string} contrasenia
+ * @return  {boolean} 
+ * @description Devuelve un boolean si la contraseña cumple con la expresion regular
+ * La contraseña debe tener al entre 6 y 10 caracteres, 
+ * al menos un dígito, 
+ * al menos una minúscula y 
+ * al menos una mayúscula.
  */
-function getLabels(arg: Array<any>): any {
-
-    return [];
+function contraseniaValida(contrasenia:string): any {
+    return /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{6,10}$/.test(contrasenia.trim());
 }
 
 
@@ -265,5 +268,5 @@ export {
     DataTableReporte,
     calculaDiaPorMes,
     getMilisegundosHoras,
-    getLabels
+    contraseniaValida
 }

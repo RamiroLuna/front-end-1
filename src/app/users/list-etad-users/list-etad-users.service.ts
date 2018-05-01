@@ -23,4 +23,13 @@ export class ListEtadUsersService {
     return this.http.post(this.URL, body);
   }
 
+  changePasswordUser(id_usuario: number,  id_acceso: number, new_password:string): Observable<any> {
+    const body = new HttpParams()
+      .set('action', 'changePassword')
+      .set('id_acceso', '' + id_acceso)
+      .set('new_password', '' + new_password)
+      .set('id_usuario', '' + id_usuario)
+    return this.http.post(this.URL, body);
+  }
+
 }

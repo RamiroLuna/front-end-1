@@ -3,7 +3,7 @@ import { User } from '../../models/user';
 import { ListEtadUsersService } from './list-etad-users.service';
 import { AuthService } from '../../auth/auth.service';
 import swal from 'sweetalert2';
-import { deleteItemArray, DataTable} from '../../utils';
+import { deleteItemArray, DataTable, contraseniaValida } from '../../utils';
 
 declare var $: any;
 declare var Materialize: any;
@@ -30,7 +30,7 @@ export class ListEtadUsersComponent implements OnInit {
       if (result.response.sucessfull) {
         this.usuarios_etad = result.data.listUserETAD || [];
         this.loading = false;
-        setTimeout(()=>{this.ngAfterViewHttp()},200)
+        setTimeout(() => { this.ngAfterViewHttp() }, 200)
       } else {
         Materialize.toast('Ocurrió  un error al consultar usuarios ETAD!', 4000, 'red');
         this.loading = false;
@@ -56,9 +56,9 @@ export class ListEtadUsersComponent implements OnInit {
     DataTable('#tabla_usuarios_etad');
 
     $('.tooltipped').tooltip({ delay: 50 });
-  } 
+  }
 
-  
+
 
   openModalConfirmacion(usuario: User, accion: string, event?: any): void {
     this.mensajeModal = '';
@@ -100,15 +100,15 @@ export class ListEtadUsersComponent implements OnInit {
                 Materialize.toast('Actualización completa', 4000, 'green');
               } else {
                 Materialize.toast(result.response.message, 4000, 'red');
-                usuario.activo = !usuario.activo?1:0;
+                usuario.activo = !usuario.activo ? 1 : 0;
               }
             }, error => {
-              usuario.activo = !usuario.activo?1:0;
+              usuario.activo = !usuario.activo ? 1 : 0;
               Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
             });
             break;
           case 'eliminar':
-           
+
             break;
         }
         /*
@@ -125,5 +125,43 @@ export class ListEtadUsersComponent implements OnInit {
       }
     })
 
+  }
+
+  openModalPassword(usuario: User, event?: any): void {
+
+    swal({
+      title: '<h6  style="color: #303f9f">CAMBIAR CONTRASEÑA A: <br><b>' + usuario.nombre + '</b></h6>',
+      input: 'password',
+      inputPlaceholder: 'Escribe',
+      showCancelButton: true,
+      confirmButtonColor: '#303f9f',
+      cancelButtonColor: '#9fa8da ',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Cambiar',
+      allowOutsideClick: false,
+      allowEnterKey: false,
+      inputValidator: (value) => {
+        return !contraseniaValida(value) && 'La contraseña debe tener al entre 6 y 10 caracteres. Al menos un dígito, una mayuscula y minúscula';
+      }
+    }).then((result) => {
+    
+      if (result.value) {
+        this.service.changePasswordUser(this.auth.getIdUsuario(), usuario.id_acceso,result.value).subscribe(result => {
+          if (result.response.sucessfull) {
+            Materialize.toast('Contraseña actualizada', 4000, 'green');
+          } else {
+            Materialize.toast(result.response.message, 4000, 'red');
+           
+          }
+        }, error => {
+        
+          Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+        });
+
+      }else if (result.dismiss === swal.DismissReason.cancel) {
+       
+      }
+
+    })
   }
 }
