@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
+import { getFechaActual } from '../utils';
 import { Router } from '@angular/router';
 import { User } from '../models/user';
 
@@ -17,6 +18,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
   public menu_ishikawa: boolean;
   public menu_generales: boolean;
   public id_usuario: number;
+  public fecha:string;
 
   constructor(private router: Router, private auth: AuthService) { }
 
@@ -25,6 +27,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
     this.menu_kpi= false;
     this.menu_ishikawa= false;
     this.menu_generales= false;
+    this.fecha = getFechaActual();
 
     /* Si no puede ver el menu trae un "0" en la primer posicion del conjunto de roles */
     this.menu_cua = !(this.auth.getRolesCUA().split(",")[0] == "0");

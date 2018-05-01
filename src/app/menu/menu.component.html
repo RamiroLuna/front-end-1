@@ -2,7 +2,6 @@
   <li>
     <div class="user-view">
       <div class="background light-green darken-1">
-
       </div>
       <a href="#!user">
         <img class="circle" src="http://www.mejorafinanzas.com.mx/images/usuario.png">
@@ -11,7 +10,7 @@
         <span class="white-text name"> {{ session.nombre }}</span>
       </a>
       <a href="#!email">
-        <span class="white-text">{{ session.perfil | ucfirst }}</span>
+        <span class="white-text">{{ fecha }}</span>
       </a>
     </div>
   </li>
@@ -32,7 +31,7 @@
   </li>
   <li *ngIf="menu_ishikawa">
     <a class="waves-effect" routerLink="">
-      <i class="material-icons">trending_up</i>Ishikawa</a>
+      <i class="material-icons">polymer</i>Ishikawa</a>
   </li>
   <li *ngIf="menu_generales">
     <ul class="collapsible collapsible-accordion">

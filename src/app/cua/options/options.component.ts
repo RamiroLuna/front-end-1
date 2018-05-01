@@ -12,7 +12,7 @@ export class OptionsComponent  implements  AfterViewInit{
   constructor(private auth: AuthService) { }
 
   ngOnInit() {
-    this.perfil= this.auth.getPerfil();
+    this.perfil=3;
   }
 
   ngAfterViewInit() {
