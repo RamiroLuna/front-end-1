@@ -12,13 +12,27 @@ declare var Materialize: any;
 })
 export class MenuComponent implements OnInit, AfterViewInit {
   public session: User;
-  public perfil: number;
+  public menu_cua: boolean;
+  public menu_kpi: boolean;
+  public menu_ishikawa: boolean;
+  public menu_generales: boolean;
   public id_usuario: number;
 
   constructor(private router: Router, private auth: AuthService) { }
 
   ngOnInit() {
-    this.perfil = this.auth.getPerfil();
+    this.menu_cua= false;
+    this.menu_kpi= false;
+    this.menu_ishikawa= false;
+    this.menu_generales= false;
+
+    /* Si no puede ver el menu trae un "0" en la primer posicion del conjunto de roles */
+    this.menu_cua = !(this.auth.getRolesCUA().split(",")[0] == "0");
+    this.menu_kpi = !(this.auth.getRolesKpi().split(",")[0] == "0");
+    this.menu_ishikawa = !(this.auth.getRolesIshikawa().split(",")[0] == "0");
+    this.menu_generales = !(this.auth.getRolesGenerales().split(",")[0] == "0");
+
+   
     this.id_usuario = this.auth.getIdUsuario();
     try {
       if (localStorage.datos_usuario) {

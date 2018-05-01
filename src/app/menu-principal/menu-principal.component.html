@@ -6,7 +6,7 @@
   </div>
   <div class="section"></div>
   <div class="row color_titulo">
-    <div class="col s12 m12 l4 xl4">
+    <div class="col s12 m12 l4 xl4" *ngIf="menu_cua">
       <div class="card center">
         <div class="card-content kpi">
           <span class="card-title"><b>CUA</b></span>
@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <div class="col s12 m12 l4 xl4">
+    <div class="col s12 m12 l4 xl4" *ngIf="menu_kpi">
       <div class="card center">
         <div class="card-content">
           <span class="card-title"><b>KPI</b></span>
@@ -30,7 +30,7 @@
         </div>
       </div>
     </div>
-    <div class="col s12 m12 l4 xl4">
+    <div class="col s12 m12 l4 xl4" *ngIf="menu_ishikawa" >
       <div class="card center">
         <div class="card-content">
           <span class="card-title"><b>ISHIKAWA</b></span>

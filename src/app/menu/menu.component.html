@@ -22,45 +22,39 @@
   <li>
     <div class="divider"></div>
   </li>
-  <!-- menu para el admin -->
-  <div *ngIf="perfil == 1">
-  </div>
-  <!-- Fin menu para el admin -->
-  <!-- menu para el area -->
-  <div *ngIf="perfil == 2">   
-  </div>
-  <!-- Fin menu para el area -->
-  <!-- menu para el gerente -->
-  <div *ngIf="perfil == 3">
-    <li>
-      <a class="waves-effect" routerLink="cua/opciones">
-        <i class="material-icons">class</i>CUA</a>
-    </li>
-    <li>
-      <a class="waves-effect" routerLink="">
-        <i class="material-icons">trending_up</i>KPI</a>
-    </li>
-    <li>
-      <ul class="collapsible collapsible-accordion">
-        <li>
-          <a class="collapsible-header">
-            <i class="material-icons" style="padding-left: 15px">keyboard_arrow_down</i>&ensp;&ensp;Usuarios</a>
-          <div class="collapsible-body  light-green lighten-5">
-            <ul>
-              <li>
-                <a class="waves-effect" routerLink="usuarios/sonarh">
-                  <i class="material-icons" style="padding-left: 20px">supervisor_account</i>SONARH</a>
-              </li>
-              <li>
-                <a class="waves-effect" routerLink="usuarios/etad">
-                  <i class="material-icons" style="padding-left: 20px">supervisor_account</i>ETAD</a>
-              </li>
-            </ul>
-          </div>
-        </li>
-      </ul>
-    </li>
-    <!-- <ul class="collapsible collapsible-accordion">
+  <li *ngIf="menu_cua">
+    <a class="waves-effect" routerLink="cua/opciones">
+      <i class="material-icons">class</i>CUA</a>
+  </li>
+  <li *ngIf="menu_kpi">
+    <a class="waves-effect" routerLink="">
+      <i class="material-icons">trending_up</i>KPI</a>
+  </li>
+  <li *ngIf="menu_ishikawa">
+    <a class="waves-effect" routerLink="">
+      <i class="material-icons">trending_up</i>Ishikawa</a>
+  </li>
+  <li *ngIf="menu_generales">
+    <ul class="collapsible collapsible-accordion">
+      <li>
+        <a class="collapsible-header">
+          <i class="material-icons" style="padding-left: 15px">keyboard_arrow_down</i>&ensp;&ensp;Usuarios</a>
+        <div class="collapsible-body  light-green lighten-5">
+          <ul>
+            <li>
+              <a class="waves-effect" routerLink="usuarios/sonarh">
+                <i class="material-icons" style="padding-left: 20px">supervisor_account</i>SONARH</a>
+            </li>
+            <li>
+              <a class="waves-effect" routerLink="usuarios/etad">
+                <i class="material-icons" style="padding-left: 20px">supervisor_account</i>ETAD</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </li>
+  <!-- <ul class="collapsible collapsible-accordion">
       <li>
         <a class="collapsible-header">
           <i class="material-icons" style="padding-left: 15px">keyboard_arrow_down</i>&ensp;&ensp;Informes</a>
@@ -78,20 +72,8 @@
         </div>
       </li>
     </ul> -->
-  </div>
+
   <!-- Fin menu para el gerente -->
-  <!-- menu para el facilitador -->
-  <div *ngIf="perfil == 4">
-  </div>
-  <!-- Fin menu para el facilitador -->
-  <!-- menu para el integrador -->
-  <div *ngIf="perfil == 5">
-  </div>
-  <!-- Fin menu para el integrador -->
-  <!-- menu para el consultor -->
-  <div *ngIf="perfil == 6">
-  </div>
-  <!-- Fin menu para el consultor -->
   <li>
     <a class="waves-effect" href="#" (click)="logout($event)">
       <i class="material-icons">power_settings_new</i>Cerrar sesión</a>

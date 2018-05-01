@@ -21,9 +21,19 @@ export class AuthService {
      
   }
 
-  public getPerfil():number{
-    return jwt_decode(this.getToken()).id_perfil || -1;
+  public getRolesCUA():string{
+    return jwt_decode(this.getToken()).roles_cua || "0";
   }
+  public getRolesKpi():string{
+    return jwt_decode(this.getToken()).roles_kpi || "0";
+  }
+  public getRolesIshikawa():string{
+    return jwt_decode(this.getToken()).roles_ishikawa || "0";
+  }
+  public getRolesGenerales():string{
+    return jwt_decode(this.getToken()).roles_generales || "0";
+  }
+
   public getId_Grupo():number{
     return jwt_decode(this.getToken()).id_grupo || -1;
   }

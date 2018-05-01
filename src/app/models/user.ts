@@ -9,4 +9,6 @@ export class User {
     activo:number;
     id_perfiles:Array<number>;
 
+    token?:string;
+
 }

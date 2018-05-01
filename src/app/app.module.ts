@@ -23,7 +23,6 @@ import { MenuPrincipalComponent } from './menu-principal/menu-principal.componen
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full'},
   { path: 'login', component: LoginComponent, canActivate: [NotAuthGuard] },
-  { path: 'login', component: LoginComponent, canActivate: [NotAuthGuard] },
   {
     path: 'home', component: HomeComponent, canActivate: [AuthGuard],children: [
       { path: '', component:  MenuPrincipalComponent},
