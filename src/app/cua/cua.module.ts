@@ -24,6 +24,7 @@ import { MetaMasivaComponent } from './meta-masiva/meta-masiva.component';
 import { FormularioProduccionComponent } from './formulario-produccion/formulario-produccion.component';
 import { ListaProduccionComponent } from './lista-produccion/lista-produccion.component';
 import { RptEtadComponent } from './rpt-etad/rpt-etad.component';
+import { AuthGuardCua } from '../auth/auth.guard.cua';
 
 
 
@@ -33,27 +34,32 @@ const routesMetas: Routes = [
   { path: 'opciones/fallas/:id', component: FormularioFallasComponent },
   { path: 'opciones/productos', component: ListaProductsComponent },
   { path: 'opciones/productos/:id', component: FormularioProductoComponent },
-  { path: 'opciones/productos-asignaciones', component:  ListaAsignacionProductoComponent},
+  { path: 'opciones/productos-asignaciones', component: ListaAsignacionProductoComponent },
   /* rutas de metas */
-  { path: 'opciones/metas-lista-edicion', component: ListaMetasEdicionComponent },
+  {
+    path: 'opciones/metas-lista-edicion', component: ListaMetasEdicionComponent, canActivate: [AuthGuardCua],
+    data: {
+      expectedRole: 1004
+    }
+  },
   { path: 'opciones/metas-carga-manual/:id', component: MetaManualComponent },
   { path: 'opciones/metas-carga-masiva', component: MetaMasivaComponent },
   /* rutas de catalogos */
-  { path: 'opciones/catalogos', component: ListCatalogsComponent},
+  { path: 'opciones/catalogos', component: ListCatalogsComponent },
   { path: 'opciones/catalogos/:name', component: ListByCatalogComponent },
   { path: 'opciones/catalogos/:name/formulario/:id', component: FormularioDetalleComponent },
   /* rutas de reportes */
-  { path: 'opciones/lista-reportes', component: ListaReportesComponent},
-  { path: 'opciones/lista-reportes/oee-fallas', component: RptOeeFallasComponent},
-  { path: 'opciones/lista-reportes/judo', component: RptJudoComponent},
-  { path: 'opciones/lista-reportes/fallas', component: RptFallasComponent},
-  { path: 'opciones/lista-reportes/etad', component: RptEtadComponent},
-  
-  /* Registro de produccion */
-  { path: 'opciones/produccion', component: ListaProduccionComponent},
-  { path: 'opciones/produccion/:id', component: FormularioProduccionComponent}
+  { path: 'opciones/lista-reportes', component: ListaReportesComponent },
+  { path: 'opciones/lista-reportes/oee-fallas', component: RptOeeFallasComponent },
+  { path: 'opciones/lista-reportes/judo', component: RptJudoComponent },
+  { path: 'opciones/lista-reportes/fallas', component: RptFallasComponent },
+  { path: 'opciones/lista-reportes/etad', component: RptEtadComponent },
 
-  
+  /* Registro de produccion */
+  { path: 'opciones/produccion', component: ListaProduccionComponent },
+  { path: 'opciones/produccion/:id', component: FormularioProduccionComponent }
+
+
 
 ];
 
@@ -67,26 +73,29 @@ const routesMetas: Routes = [
     RouterModule.forChild(routesMetas)
   ],
   declarations: [
-    OptionsComponent, 
-    MetaManualComponent, 
-    ListaMetasEdicionComponent, 
-    ListaFallasComponent, 
-    FormularioFallasComponent, 
-    ListaProductsComponent, 
-    FormularioProductoComponent, 
-    ListaAsignacionProductoComponent, 
+    OptionsComponent,
+    MetaManualComponent,
+    ListaMetasEdicionComponent,
+    ListaFallasComponent,
+    FormularioFallasComponent,
+    ListaProductsComponent,
+    FormularioProductoComponent,
+    ListaAsignacionProductoComponent,
     AsignacionProductosComponent,
-    ListCatalogsComponent, 
-    ListByCatalogComponent, 
-    FormularioDetalleComponent, 
-    ListaReportesComponent, 
+    ListCatalogsComponent,
+    ListByCatalogComponent,
+    FormularioDetalleComponent,
+    ListaReportesComponent,
     RptOeeFallasComponent,
-    RptJudoComponent, 
-    RptFallasComponent, 
-    MetaMasivaComponent, 
+    RptJudoComponent,
+    RptFallasComponent,
+    MetaMasivaComponent,
     FormularioProduccionComponent,
     ListaProduccionComponent,
     RptEtadComponent
+  ],
+  providers: [
+    AuthGuardCua
   ]
 })
 export class CuaModule { }
