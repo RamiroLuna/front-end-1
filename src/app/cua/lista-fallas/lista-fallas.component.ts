@@ -133,7 +133,10 @@ export class ListaFallasComponent implements OnInit {
       }
     });
 
-    $('#modalEdicion').modal();
+    $('#modalEdicion').modal({
+      opacity: 0.6,
+      inDuration: 500
+    });
 
   }
 

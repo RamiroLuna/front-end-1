@@ -24,7 +24,6 @@ export class FormularioFallasComponent implements OnInit, OnChanges {
   public submitted: boolean;
   public mensajeModal: string;
   public textoBtn: string;
-  public titulo: string;
   public textoFormulario: string;
   public falla: Falla;
   public formFalla: FormGroup;
@@ -48,11 +47,10 @@ export class FormularioFallasComponent implements OnInit, OnChanges {
     private router: Router) { }
 
   ngOnInit() {
-    console.log('reinicia cambios', this.id)
+    
     this.loading = true;
     this.submitted = false;
     this.textoBtn = "";
-    this.titulo = "";
     this.textoFormulario = "";
     this.falla = new Falla();
 
@@ -61,12 +59,10 @@ export class FormularioFallasComponent implements OnInit, OnChanges {
         this.textoFormulario = "Capture datos para registrar la falla del turno:";
         this.seccion = 'add';
         this.textoBtn = 'AGREGAR';
-        this.titulo = 'Registro';
       } else if (isValidId(this.id)) {
-        this.textoFormulario = "Actualice datos de la falla:";
+        this.textoFormulario = "Actualizar datos de falla:";
         this.seccion = 'edit';
         this.textoBtn = 'EDITAR';
-        this.titulo = 'Edición';
       } else {
         this.seccion = 'invalid';
       }

@@ -1,15 +1,18 @@
-<div class="container" *ngIf="!loading && seccion!='invalid' &&  seccion!='error' ">
+<div [ngClass]="{'container': seccion == 'add'}" *ngIf="!loading && seccion!='invalid' &&  seccion!='error' ">
   <div class="row">
     <div class="col offset-l2 offset-xl0 s12 m12 l8 xl12">
-      <h4 class="color_titulo center-align">{{ titulo }} de falla por turno</h4>
-      <div class="section"></div>
-      <!-- Solo para dispositivos moviles -->
-      <!-- <div class="hide-on-large-only right-align">
-        <a routerLink="../../fallas" class="tooltipped" data-position="top" data-delay="50" data-tooltip="Regresar" (click)="regresar()">
-          Regresar lista de falla
-        </a>
+      <div *ngIf="seccion == 'add'">
+        <h4 class="color_titulo center-align">Registro de falla por turno</h4>
       </div>
-      <br> -->
+      <!-- Solo para dispositivos moviles -->
+      <div *ngIf="seccion == 'add'">
+        <div class="hide-on-large-only right-align">
+          <a routerLink="../../fallas" class="tooltipped" data-position="top" data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+            Regresar
+          </a>
+        </div>
+        <br>
+      </div>
       <!-- Fin solo para dispositivos moviles -->
       <div class="row">
         <form class="col s12 m12 l12 xl12" [formGroup]="formFalla" (ngSubmit)="openModalConfirmacion(falla, seccion)">
@@ -22,7 +25,7 @@
                 <label for="dia">Día</label>
                 <input id="dia" type="text" formControlName="diaString" [(ngModel)]="falla.diaString">
                 <div *ngIf="formFalla.controls.diaString.errors?.required && (formFalla.controls.diaString?.touched || submitted)" class="error">
-                    Se requiere el día
+                  Se requiere el día
                 </div>
               </div>
             </div>
@@ -34,29 +37,29 @@
                   <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{ linea.valor }}</option>
                 </select>
                 <div *ngIf="formFalla.controls.id_linea.errors?.required && (formFalla.controls.id_linea?.touched || submitted)" class="error">
-                    Se requiere la linea
+                  Se requiere la linea
                 </div>
               </div>
 
               <div class="col s12 m12 l4 xl4">
                 <label>Grupo</label>
                 <select materialize="material_select" [materializeSelectOptions]="grupos" formControlName="id_grupo" [(ngModel)]="falla.id_grupo">
-                    <option value="">SELECCIONE</option>
+                  <option value="">SELECCIONE</option>
                   <option *ngFor="let grupo of grupos" [value]="grupo.id">{{ grupo.valor }}</option>
                 </select>
                 <div *ngIf="formFalla.controls.id_grupo.errors?.required && (formFalla.controls.id_grupo?.touched || submitted)" class="error">
-                    Se requiere el grupo
+                  Se requiere el grupo
                 </div>
               </div>
 
               <div class="col s12 m12 l4 xl4">
                 <label>Turno</label>
                 <select materialize="material_select" [materializeSelectOptions]="turnos" formControlName="id_turno" [(ngModel)]="falla.id_turno">
-                    <option value="">SELECCIONE</option>
-                    <option *ngFor="let turno of turnos" [value]="turno.id">{{ turno.valor }}</option>
+                  <option value="">SELECCIONE</option>
+                  <option *ngFor="let turno of turnos" [value]="turno.id">{{ turno.valor }}</option>
                 </select>
                 <div *ngIf="formFalla.controls.id_turno.errors?.required && (formFalla.controls.id_turno?.touched || submitted)" class="error">
-                    Se requiere el turno
+                  Se requiere el turno
                 </div>
               </div>
             </div>
@@ -64,41 +67,43 @@
             <div class="row">
               <div class="col s12 m12 l4 xl4">
                 <label>Fuente de Paro</label>
-                <select materialize="material_select"  [materializeSelectOptions]="fuentes" formControlName="id_fuente" [(ngModel)]="falla.id_fuente"  (ngModelChange)="chnageFuenteParo(falla.id_fuente)">
-                    <option value="">SELECCIONE</option>
-                    <option *ngFor="let fuente of fuentes" [value]="fuente.id">{{ fuente.valor }}</option>
+                <select materialize="material_select" [materializeSelectOptions]="fuentes" formControlName="id_fuente" [(ngModel)]="falla.id_fuente"
+                  (ngModelChange)="chnageFuenteParo(falla.id_fuente)">
+                  <option value="">SELECCIONE</option>
+                  <option *ngFor="let fuente of fuentes" [value]="fuente.id">{{ fuente.valor }}</option>
                 </select>
                 <div *ngIf="formFalla.controls.id_fuente.errors?.required && (formFalla.controls.id_fuente?.touched || submitted)" class="error">
-                    Se requiere la fuente de paro
+                  Se requiere la fuente de paro
                 </div>
               </div>
 
               <div class="col s12 m12 l4 xl4">
                 <label>Razón del Paro</label>
-                <select materialize="material_select"  [materializeSelectOptions]="razones" formControlName="id_razon" [(ngModel)]="falla.id_razon">
-                    <option value="">SELECCIONE</option>
-                    <option *ngFor="let razon of razones" [value]="razon.id_razon_paro">{{ razon.valor }}</option>
+                <select materialize="material_select" [materializeSelectOptions]="razones" formControlName="id_razon" [(ngModel)]="falla.id_razon">
+                  <option value="">SELECCIONE</option>
+                  <option *ngFor="let razon of razones" [value]="razon.id_razon_paro">{{ razon.valor }}</option>
                 </select>
                 <div *ngIf="formFalla.controls.id_razon.errors?.required && (formFalla.controls.id_razon?.touched || submitted)" class="error">
-                    Se requiere la razón de paro
+                  Se requiere la razón de paro
                 </div>
               </div>
 
               <div class="col s12 m12 l4 xl4">
                 <label>Clave equipo</label>
-                <select materialize="material_select" [materializeSelectOptions]="equipos" formControlName="id_equipo" [(ngModel)]="falla.id_equipo" (ngModelChange)="changeEquipo(falla.id_equipo)">
-                    <option value="">SELECCIONE</option>
-                    <option *ngFor="let equipo of equipos" [value]="equipo.id_equipos">{{ equipo.valor }}</option>
+                <select materialize="material_select" [materializeSelectOptions]="equipos" formControlName="id_equipo" [(ngModel)]="falla.id_equipo"
+                  (ngModelChange)="changeEquipo(falla.id_equipo)">
+                  <option value="">SELECCIONE</option>
+                  <option *ngFor="let equipo of equipos" [value]="equipo.id_equipos">{{ equipo.valor }}</option>
                 </select>
                 <div *ngIf="formFalla.controls.id_equipo.errors?.required && (formFalla.controls.id_equipo?.touched || submitted)" class="error">
-                    Se requiere clave de equipo
+                  Se requiere clave de equipo
                 </div>
               </div>
             </div>
 
             <div class="row">
               <div class="input-field col s12 m12 l12 xl12">
-                <input id="nameEquipo" type="text" formControlName="descripcion_equipo"  [value]="falla.descripcion_equipo" placeholder="Descripción del equipo" >
+                <input id="nameEquipo" type="text" formControlName="descripcion_equipo" [value]="falla.descripcion_equipo" placeholder="Descripción del equipo">
                 <label for="nameEquipo" class="active"></label>
               </div>
             </div>
@@ -108,7 +113,7 @@
                 <label for="horainicio">Hora Inicio</label>
                 <input id="horainicio" type="text" class="hora_inicio" formControlName="hora_inicio" [(ngModel)]="falla.hora_inicio">
                 <div *ngIf="formFalla.controls.hora_inicio.errors?.required && (formFalla.controls.hora_inicio?.touched || submitted)" class="error">
-                    Se requiere hora de inicio
+                  Se requiere hora de inicio
                 </div>
               </div>
 
@@ -116,16 +121,16 @@
                 <label for="horafin">Hora Fin</label>
                 <input id="horafin" type="text" class="hora_final" formControlName="hora_final" [(ngModel)]="falla.hora_final">
                 <div *ngIf="formFalla.controls.hora_final.errors?.required && (formFalla.controls.hora_final?.touched || submitted)" class="error">
-                    Se requiere hora final
+                  Se requiere hora final
                 </div>
               </div>
 
               <div class="input-field col s12 m12 l4 xl4">
-               
-                <input id="horasparo" type="text"  formControlName="tiempo_paro" [(ngModel)]="falla.tiempo_paro" disabled>
+
+                <input id="horasparo" type="text" formControlName="tiempo_paro" [(ngModel)]="falla.tiempo_paro" disabled>
                 <label for="horasparo" class="active">Horas Paro</label>
                 <div *ngIf="formFalla.controls.tiempo_paro.errors?.required && (formFalla.controls.tiempo_paro?.touched || submitted)" class="error">
-                    Se requiere total de  horas de paro
+                  Se requiere total de horas de paro
                 </div>
               </div>
             </div>
@@ -135,14 +140,14 @@
                 <label for="problema">Descripción del Problema</label>
                 <textarea maxlength="250" id="problema" class="materialize-textarea" data-length="250" formControlName="descripcion" [(ngModel)]="falla.descripcion"></textarea>
                 <div *ngIf="formFalla.controls.descripcion.errors?.required && (formFalla.controls.descripcion?.touched || submitted)" class="error">
-                    Se requiere una descripción
+                  Se requiere una descripción
                 </div>
               </div>
             </div>
 
             <div class="row">
               <div class="input-field center">
-                <button class="btn light-green darken-1 waves-effect waves-light" type="submit" name="asignar" >{{ textoBtn }}
+                <button class="btn light-green darken-1 waves-effect waves-light" type="submit" name="asignar">{{ textoBtn }}
                 </button>
               </div>
             </div>
@@ -152,18 +157,22 @@
     </div>
   </div>
   <!-- Inicio solo para pantallas-->
-  <!-- <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
-    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-      <a routerLink="../../fallas" class="btn blue darken-3 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
-        data-tooltip="Ir" (click)="regresar()">
-        Lista falla
-      </a>
+  <div *ngIf="seccion == 'add'">
+    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a routerLink="../../fallas" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
     </div>
-  </div> -->
+  </div>
   <!-- Fin solo para pantallas-->
 </div>
 
-<div class="container" *ngIf="loading">
+<div class="container" *ngIf="loading && seccion == 'add'">
   <div id="loader-wrapper">
     <div id="loader"></div>
     <div class="loader-section section-left"></div>
