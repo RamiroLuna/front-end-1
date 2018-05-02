@@ -135,7 +135,12 @@ export class ListaFallasComponent implements OnInit {
 
     $('#modalEdicion').modal({
       opacity: 0.6,
-      inDuration: 500
+      inDuration: 500,
+      complete : ()=>{
+         
+         this.fallaSeleccionada = 0;
+         this.pintaForm = false;
+      }
     });
 
   }
@@ -248,9 +253,8 @@ export class ListaFallasComponent implements OnInit {
   }
 
   openModalEdicion(id:number){
-    this.fallaSeleccionada = id;
-    this.pintaForm = false;
     this.pintaForm = true;
+    this.fallaSeleccionada = id;
     $('#modalEdicion').modal('open');
   }
 
