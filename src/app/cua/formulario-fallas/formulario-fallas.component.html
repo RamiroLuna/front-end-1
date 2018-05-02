@@ -4,12 +4,12 @@
       <h4 class="color_titulo center-align">{{ titulo }} de falla por turno</h4>
       <div class="section"></div>
       <!-- Solo para dispositivos moviles -->
-      <div class="hide-on-large-only right-align">
+      <!-- <div class="hide-on-large-only right-align">
         <a routerLink="../../fallas" class="tooltipped" data-position="top" data-delay="50" data-tooltip="Regresar" (click)="regresar()">
           Regresar lista de falla
         </a>
       </div>
-      <br>
+      <br> -->
       <!-- Fin solo para dispositivos moviles -->
       <div class="row">
         <form class="col s12 m12 l12 xl12" [formGroup]="formFalla" (ngSubmit)="openModalConfirmacion(falla, seccion)">
@@ -152,14 +152,14 @@
     </div>
   </div>
   <!-- Inicio solo para pantallas-->
-  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+  <!-- <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
       <a routerLink="../../fallas" class="btn blue darken-3 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
         data-tooltip="Ir" (click)="regresar()">
         Lista falla
       </a>
     </div>
-  </div>
+  </div> -->
   <!-- Fin solo para pantallas-->
 </div>
 
@@ -173,7 +173,4 @@
 
 <div class="container" *ngIf="!loading && seccion == 'invalid'">
   <h3 class="color_titulo center-align">Elemento no encontrado</h3>
-  <h6 class="center-align">
-    <a routerLink="../../fallas">Volver a falla disponibles </a>
-  </h6>
 </div>

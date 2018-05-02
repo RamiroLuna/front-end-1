@@ -183,6 +183,42 @@ function DataTableReporte(el): void {
     $('table > select').addClass("browser-default"); //agregar una clase de materializecss de esta forma ya no se pierde el select de numero de registros.
     $('table > select').material_select();
 }
+/**
+ * @function DataTableFallas
+ * @param  {string} el - Elemento DOM. Tabla a la que se le cargará el plugin
+ * @description Es usada para reportes sin opcion de paginacion y exportar a excel
+ */
+function DataTableFallas(el): void {
+    $(el).DataTable({
+        "dom": '<lf<t>ip>',
+        "bPaginate": false,
+        "scrollX": true,
+        "autoWidth": "*",
+        "scrollCollapse": true,
+        "bLengthChange": true,
+        "lengthChange": true,
+        "aLengthMenu": [[10, 25, 50, 75, -1], [10, 25, 50, 75, "Todos"]],
+        "iDisplayLength": 10,
+        "language": {
+            "zeroRecords": "No se encontrarón registros",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            "infoEmpty": "Mostrando 0 a 0 de 0 registros",
+            "infoFiltered": "(filtrado de _MAX_ total registros)",
+            "lengthMenu": "Mostrar _MENU_ regitros",
+            "search": "Filtrar:",
+            "paginate": {
+                "first": "Inicio",
+                "last": "Fin",
+                "next": "Sig.",
+                "previous": "Anterior"
+            }
+        }
+    });
+
+    $('table > select').val('10'); //seleccionar valor por defecto del select
+    $('table > select').addClass("browser-default"); //agregar una clase de materializecss de esta forma ya no se pierde el select de numero de registros.
+    $('table > select').material_select();
+}
 
 /**
  * @function getYears
@@ -268,5 +304,6 @@ export {
     DataTableReporte,
     calculaDiaPorMes,
     getMilisegundosHoras,
+    DataTableFallas,
     contraseniaValida
 }

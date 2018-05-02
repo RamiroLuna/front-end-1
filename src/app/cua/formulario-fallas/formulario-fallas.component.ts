@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FormularioFallasService } from './formulario-fallas.service';
@@ -18,7 +18,7 @@ declare var Materialize: any;
   templateUrl: './formulario-fallas.component.html',
   providers: [FormularioFallasService]
 })
-export class FormularioFallasComponent implements OnInit {
+export class FormularioFallasComponent implements OnInit, OnChanges {
   public loading: boolean;
   public seccion: string;
   public submitted: boolean;
@@ -33,11 +33,13 @@ export class FormularioFallasComponent implements OnInit {
   public grupos: Array<Catalogo>;
   public turnos: Array<Catalogo>;
   public fuentes: Array<Catalogo>;
-  public razones: Array<RazonParo> =[];
-  public todasRazones: Array<RazonParo>=[];
+  public razones: Array<RazonParo> = [];
+  public todasRazones: Array<RazonParo> = [];
   public equipos: Array<Equipo>;
 
-  public id: any; //Id seleccionado
+  /* Se recibe id en caso de editar */
+  @Input() id: number;
+
   constructor(
     private service: FormularioFallasService,
     private auth: AuthService,
@@ -46,6 +48,7 @@ export class FormularioFallasComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+    console.log('reinicia cambios', this.id)
     this.loading = true;
     this.submitted = false;
     this.textoBtn = "";
@@ -59,10 +62,9 @@ export class FormularioFallasComponent implements OnInit {
         this.seccion = 'add';
         this.textoBtn = 'AGREGAR';
         this.titulo = 'Registro';
-      } else if (isValidId(params.get('id'))) {
+      } else if (isValidId(this.id)) {
         this.textoFormulario = "Actualice datos de la falla:";
         this.seccion = 'edit';
-        this.id = params.get('id');
         this.textoBtn = 'EDITAR';
         this.titulo = 'Edición';
       } else {
@@ -71,24 +73,24 @@ export class FormularioFallasComponent implements OnInit {
     });
 
     /*
- * Incia consulta
- */
+   * Incia consulta
+   */
     if (this.seccion != 'invalid') {
 
       if (this.seccion == 'edit') {
         this.service.getFalla(this.auth.getIdUsuario(), this.id).subscribe(result => {
-         console.log(result)
+
           if (result.response.sucessfull) {
             this.lineas = result.data.listLineas || [];
             this.grupos = result.data.listGrupos || [];
             this.turnos = result.data.listTurnos || [];
             this.todasRazones = result.data.listRazonesParo || [];
             this.fuentes = result.data.listFuentesParo || [];
-            this.equipos =  result.data.listEquipos || [];
+            this.equipos = result.data.listEquipos || [];
             this.falla = result.data.fallasDTO || new Falla();
             this.loading = false;
             this.loadFormulario();
-            setTimeout(()=>this.ngAfterViewHttp(),20);
+            setTimeout(() => this.ngAfterViewHttp(), 20);
 
           } else {
             this.seccion = "error";
@@ -101,33 +103,33 @@ export class FormularioFallasComponent implements OnInit {
           this.loading = false;
         });
       } else if (this.seccion == 'add') {
-      
-        this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {    
 
-          if (result.response.sucessfull) {           
+        this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
+
+          if (result.response.sucessfull) {
             this.lineas = result.data.listLineas || [];
             this.grupos = result.data.listGrupos || [];
             this.turnos = result.data.listTurnos || [];
             this.todasRazones = result.data.listRazonesParo || [];
             this.fuentes = result.data.listFuentesParo || [];
-            this.equipos =  result.data.listEquipos || [];
-            this.falla.diaString = result.data.metasDTO.dia_string || ""; 
+            this.equipos = result.data.listEquipos || [];
+            this.falla.diaString = result.data.metasDTO.dia_string || "";
             this.falla.id_turno = result.data.metasDTO.id_turno;
             this.falla.id_grupo = result.data.metasDTO.id_grupo;
             this.falla.id_linea = result.data.metasDTO.id_linea;
             this.falla.id_meta = result.data.metasDTO.id_meta || -1;
-  
+
             this.seccion = "add";
-            this.loading = false;  
+            this.loading = false;
             this.loadFormulario();
-            setTimeout(()=>this.ngAfterViewHttp(),20);
+            setTimeout(() => this.ngAfterViewHttp(), 20);
           } else {
             this.seccion = "error";
             this.loading = false;
             Materialize.toast(result.response.message, 4000, 'red');
           }
         }, error => {
-         
+
           this.seccion = "error";
           this.loading = false;
           Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
@@ -142,27 +144,27 @@ export class FormularioFallasComponent implements OnInit {
 
   loadFormulario(): void {
     this.formFalla = this.fb.group({
-      diaString: new FormControl({ value: this.falla.diaString, disabled: true}, [Validators.required]),
-      id_linea: new FormControl({value: this.falla.id_linea, disabled: true}, [Validators.required]),
-      id_grupo: new FormControl({value: this.falla.id_grupo, disabled: true}, [Validators.required]),
-      id_turno: new FormControl({value: this.falla.id_grupo,disabled: true} , [Validators.required]),
+      diaString: new FormControl({ value: this.falla.diaString, disabled: true }, [Validators.required]),
+      id_linea: new FormControl({ value: this.falla.id_linea, disabled: true }, [Validators.required]),
+      id_grupo: new FormControl({ value: this.falla.id_grupo, disabled: true }, [Validators.required]),
+      id_turno: new FormControl({ value: this.falla.id_grupo, disabled: true }, [Validators.required]),
       id_fuente: new FormControl(this.falla.id_fuente, [Validators.required]),
       id_razon: new FormControl(this.falla.id_razon, [Validators.required]),
       id_equipo: new FormControl(this.falla.id_equipo, [Validators.required]),
-      descripcion_equipo: new FormControl({value: this.falla.descripcion_equipo , disabled:true}),
+      descripcion_equipo: new FormControl({ value: this.falla.descripcion_equipo, disabled: true }),
       hora_inicio: new FormControl(this.falla.hora_inicio, [Validators.required]),
       hora_final: new FormControl(this.falla.hora_final, [Validators.required]),
-      tiempo_paro: new FormControl({ vallue: this.falla.tiempo_paro, disabled:true}, [Validators.required]),
+      tiempo_paro: new FormControl({ vallue: this.falla.tiempo_paro, disabled: true }, [Validators.required]),
       descripcion: new FormControl(this.falla.descripcion, [Validators.required]),
     });
-    
+
   }
 
   /*
    * Carga plugins despues de cargar y mostrar objetos en el DOM
    */
   ngAfterViewHttp(): void {
-    
+
     $('textarea#problema').characterCounter();
     $('.tooltipped').tooltip({ delay: 50 });
     $('.hora_inicio, .hora_final').pickatime({
@@ -174,32 +176,32 @@ export class FormularioFallasComponent implements OnInit {
       canceltext: '', // Text for cancel-button
       autoclose: false, // automatic close timepicker
       ampmclickable: true, // make AM PM clickable
-      aftershow: function(){}, //Function for after opening timepicker
-      afterDone: (Element, Time)=> {
+      aftershow: function () { }, //Function for after opening timepicker
+      afterDone: (Element, Time) => {
         this.falla.hora_inicio = $('.hora_inicio').val();
         this.falla.hora_final = $('.hora_final').val();
 
-        if( this.falla.hora_inicio != "" &&  this.falla.hora_final ){
-          
-         
-          let milisegundos_inicio = getMilisegundosHoras(this.falla.diaString , this.falla.hora_inicio);
-          let milisegundos_fin = getMilisegundosHoras(this.falla.diaString , this.falla.hora_final);
-         
-          if(milisegundos_fin >= milisegundos_inicio){ 
+        if (this.falla.hora_inicio != "" && this.falla.hora_final) {
+
+
+          let milisegundos_inicio = getMilisegundosHoras(this.falla.diaString, this.falla.hora_inicio);
+          let milisegundos_fin = getMilisegundosHoras(this.falla.diaString, this.falla.hora_final);
+
+          if (milisegundos_fin >= milisegundos_inicio) {
             let total = milisegundos_fin - milisegundos_inicio;
 
-            let horas = (((total/1000)/60)/60).toFixed(2);
-           
-            this.falla.tiempo_paro = ""+horas;
-            
-          }else{
+            let horas = (((total / 1000) / 60) / 60).toFixed(2);
+
+            this.falla.tiempo_paro = "" + horas;
+
+          } else {
             this.falla.tiempo_paro = "";
             Materialize.toast('La hora de inicio es mayor a la hora final!', 4000, 'red');
-          
+
           }
-         
-       
-        
+
+
+
         }
 
       }
@@ -215,22 +217,22 @@ export class FormularioFallasComponent implements OnInit {
   }
 
 
-  chnageFuenteParo(idFuenteParo:number):void{
-   this.razones =  this.todasRazones.filter((el)=>el.id_fuente_paro == idFuenteParo);
+  chnageFuenteParo(idFuenteParo: number): void {
+    this.razones = this.todasRazones.filter((el) => el.id_fuente_paro == idFuenteParo);
   }
 
-  changeEquipo(idEquipo:number):void{
-  
-    let el =  this.equipos.filter((el)=>el.id_equipos == idEquipo);
-   
-    if(el.length > 0){
-      this.falla.descripcion_equipo =  el[0].descripcion;
-    }else{
+  changeEquipo(idEquipo: number): void {
+
+    let el = this.equipos.filter((el) => el.id_equipos == idEquipo);
+
+    if (el.length > 0) {
+      this.falla.descripcion_equipo = el[0].descripcion;
+    } else {
       this.falla.descripcion_equipo = "";
     }
 
-   
-   }
+
+  }
 
   openModalConfirmacion(falla: Falla, accion: string, type: string): void {
 
@@ -270,7 +272,7 @@ export class FormularioFallasComponent implements OnInit {
 
           if (this.seccion == 'add') {
             this.service.agregar(this.auth.getIdUsuario(), falla).subscribe(result => {
-             
+
               if (result.response.sucessfull) {
                 Materialize.toast('Se agregó correctamente', 4000, 'green');
                 this.router.navigate(['../../fallas'], { relativeTo: this.route });
@@ -302,6 +304,37 @@ export class FormularioFallasComponent implements OnInit {
 
     } else {
       Materialize.toast('Verifique los datos capturados!', 4000, 'red');
+    }
+
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.seccion == 'edit') {
+      this.id = changes.id.currentValue;
+      this.service.getFalla(this.auth.getIdUsuario(), this.id).subscribe(result => {
+
+        if (result.response.sucessfull) {
+          this.lineas = result.data.listLineas || [];
+          this.grupos = result.data.listGrupos || [];
+          this.turnos = result.data.listTurnos || [];
+          this.todasRazones = result.data.listRazonesParo || [];
+          this.fuentes = result.data.listFuentesParo || [];
+          this.equipos = result.data.listEquipos || [];
+          this.falla = result.data.fallasDTO || new Falla();
+          this.loading = false;
+          this.loadFormulario();
+          setTimeout(() => this.ngAfterViewHttp(), 20);
+
+        } else {
+          this.seccion = "error";
+          Materialize.toast(result.response.message, 4000, 'red');
+          this.loading = false;
+        }
+      }, error => {
+        this.seccion = "error";
+        Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+        this.loading = false;
+      });
     }
 
   }

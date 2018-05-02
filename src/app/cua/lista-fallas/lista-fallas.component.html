@@ -1,7 +1,7 @@
 <div class="container" *ngIf="!loading">
 
   <div class="section"></div>
-  <h4 class="color_titulo center-align">Fallas registradas</h4>
+  <h4 class="color_titulo center-align">Fallas</h4>
   <!-- Solo para dispositivos moviles -->
   <div class="hide-on-large-only right-align">
     <a routerLink="../../opciones" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
@@ -20,7 +20,7 @@
     <form class="col s12 m12 l12 xl12" [formGroup]="formBusqueda" (ngSubmit)="busqueda(paramsBusqueda)">
       <fieldset>
         <legend class="color_titulo">
-          <b>Ingrese los datos para mostrar fallas:</b>
+          <b>Consultar fallas:</b>
         </legend>
         <div class="row">
           <div class="input-field col s12 m12 l6 xl6">
@@ -102,14 +102,14 @@
           <tr *ngIf="fallas.length == 0">
             <td class="center-align" colspan="7">NO HAY FALLAS REGISTRADAS</td>
           </tr>
-          <tr *ngFor="let falla of fallas"  [class]="falla.id_falla">
+          <tr *ngFor="let falla of fallas" [class]="falla.id_falla">
             <td class="center-align">{{falla.diaString}}</td>
             <td class="center-align">{{falla.valor_fuente}}</td>
             <td class="center-align">{{falla.valor_razon}}</td>
             <td class="center-align">{{falla.valor_equipo}}</td>
             <td class="center-align">{{falla.tiempo_paro + ' Hrs'}}</td>
             <td class="center-align">
-              <a class="btn-floating light-green lighten-1" [routerLink]="falla.id_falla">
+              <a class="btn-floating light-green lighten-1" (click)="openModalEdicion(falla.id_falla)">
                 <i class="material-icons">description</i>
               </a>
             </td>
@@ -140,6 +140,13 @@
   </div>
   <!-- Fin solo para pantallas-->
 </div>
+
+<div id="modalEdicion" class="modal">
+  <div class="modal-content" *ngIf="pintaForm">
+    <app-formulario-fallas [id]="fallaSeleccionada"></app-formulario-fallas>
+  </div>
+</div>
+
 <div class="container" *ngIf="loading">
   <div id="loader-wrapper">
     <div id="loader"></div>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ListaFallasService } from './lista-fallas.service';
 import swal from 'sweetalert2';
-import { DataTable , deleteItemArray} from '../../utils';
+import { DataTableFallas , deleteItemArray} from '../../utils';
 import { Falla } from '../../models/falla';
 import { Linea } from '../../models/linea';
 import { Catalogo } from '../../models/catalogo';
@@ -39,6 +39,7 @@ export class ListaFallasComponent implements OnInit {
   public loading: boolean;
   public submitted: boolean;
   public bVistaPre: boolean;
+  public pintaForm:boolean;
   public formBusqueda: FormGroup;
   public paramsBusqueda: any;
   public status: string;
@@ -46,6 +47,7 @@ export class ListaFallasComponent implements OnInit {
 
 
   public fallas: Array<Falla> = [];
+  public fallaSeleccionada:number;
   /* Catalogos requeridos */
   public lineas: Array<Linea>;
   public grupos: Array<Catalogo>;
@@ -63,6 +65,8 @@ export class ListaFallasComponent implements OnInit {
     this.bVistaPre = false;
     this.status = "inactive";
     this.paramsBusqueda = {};
+    this.fallaSeleccionada = 0;
+    this.pintaForm = false;
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
@@ -129,6 +133,8 @@ export class ListaFallasComponent implements OnInit {
       }
     });
 
+    $('#modalEdicion').modal();
+
   }
 
   agregar() {
@@ -160,7 +166,7 @@ export class ListaFallasComponent implements OnInit {
           setTimeout(() => { 
             this.status = 'active';
             if(this.fallas.length > 0){
-              DataTable('#tabla');
+              DataTableFallas('#tabla');
             }
           }, 400)
 
@@ -236,6 +242,13 @@ export class ListaFallasComponent implements OnInit {
       }
     })
 
+  }
+
+  openModalEdicion(id:number){
+    this.fallaSeleccionada = id;
+    this.pintaForm = false;
+    this.pintaForm = true;
+    $('#modalEdicion').modal('open');
   }
 
 
