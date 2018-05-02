@@ -35,9 +35,7 @@
             </div>
             <div class="row">
               <label>Perfil</label>
-              <select materialize="material_select" [materializeSelectOptions]="usuario?.id_perfiles" multiple disabled>
-                <option *ngFor="let perfil of perfiles" [value]="perfil.id">{{perfil.valor}}</option>
-              </select>
+              <input type="text"  [value]="descripcion_perfiles" disabled>
             </div>
           </form>
         </div>

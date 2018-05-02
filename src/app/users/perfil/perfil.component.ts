@@ -22,9 +22,10 @@ export class PerfilComponent implements OnInit {
   public usuario: User;
   public mensaje_error: string;
   public loading: boolean;
-  public perfiles: Array<Catalogo> ;
+  public perfiles: Array<Catalogo>;
   public grupos: Array<Catalogo>;
   public lineas: Array<Linea>;
+  public descripcion_perfiles: string;
 
 
 
@@ -41,22 +42,29 @@ export class PerfilComponent implements OnInit {
     this.lineas = [];
     this.grupos = [];
     this.perfiles = [];
+    this.descripcion_perfiles = "";
 
     this.route.params.subscribe(params => {
       if (this.auth.getIdUsuario() != null) {
         this.service.miPerfil(this.auth.getIdUsuario()).subscribe(result => {
-          console.log('result', result)
+
           if (result.response.sucessfull) {
-           
-            this.lineas =  result.data.listLineas || [];
-            this.grupos =  result.data.listGrupos || [] ;
+
+            this.lineas = result.data.listLineas || [];
+            this.grupos = result.data.listGrupos || [];
             this.perfiles = result.data.ListPerfiles || [];
             this.usuario = result.data.userETAD || new User();
             let perfiles = result.data.userETAD.perfiles.split(",").map(function (item) {
               return parseInt(item);
             });
 
-            this.usuario.id_perfiles = perfiles;            
+            perfiles.forEach((element, index) => {
+              if (index > 0) this.descripcion_perfiles += ", ";
+              let descripcion = this.perfiles.filter(el => el.id == element)[0].valor;
+              this.descripcion_perfiles += descripcion;
+            });
+
+            this.usuario.id_perfiles = perfiles;
             this.loading = false;
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
