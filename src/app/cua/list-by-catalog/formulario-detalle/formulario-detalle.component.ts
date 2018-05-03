@@ -2,8 +2,6 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Catalogo } from '../../../models/catalogo';
-import { Linea } from '../../../models/linea';
-import { EquipoAmut } from '../../../models/equipo-amut';
 import { isValidId } from '../../../utils';
 import { AuthService } from '../../../auth/auth.service';
 import { FormularioDetalleServiceService } from './formulario-detalle-service.service';
@@ -124,19 +122,6 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
             this.type_Catalogo = 'generico';
             this.itemCatalogo = new Catalogo();
             break;
-          case 'lineas':
-            this.nombre_catalogo = 'Lineas CUA´s';
-            this.nombre_tabla = 'pet_cat_lineas';
-            this.type_Catalogo = 'lineas';
-            this.itemCatalogo = new Linea();
-            this.loadDataDependsLineas();
-            break;
-          case 'equipos_amut':
-            this.nombre_catalogo = 'Equipos Amut';
-            this.nombre_tabla = 'pet_cat_nombre_equipo_amut';
-            this.type_Catalogo = 'equipos_amut';
-            this.itemCatalogo = new EquipoAmut();
-            break;
           default:
             this.isCatalog = false;
         }
@@ -168,6 +153,7 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
 
       case 'generico':
         this.formCatalogs = this.fb.group({
+          valor: new FormControl(this.itemCatalogo.valor, [Validators.required]),
           descripcion: new FormControl(this.itemCatalogo.descripcion, [Validators.required])
         });
         break;
@@ -384,7 +370,7 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
       })
 
     } else {
-      Materialize.toast('Se encontrarón errores!', 4000, 'red');
+      Materialize.toast('Verifique los datos capturados!', 4000, 'red');
     }
 
   }

@@ -22,6 +22,7 @@ export class FormularioDetalleServiceService {
     const body = new HttpParams()
       .set('action', 'insertNewCatalogo')
       .set('tableName', tableName)
+      .set('valor', catalogo.valor)
       .set('descripcion', "" + catalogo.descripcion)
       .set('id_usuario', "" + id_usuario);
     return this.http.post(this.URL, body);

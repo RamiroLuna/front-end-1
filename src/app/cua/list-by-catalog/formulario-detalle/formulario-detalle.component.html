@@ -10,6 +10,17 @@
           <form class="col s12" [formGroup]="formCatalogs" (ngSubmit)="openModalConfirmacion(itemCatalogo, seccion, type_Catalogo)"
             autocomplete="off">
             <div class="row">
+                <div class="input-field col s12">
+                  <input placeholder="Valor" id="valor" type="text" formControlName='valor' [(ngModel)]='itemCatalogo.valor'>
+                  <label for="valor" class="active">Valor</label>
+                  <div *ngIf="formCatalogs.controls.valor.errors?.required && (formCatalogs.controls.valor?.touched || submitted)"
+                    class="error">
+                    El valor es requerido
+                  </div>
+                </div>
+              </div>
+
+            <div class="row">
               <div class="input-field col s12">
                 <input placeholder="Descripción" id="descripcion" type="text" formControlName='descripcion' [(ngModel)]='itemCatalogo.descripcion'>
                 <label for="descripcion" class="active">Descripción</label>

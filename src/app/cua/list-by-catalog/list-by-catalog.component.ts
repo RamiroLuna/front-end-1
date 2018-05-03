@@ -22,7 +22,7 @@ export class ListByCatalogComponent implements OnInit {
   public mensajeModal: string;
   public items: Array<any>;
   public type_Catalogo: string;
-  public loading:boolean;
+  public loading: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,71 +36,32 @@ export class ListByCatalogComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.tipo_catalogo = params.get('name');
       switch (this.tipo_catalogo) {
-        case 'perdidas':
-          this.nombre_catalogo = 'Perdida';
-          this.nombre_tabla = 'pet_cat_perdida';
+        case 'fuentes':
+          this.nombre_catalogo = 'Fuentes';
+          this.nombre_tabla = 'pet_cat_fuentes_paro';
           this.type_Catalogo = 'generico';
           break;
-        case 'planeado':
-          this.nombre_catalogo = 'Paro planeado';
-          this.nombre_tabla = 'pet_cat_planeado';
+        case 'tipo_productos':
+          this.nombre_catalogo = 'Tipos de producto';
+          this.nombre_tabla = 'pet_cat_tipo_producto';
           this.type_Catalogo = 'generico';
           break;
-        case 'no_planeado':
-          this.nombre_catalogo = 'Paro no planeado';
-          this.nombre_tabla = 'pet_cat_noplaneado';
-          this.type_Catalogo = 'generico';
+        case 'equipos':
+          this.nombre_catalogo = 'Equipos';
+          this.nombre_tabla = 'pet_cat_equipos';
+          this.type_Catalogo = 'equipos';
           break;
-        case 'reduccion':
-          this.nombre_catalogo = 'Reducción';
-          this.nombre_tabla = 'pet_cat_reduc_velocidad';
-          this.type_Catalogo = 'generico';
+        case 'productos':
+          this.nombre_catalogo = 'Productos';
+          this.nombre_tabla = 'pet_cat_producto';
+          this.type_Catalogo = 'productos';
           break;
-        case 'calidad':
-          this.nombre_catalogo = 'Calidad';
-          this.nombre_tabla = 'pet_cat_calidad';
-          this.type_Catalogo = 'generico';
+        case 'razones':
+          this.nombre_catalogo = 'Razones de paro';
+          this.nombre_tabla = 'pet_cat_razon_paro';
+          this.type_Catalogo = 'razones';
           break;
-        case 'extrusores':
-          this.nombre_catalogo = 'Equipos extrusores';
-          this.nombre_tabla = 'pet_cat_equipos_extrusores_bulher';
-          this.type_Catalogo = 'generico';
-          break;
-        case 'ssp':
-          this.nombre_catalogo = 'Equipos SSP';
-          this.nombre_tabla = 'pet_cat_equipos_ssp';
-          this.type_Catalogo = 'generico';
-          break;
-        case 'grupo-linea':
-          this.nombre_catalogo = 'Grupos de linea';
-          this.nombre_tabla = 'pet_cat_gpo_linea';
-          this.type_Catalogo = 'generico';
-          break;
-        case 'grupos':
-          this.nombre_catalogo = 'Grupos';
-          this.nombre_tabla = 'pet_cat_grupos';
-          this.type_Catalogo = 'generico';
-          break;
-        case 'perfiles':
-          this.nombre_catalogo = 'Perfiles';
-          this.nombre_tabla = 'pet_cat_perfiles';
-          this.type_Catalogo = 'generico';
-          break;
-        case 'turnos':
-          this.nombre_catalogo = 'Turno';
-          this.nombre_tabla = 'pet_cat_turnos';
-          this.type_Catalogo = 'generico';
-          break;
-        case 'lineas':
-          this.nombre_catalogo = 'Lineas CUA´s';
-          this.nombre_tabla = 'pet_cat_lineas';
-          this.type_Catalogo = 'lineas';
-          break;
-        case 'equipos_amut':
-          this.nombre_catalogo = 'Equipos Amut';
-          this.nombre_tabla = 'pet_cat_nombre_equipo_amut';
-          this.type_Catalogo = 'equipos_amut';
-          break;
+
         default:
           this.isCatalog = false;
       }
@@ -112,7 +73,7 @@ export class ListByCatalogComponent implements OnInit {
         if (result.response.sucessfull) {
           this.items = result.data.listCatalogosDTO;
           this.loading = false;
-          setTimeout(() => {this.ngAfterViewHttp();},200)
+          setTimeout(() => { this.ngAfterViewHttp(); }, 200)
         } else {
           Materialize.toast(result.response.message, 4000, 'red');
           this.loading = false;
@@ -121,28 +82,45 @@ export class ListByCatalogComponent implements OnInit {
         Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
         this.loading = false;
       });
-    } else if (this.type_Catalogo == 'lineas') {
-
-      this.service.getElementsLineas(this.auth.getIdUsuario(), this.nombre_tabla).subscribe(result => {
-        if (result.response.sucessfull) {
-          this.items = result.data.listLineasDTO;
-          this.loading = false;
-          setTimeout(() => {this.ngAfterViewHttp();},200)
-        } else {
-          Materialize.toast(result.response.message, 4000, 'red');
-          this.loading = false;
-        }
-      }, error => {
-        Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-        this.loading = false;
-      });
-
-    } else if (this.type_Catalogo == 'equipos_amut') {
+    } else if (this.type_Catalogo == 'equipos') {
       this.service.getElementsEquipos(this.auth.getIdUsuario()).subscribe(result => {
+
         if (result.response.sucessfull) {
-          this.items = result.data.listEquipoAmut;
+          this.items = result.data.listEquipos;
           this.loading = false;
-          setTimeout(() => {this.ngAfterViewHttp();},200)
+          setTimeout(() => { this.ngAfterViewHttp(); }, 200)
+        } else {
+          Materialize.toast(result.response.message, 4000, 'red');
+          this.loading = false;
+        }
+      }, error => {
+        Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+        this.loading = false;
+      });
+
+    } else if (this.type_Catalogo == 'productos') {
+      this.service.getElementsProductos(this.auth.getIdUsuario()).subscribe(result => {
+
+        if (result.response.sucessfull) {
+          this.items = [];
+          this.loading = false;
+          setTimeout(() => { this.ngAfterViewHttp(); }, 200)
+        } else {
+          Materialize.toast(result.response.message, 4000, 'red');
+          this.loading = false;
+        }
+      }, error => {
+        Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+        this.loading = false;
+      });
+
+    } else if (this.type_Catalogo == 'razones') {
+      this.service.getElementsRazones(this.auth.getIdUsuario()).subscribe(result => {
+
+        if (result.response.sucessfull) {
+          this.items = [];
+          this.loading = false;
+          setTimeout(() => { this.ngAfterViewHttp(); }, 200)
         } else {
           Materialize.toast(result.response.message, 4000, 'red');
           this.loading = false;
@@ -158,9 +136,9 @@ export class ListByCatalogComponent implements OnInit {
 
   }
 
-   /*
-   * Carga plugins despues de cargar y mostrar objetos en el DOM
-   */
+  /*
+  * Carga plugins despues de cargar y mostrar objetos en el DOM
+  */
   ngAfterViewHttp(): void {
     $('.tooltipped').tooltip({ delay: 50 });
   }
@@ -201,7 +179,7 @@ export class ListByCatalogComponent implements OnInit {
     swal({
       title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
       type: 'question',
-      html: '<p style="color: #303f9f "> Detalle: <b>' + (item.descripcion || item.nombre_equipo) + ' </b></p>',
+      html: '<p style="color: #303f9f "> Detalle: <b>' + (item.valor || item.nombre_equipo) + ' </b></p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
@@ -233,29 +211,11 @@ export class ListByCatalogComponent implements OnInit {
               }, error => {
                 Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
               });
-            } else if (accion == 'eliminar') {
-              this.service.delete(
-                this.auth.getIdUsuario(),
-                this.nombre_tabla,
-                item.id
-              ).subscribe(result => {
-                if (result.response.sucessfull) {
-                  deleteItemArray(this.items, item.id, 'id');
-                  Materialize.toast('Se eliminó correctamente ', 4000, 'green');
-                } else {
-                  Materialize.toast(result.response.message, 4000, 'red');
-                }
-              }, error => {
-                Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-              });
             }
             break;
-          /*
-           * Codigo para acciones de catalogo de lineas
-           */
-          case 'lineas':
+          case 'equipos':
             if (accion == 'activar') {
-              this.service.updateLinea(
+              this.service.updateEquipos(
                 this.auth.getIdUsuario(),
                 item
               ).subscribe(result => {
@@ -267,26 +227,11 @@ export class ListByCatalogComponent implements OnInit {
               }, error => {
                 Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
               });
-            } else if (accion == 'eliminar') {
-              this.service.deleteLinea(
-                this.auth.getIdUsuario(),
-                item.id_linea
-              ).subscribe(result => {
-                if (result.response.sucessfull) {
-                  deleteItemArray(this.items, item.id_linea, 'id_linea');
-                  Materialize.toast('Se eliminó correctamente ', 4000, 'green');
-                } else {
-                  Materialize.toast(result.response.message, 4000, 'red');
-                }
-              }, error => {
-                Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-              });
             }
             break;
-
-          case 'equipos_amut':
+          case 'productos':
             if (accion == 'activar') {
-              this.service.updateEquipoAmut(
+              this.service.updateProducto(
                 this.auth.getIdUsuario(),
                 item
               ).subscribe(result => {
@@ -298,14 +243,16 @@ export class ListByCatalogComponent implements OnInit {
               }, error => {
                 Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
               });
-            } else if (accion == 'eliminar') {
-              this.service.deleteEquipoAmut(
+            }
+            break;
+          case 'razones':
+            if (accion == 'activar') {
+              this.service.updateRazones(
                 this.auth.getIdUsuario(),
-                item.id_equipo_amut
+                item
               ).subscribe(result => {
                 if (result.response.sucessfull) {
-                  deleteItemArray(this.items, item.id_equipo_amut, 'id_equipo_amut');
-                  Materialize.toast('Se eliminó correctamente ', 4000, 'green');
+                  Materialize.toast('Actualización completa', 4000, 'green');
                 } else {
                   Materialize.toast(result.response.message, 4000, 'red');
                 }

@@ -21,16 +21,17 @@
     <thead>
       <tr>
         <th>Id</th>
-        <th>Nombre</th>
+        <th>Valor</th>
+        <th>Descripción</th>
         <th>Activo</th>
         <th>Actualizar</th>
-        <th>Eliminar</th>
       </tr>
     </thead>
 
     <tbody>
       <tr *ngFor="let item of items">
         <td>{{ item.id}}</td>
+        <td>{{ item.valor}}</td>
         <td>{{ item.descripcion }}</td>
         <td>
           <div class="switch">
@@ -47,95 +48,41 @@
             <i class="material-icons">edit</i>
           </a>
         </td>
-        <td>
-          <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(item,'eliminar','generico')">
-            <i class="material-icons">delete</i>
-          </a>
-        </td>
       </tr>
     </tbody>
   </table>
   <!-- Fin tabla para catalogos genericos -->
 
-  <!-- tabla para catalogos lineas -->
-  <table class="display" class="striped" cellspacing="0" id="itemsCatalogos" *ngIf="type_Catalogo == 'lineas'">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Nombre</th>
-        <th>Grupo Linea</th>
-        <th>Activo</th>
-        <th>Actualizar</th>
-        <th>Eliminar</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let item of items">
-        <td>{{ item.id_linea}}</td>
-        <td>{{ item.descripcion }}</td>
-        <td>{{ item.descripcion_gpo_linea }}</td>
-        <td>
-          <div class="switch">
-            <label>
-              No
-              <input type="checkbox" [checked]="item.activo == 1" (change)="openModalConfirmacion(item, 'activar', 'lineas' ,$event )">
-              <span class="lever"></span>
-              Si
-            </label>
-          </div>
-        </td>
-        <td>
-          <a class="btn-floating  light-green lighten-1" [routerLink]="['../formulario/'+ tipo_catalogo + '/' + item.id_linea]">
-            <i class="material-icons">edit</i>
-          </a>
-        </td>
-        <td>
-          <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(item,'eliminar','lineas')">
-            <i class="material-icons">delete</i>
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <!-- Fin tabla para catalogos lineas -->
-
   <!-- tabla para catalogos equipos -->
-  <table class="display" class="striped" cellspacing="0" id="itemsCatalogos" *ngIf="type_Catalogo == 'equipos_amut'">
+  <table class="display" class="striped" cellspacing="0" id="itemsCatalogos" *ngIf="type_Catalogo == 'equipos'">
     <thead>
       <tr>
-        <th>Id</th>
-        <th>Clave de equipo</th>
-        <th>Nombre de equipo</th>
-        <th>Activo</th>
-        <th>Actualizar</th>
-        <th>Eliminar</th>
+        <th width="10%">Id</th>
+        <th width="20%">Clave de equipo</th>
+        <th width="45%">Descripción de equipo</th>
+        <th width="15%">Activo</th>
+        <th width="10%">Actualizar</th>
       </tr>
     </thead>
 
     <tbody>
       <tr *ngFor="let item of items">
-        <td>{{ item.id_equipo_amut}}</td>
-        <td>{{ item.clave_equipo }}</td>
-        <td>{{ item.nombre_equipo }}</td>
+        <td>{{ item.id_equipos }}</td>
+        <td>{{ item.valor }}</td>
+        <td>{{ item.descripcion }}</td>
         <td>
           <div class="switch">
             <label>
               No
-              <input type="checkbox" [checked]="item.activo == 1" (change)="openModalConfirmacion(item, 'activar', 'equipos_amut' ,$event )">
+              <input type="checkbox" [checked]="item.activo == 1" (change)="openModalConfirmacion(item, 'activar', 'equipos' ,$event )">
               <span class="lever"></span>
               Si
             </label>
           </div>
         </td>
         <td>
-          <a class="btn-floating  light-green lighten-1" [routerLink]="['../formulario/'+ tipo_catalogo + '/' + item.id_equipo_amut]">
+          <a class="btn-floating  light-green lighten-1" [routerLink]="['../formulario/'+ tipo_catalogo + '/' + item.id_equipos]">
             <i class="material-icons">edit</i>
-          </a>
-        </td>
-        <td>
-          <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(item,'eliminar','equipos_amut')">
-            <i class="material-icons">delete</i>
           </a>
         </td>
       </tr>
@@ -143,10 +90,84 @@
   </table>
   <!-- Fin tabla para catalogos equipos -->
 
+  <!-- tabla para catalogos productos  -->
+  <table class="display" class="striped" cellspacing="0" id="itemsCatalogos" *ngIf="type_Catalogo == 'productos'">
+    <thead>
+      <tr>
+        <th width="10%">Id</th>
+        <th width="20%">Clave de equipo</th>
+        <th width="45%">Descripción de equipo</th>
+        <th width="15%">Activo</th>
+        <th width="10%">Actualizar</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>{{ item.id_equipos }}</td>
+        <td>{{ item.valor }}</td>
+        <td>{{ item.descripcion }}</td>
+        <td>
+          <div class="switch">
+            <label>
+              No
+              <input type="checkbox" [checked]="item.activo == 1" (change)="openModalConfirmacion(item, 'activar', 'equipos' ,$event )">
+              <span class="lever"></span>
+              Si
+            </label>
+          </div>
+        </td>
+        <td>
+          <a class="btn-floating  light-green lighten-1" [routerLink]="['../formulario/'+ tipo_catalogo + '/' + item.id_equipos]">
+            <i class="material-icons">edit</i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Fin tabla para catalogos productos -->
+
+  <!-- tabla para catalogos razones  -->
+  <table class="display" class="striped" cellspacing="0" id="itemsCatalogos" *ngIf="type_Catalogo == 'razones'">
+    <thead>
+      <tr>
+        <th width="10%">Id</th>
+        <th width="20%">Clave de equipo</th>
+        <th width="45%">Descripción de equipo</th>
+        <th width="15%">Activo</th>
+        <th width="10%">Actualizar</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>{{ item.id_equipos }}</td>
+        <td>{{ item.valor }}</td>
+        <td>{{ item.descripcion }}</td>
+        <td>
+          <div class="switch">
+            <label>
+              No
+              <input type="checkbox" [checked]="item.activo == 1" (change)="openModalConfirmacion(item, 'activar', 'equipos' ,$event )">
+              <span class="lever"></span>
+              Si
+            </label>
+          </div>
+        </td>
+        <td>
+          <a class="btn-floating  light-green lighten-1" [routerLink]="['../formulario/'+ tipo_catalogo + '/' + item.id_equipos]">
+            <i class="material-icons">edit</i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Fin tabla para catalogos razones -->
+
   <!-- Inicio solo para pantallas-->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-      <a [routerLink]="['../'+ tipo_catalogo + '/formulario/nuevo']"  class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped"
+      <a [routerLink]="['../'+ tipo_catalogo + '/formulario/nuevo']" class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped"
         data-position="top" data-delay="50" data-tooltip="Agregar" (click)="agregar()">
         <i class="material-icons">add</i>
       </a>
@@ -170,9 +191,9 @@
 </div>
 
 <div class="container" *ngIf="loading">
-    <div id="loader-wrapper">
-      <div id="loader"></div>
-      <div class="loader-section section-left"></div>
-      <div class="loader-section section-right"></div>
-    </div>
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
 </div>
