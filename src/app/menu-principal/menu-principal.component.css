@@ -1,3 +1,19 @@
 /* .kpi{
     background-image: url("assets/icono_kpi.png");
 } */
+
+.grises{
+    filter: url('#grayscale'); /* Versión SVG para IE10, Chrome 17, FF3.5, Safari 5.2 and Opera 11.6 */
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%); /* Para cuando es estándar funcione en todos */
+    filter: Gray(); /* IE4-8 and 9 */
+}
+
+.not-active {
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+}

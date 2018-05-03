@@ -6,39 +6,54 @@
   </div>
   <div class="section"></div>
   <div class="row color_titulo">
-    <div class="col s12 m12 l4 xl4" *ngIf="menu_cua">
-      <div class="card center">
-        <div class="card-content kpi">
-          <span class="card-title"><b>CUA</b></span>
-          <img src="assets/icono_cua.png">
-          <p class="center-align">Control único de activos</p>
-        </div>
-        <div class="card-action">
-          <a routerLink="cua/opciones">Ir a opciones</a>
-        </div>
-      </div>
-    </div>
-    <div class="col s12 m12 l4 xl4" *ngIf="menu_kpi">
-      <div class="card center">
-        <div class="card-content">
-          <span class="card-title"><b>KPI</b></span>
-          <img src="assets/icono_kpi.png">
-          <p class="center-align">Indicador de desempeño</p>
-        </div>
-        <div class="card-action">
-          <a routerLink="">Ir a opciones</a>
+    <div [ngClass]="{'grises': !menu_cua}">
+      <div class="col s12 m12 l4 xl4">
+        <div class="card center">
+          <div class="card-content kpi">
+            <span class="card-title">
+              <b>CUA</b>
+            </span>
+            <img src="assets/icono_cua.png">
+            <p class="center-align">Control único de activos</p>
+          </div>
+          <div class="card-action">
+            <div *ngIf="!menu_cua" [ngClass]="{'not-active': menu_cua}">IR A OPCIONES</div>
+            <a *ngIf="menu_cua" routerLink="cua/opciones">Ir a opciones</a>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col s12 m12 l4 xl4" *ngIf="menu_ishikawa" >
-      <div class="card center">
-        <div class="card-content">
-          <span class="card-title"><b>ISHIKAWA</b></span>
-          <img src="assets/icono_ishi.png">
-          <p class="center-align">Método  de Ishikawa</p>
+    <div class="col s12 m12 l4 xl4">
+      <div [ngClass]="{'grises': !menu_kpi}">
+        <div class="card center">
+          <div class="card-content">
+            <span class="card-title">
+              <b>KPI</b>
+            </span>
+            <img src="assets/icono_kpi.png">
+            <p class="center-align">Indicador de desempeño</p>
+          </div>
+          <div class="card-action">
+            <div *ngIf="!menu_kpi" [ngClass]="{'not-active': menu_kpi}">IR A OPCIONES</div>
+            <a *ngIf="menu_kpi" routerLink="cua/opciones">Ir a opciones</a>
+          </div>
         </div>
-        <div class="card-action">
-          <a routerLink="">Ir a opciones</a>
+      </div>
+    </div>
+    <div class="col s12 m12 l4 xl4">
+      <div [ngClass]="{'grises': !menu_ishikawa}">
+        <div class="card center">
+          <div class="card-content">
+            <span class="card-title">
+              <b>ISHIKAWA</b>
+            </span>
+            <img src="assets/icono_ishi.png">
+            <p class="center-align">Método de Ishikawa</p>
+          </div>
+          <div class="card-action">
+            <div *ngIf="!menu_ishikawa" [ngClass]="{'not-active': menu_ishikawa}">IR A OPCIONES</div>
+            <a *ngIf="menu_ishikawa" routerLink="cua/opciones">Ir a opciones</a>
+          </div>
         </div>
       </div>
     </div>
