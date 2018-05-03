@@ -21,17 +21,26 @@
   <li>
     <div class="divider"></div>
   </li>
-  <li *ngIf="menu_cua">
-    <a class="waves-effect" routerLink="cua/opciones">
+  <li>
+    <a *ngIf="menu_cua" class="waves-effect" routerLink="cua/opciones">
       <i class="material-icons">class</i>CUA</a>
+    <a *ngIf="!menu_cua" style="color:#bdbdbd;">
+      <i class="material-icons" style="color:#bdbdbd">class</i>CUA
+    </a>
   </li>
-  <li *ngIf="menu_kpi">
-    <a class="waves-effect" routerLink="">
+  <li>
+    <a *ngIf="menu_kpi" class="waves-effect" routerLink="">
       <i class="material-icons">trending_up</i>KPI</a>
+      <a *ngIf="!menu_kpi" style="color:#bdbdbd">
+          <i class="material-icons" style="color:#bdbdbd">trending_up</i>KPI
+      </a>
   </li>
-  <li *ngIf="menu_ishikawa">
-    <a class="waves-effect" routerLink="">
+  <li>
+    <a *ngIf="menu_ishikawa" class="waves-effect" routerLink="">
       <i class="material-icons">polymer</i>Ishikawa</a>
+      <a *ngIf="!menu_ishikawa" style="color:#bdbdbd">
+          <i class="material-icons" style="color:#bdbdbd">polymer</i>Ishikawa
+      </a>
   </li>
   <li *ngIf="menu_generales">
     <ul class="collapsible collapsible-accordion">
@@ -40,11 +49,11 @@
           <i class="material-icons" style="padding-left: 15px">keyboard_arrow_down</i>&ensp;&ensp;Usuarios</a>
         <div class="collapsible-body  light-green lighten-5">
           <ul>
-            <li>
+            <li *ngIf="consultaSonarh">
               <a class="waves-effect" routerLink="usuarios/sonarh">
                 <i class="material-icons" style="padding-left: 20px">supervisor_account</i>SONARH</a>
             </li>
-            <li>
+            <li *ngIf="consultaEtad">
               <a class="waves-effect" routerLink="usuarios/etad">
                 <i class="material-icons" style="padding-left: 20px">supervisor_account</i>ETAD</a>
             </li>
@@ -53,26 +62,6 @@
       </li>
     </ul>
   </li>
-  <!-- <ul class="collapsible collapsible-accordion">
-      <li>
-        <a class="collapsible-header">
-          <i class="material-icons" style="padding-left: 15px">keyboard_arrow_down</i>&ensp;&ensp;Informes</a>
-        <div class="collapsible-body  light-green lighten-5">
-          <ul>
-            <li>
-              <a class="waves-effect">
-                <i class="material-icons" style="padding-left: 20px">assignment</i>Reportes</a>
-            </li>
-            <li>
-              <a class="waves-effect">
-                <i class="material-icons" style="padding-left: 20px">insert_chart</i>Graficas</a>
-            </li>
-          </ul>
-        </div>
-      </li>
-    </ul> -->
-
-  <!-- Fin menu para el gerente -->
   <li>
     <a class="waves-effect" href="#" (click)="logout($event)">
       <i class="material-icons">power_settings_new</i>Cerrar sesión</a>

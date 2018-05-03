@@ -17,12 +17,16 @@ export class MenuComponent implements OnInit, AfterViewInit {
   public menu_kpi: boolean;
   public menu_ishikawa: boolean;
   public menu_generales: boolean;
+  public consultaSonarh: boolean;
+  public consultaEtad: boolean;
   public id_usuario: number;
   public fecha:string;
 
   constructor(private router: Router, private auth: AuthService) { }
 
   ngOnInit() {
+    this.consultaSonarh =  false;
+    this.consultaEtad = false;
     this.menu_cua= false;
     this.menu_kpi= false;
     this.menu_ishikawa= false;
@@ -33,8 +37,20 @@ export class MenuComponent implements OnInit, AfterViewInit {
     this.menu_cua = !(this.auth.getRolesCUA().split(",")[0] == "0");
     this.menu_kpi = !(this.auth.getRolesKpi().split(",")[0] == "0");
     this.menu_ishikawa = !(this.auth.getRolesIshikawa().split(",")[0] == "0");
-    this.menu_generales = !(this.auth.getRolesGenerales().split(",")[0] == "0");
+    
+    let tmpRolesGral = this.auth.getRolesGenerales().split(",").map(el=>parseInt(el));
 
+    /* 10 al rol de consulta de usuario */
+    if(tmpRolesGral.includes(10)){
+      this.menu_generales = true;
+      this.consultaSonarh = true;
+    }
+
+    /* 14 al rol de consulta de usuario */
+    if(tmpRolesGral.includes(14)){
+      this.menu_generales = true;
+      this.consultaEtad = true;
+    }
    
     this.id_usuario = this.auth.getIdUsuario();
     try {
