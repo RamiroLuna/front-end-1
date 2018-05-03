@@ -143,7 +143,7 @@
 
 <div id="modalEdicion" class="modal" style="width: calc(75%)">
   <div class="modal-content" *ngIf="pintaForm">
-    <app-formulario-fallas [id]="fallaSeleccionada"></app-formulario-fallas>
+    <app-formulario-fallas [id]="fallaSeleccionada" (failUpdate)="refreshDataTable($event)"></app-formulario-fallas>
   </div>
 </div>
 

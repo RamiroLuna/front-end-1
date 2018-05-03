@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FormularioFallasService } from './formulario-fallas.service';
@@ -38,6 +38,7 @@ export class FormularioFallasComponent implements OnInit, OnChanges {
 
   /* Se recibe id en caso de editar */
   @Input() id: number;
+  @Output() failUpdate = new EventEmitter();
 
   constructor(
     private service: FormularioFallasService,
@@ -282,6 +283,7 @@ export class FormularioFallasComponent implements OnInit, OnChanges {
             this.service.update(this.auth.getIdUsuario(), falla).subscribe(
               result => {
                 if (result.response.sucessfull) {
+                  this.failUpdate.emit({falla:falla});
                   Materialize.toast('Actualización completa', 4000, 'green');
                 } else {
                   Materialize.toast(result.response.message, 4000, 'red');

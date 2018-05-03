@@ -41,4 +41,18 @@ export class AuthService {
   public getId_Linea():number{
     return jwt_decode(this.getToken()).id_linea || -1;
   }
+
+/**
+ * @function permissionEdit
+ * @param  {number} idPerfil -  id del perfil que tiene permiso a tener editado el campo
+ * @return  {boolean} 
+ * @description funcion utilizada para recuperar los perfiles que vienen en el token y verifica 
+ * si dentro de los perfiles viene el que tiene permiso para editar
+ */
+  public permissionEdit(idPerfil:number):boolean{
+    let perfiles:string = jwt_decode(this.getToken()).perfiles || "-1";
+    let idPerfiles = perfiles.split(",").map(el=>parseInt(el));
+    return (idPerfiles.indexOf(idPerfil) == -1);
+  }
+
 }

@@ -59,7 +59,7 @@ export class ListaFallasComponent implements OnInit {
     private fb: FormBuilder ) { }
 
   ngOnInit() {
-
+    
     this.loading = true;
     this.submitted = false;
     this.bVistaPre = false;
@@ -67,6 +67,11 @@ export class ListaFallasComponent implements OnInit {
     this.paramsBusqueda = {};
     this.fallaSeleccionada = 0;
     this.pintaForm = false;
+
+
+    this.paramsBusqueda.id_grupo = this.auth.getId_Grupo();
+    this.paramsBusqueda.id_linea = this.auth.getId_Linea(); 
+    
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
@@ -100,8 +105,8 @@ export class ListaFallasComponent implements OnInit {
     this.formBusqueda = this.fb.group({
       inicio: new FormControl({ value: this.paramsBusqueda.inicio, disabled: false }, [Validators.required]),
       fin: new FormControl({ value: this.paramsBusqueda.fin, disabled: false }, [Validators.required]),
-      id_linea: new FormControl({ value: this.paramsBusqueda.id_linea, disabled: false }, [Validators.required]),
-      id_grupo: new FormControl({ value: this.paramsBusqueda.id_grupo, disabled: false }, [Validators.required]),
+      id_linea: new FormControl({ value: this.paramsBusqueda.id_linea, disabled: (this.auth.permissionEdit(2) || this.auth.permissionEdit(3)) }, [Validators.required]),
+      id_grupo: new FormControl({ value: this.paramsBusqueda.id_grupo, disabled: (this.auth.permissionEdit(2) || this.auth.permissionEdit(3)) }, [Validators.required]),
       id_turno: new FormControl({ value: this.paramsBusqueda.id_turno, disabled: false }, [Validators.required])
     });
 
@@ -256,6 +261,10 @@ export class ListaFallasComponent implements OnInit {
     this.pintaForm = true;
     this.fallaSeleccionada = id;
     $('#modalEdicion').modal('open');
+  }
+
+  refreshDataTable(event):void{
+    console.log('Falla actualizada',event.falla);
   }
 
 
