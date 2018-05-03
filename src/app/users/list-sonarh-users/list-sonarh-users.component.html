@@ -7,7 +7,7 @@
     </h5>
     <!-- Solo para dispositivos moviles -->
     <div class="hide-on-large-only right-align">
-      <a routerLink="../etad">Ir a usuarios ETAD</a>
+      <a *ngIf="permission.showListEtad" routerLink="../etad">Ir a usuarios ETAD</a>
     </div>
     <!-- Fin solo para dispositivos moviles -->
     <div class="section"></div>
@@ -19,7 +19,7 @@
             <th class="center-align">Nombre de empleado</th>
             <th class="center-align">Grupo</th>
             <th class="center-align">Area</th>
-            <th class="center-align">Activar en ETAD</th>
+            <th class="center-align" *ngIf="permission.altaEtad">Activar en ETAD</th>
           </tr>
         </thead>
 
@@ -29,7 +29,7 @@
             <td class="center-align">{{ usuario.Nombre + ' '+ usuario.Paterno + ' '+ usuario.Materno }}</td>
             <td class="center-align">{{ usuario.Grupo}}</td>
             <td class="center-align">{{ usuario.Area }}</td>
-            <td class="center-align">
+            <td class="center-align" *ngIf="permission.altaEtad">
               <a *ngIf="!usuario.activo_etad" [routerLink]="['../usuario-sonarh/' + usuario.NumEmpleado]" class="btn-floating waves-effect waves-light light-green lighten-1">
                 <i class="material-icons">add</i>
               </a>
@@ -44,7 +44,7 @@
   <!-- Inicio solo para pantallas-->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-      <a routerLink="../etad" class="btn-floating btn-large  indigo darken-4 waves-effect waves-light tooltipped" data-position="top"
+      <a *ngIf="permission.showListEtad" routerLink="../etad" class="btn-floating btn-large  indigo darken-4 waves-effect waves-light tooltipped" data-position="top"
         data-delay="50" data-tooltip="Ir a usuarios ETAD" (click)="ocultarTooltip()">
         <i class="material-icons">
           <i class="material-icons">view_list</i>

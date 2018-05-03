@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserSonarh } from '../../models/user-sonarh';
 import { ListSonarhUsersService } from './list-sonarh-users.service';
 import { AuthService } from '../../auth/auth.service';
-import { DataTable } from '../../utils';
+import { DataTable , findRol } from '../../utils';
 
 declare var $: any;
 declare var Materialize: any;
@@ -15,12 +15,16 @@ declare var Materialize: any;
 
 export class ListSonarhUsersComponent implements OnInit {
 
-
+ 
   public usuarios_sonarh: Array<UserSonarh>;
   public id_usuario: number;
   public loading: boolean;
+  public permission: any = {
+    altaEtad : false,
+    showListEtad: false
 
-
+  };
+ 
   constructor(
     private service: ListSonarhUsersService,
     private auth: AuthService
@@ -28,6 +32,8 @@ export class ListSonarhUsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
+    this.permission.altaEtad = findRol(11,this.auth.getRolesGenerales());
+    this.permission.showListEtad = findRol(14,this.auth.getRolesGenerales());
     this.service.getSonarhUsuarios(this.auth.getIdUsuario()).subscribe(result => {
       if (result.response.sucessfull) {
         this.usuarios_sonarh = result.data.listUserSonarh || [];

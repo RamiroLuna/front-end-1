@@ -1,11 +1,13 @@
 <div class="container" *ngIf="!loading">
   <div class="section"></div>
   <div class="col s12 m12 l8 xl8">
-    <h5 class="color_titulo center-align"><b>USUARIOS ETAD</b></h5>
-     <!-- Solo para dispositivos moviles -->
-     <div class="hide-on-large-only right-align">
-        <a routerLink="../sonarh" >Ir a usuarios SONARH</a>
-     </div>
+    <h5 class="color_titulo center-align">
+      <b>USUARIOS ETAD</b>
+    </h5>
+    <!-- Solo para dispositivos moviles -->
+    <div class="hide-on-large-only right-align">
+      <a *ngIf="permission.showListSonarh" routerLink="../sonarh">Ir a usuarios SONARH</a>
+    </div>
     <!-- Fin solo para dispositivos moviles -->
     <div class="section"></div>
     <div class="row">
@@ -16,9 +18,9 @@
             <th class="center-align">Empleado</th>
             <th class="center-align">Grupo</th>
             <th class="center-align">Linea</th>
-            <th class="center-align">Activo</th>
-            <th class="center-align">Editar</th>
-            <th class="center-align">Contraseña</th>
+            <th class="center-align" *ngIf="permission.active">Activo</th>
+            <th class="center-align" *ngIf="permission.editUserEtad">Editar</th>
+            <th class="center-align" *ngIf="permission.password">Contraseña</th>
           </tr>
         </thead>
 
@@ -28,7 +30,7 @@
             <td class="center-align">{{ usuario.nombre }}</td>
             <td class="center-align">{{ usuario.valor_grupo }}</td>
             <td class="center-align">{{ usuario.valor_linea }}</td>
-            <td class="center-align">
+            <td class="center-align" *ngIf="permission.active">
               <div class="switch">
                 <label>
                   No
@@ -38,12 +40,16 @@
                 </label>
               </div>
             </td>
-            <td  class="center-align">
-              <a class="btn-floating light-green lighten-1"  [routerLink]="['../usuario-etad/' + usuario.id_acceso]"><i class="material-icons">edit</i></a>
+            <td class="center-align" *ngIf="permission.editUserEtad">
+              <a class="btn-floating light-green lighten-1" [routerLink]="['../usuario-etad/' + usuario.id_acceso]">
+                <i class="material-icons">edit</i>
+              </a>
             </td>
-            <td  class="center-align">
-                <a class="btn-floating light-green lighten-1"  (click)="openModalPassword(usuario, $event )"><i class="material-icons">security</i></a>
-              </td>           
+            <td class="center-align" *ngIf="permission.password">
+              <a class="btn-floating light-green lighten-1" (click)="openModalPassword(usuario, $event )">
+                <i class="material-icons">security</i>
+              </a>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -52,23 +58,22 @@
 
   <!-- Inicio solo para pantallas-->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
-      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-        <a routerLink="../sonarh" class="btn-floating btn-large  indigo darken-4 waves-effect waves-light tooltipped" data-position="top"
-          data-delay="50" data-tooltip="Ir a usuarios SONARH" (click)="ocultarTooltip()">
-          <i class="material-icons">
-            <i class="material-icons">view_list</i>
-          </i>
-        </a>
-      </div>
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a *ngIf="permission.showListSonarh" routerLink="../sonarh" class="btn-floating btn-large  indigo darken-4 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Ir a usuarios SONARH" (click)="ocultarTooltip()">
+        <i class="material-icons">
+          <i class="material-icons">view_list</i>
+        </i>
+      </a>
     </div>
-    <!-- Fin solo para pantallas -->
+  </div>
+  <!-- Fin solo para pantallas -->
 </div>
 
 <div class="container" *ngIf="loading">
-  <div  id="loader-wrapper" >
-      <div id="loader"></div>
-      <div class="loader-section section-left"></div>
-      <div class="loader-section section-right"></div>
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
   </div>
 </div>
-

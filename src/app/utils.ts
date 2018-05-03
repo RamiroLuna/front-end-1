@@ -291,6 +291,18 @@ function contraseniaValida(contrasenia:string): any {
     return /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{6,10}$/.test(contrasenia.trim());
 }
 
+/**
+ * @function hasPermiso
+ * @param  {number} idRol -  id del rol a buscar
+ * @param  {String} roles -   string separado por comas con los roles
+ * @return  {boolean} 
+ * @description funcion utilizada para comprobar si existe el rol en el conjunto
+ */
+function findRol(idRol:number, roles:string):boolean{
+    let idRoles = roles.split(",").map(el=>parseInt(el));
+    return idRoles.includes(idRol);
+  }
+
 
 export {
     deleteItemArray,
@@ -305,5 +317,6 @@ export {
     calculaDiaPorMes,
     getMilisegundosHoras,
     DataTableFallas,
+    findRol,
     contraseniaValida
 }

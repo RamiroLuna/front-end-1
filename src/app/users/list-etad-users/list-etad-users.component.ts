@@ -3,7 +3,7 @@ import { User } from '../../models/user';
 import { ListEtadUsersService } from './list-etad-users.service';
 import { AuthService } from '../../auth/auth.service';
 import swal from 'sweetalert2';
-import { deleteItemArray, DataTable, contraseniaValida } from '../../utils';
+import { deleteItemArray, DataTable, contraseniaValida, findRol } from '../../utils';
 
 declare var $: any;
 declare var Materialize: any;
@@ -19,14 +19,24 @@ export class ListEtadUsersComponent implements OnInit {
   public usuarios_etad: Array<User> = [];
   public mensajeModal: string;
   public loading: boolean;
+  public permission: any = {
+    editUserEtad: false,
+    password : false,
+    active: false,
+    showListSonarh: false
+  }
 
   constructor(private service: ListEtadUsersService,
     private auth: AuthService) { }
 
   ngOnInit(): void {
     this.loading = true;
+    this.permission.editUserEtad = findRol(15,this.auth.getRolesGenerales());
+    this.permission.password = findRol(12,this.auth.getRolesGenerales());
+    this.permission.active = findRol(13,this.auth.getRolesGenerales());
+    this.permission.showListSonarh = findRol(10,this.auth.getRolesGenerales());
+    
     this.service.getEtadUsuarios(this.auth.getIdUsuario()).subscribe(result => {
-      console.log('resultados', result)
       if (result.response.sucessfull) {
         this.usuarios_etad = result.data.listUserETAD || [];
         this.loading = false;
