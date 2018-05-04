@@ -3,15 +3,16 @@ import { Catalogo } from '../../../models/catalogo';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { BASE_URL_SERVICE } from '../../../constants';
-import { Linea } from '../../../models/linea';
-import { EquipoAmut } from '../../../models/equipo-amut';
+import { Equipo } from '../../../models/equipo';
+import { Producto } from '../../../models/producto';
 
 @Injectable()
 export class FormularioDetalleServiceService {
 
   private URL = BASE_URL_SERVICE + '/Catalogos';
-  private URL_LINEAS = BASE_URL_SERVICE + '/Lineas';
-  private URL_EQUIPOS_AMUT = BASE_URL_SERVICE + '/EquipoAmut';
+  private URL_EQUIPOS = BASE_URL_SERVICE + '/Equipos';
+  private URL_PRODUCTOS= BASE_URL_SERVICE + '/Productos';
+  private URL_RAZON = BASE_URL_SERVICE + '/Razones';
 
   constructor(private http: HttpClient) { }
   
@@ -43,62 +44,66 @@ export class FormularioDetalleServiceService {
     return this.http.get<Catalogo>(this.URL + '?action=getDataByID&tableName=' + tableName + '&id_usuario=' + id_usuario + '&idCatalogo='+id_catalogo);
   }
 
+  
+
   /*
-   * Bloque de codigo para peticiones de catalogos de lineas
+   * Bloque de codigo para peticiones de catalogos de Equipos
    */
-  agregarLinea(id_usuario: number, linea: Linea): Observable<any> {
+  agregarEquipo(id_usuario: number, equipo: Equipo): Observable<any> {
     const body = new HttpParams()
-      .set('action', 'insertLineas')
-      .set('gpoLinea', ''+linea.id_gpo_linea )
-      .set('descripcionLinea', ''+ linea.descripcion)
+      .set('action', 'insertEquipo')
+      .set('descripcion', '' + equipo.descripcion)
+      .set('valor', ''+equipo.valor)
       .set('id_usuario', '' + id_usuario );
-    return this.http.post(this.URL_LINEAS, body);
+    return this.http.post(this.URL_EQUIPOS, body);
   }
 
-  updateLinea(id_usuario: number, linea: Linea): Observable<any> {
+  updateEquipo(id_usuario: number, equipo: Equipo): Observable<any> {
     const body = new HttpParams()
-      .set('action', 'updateLineas')
-      .set('idLinea', '' + linea.id_linea)
-      .set('activoLinea', '' + linea.activo)
-      .set('gpoLinea', '' + linea.id_gpo_linea)
-      .set('descripcionLinea', '' + linea.descripcion)
+      .set('action', 'updateEquipo')
+      .set('descripcion', ''+equipo.descripcion)
+      .set('id_equipo', ''+equipo.id_equipos)
+      .set('valor', ''+equipo.valor)
       .set('id_usuario', "" + id_usuario);
-    return this.http.post(this.URL_LINEAS, body);
+    return this.http.post(this.URL_EQUIPOS, body);
   }
 
-  getElementLineaById(id_usuario: number,  id_linea:number): Observable<any> {
-    return this.http.get<Linea>(this.URL_LINEAS + '?action=getDataByID&id_usuario=' + id_usuario + '&idLinea='+id_linea);
+  getElementEquipoById(id_usuario: number,  id_equipo:number): Observable<any> {
+    return this.http.get<Equipo>(this.URL_EQUIPOS + '?action=getEquipoById&id_usuario=' + id_usuario + '&id_equipo='+id_equipo);
   }
 
-  getElementsCatalogo(id_usuario: number, nombre_tabla:string): Observable<any> {
-    return this.http.get<Catalogo>(this.URL + '?action=getCatalogosData&id_usuario=' + id_usuario + '&tableName='+nombre_tabla);
-  }
-
-    /*
-   * Bloque de codigo para peticiones de catalogos de lineas
+  /*
+   * Bloque de codigo para peticiones de catalogos de Productos
    */
-  agregarEquipoAmut(id_usuario: number, equipo: EquipoAmut): Observable<any> {
+  agregarProducto(id_usuario: number, producto: Producto): Observable<any> {
     const body = new HttpParams()
-      .set('action', 'insertNewEquipos')
-      .set('nombre_equipo', ''+ equipo.nombre_equipo)
-      .set('clave_equipo', ''+ equipo.clave_equipo)
+      .set('action', 'insertProductos')
+      .set('id_linea', '' + producto.id_linea)
+      .set('valor', ''+ producto.valor)
+      .set('descripcion', ''+ producto.descripcion)
+      .set('id_tipo_producto', '' + producto.id_tipo_producto)
       .set('id_usuario', '' + id_usuario );
-    return this.http.post(this.URL_EQUIPOS_AMUT, body);
+    return this.http.post(this.URL_PRODUCTOS, body);
   }
 
-  updateEquipoAmut(id_usuario: number, equipo: EquipoAmut): Observable<any> {
+  updateProducto(id_usuario: number, producto: Producto): Observable<any> {
     const body = new HttpParams()
-      .set('action', 'updateEquipos')
-      .set('id_equipo', ''+equipo.id_equipo_amut)
-      .set('activo', ''+equipo.activo)
-      .set('nombre_equipo', ''+equipo.nombre_equipo )
-      .set('clave_equipo', ''+equipo.clave_equipo)
+      .set('action', 'updateProductos')
+      .set('id_producto', ''+producto.id_producto)
+      .set('id_linea', ''+producto.id_linea)
+      .set('id_tipo_producto', ''+producto.id_tipo_producto)
+      .set('valor', ''+producto.valor)
+      .set('descripcion', ''+producto.descripcion)
       .set('id_usuario', "" + id_usuario);
-    return this.http.post(this.URL_EQUIPOS_AMUT, body);
+    return this.http.post(this.URL_PRODUCTOS, body);
   }
 
-  getElementEquipoAmutById(id_usuario: number,  id_equipo:number): Observable<any> {
-    return this.http.get<Linea>(this.URL_EQUIPOS_AMUT + '?action=getDataByID&id_usuario=' + id_usuario + '&id_equipo='+id_equipo);
+  getElementProductoById(id_usuario: number,  id_producto:number): Observable<any> {
+    return this.http.get<Producto>(this.URL_PRODUCTOS + '?action=getProductoById&id_usuario=' + id_usuario + '&id_producto='+id_producto);
+  }
+
+  getInitProductos(id_usuario: number): Observable<any> {
+    return this.http.get<Producto>(this.URL_PRODUCTOS + '?action=loadList&id_usuario=' + id_usuario);
   }
 
 }

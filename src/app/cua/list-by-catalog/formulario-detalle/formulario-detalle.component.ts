@@ -6,6 +6,10 @@ import { isValidId } from '../../../utils';
 import { AuthService } from '../../../auth/auth.service';
 import { FormularioDetalleServiceService } from './formulario-detalle-service.service';
 import swal from 'sweetalert2';
+import { Equipo } from '../../../models/equipo';
+import { Producto } from '../../../models/producto';
+import { RazonParo } from '../../../models/razon-paro';
+import { Linea } from '../../../models/linea';
 
 declare var $: any;
 declare var Materialize: any;
@@ -29,7 +33,8 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
   public texto_btn: string;
   public type_Catalogo: string;
   public mensajeModal: string;
-  public grupos_lineas: Array<Catalogo> = [];
+  public tiposProductos: Array<Catalogo>;
+  public lineas: Array<Linea>;
 
   constructor(
     private fb: FormBuilder,
@@ -40,7 +45,7 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.loading= true;
+    this.loading = true;
     this.submitted = false;
     this.texto_btn = "Cancelar";
     this.route.paramMap.subscribe(params => {
@@ -56,89 +61,56 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
 
       if (this.seccion != 'invalid') {
         switch (params.get('name')) {
-          case 'perdidas':
-            this.nombre_catalogo = 'Perdida';
-            this.nombre_tabla = 'pet_cat_perdida';
+          case 'fuentes':
+            this.nombre_catalogo = 'Fuentes';
+            this.nombre_tabla = 'pet_cat_fuentes_paro';
             this.type_Catalogo = 'generico';
             this.itemCatalogo = new Catalogo();
             break;
-          case 'planeado':
-            this.nombre_catalogo = 'Paro planeado';
-            this.nombre_tabla = 'pet_cat_planeado';
+          case 'tipo_productos':
+            this.nombre_catalogo = 'Tipos de producto';
+            this.nombre_tabla = 'pet_cat_tipo_producto';
             this.type_Catalogo = 'generico';
             this.itemCatalogo = new Catalogo();
             break;
-          case 'no_planeado':
-            this.nombre_catalogo = 'Paro no planeado';
-            this.nombre_tabla = 'pet_cat_noplaneado';
-            this.type_Catalogo = 'generico';
-            this.itemCatalogo = new Catalogo();
+          case 'equipos':
+            this.nombre_catalogo = 'Equipos';
+            this.nombre_tabla = 'pet_cat_equipos';
+            this.type_Catalogo = 'equipos';
+            this.itemCatalogo = new Equipo();
             break;
-          case 'reduccion':
-            this.nombre_catalogo = 'Reducción';
-            this.nombre_tabla = 'pet_cat_reduc_velocidad';
-            this.type_Catalogo = 'generico';
-            this.itemCatalogo = new Catalogo();
+          case 'productos':
+            this.nombre_catalogo = 'Productos';
+            this.nombre_tabla = 'pet_cat_producto';
+            this.type_Catalogo = 'productos';
+            this.itemCatalogo = new Producto();
             break;
-          case 'calidad':
-            this.nombre_catalogo = 'Calidad';
-            this.nombre_tabla = 'pet_cat_calidad';
-            this.type_Catalogo = 'generico';
-            this.itemCatalogo = new Catalogo();
+          case 'razones':
+            this.nombre_catalogo = 'Razones de paro';
+            this.nombre_tabla = 'pet_cat_razon_paro';
+            this.type_Catalogo = 'razones';
+            this.itemCatalogo = new RazonParo();
             break;
-          case 'extrusores':
-            this.nombre_catalogo = 'Nombre de equipos extrusores';
-            this.nombre_tabla = 'pet_cat_equipos_extrusores_bulher';
-            this.type_Catalogo = 'generico';
-            this.itemCatalogo = new Catalogo();
-            break;
-          case 'ssp':
-            this.nombre_catalogo = 'Nombre de equipos SSP';
-            this.nombre_tabla = 'pet_cat_equipos_ssp';
-            this.type_Catalogo = 'generico';
-            this.itemCatalogo = new Catalogo();
-            break;
-          case 'grupo-linea':
-            this.nombre_catalogo = 'Grupos de linea';
-            this.nombre_tabla = 'pet_cat_gpo_linea';
-            this.type_Catalogo = 'generico';
-            this.itemCatalogo = new Catalogo();
-            break;
-          case 'grupos':
-            this.nombre_catalogo = 'Grupos';
-            this.nombre_tabla = 'pet_cat_grupos';
-            this.type_Catalogo = 'generico';
-            this.itemCatalogo = new Catalogo();
-            break;
-          case 'perfiles':
-            this.nombre_catalogo = 'Perfiles';
-            this.nombre_tabla = 'pet_cat_perfiles';
-            this.type_Catalogo = 'generico';
-            this.itemCatalogo = new Catalogo();
-            break;
-          case 'turnos':
-            this.nombre_catalogo = 'Turno';
-            this.nombre_tabla = 'pet_cat_turnos';
-            this.type_Catalogo = 'generico';
-            this.itemCatalogo = new Catalogo();
-            break;
+
           default:
             this.isCatalog = false;
         }
 
         if (this.seccion == 'edit') {
           this.loadData(this.type_Catalogo, parseInt(params.get('id')));
+        } else if (this.type_Catalogo == 'productos' && this.seccion == 'add') {
+          this.getCatalogosProductos();
         } else {
-          this.loading= false;
+          this.loading = false;
         }
-      }else{
-        this.loading= false;
+      } else {
+        this.loading = false;
       }
       this.link_back = params.get('name');
     });
 
     this.loadFormulario(this.type_Catalogo);
-    
+
   }
 
   ngAfterViewInit() {
@@ -157,16 +129,18 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
           descripcion: new FormControl(this.itemCatalogo.descripcion, [Validators.required])
         });
         break;
-      case 'lineas':
+      case 'equipos':
         this.formCatalogs = this.fb.group({
-          descripcion: new FormControl(this.itemCatalogo.descripcion, [Validators.required]),
-          id_gpo_linea: new FormControl(this.itemCatalogo.id_gpo_linea, [Validators.required])
+          valor: new FormControl(this.itemCatalogo.valor, [Validators.required]),
+          descripcion: new FormControl(this.itemCatalogo.descripcion, [Validators.required])
         });
         break;
-      case 'equipos_amut':
+      case 'productos':
         this.formCatalogs = this.fb.group({
-          clave_equipo: new FormControl(this.itemCatalogo.clave_equipo, [Validators.required]),
-          nombre_equipo: new FormControl(this.itemCatalogo.nombre_equipo, [Validators.required])
+          valor: new FormControl(this.itemCatalogo.valor, [Validators.required]),
+          descripcion: new FormControl(this.itemCatalogo.descripcion, [Validators.required]),
+          id_linea: new FormControl(this.itemCatalogo.id_linea, [Validators.required]),
+          id_tipo_producto: new FormControl(this.itemCatalogo.id_tipo_producto, [Validators.required])
         });
         break;
     }
@@ -178,66 +152,70 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
         this.service.getElementById(this.auth.getIdUsuario(), this.nombre_tabla, id).subscribe(result => {
           if (result.response.sucessfull) {
             this.itemCatalogo = result.data.catalogosDTO;
-            this.loading= false;
+            this.loading = false;
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
-            this.loading= false;
+            this.loading = false;
           }
         }, error => {
           Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-          this.loading= false;
+          this.loading = false;
         });
         break;
-      case 'lineas':
+
+      case 'equipos':
         /*
          * Consulta el elemento del catalogo
          */
-        this.service.getElementLineaById(this.auth.getIdUsuario(), id).subscribe(result => {
+        this.service.getElementEquipoById(this.auth.getIdUsuario(), id).subscribe(result => {
           if (result.response.sucessfull) {
-            this.itemCatalogo = result.data.lineasDTO;
-            this.loading= false;
+            this.itemCatalogo = result.data.equipo;
+            this.loading = false;
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
-            this.loading= false;
+            this.loading = false;
           }
         }, error => {
           Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-          this.loading= false;
+          this.loading = false;
         });
         break;
-      case 'equipos_amut':
+      case 'productos':
         /*
          * Consulta el elemento del catalogo
          */
-        this.service.getElementEquipoAmutById(this.auth.getIdUsuario(), id).subscribe(result => {
+        this.service.getElementProductoById(this.auth.getIdUsuario(), id).subscribe(result => {
           if (result.response.sucessfull) {
-            this.itemCatalogo = result.data.equipoAmut;
-            this.loading= false;
+            this.itemCatalogo = result.data.producto;
+            this.lineas = result.data.listLineas || [];
+            this.tiposProductos = result.data.listTipoProducto || [];
+            this.loading = false;
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
-            this.loading= false;
+            this.loading = false;
           }
         }, error => {
           Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-          this.loading= false;
+          this.loading = false;
         });
         break;
     }
 
   }
 
-  /*
-   * Carga los datos de los que depende lineas
-   */
-  loadDataDependsLineas(): void {
-    this.service.getElementsCatalogo(this.auth.getIdUsuario(), 'pet_cat_gpo_linea').subscribe(result => {
+  getCatalogosProductos() {
+    this.service.getInitProductos(this.auth.getIdUsuario()).subscribe(result => {
       if (result.response.sucessfull) {
-        this.grupos_lineas = result.data.listCatalogosDTO;
+        this.lineas = result.data.listLineas || [];
+        this.tiposProductos = result.data.listTipoProducto || [];
+        this.loading = false;
       } else {
-        Materialize.toast('No se cargó catalogo de grupo de lineas', 4000, 'red');
+        Materialize.toast(result.response.message, 4000, 'red');
+        this.loading = false;
       }
     }, error => {
       Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+      this.loading = false;
     });
   }
 
@@ -262,7 +240,7 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
       swal({
         title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
         type: 'question',
-        html: '<p style="color: #303f9f "> Elemento : <b>' + (item.descripcion || item.nombre_equipo) + ' </b></p>',
+        html: '<p style="color: #303f9f "> Elemento : <b>' + (item.valor || item.nombre_equipo) + ' </b></p>',
         showCancelButton: true,
         confirmButtonColor: '#303f9f',
         cancelButtonColor: '#9fa8da ',
@@ -305,15 +283,13 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
                   });
               }
               break;
-            /*
-             * Codigo para acciones de catalogo de lineas
-             */
-            case 'lineas':
+
+            case 'equipos':
               if (this.seccion == 'add') {
-                this.service.agregarLinea(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(result => {
+                this.service.agregarEquipo(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(result => {
                   if (result.response.sucessfull) {
                     Materialize.toast('Se agregó correctamente', 4000, 'green');
-                    this.router.navigate(['home/catalogos/lista', this.link_back]);
+                    this.router.navigate(['home/cua/opciones/catalogos', this.link_back]);
                   } else {
                     Materialize.toast(result.response.message, 4000, 'red');
                   }
@@ -321,7 +297,7 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
                   Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
                 });
               } else if (this.seccion == 'edit') {
-                this.service.updateLinea(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(
+                this.service.updateEquipo(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(
                   result => {
                     if (result.response.sucessfull) {
                       Materialize.toast('Actualización completa', 4000, 'green');
@@ -334,13 +310,12 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
                   });
               }
               break;
-
-            case 'equipos_amut':
+            case 'productos':
               if (this.seccion == 'add') {
-                this.service.agregarEquipoAmut(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(result => {
+                this.service.agregarProducto(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(result => {
                   if (result.response.sucessfull) {
                     Materialize.toast('Se agregó correctamente', 4000, 'green');
-                    this.router.navigate(['home/catalogos/lista', this.link_back]);
+                    this.router.navigate(['home/cua/opciones/catalogos', this.link_back]);
                   } else {
                     Materialize.toast(result.response.message, 4000, 'red');
                   }
@@ -348,7 +323,7 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
                   Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
                 });
               } else if (this.seccion == 'edit') {
-                this.service.updateEquipoAmut(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(
+                this.service.updateProducto(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(
                   result => {
                     if (result.response.sucessfull) {
                       Materialize.toast('Actualización completa', 4000, 'green');

@@ -8,8 +8,6 @@ import { MetaManualComponent } from './meta-manual/meta-manual.component';
 import { ListaMetasEdicionComponent } from './lista-metas-edicion/lista-metas-edicion.component';
 import { ListaFallasComponent } from './lista-fallas/lista-fallas.component';
 import { FormularioFallasComponent } from './formulario-fallas/formulario-fallas.component';
-import { ListaProductsComponent } from './lista-products/lista-products.component';
-import { FormularioProductoComponent } from './formulario-producto/formulario-producto.component';
 import { ListaAsignacionProductoComponent } from './lista-asignacion-producto/lista-asignacion-producto.component';
 import { AsignacionProductosComponent } from './asignacion-productos/asignacion-productos.component';
 import { ListCatalogsComponent } from './list-catalogs/list-catalogs.component';
@@ -32,8 +30,6 @@ const routesMetas: Routes = [
   { path: 'opciones', component: OptionsComponent },
   { path: 'opciones/fallas', component: ListaFallasComponent },
   { path: 'opciones/fallas/:id', component: FormularioFallasComponent },
-  { path: 'opciones/productos', component: ListaProductsComponent },
-  { path: 'opciones/productos/:id', component: FormularioProductoComponent },
   { path: 'opciones/productos-asignaciones', component: ListaAsignacionProductoComponent },
   /* rutas de metas */
   {
@@ -78,8 +74,6 @@ const routesMetas: Routes = [
     ListaMetasEdicionComponent,
     ListaFallasComponent,
     FormularioFallasComponent,
-    ListaProductsComponent,
-    FormularioProductoComponent,
     ListaAsignacionProductoComponent,
     AsignacionProductosComponent,
     ListCatalogsComponent,

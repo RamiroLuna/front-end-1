@@ -55,14 +55,16 @@ export class ListByCatalogService {
     * Peticiones para catalogo de productos
     */ 
   getElementsProductos(id_usuario: number): Observable<any> {
-    return this.http.get<Producto>(this.URL_EQUIPOS + '?action=getAllProductos&id_usuario=' + id_usuario);
+    return this.http.get<Producto>(this.URL_PRODUCTOS + '?action=getAllProductos&id_usuario=' + id_usuario);
   }
 
-  updateProducto(id_usuario: number, equipo: Producto): Observable<any> {
+  updateProducto(id_usuario: number, producto: Producto): Observable<any> {
     const body = new HttpParams()
       .set('action', 'blockProducto')
+      .set('id_producto', ''+producto.id_producto)
+      .set('activo', ''+producto.activo)
       .set('id_usuario', "" + id_usuario);
-    return this.http.post(this.URL_EQUIPOS, body);
+    return this.http.post(this.URL_PRODUCTOS, body);
   }
 
     /*

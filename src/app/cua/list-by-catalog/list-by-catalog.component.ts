@@ -100,9 +100,8 @@ export class ListByCatalogComponent implements OnInit {
 
     } else if (this.type_Catalogo == 'productos') {
       this.service.getElementsProductos(this.auth.getIdUsuario()).subscribe(result => {
-
         if (result.response.sucessfull) {
-          this.items = [];
+          this.items = result.data.listProductos || [];
           this.loading = false;
           setTimeout(() => { this.ngAfterViewHttp(); }, 200)
         } else {

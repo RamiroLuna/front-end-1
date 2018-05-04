@@ -81,7 +81,7 @@
           </div>
         </td>
         <td>
-          <a class="btn-floating  light-green lighten-1" [routerLink]="['../formulario/'+ tipo_catalogo + '/' + item.id_equipos]">
+          <a class="btn-floating  light-green lighten-1" [routerLink]="['../'+ tipo_catalogo + '/formulario/' + item.id_equipos]">
             <i class="material-icons">edit</i>
           </a>
         </td>
@@ -94,31 +94,33 @@
   <table class="display" class="striped" cellspacing="0" id="itemsCatalogos" *ngIf="type_Catalogo == 'productos'">
     <thead>
       <tr>
-        <th width="10%">Id</th>
-        <th width="20%">Clave de equipo</th>
-        <th width="45%">Descripción de equipo</th>
-        <th width="15%">Activo</th>
-        <th width="10%">Actualizar</th>
+        <th>Id</th>
+        <th>Nombre</th>
+        <th>Linea</th>
+        <th>Tipo de producto</th>
+        <th>Activo</th>
+        <th>Actualizar</th>
       </tr>
     </thead>
 
     <tbody>
       <tr *ngFor="let item of items">
-        <td>{{ item.id_equipos }}</td>
+        <td>{{ item.id_producto }}</td>
         <td>{{ item.valor }}</td>
-        <td>{{ item.descripcion }}</td>
+        <td>{{ item.valor_linea }}</td>
+        <td>{{ item.valor_tipo_producto }}</td>
         <td>
           <div class="switch">
             <label>
               No
-              <input type="checkbox" [checked]="item.activo == 1" (change)="openModalConfirmacion(item, 'activar', 'equipos' ,$event )">
+              <input type="checkbox" [checked]="item.activo == 1" (change)="openModalConfirmacion(item, 'activar', 'productos' ,$event )">
               <span class="lever"></span>
               Si
             </label>
           </div>
         </td>
         <td>
-          <a class="btn-floating  light-green lighten-1" [routerLink]="['../formulario/'+ tipo_catalogo + '/' + item.id_equipos]">
+          <a class="btn-floating  light-green lighten-1"  [routerLink]="['../'+ tipo_catalogo + '/formulario/' + item.id_producto]" >
             <i class="material-icons">edit</i>
           </a>
         </td>
