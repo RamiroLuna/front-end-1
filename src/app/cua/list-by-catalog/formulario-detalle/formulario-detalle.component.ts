@@ -34,6 +34,7 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
   public type_Catalogo: string;
   public mensajeModal: string;
   public tiposProductos: Array<Catalogo>;
+  public fuentes: Array<Catalogo>;
   public lineas: Array<Linea>;
 
   constructor(
@@ -100,6 +101,8 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
           this.loadData(this.type_Catalogo, parseInt(params.get('id')));
         } else if (this.type_Catalogo == 'productos' && this.seccion == 'add') {
           this.getCatalogosProductos();
+        } else if (this.type_Catalogo == 'razones' && this.seccion == 'add') {
+          this.getCatalogosRazones();
         } else {
           this.loading = false;
         }
@@ -141,6 +144,13 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
           descripcion: new FormControl(this.itemCatalogo.descripcion, [Validators.required]),
           id_linea: new FormControl(this.itemCatalogo.id_linea, [Validators.required]),
           id_tipo_producto: new FormControl(this.itemCatalogo.id_tipo_producto, [Validators.required])
+        });
+        break;
+      case 'razones':
+        this.formCatalogs = this.fb.group({
+          valor: new FormControl(this.itemCatalogo.valor, [Validators.required]),
+          descripcion: new FormControl(this.itemCatalogo.descripcion, [Validators.required]),
+          id_fuente_paro: new FormControl(this.itemCatalogo.id_fuente_paro, [Validators.required])
         });
         break;
     }
@@ -199,6 +209,24 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
           this.loading = false;
         });
         break;
+      case 'razones':
+        /*
+         * Consulta el elemento del catalogo
+         */
+        this.service.getElementRazonById(this.auth.getIdUsuario(), id).subscribe(result => {
+          if (result.response.sucessfull) {
+            this.itemCatalogo = result.data.razonParo;
+            this.fuentes = result.data.listFuentesParo || [];
+            this.loading = false;
+          } else {
+            Materialize.toast(result.response.message, 4000, 'red');
+            this.loading = false;
+          }
+        }, error => {
+          Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+          this.loading = false;
+        });
+        break;
     }
 
   }
@@ -208,6 +236,21 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
       if (result.response.sucessfull) {
         this.lineas = result.data.listLineas || [];
         this.tiposProductos = result.data.listTipoProducto || [];
+        this.loading = false;
+      } else {
+        Materialize.toast(result.response.message, 4000, 'red');
+        this.loading = false;
+      }
+    }, error => {
+      Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+      this.loading = false;
+    });
+  }
+
+  getCatalogosRazones() {
+    this.service.getInitRazon(this.auth.getIdUsuario()).subscribe(result => {
+      if (result.response.sucessfull) {
+        this.fuentes = result.data.listFuentesParo || [];
         this.loading = false;
       } else {
         Materialize.toast(result.response.message, 4000, 'red');
@@ -324,6 +367,32 @@ export class FormularioDetalleComponent implements OnInit, AfterViewInit {
                 });
               } else if (this.seccion == 'edit') {
                 this.service.updateProducto(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(
+                  result => {
+                    if (result.response.sucessfull) {
+                      Materialize.toast('Actualización completa', 4000, 'green');
+                      this.texto_btn = 'Cerrar ficha';
+                    } else {
+                      Materialize.toast(result.response.message, 4000, 'red');
+                    }
+                  }, error => {
+                    Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+                  });
+              }
+              break;
+            case 'razones':
+              if (this.seccion == 'add') {
+                this.service.agregarRazon(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(result => {
+                  if (result.response.sucessfull) {
+                    Materialize.toast('Se agregó correctamente', 4000, 'green');
+                    this.router.navigate(['home/cua/opciones/catalogos', this.link_back]);
+                  } else {
+                    Materialize.toast(result.response.message, 4000, 'red');
+                  }
+                }, eror => {
+                  Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+                });
+              } else if (this.seccion == 'edit') {
+                this.service.updateRazon(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(
                   result => {
                     if (result.response.sucessfull) {
                       Materialize.toast('Actualización completa', 4000, 'green');

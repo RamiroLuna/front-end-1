@@ -173,6 +173,69 @@
     </div>
   </div>
   <!-- Fin de seccion de formulario para catalogos productos -->
+
+    <!-- Seccion de formulario para catalogos razones -->
+    <div class="row" *ngIf="type_Catalogo == 'razones'">
+        <div class="col offset-l2 offset-xl2 s12 m12 l8 lx8">
+          <div class="card-panel">
+            <h5 class="color_titulo header2 center-align">{{ seccion == 'add'? ' Agregar a ' : ' Actualizar en'}} {{ nombre_catalogo }}</h5>
+            <div class="section"></div>
+            <div class="row">
+              <form class="col s12" [formGroup]="formCatalogs" (ngSubmit)="openModalConfirmacion(itemCatalogo, seccion, type_Catalogo)"
+                autocomplete="off">
+        
+                <div class="row">
+                  <div class="col s12">
+                    <label for="">Fuente de paro </label>
+                    <select materialize="material_select" [materializeSelectOptions]="fuentes" formControlName="id_fuente_paro" [(ngModel)]="itemCatalogo.id_fuente_paro">
+                      <option value="">SELECCIONE</option>
+                      <option *ngFor="let fuente of fuentes" [value]="fuente.id">{{ fuente.valor }}</option>
+                    </select>
+                    <div *ngIf="formCatalogs.controls.id_fuente_paro.errors?.required && (formCatalogs.controls.id_fuente_paro?.touched || submitted)" class="error">
+                      Se requiere fuente de paro
+                    </div>
+                  </div>
+                </div>
+    
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input placeholder="Valor" id="valor" type="text" formControlName='valor' [(ngModel)]='itemCatalogo.valor'>
+                    <label for="valor" class="active">Valor</label>
+                    <div *ngIf="formCatalogs.controls.valor.errors?.required && (formCatalogs.controls.valor?.touched || submitted)" class="error">
+                      El valor es requerido
+                    </div>
+                  </div>
+                </div>
+    
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input placeholder="Descripción" id="descripcion" type="text" formControlName='descripcion' [(ngModel)]='itemCatalogo.descripcion'>
+                    <label for="descripcion" class="active">Descripción</label>
+                    <div *ngIf="formCatalogs.controls.descripcion.errors?.required && (formCatalogs.controls.descripcion?.touched || submitted)"
+                      class="error">
+                      La descripción es requerida
+                    </div>
+                  </div>
+                </div>
+    
+                <div class="row">
+                  <div class="row">
+                    <div class="input-field col  offset-m1 offset-l1 offset-xl1 s6 m4 l4 lx4">
+                      <a [routerLink]="'../../../' + link_back" class="btn grey lighten-1 waves-effect waves-light right" name="action">{{ texto_btn }}
+                      </a>
+                    </div>
+                    <div class="input-field col offset-m2 offset-l2 offset-xl2 s6 m4 l4 lx4">
+                      <button class="btn light-green lighten-1 waves-effect waves-light right" type="submit" name="action"> {{ seccion == 'add' ? 'Agregar' : 'Guardar cambio'}}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Fin de seccion de formulario para catalogos razones -->
 </div>
 
 <div class="container" *ngIf="loading">

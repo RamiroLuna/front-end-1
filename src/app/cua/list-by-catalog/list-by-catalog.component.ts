@@ -117,7 +117,7 @@ export class ListByCatalogComponent implements OnInit {
       this.service.getElementsRazones(this.auth.getIdUsuario()).subscribe(result => {
 
         if (result.response.sucessfull) {
-          this.items = [];
+          this.items = result.data.listRazonParo || [];
           this.loading = false;
           setTimeout(() => { this.ngAfterViewHttp(); }, 200)
         } else {

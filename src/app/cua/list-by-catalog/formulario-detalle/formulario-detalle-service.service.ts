@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { BASE_URL_SERVICE } from '../../../constants';
 import { Equipo } from '../../../models/equipo';
 import { Producto } from '../../../models/producto';
+import { RazonParo } from '../../../models/razon-paro';
 
 @Injectable()
 export class FormularioDetalleServiceService {
@@ -12,7 +13,7 @@ export class FormularioDetalleServiceService {
   private URL = BASE_URL_SERVICE + '/Catalogos';
   private URL_EQUIPOS = BASE_URL_SERVICE + '/Equipos';
   private URL_PRODUCTOS= BASE_URL_SERVICE + '/Productos';
-  private URL_RAZON = BASE_URL_SERVICE + '/Razones';
+  private URL_RAZON = BASE_URL_SERVICE + '/RazonParo';
 
   constructor(private http: HttpClient) { }
   
@@ -104,6 +105,39 @@ export class FormularioDetalleServiceService {
 
   getInitProductos(id_usuario: number): Observable<any> {
     return this.http.get<Producto>(this.URL_PRODUCTOS + '?action=loadList&id_usuario=' + id_usuario);
+  }
+
+
+    /*
+   * Bloque de codigo para peticiones de catalogos de Razones
+   */
+  agregarRazon(id_usuario: number, razon: RazonParo): Observable<any> {
+    const body = new HttpParams()
+      .set('action', 'insertRazon')
+      .set('valor', ''+ razon.valor)
+      .set('descripcion', ''+ razon.descripcion)
+      .set('id_fuente', '' + razon.id_fuente_paro)
+      .set('id_usuario', '' + id_usuario );
+    return this.http.post(this.URL_RAZON, body);
+  }
+
+  updateRazon(id_usuario: number, razon: RazonParo): Observable<any> {
+    const body = new HttpParams()
+      .set('action', 'updateRazon')
+      .set('id_razon', ''+razon.id_razon_paro)
+      .set('id_fuente', ''+razon.id_fuente_paro)
+      .set('descripcion', ''+razon.descripcion)
+      .set('valor', ''+razon.valor)
+      .set('id_usuario', "" + id_usuario);
+    return this.http.post(this.URL_RAZON, body);
+  }
+
+  getElementRazonById(id_usuario: number,  id_razon:number): Observable<any> {
+    return this.http.get<RazonParo>(this.URL_RAZON + '?action=getRazonById&id_usuario=' + id_usuario + '&id_razon='+id_razon);
+  }
+
+  getInitRazon(id_usuario: number): Observable<any> {
+    return this.http.get<RazonParo>(this.URL_RAZON + '?action=loadList&id_usuario=' + id_usuario);
   }
 
 }

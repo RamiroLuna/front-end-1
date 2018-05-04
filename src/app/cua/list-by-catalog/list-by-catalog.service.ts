@@ -6,6 +6,7 @@ import { Catalogo } from '../../models/catalogo';
 import { Linea } from '../../models/linea';
 import { Equipo } from '../../models/equipo';
 import { Producto } from '../../models/producto';
+import { RazonParo } from  '../../models/razon-paro';
 
 @Injectable()
 export class ListByCatalogService {
@@ -13,7 +14,7 @@ export class ListByCatalogService {
   private URL = BASE_URL_SERVICE + '/Catalogos';
   private URL_EQUIPOS= BASE_URL_SERVICE + '/Equipos';
   private URL_PRODUCTOS= BASE_URL_SERVICE + '/Productos';
-  private URL_RAZON = BASE_URL_SERVICE + '/Razones';
+  private URL_RAZON = BASE_URL_SERVICE + '/RazonParo';
 
   constructor(private http: HttpClient) { }
 
@@ -71,12 +72,14 @@ export class ListByCatalogService {
     * Peticiones para catalogo de razones de paro
     */ 
    getElementsRazones(id_usuario: number): Observable<any> {
-    return this.http.get<any>(this.URL_RAZON + '?action=getAllRazones&id_usuario=' + id_usuario);
+    return this.http.get<any>(this.URL_RAZON + '?action=getAllRazon&id_usuario=' + id_usuario);
   }
 
-  updateRazones(id_usuario: number, equipo: Producto): Observable<any> {
+  updateRazones(id_usuario: number, razon: RazonParo): Observable<any> {
     const body = new HttpParams()
       .set('action', 'blockRazon')
+      .set('id_razon', ''+razon.id_razon_paro)
+      .set('activo', ''+razon.activo)
       .set('id_usuario', "" + id_usuario);
     return this.http.post(this.URL_RAZON, body);
   }
