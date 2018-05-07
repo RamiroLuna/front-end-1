@@ -12,7 +12,7 @@ export class MetaMasivaService {
   constructor(private http: HttpClient) { }
 
   getInitCatalogos(idUsuario:number): Observable<any> {
-    return this.http.get<any>(this.URL + '?action=loadCombobox');
+    return this.http.get<any>(this.URL + '?action=loadCombobox&id_usuario='+idUsuario);
   }
 
   uploadMetasCSV(id_usuario:number, file:string, idPeriodo:number, IdLinea:number): Observable<any>{

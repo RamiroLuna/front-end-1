@@ -16,7 +16,7 @@ export class ListaMetasEdicionService {
    * Consulta de catalogos
    */
   getInitCatalogos(idUsuario:number): Observable<any> {
-    return this.http.get<any>(this.URL_UPLOAD + '?action=loadCombobox');
+    return this.http.get<any>(this.URL_UPLOAD + '?action=loadCombobox&id_usuario='+idUsuario);
   }
 
   getAllMetas(id_usuario:number, idPeriodo:number, IdLinea:number): Observable<any>{

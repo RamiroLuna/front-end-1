@@ -58,8 +58,6 @@ export class ListaMetasEdicionComponent implements OnInit {
   public idLinea: number;
   public idPeriodo: number;
 
-
-
   constructor(private auth: AuthService,
     private service: ListaMetasEdicionService,
     private fb: FormBuilder

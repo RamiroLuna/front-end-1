@@ -1,6 +1,5 @@
 <div class="container" *ngIf="!loading">
   <div class="section"></div>
-  <h4 class="color_titulo center-align">Registros de producción</h4>
   <!-- Solo para dispositivos moviles -->
   <div class="hide-on-large-only right-align">
     <a routerLink="../../opciones" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
@@ -10,58 +9,82 @@
       </i>
     </a>
     <a routerLink="nuevo" class="btn-floating btn light-green darken-1 waves-effect waves-light tooltipped" data-position="top"
-    data-delay="50" data-tooltip="Agregar producción" (click)="agregar()">
-    <i class="material-icons">add</i>
-  </a>
+      data-delay="50" data-tooltip="Agregar producción" (click)="agregar()">
+      <i class="material-icons">add</i>
+    </a>
   </div>
   <!-- fin Solo para dispositivos moviles -->
-
+  <h4 class="color_titulo center-align">Producción</h4>
   <div class="row">
-    <div class="input-field col s6">
-      <input id="inicio" type="text" class="active" data-value="inicio" />
-      <label for="inicio">Inicio</label>
-    </div>
-
-
-    <div class="file-field input-field col s6">
-      <a class="col s4 m4 l1 xl1 waves-effect waves-light btn right light-green lighten-1" (click)="busqueda()">
-        <i class="material-icons">search</i>
-      </a>
-      <div class="file-path-wrapper">
-        <input id="fin" type="text" class="active" data-value="fin">
-        <label for="fin">Fin</label>
-      </div>
-    </div>
+    <ul class="center-align">
+      <li class="col s12 m12 l12 xl12">
+        <a (click)="activaBusqueda()" [ngClass]="busquedaPersonalizada? 'txt_inactivo': 'txt_activo'">
+          <span *ngIf="!busquedaPersonalizada">Activar Busqueda Personalizada</span>
+          <span *ngIf="busquedaPersonalizada">Desactivar Busqueda Personalizada</span>
+        </a>
+        <hr [ngClass]="busquedaPersonalizada? 'inactive': 'active'">
+      </li>
+    </ul>
   </div>
-</div>
-<div class="container">
-  <table id="tabla" class="display" cellspacing="0" width="100%">
-    <thead>
-      <tr>
-        <th class="center-align">Día</th>
-        <th class="center-align">Linea</th>
-        <th class="center-align">Turno</th>
-        <th class="center-align">Grupo</th>
-        <th class="center-align">Producción</th>
-        <th class="center-align">Ver</th>
-      </tr>
-    </thead>
+  <div class="row" *ngIf="busquedaPersonalizada">
+    <form autocomplete="off" [@visibility]="status">
+      <fieldset>
+        <legend class="color_titulo">
+          <label>
+            <span>Seleccione rango de fecha</span>
+          </label>
+        </legend>
+        <div class="input-field col s6">
+          <input id="inicio" type="text" class="active" />
+          <label for="inicio">Inicio</label>
+        </div>
+        <div class="input-field col s6">
+          <input id="fin" type="text" class="active" />
+          <label for="inicio">Fin</label>
+        </div>
+      </fieldset>
+    </form>
+  </div>
 
-    <tbody>
-      <tr *ngFor="let asignacion of asignaciones">
-        <td class="center-align">{{asignacion.dia}}</td>
-        <td class="center-align">{{asignacion.linea}}</td>
-        <td class="center-align">{{asignacion.turno}}</td>
-        <td class="center-align">{{asignacion.grupo}}</td>
-        <td class="center-align">{{asignacion.produccion }}</td>
-        <td class="center-align">
-          <a class="btn-floating light-green lighten-1">
-            <i class="material-icons">description</i>
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="row" *ngIf="mostrarTabla">
+    <div class="center-align color_titulo">
+      <b>{{ 'Registros de producción ' + periodoAcutal.mes + ' '+ periodoAcutal.anio }}</b>
+    </div>
+    <br>
+    <table id="tabla" class="display" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th class="center-align">Día</th>
+          <th class="center-align">Linea</th>
+          <th class="center-align">Turno</th>
+          <th class="center-align">Grupo</th>
+          <th class="center-align">Liberado</th>
+          <th class="center-align">Ver Producción</th>
+          <th class="center-align">Ver Fallas</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let produccion of producciones">
+          <td class="center-align">{{produccion.diaString}}</td>
+          <td class="center-align">{{produccion.valor_linea}}</td>
+          <td class="center-align">{{produccion.valor_turno}}</td>
+          <td class="center-align">{{produccion.valor_grupo}}</td>
+          <td class="center-align">{{produccion.valor }}</td>
+          <td class="center-align">
+            <a class="btn-floating light-green lighten-1">
+              <i class="material-icons">description</i>
+            </a>
+          </td>
+          <td class="center-align">
+            <a class="btn-floating red lighten-2">
+              <i class="material-icons">description</i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <!-- Inicio solo para pantallas-->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
@@ -78,4 +101,12 @@
     </div>
   </div>
   <!-- Fin solo para pantallas-->
+</div>
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
 </div>

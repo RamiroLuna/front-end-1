@@ -75,6 +75,55 @@ function getAnioActual(): number {
 }
 
 /**
+ * @function getMesActual
+ * @return  {string} 
+ * @description Recupera el descriptivo del mes actual
+ */
+function getMesActual(): string {
+    let nameMoth = '';
+    const d: Date = new Date();
+    switch (d.getMonth()) {
+        case 0:
+            nameMoth = 'Ene';
+            break;
+        case 1:
+            nameMoth = 'Feb';
+            break;
+        case 2:
+            nameMoth = 'Mar';
+            break;
+        case 3:
+            nameMoth = 'Abr';
+            break;
+        case 4:
+            nameMoth = 'May';
+            break;
+        case 5:
+            nameMoth = 'Jun';
+            break;
+        case 6:
+            nameMoth = 'Jul';
+            break;
+        case 7:
+            nameMoth = 'Ago';
+            break;
+        case 8:
+            nameMoth = 'Sep';
+            break;
+        case 9:
+            nameMoth = 'Oct';
+            break;
+        case 10:
+            nameMoth = 'Nov';
+            break;
+        case 11:
+            nameMoth = 'Dic';
+            break;
+    }
+    return nameMoth;
+}
+
+/**
  * @function getFechaActual
  * @return  {string} 
  * @description Devuelve la fecha actual del sistema
@@ -102,11 +151,11 @@ function getMilisegundos(date: string): number {
  * @return  {string} 
  * @description Devuelve la fecha con hora convertida en milisegundos
  */
-function getMilisegundosHoras(date: string, time:string): number {
+function getMilisegundosHoras(date: string, time: string): number {
     let numbers = date.split("/");
     let hora = time.split(":");
 
-    let f = new Date(parseInt(numbers[2]) ,  parseInt(numbers[1] ) ,parseInt(numbers[0]), parseInt(hora[0]), parseInt(hora[1]));
+    let f = new Date(parseInt(numbers[2]), parseInt(numbers[1]), parseInt(numbers[0]), parseInt(hora[0]), parseInt(hora[1]));
     return f.getTime();
 }
 
@@ -272,7 +321,7 @@ function calculaDiaPorMes(anio: number, mes: number): number {
             else
                 return 28;
         default:
-        return -1;
+            return -1;
     }
 }
 
@@ -287,7 +336,7 @@ function calculaDiaPorMes(anio: number, mes: number): number {
  * al menos una minúscula y 
  * al menos una mayúscula.
  */
-function contraseniaValida(contrasenia:string): any {
+function contraseniaValida(contrasenia: string): any {
     return /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{6,10}$/.test(contrasenia.trim());
 }
 
@@ -298,10 +347,10 @@ function contraseniaValida(contrasenia:string): any {
  * @return  {boolean} 
  * @description funcion utilizada para comprobar si existe el rol en el conjunto
  */
-function findRol(idRol:number, roles:string):boolean{
-    let idRoles = roles.split(",").map(el=>parseInt(el));
+function findRol(idRol: number, roles: string): boolean {
+    let idRoles = roles.split(",").map(el => parseInt(el));
     return idRoles.includes(idRol);
-  }
+}
 
 
 export {
@@ -318,5 +367,6 @@ export {
     getMilisegundosHoras,
     DataTableFallas,
     findRol,
+    getMesActual,
     contraseniaValida
 }

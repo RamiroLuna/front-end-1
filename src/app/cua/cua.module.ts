@@ -8,8 +8,6 @@ import { MetaManualComponent } from './meta-manual/meta-manual.component';
 import { ListaMetasEdicionComponent } from './lista-metas-edicion/lista-metas-edicion.component';
 import { ListaFallasComponent } from './lista-fallas/lista-fallas.component';
 import { FormularioFallasComponent } from './formulario-fallas/formulario-fallas.component';
-import { ListaAsignacionProductoComponent } from './lista-asignacion-producto/lista-asignacion-producto.component';
-import { AsignacionProductosComponent } from './asignacion-productos/asignacion-productos.component';
 import { ListCatalogsComponent } from './list-catalogs/list-catalogs.component';
 import { ListByCatalogComponent } from './list-by-catalog/list-by-catalog.component';
 import { FormularioDetalleComponent } from './list-by-catalog/formulario-detalle/formulario-detalle.component';
@@ -30,12 +28,11 @@ const routesMetas: Routes = [
   { path: 'opciones', component: OptionsComponent },
   { path: 'opciones/fallas', component: ListaFallasComponent },
   { path: 'opciones/fallas/:id', component: FormularioFallasComponent },
-  { path: 'opciones/productos-asignaciones', component: ListaAsignacionProductoComponent },
   /* rutas de metas */
   {
     path: 'opciones/metas-lista-edicion', component: ListaMetasEdicionComponent, canActivate: [AuthGuardCua],
     data: {
-      expectedRole: 1004
+      expectedRole: 3
     }
   },
   { path: 'opciones/metas-carga-manual/:id', component: MetaManualComponent },
@@ -74,8 +71,6 @@ const routesMetas: Routes = [
     ListaMetasEdicionComponent,
     ListaFallasComponent,
     FormularioFallasComponent,
-    ListaAsignacionProductoComponent,
-    AsignacionProductosComponent,
     ListCatalogsComponent,
     ListByCatalogComponent,
     FormularioDetalleComponent,

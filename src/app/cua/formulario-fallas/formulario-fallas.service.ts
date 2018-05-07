@@ -21,7 +21,7 @@ export class FormularioFallasService {
    * Consulta de catalogo de lineas. Its important for form of Line
    */ 
   getCatalogos(id_usuario: number): Observable<any> {
-    return this.http.get<any>(this.URL + '?action=loadCombobox&id_usuario=' + id_usuario);
+    return this.http.get<any>(this.URL + '?action=loadComboboxAndMeta&id_usuario=' + id_usuario);
   }
   /*
    * Fin de catalogos requeirdos
