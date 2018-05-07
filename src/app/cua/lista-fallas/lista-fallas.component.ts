@@ -44,6 +44,7 @@ export class ListaFallasComponent implements OnInit {
   public paramsBusqueda: any;
   public status: string;
   public mensajeModal:string;
+  public noVerBtnFallas: boolean;
 
 
   public fallas: Array<Falla> = [];
@@ -67,6 +68,7 @@ export class ListaFallasComponent implements OnInit {
     this.paramsBusqueda = {};
     this.fallaSeleccionada = 0;
     this.pintaForm = false;
+    this.noVerBtnFallas = false;
 
 
     this.paramsBusqueda.id_grupo = this.auth.getId_Grupo();
@@ -261,6 +263,15 @@ export class ListaFallasComponent implements OnInit {
     this.pintaForm = true;
     this.fallaSeleccionada = id;
     $('#modalEdicion').modal('open');
+  }
+
+  modoEdicion(){
+    this.noVerBtnFallas = true;
+  }
+
+  modoInicial(){
+    this.noVerBtnFallas = false;
+    this.bVistaPre = false;
   }
 
   refreshDataTable(event):void{
