@@ -1,12 +1,12 @@
 <div class="container">
 
   <div class="col s12 m12 l12 xl12">
-    <h4 class="color_titulo center-align">Registro de producción</h4>
+    <h4 class="color_titulo center-align">Detalle de producción</h4>
     <div class="section"></div>
     <!-- Solo para dispositivos moviles -->
 
     <div class="hide-on-large-only right-align">
-      <a routerLink="../../produccion" class="tooltipped" data-position="top" data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+      <a class="tooltipped" data-position="top" data-delay="50" data-tooltip="Regresar" (click)="regresar()">
         Regresar
       </a>
     </div>
@@ -76,7 +76,7 @@
             </div>
             <div class="row right-align">
               <div class="col s8"></div>
-              <a class="btn light-green darken-1 waves-effect waves-light btn col s4" (click)="modalQuestionFails()">Registrar producción</a>
+              <a class="btn light-green darken-1 waves-effect waves-light btn col s4" (click)="modalQuestionFails()">Modificar valores</a>
             </div>
           </li>
         </ul>
@@ -84,15 +84,33 @@
     </div>
 
   </div>
+  <!-- solo para pantallas -->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-      <a routerLink="../../produccion" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-        data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+      <a class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+        data-tooltip="Regresar" (click)="regresar()">
         <i class="material-icons">
           <i class="material-icons">arrow_back</i>
         </i>
       </a>
+      <a class="btn-floating btn-large light-green darken-1  waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+        data-tooltip="Validar" (click)="validar()">
+
+        <i class="material-icons">done</i>
+
+      </a>
     </div>
   </div>
+  <!-- fin solo pantallas -->
+  <!-- Solo para dispositivos moviles -->
+
+  <div class="hide-on-large-only center-align">
+    <a class="btn-floating light-green darken-1  waves-effect waves-light tooltipped" data-position="top" data-delay="50" data-tooltip="Validar producción"
+      (click)="validar()">
+      <i class="material-icons">done</i>
+    </a>
+  </div>
+  <br>
+  <!-- Fin solo para dispositivos moviles -->
 
 </div>

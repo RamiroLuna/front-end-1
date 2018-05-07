@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
+import { Producto } from '../../models/producto';
 
 declare var $: any;
 declare var Materialize: any;
@@ -11,15 +12,11 @@ declare var Materialize: any;
 })
 export class FormularioProduccionComponent implements OnInit {
 
-  public productos: Array<any> = [
-    { producto: 'Producción de mesa vibratoria', valor: '', liberado: 0 },
-    { producto: 'Producción SORTEX', valor: '', liberado: 0 },
-    { producto: 'Produccion Polvos', valor: '', liberado: 0 },
-    { producto: 'Produccion Centrifuga PET', valor: '', liberado: 0 },
-    { producto: 'Produccion Hidrofiltro Enjuague', valor: '', liberado: 0 },
-    { producto: 'Produccion Pacas NWP', valor: '', liberado: 0 },
-    { producto: 'Produccion Pacas FEA', valor: '', liberado: 0 },
-    { producto: 'Produccion Pacas SAE', valor: '', liberado: 0 }
+  public productos: Array<Producto> = [
+    {id_producto:1, valor: 'clave', descripcion: 'Poducto ejemplo', activo: 1, id_linea:2, id_tipo_producto:1, valor_linea: 'AMUT2', valor_tipo_producto: 'Materia'},
+    {id_producto:2, valor: 'clave2', descripcion: 'Poducto ejemplo 1', activo: 1, id_linea:2, id_tipo_producto:1, valor_linea: 'AMUT2', valor_tipo_producto: 'Materia'},
+    {id_producto:3, valor: 'clave3', descripcion: 'Poducto ejemplo 2 ', activo: 1, id_linea:2, id_tipo_producto:1, valor_linea: 'AMUT2', valor_tipo_producto: 'Materia'},
+    {id_producto:4, valor: 'clave4', descripcion: 'Poducto ejemplo 3', activo: 1, id_linea:2, id_tipo_producto:1, valor_linea: 'AMUT2', valor_tipo_producto: 'Materia'}
   ];
 
   constructor(private router: Router,) { }

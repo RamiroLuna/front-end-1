@@ -37,6 +37,7 @@ export class ListaProduccionComponent implements OnInit {
 
   public loading: boolean;
   public busquedaPersonalizada: boolean;
+  public noMostrarComponentValidacion:boolean;
   public mostrarTabla: boolean;
   public status: string;
   public periodoAcutal: any = {
@@ -44,6 +45,7 @@ export class ListaProduccionComponent implements OnInit {
     mes: ''
   }
 
+  public idMetaSeleccionada: number;
   public mensajeModal: string;
   public producciones: Array<Produccion>;
 
@@ -52,6 +54,7 @@ export class ListaProduccionComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
+    this.noMostrarComponentValidacion = false;
     this.mostrarTabla = false;
     this.status = "inactive";
     this.producciones = [];
@@ -131,5 +134,12 @@ export class ListaProduccionComponent implements OnInit {
       this.init();
     }
   }
+
+  verProduccion(idMeta:number):void{
+    this.idMetaSeleccionada = idMeta;
+    this.noMostrarComponentValidacion = !this.noMostrarComponentValidacion;
+  }
+
+
 
 }

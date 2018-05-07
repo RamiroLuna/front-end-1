@@ -1,121 +1,124 @@
 <div class="container" *ngIf="!loading">
-  <div class="section"></div>
-  <!-- Solo para dispositivos moviles -->
-  <div class="hide-on-large-only right-align">
-    <a routerLink="../../opciones" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-      data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">
-      <i class="material-icons">
-        <i class="material-icons">arrow_back</i>
-      </i>
-    </a>
-    <a routerLink="nuevo" class="btn-floating btn light-green darken-1 waves-effect waves-light tooltipped" data-position="top"
-      data-delay="50" data-tooltip="Agregar producción" (click)="agregar()">
-      <i class="material-icons">add</i>
-    </a>
-  </div>
-  <!-- fin Solo para dispositivos moviles -->
-  <h4 class="color_titulo center-align">Producción</h4>
-  <div class="row">
-    <ul class="center-align">
-      <li class="col s12 m12 l12 xl12">
-        <a (click)="activaBusqueda()" [ngClass]="busquedaPersonalizada? 'txt_inactivo': 'txt_activo'">
-          <span *ngIf="!busquedaPersonalizada">Activar Busqueda Personalizada</span>
-          <span *ngIf="busquedaPersonalizada">Desactivar Busqueda Personalizada</span>
-        </a>
-        <hr [ngClass]="busquedaPersonalizada? 'inactive': 'active'">
-      </li>
-    </ul>
-  </div>
-  <div class="row" *ngIf="busquedaPersonalizada">
-    <form autocomplete="off" [@visibility]="status">
-      <fieldset>
-        <legend class="color_titulo">
-          <label>
-            <span>Seleccione rango de fecha</span>
-          </label>
-        </legend>
-        <div class="input-field col s6">
-          <input id="inicio" type="text" class="active" />
-          <label for="inicio">Inicio</label>
-        </div>
-        <div class="input-field col s6">
-          <input id="fin" type="text" class="active" />
-          <label for="inicio">Fin</label>
-        </div>
-      </fieldset>
-    </form>
-  </div>
-
-  <div class="row" *ngIf="mostrarTabla">
-    <div class="center-align color_titulo">
-      <b>{{ 'Registros de producción ' + periodoAcutal.mes + ' '+ periodoAcutal.anio }}</b>
-    </div>
-    <br>
-    <table id="tabla" class="display" cellspacing="0" width="100%">
-      <thead>
-        <tr>
-          <th class="center-align">Día</th>
-          <th class="center-align">Linea</th>
-          <th class="center-align">Turno</th>
-          <th class="center-align">Grupo</th>
-          <th class="center-align">Liberado</th>
-          <th class="center-align">Ver Producción</th>
-          <th class="center-align">Ver Fallas</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let produccion of producciones">
-          <td class="center-align">{{produccion.diaString}}</td>
-          <td class="center-align">{{produccion.valor_linea}}</td>
-          <td class="center-align">{{produccion.valor_turno}}</td>
-          <td class="center-align">{{produccion.valor_grupo}}</td>
-          <td class="center-align">
-            <i *ngIf="produccion.estatus == 1" class="material-icons">hourglass_full</i>
-            <i *ngIf="produccion.estatus == 0" class="material-icons">done</i>
-          </td>
-          <td class="center-align">
-            <a class="btn-floating light-green lighten-1">
-              <i class="material-icons">description</i>
-            </a>
-          </td>
-          <td class="center-align">
-            <a class="btn-floating red lighten-2">
-              <i class="material-icons">description</i>
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="row">
-      <div class="section"></div>
-
-      <div class="col s112 m12 l6 xl6 valign-wrapper">
-        <i class="material-icons">hourglass_full</i> Esperando validación de Integrador
-        <br>
-      </div>
-      <div class="col s112 m12 l6 xl6 valign-wrapper">
-        <i class="material-icons">done</i> Validado por Integrador
-      </div>
-
-    </div>
-  </div>
-  <!-- Inicio solo para pantallas-->
-  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
-    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-      <a routerLink="../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+  <div [hidden]="noMostrarComponentValidacion">
+    <div class="section"></div>
+    <!-- Solo para dispositivos moviles -->
+    <div class="hide-on-large-only right-align">
+      <a routerLink="../../opciones" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
         data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">
         <i class="material-icons">
           <i class="material-icons">arrow_back</i>
         </i>
       </a>
-      <a routerLink="nuevo" class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped" data-position="top"
+      <a routerLink="nuevo" class="btn-floating btn light-green darken-1 waves-effect waves-light tooltipped" data-position="top"
         data-delay="50" data-tooltip="Agregar producción" (click)="agregar()">
         <i class="material-icons">add</i>
       </a>
     </div>
+    <!-- fin Solo para dispositivos moviles -->
+
+    <!-- Inicio vista para mostrar producciones registradas -->
+
+    <h4 class="color_titulo center-align">Producción</h4>
+    <div class="row">
+      <ul class="center-align">
+        <li class="col s12 m12 l12 xl12">
+          <a (click)="activaBusqueda()" [ngClass]="busquedaPersonalizada? 'txt_inactivo': 'txt_activo'">
+            <span *ngIf="!busquedaPersonalizada">Activar Busqueda Personalizada</span>
+            <span *ngIf="busquedaPersonalizada">Desactivar Busqueda Personalizada</span>
+          </a>
+          <hr [ngClass]="busquedaPersonalizada? 'inactive': 'active'">
+        </li>
+      </ul>
+    </div>
+    <div class="row" *ngIf="busquedaPersonalizada">
+      <form autocomplete="off" [@visibility]="status">
+        <fieldset>
+          <legend class="color_titulo">
+            <label>
+              <span>Seleccione rango de fecha</span>
+            </label>
+          </legend>
+          <div class="input-field col s6">
+            <input id="inicio" type="text" class="active" />
+            <label for="inicio">Inicio</label>
+          </div>
+          <div class="input-field col s6">
+            <input id="fin" type="text" class="active" />
+            <label for="inicio">Fin</label>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+
+    <div class="row" *ngIf="mostrarTabla">
+      <div class="center-align color_titulo">
+        <b>{{ 'Registros de producción ' + periodoAcutal.mes + ' '+ periodoAcutal.anio }}</b>
+      </div>
+      <br>
+      <table id="tabla" class="display" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th class="center-align">Día</th>
+            <th class="center-align">Linea</th>
+            <th class="center-align">Turno</th>
+            <th class="center-align">Grupo</th>
+            <th class="center-align">Liberado</th>
+            <th class="center-align">Ver Producción</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let produccion of producciones">
+            <td class="center-align">{{produccion.diaString}}</td>
+            <td class="center-align">{{produccion.valor_linea}}</td>
+            <td class="center-align">{{produccion.valor_turno}}</td>
+            <td class="center-align">{{produccion.valor_grupo}}</td>
+            <td class="center-align">
+              <i *ngIf="produccion.estatus == 1" class="material-icons">hourglass_full</i>
+              <i *ngIf="produccion.estatus == 0" class="material-icons">done</i>
+            </td>
+            <td class="center-align">
+              <a class="btn-floating light-green lighten-1" (click)="verProduccion(produccion.id_meta)">
+                <i class="material-icons">description</i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="row">
+        <div class="section"></div>
+
+        <div class="col s112 m12 l6 xl6 valign-wrapper">
+          <i class="material-icons">hourglass_full</i> Esperando validación de Integrador
+          <br>
+        </div>
+        <div class="col s112 m12 l6 xl6 valign-wrapper">
+          <i class="material-icons">done</i> Validado por Integrador
+        </div>
+
+      </div>
+      <!-- Fin vista para mostrar producciones registradas -->
+    </div>
+    <!-- Inicio solo para pantallas-->
+    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a routerLink="../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+        <a routerLink="nuevo" class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Agregar producción" (click)="agregar()">
+          <i class="material-icons">add</i>
+        </a>
+      </div>
+    </div>
+    <!-- Fin solo para pantallas-->
   </div>
-  <!-- Fin solo para pantallas-->
+</div>
+<div *ngIf="noMostrarComponentValidacion">
+  <app-valida-produccion (click)="verProduccion()" [idMeta]="idMetaSeleccionada"></app-valida-produccion>
 </div>
 
 <div class="container" *ngIf="loading">

@@ -21,6 +21,7 @@ import { FormularioProduccionComponent } from './formulario-produccion/formulari
 import { ListaProduccionComponent } from './lista-produccion/lista-produccion.component';
 import { RptEtadComponent } from './rpt-etad/rpt-etad.component';
 import { AuthGuardCua } from '../auth/auth.guard.cua';
+import { ValidaProduccionComponent } from './valida-produccion/valida-produccion.component';
 
 
 
@@ -81,7 +82,8 @@ const routesMetas: Routes = [
     MetaMasivaComponent,
     FormularioProduccionComponent,
     ListaProduccionComponent,
-    RptEtadComponent
+    RptEtadComponent,
+    ValidaProduccionComponent
   ],
   providers: [
     AuthGuardCua
