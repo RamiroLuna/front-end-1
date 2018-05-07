@@ -64,6 +64,7 @@ export class ListaProduccionComponent implements OnInit {
 
   init(): void {
     this.service.getInitProduccion(this.auth.getIdUsuario()).subscribe(result => {
+     
       if (result.response.sucessfull) {
         this.loading = false;
         this.mostrarTabla = true;

@@ -70,7 +70,10 @@
           <td class="center-align">{{produccion.valor_linea}}</td>
           <td class="center-align">{{produccion.valor_turno}}</td>
           <td class="center-align">{{produccion.valor_grupo}}</td>
-          <td class="center-align">{{produccion.valor }}</td>
+          <td class="center-align">
+            <i *ngIf="produccion.estatus == 1" class="material-icons">hourglass_full</i>
+            <i *ngIf="produccion.estatus == 0" class="material-icons">done</i>
+          </td>
           <td class="center-align">
             <a class="btn-floating light-green lighten-1">
               <i class="material-icons">description</i>
@@ -84,6 +87,18 @@
         </tr>
       </tbody>
     </table>
+    <div class="row">
+      <div class="section"></div>
+
+      <div class="col s112 m12 l6 xl6 valign-wrapper">
+        <i class="material-icons">hourglass_full</i> Esperando validación de Integrador
+        <br>
+      </div>
+      <div class="col s112 m12 l6 xl6 valign-wrapper">
+        <i class="material-icons">done</i> Validado por Integrador
+      </div>
+
+    </div>
   </div>
   <!-- Inicio solo para pantallas-->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
