@@ -23,6 +23,7 @@ import { RptEtadComponent } from './rpt-etad/rpt-etad.component';
 import { AuthGuardCua } from '../auth/auth.guard.cua';
 import { ValidaProduccionComponent } from './valida-produccion/valida-produccion.component';
 import { PipeClass } from '../pipes';
+import { ListaValidacionComponent } from './lista-validacion/lista-validacion.component';
 
 
 const routesMetas: Routes = [
@@ -89,7 +90,8 @@ const routesMetas: Routes = [
     ListaProduccionComponent,
     RptEtadComponent,
     ValidaProduccionComponent,
-    PipeClass
+    PipeClass,
+    ListaValidacionComponent
   ],
   providers: [
     AuthGuardCua

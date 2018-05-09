@@ -1,0 +1,64 @@
+<div class="container" *ngIf="!loading">
+  <div class="section"></div>
+  <div class="col s12 m12 l8 xl8">
+
+    <h5 class="color_titulo center-align">
+      <b>PRODUCCION POR VALIDAR</b>
+    </h5>
+    <!-- Solo para dispositivos moviles -->
+    <div class="hide-on-large-only right-align">
+      <a routerLink="../../opciones">Regresar</a>
+    </div>
+    <!-- Fin solo para dispositivos moviles -->
+    <div class="section"></div>
+    <div class="row">
+      <table id="tabla_usuarios_sonarh" class="display" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th class="center-align">Num empleado</th>
+            <th class="center-align">Nombre de empleado</th>
+            <th class="center-align">Grupo</th>
+            <th class="center-align">Area</th>
+            <th class="center-align" *ngIf="permission.altaEtad">Activar en ETAD</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let usuario of usuarios_sonarh" [class]="usuario.NumEmpleado">
+            <td class="center-align">{{ usuario.NumEmpleado }}</td>
+            <td class="center-align">{{ usuario.Nombre + ' '+ usuario.Paterno + ' '+ usuario.Materno }}</td>
+            <td class="center-align">{{ usuario.Grupo}}</td>
+            <td class="center-align">{{ usuario.Area }}</td>
+            <td class="center-align" *ngIf="permission.altaEtad">
+              <a *ngIf="!usuario.activo_etad" [routerLink]="['../usuario-sonarh/' + usuario.NumEmpleado]" class="btn-floating waves-effect waves-light light-green lighten-1">
+                <i class="material-icons">add</i>
+              </a>
+              <p *ngIf="usuario.activo_etad"> Activo </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a routerLink="../../opciones" class="btn-floating btn-large  indigo darken-4 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Regresar" (click)="ocultarTooltip()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas -->
+</div>
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>

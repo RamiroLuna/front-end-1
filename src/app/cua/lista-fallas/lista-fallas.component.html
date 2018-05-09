@@ -113,10 +113,17 @@
         <thead>
           <tr>
             <th class="center-align">Día</th>
+            <th class="center-align">Linea</th>
+            <th class="center-align">Grupo</th>
+            <th class="center-align">Turno</th>
             <th class="center-align">Fuente del Paro</th>
             <th class="center-align">Razón del Paro</th>
+            <th class="center-align">Equipo</th>
             <th class="center-align">Nombre del Equipo</th>
-            <th class="center-align">Tiempo paro</th>
+            <th class="center-align">Problema</th>
+            <th class="center-align">Hora de inicio</th>
+            <th class="center-align">Hora de final</th>
+            <th class="center-align">Horas de paro</th>
             <th class="center-align">Editar</th>
             <th class="center-align">Eliminar</th>
           </tr>
@@ -128,9 +135,16 @@
           </tr>
           <tr *ngFor="let falla of fallas" [class]="falla.id_falla">
             <td class="center-align">{{falla.diaString}}</td>
+            <td class="center-align">{{falla.valor_linea}}</td>
+            <td class="center-align">{{falla.valor_grupo}}</td>
+            <td class="center-align">{{falla.valor_turno}}</td>
             <td class="center-align">{{falla.valor_fuente}}</td>
             <td class="center-align">{{falla.valor_razon}}</td>
             <td class="center-align">{{falla.valor_equipo}}</td>
+            <td class="center-align">{{falla.descripcion_equipo}}</td>
+            <td class="center-align">{{falla.descripcion}}</td>
+            <td class="center-align">{{falla.hora_inicio}}</td>
+            <td class="center-align">{{falla.hora_final}}</td>
             <td class="center-align">{{falla.tiempo_paro + ' Hrs'}}</td>
             <td class="center-align">
               <a class="btn-floating light-green lighten-1" (click)="openModalEdicion(falla.id_falla)">
