@@ -28,8 +28,18 @@ import { ListaValidacionComponent } from './lista-validacion/lista-validacion.co
 
 const routesMetas: Routes = [
   { path: 'opciones', component: OptionsComponent },
-  { path: 'opciones/fallas', component: ListaFallasComponent },
-  { path: 'opciones/fallas/:id', component: FormularioFallasComponent },
+  {
+    path: 'opciones/fallas', component: ListaFallasComponent, canActivate: [AuthGuardCua],
+    data: {
+      expectedRole: 7
+    }
+  },
+  {
+    path: 'opciones/fallas/:id', component: FormularioFallasComponent, canActivate: [AuthGuardCua],
+    data: {
+      expectedRole: 6
+    }
+  },
   /* rutas de metas */
   {
     path: 'opciones/metas-lista-edicion', component: ListaMetasEdicionComponent, canActivate: [AuthGuardCua],
@@ -37,8 +47,18 @@ const routesMetas: Routes = [
       expectedRole: 3
     }
   },
-  { path: 'opciones/metas-carga-manual/:id', component: MetaManualComponent },
-  { path: 'opciones/metas-carga-masiva', component: MetaMasivaComponent },
+  {
+    path: 'opciones/metas-carga-manual/:id', component: MetaManualComponent, canActivate: [AuthGuardCua],
+    data: {
+      expectedRole: 2
+    }
+  },
+  {
+    path: 'opciones/metas-carga-masiva', component: MetaMasivaComponent, canActivate: [AuthGuardCua],
+    data: {
+      expectedRole: 1
+    }
+  },
   /* rutas de catalogos */
   { path: 'opciones/catalogos', component: ListCatalogsComponent },
   { path: 'opciones/catalogos/:name', component: ListByCatalogComponent },
@@ -51,16 +71,31 @@ const routesMetas: Routes = [
   { path: 'opciones/lista-reportes/etad', component: RptEtadComponent },
 
   /* Registro de produccion */
-  { path: 'opciones/produccion', component: ListaProduccionComponent },
+  {
+    path: 'opciones/produccion', component: ListaProduccionComponent, canActivate: [AuthGuardCua],
+    data: {
+      expectedRole: 18
+    }
+  },
   {
     path: 'opciones/produccion/:id', component: FormularioProduccionComponent, canActivate: [AuthGuardCua],
     data: {
       expectedRole: 17
     }
-  }, 
+  },
   /* Validacion de produccion */
-  { path: 'opciones/validaciones', component: ListaValidacionComponent },
-  { path: 'opciones/validaciones/:id', component: ValidaProduccionComponent }
+  {
+    path: 'opciones/validaciones', component: ListaValidacionComponent, canActivate: [AuthGuardCua],
+    data: {
+      expectedRole: 20
+    }
+  },
+  {
+    path: 'opciones/validaciones/:id', component: ValidaProduccionComponent, canActivate: [AuthGuardCua],
+    data: {
+      expectedRole: 20
+    }
+  }
 ];
 
 @NgModule({

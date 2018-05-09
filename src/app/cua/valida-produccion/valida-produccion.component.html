@@ -145,7 +145,7 @@
           <i class="material-icons">arrow_back</i>
         </i>
       </a>
-      <a class="btn-floating btn-large light-green darken-1  waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+      <a *ngIf="mostrarBtnValidar" class="btn-floating btn-large light-green darken-1  waves-effect waves-light tooltipped" data-position="top" data-delay="50"
         data-tooltip="Validar" (click)="validar()">
 
         <i class="material-icons">done</i>
@@ -157,7 +157,7 @@
   <!-- Solo para dispositivos moviles -->
 
   <div class="hide-on-large-only center-align">
-    <a class="btn-floating light-green darken-1  waves-effect waves-light tooltipped" data-position="top" data-delay="50" data-tooltip="Validar producción"
+    <a *ngIf="mostrarBtnValidar" class="btn-floating light-green darken-1  waves-effect waves-light tooltipped" data-position="top" data-delay="50" data-tooltip="Validar producción"
       (click)="validar()">
       <i class="material-icons">done</i>
     </a>

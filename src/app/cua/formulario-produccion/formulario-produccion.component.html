@@ -97,7 +97,7 @@
             <li class="collection-item light-green lighten-5">
               <span class="collection-header">
                 <b>Productos. </b> Producción registrada</span>
-              <div class="secondary-content">
+              <div class="secondary-content" *ngIf="permission.updateProduccion">
                 <a href="#" (click)="modificarDatos($event)">
                   {{ modificacion ? 'Cancelar' : 'Modificar' }}
                 </a>

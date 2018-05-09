@@ -7,7 +7,8 @@ import { FormularioProduccionService } from './formulario-produccion.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Linea } from '../../models/linea';
 import { Catalogo } from '../../models/catalogo';
-import { isNumeroAsignacionValid } from '../../utils';
+import { isNumeroAsignacionValid,findRol } from '../../utils';
+
 
 
 declare var $: any;
@@ -42,6 +43,12 @@ export class FormularioProduccionComponent implements OnInit {
   public grupos: Array<Catalogo>;
   public turnos: Array<Catalogo>;
 
+  public permission: any = {
+    updateProduccion:false
+  }
+
+
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -50,6 +57,7 @@ export class FormularioProduccionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.permission.updateProduccion = findRol(19, this.auth.getRolesCUA());
     this.loading = true;
     this.insertProduccion = true;
     this.modificacion = false;

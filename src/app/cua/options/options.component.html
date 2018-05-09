@@ -1,7 +1,7 @@
-<div class="container">
+<div class="container" *ngIf="!loading">
   <div class="section"></div>
   <h4 class="color_titulo center-align">CUA</h4>
-  <div >
+  <div>
     <ul class="collapsible collection with-header" data-collapsible="accordion">
       <li>
         <div class="collapsible-header">
@@ -11,19 +11,22 @@
             <div class="col s12 m12 l12 xl12">
               <!-- Vista solo para moviles  -->
               <div class="hide-on-large-only">
-                <a routerLink="metas-carga-manual/nuevo" class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                <a [attr.disabled]="!permission.cargaMetaManual" routerLink="metas-carga-manual/nuevo" class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1"
+                  (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     MANUAL
                   </i>
                 </a>
                 <div class="col s1 m1 l1 xl1"></div>
-                <a routerLink="metas-carga-masiva" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                <a [attr.disabled]="!permission.cargaMasiva" routerLink="metas-carga-masiva" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                  (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     MASIVA
                   </i>
                 </a>
                 <div class="col s1 m1 l1 xl1"></div>
-                <a routerLink="metas-lista-edicion" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                <a [attr.disabled]="!permission.edicionMeta" routerLink="metas-lista-edicion" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                  (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     EDICIÓN
                   </i>
@@ -33,15 +36,15 @@
               <!-- Inicio solo para pantallas-->
               <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
                 <div class="col s1 m1 l1 xl1"></div>
-                <a routerLink="metas-carga-manual/nuevo" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                <a [attr.disabled]="!permission.cargaMetaManual" routerLink="metas-carga-manual/nuevo" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   CARGA MANUAL
                 </a>
                 <div class="col s2 m2 l2 xl2"></div>
-                <a routerLink="metas-carga-masiva" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                <a [attr.disabled]="!permission.cargaMasiva" routerLink="metas-carga-masiva" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   CARGA MASIVA
                 </a>
                 <div class="col s2 m2 l2 xl2"></div>
-                <a routerLink="metas-lista-edicion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                <a [attr.disabled]="!permission.edicionMeta" routerLink="metas-lista-edicion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   EDICION
                 </a>
               </div>
@@ -57,19 +60,40 @@
             <div class="col s12 m12 l12 xl12">
               <!-- Vista solo para moviles  -->
               <div class="hide-on-large-only">
-                <a routerLink="produccion" class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                <a *ngIf="permission.produccion" routerLink="produccion" class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1"
+                  (click)="ocultarTooltip()">
+                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                    PRODUCCION
+                  </i>
+                </a>
+                <a disabled *ngIf="!permission.produccion"  class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1"
+                  (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     PRODUCCION
                   </i>
                 </a>
                 <div class="col s1 m1 l1 xl1"></div>
-                <a routerLink="fallas" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                <a *ngIf="permission.fallas" routerLink="fallas" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                  (click)="ocultarTooltip()">
+                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                    FALLAS
+                  </i>
+                </a>
+                <a disabled *ngIf="!permission.fallas" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                  (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     FALLAS
                   </i>
                 </a>
                 <div class="col s1 m1 l1 xl1"></div>
-                <a routerLink="validaciones" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                <a *ngIf="permission.validacion" routerLink="validaciones" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                  (click)="ocultarTooltip()">
+                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                    VALIDACIÓN
+                  </i>
+                </a>
+                <a disabled *ngIf="!permission.validacion" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                  (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     VALIDACIÓN
                   </i>
@@ -80,16 +104,26 @@
               <!-- Inicio solo para pantallas-->
               <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
                 <div class="col s1 m1 l1 xl1"></div>
-                <a routerLink="produccion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                <a *ngIf="permission.produccion" routerLink="produccion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  PRODUCCION
+                </a>
+                <a disabled *ngIf="!permission.produccion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   PRODUCCION
                 </a>
                 <div class="col s2 m2 l2 xl2"></div>
-                <a routerLink="fallas" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                <a *ngIf="permission.fallas" routerLink="fallas" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  FALLAS
+                </a>
+
+                <a disabled *ngIf="!permission.fallas" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   FALLAS
                 </a>
 
                 <div class="col s2 m2 l2 xl2"></div>
-                <a routerLink="validaciones" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                <a *ngIf="permission.validacion" routerLink="validaciones" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  VALIDACION
+                </a>
+                <a disabled *ngIf="!permission.validacion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   VALIDACION
                 </a>
               </div>
@@ -134,4 +168,12 @@
   </div>
   <!-- Fin solo para pantallas-->
 
+</div>
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
 </div>
