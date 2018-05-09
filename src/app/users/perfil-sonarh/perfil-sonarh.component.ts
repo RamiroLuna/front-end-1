@@ -107,7 +107,7 @@ export class PerfilSonarhComponent implements OnInit {
 
           if (result.response.sucessfull) {
             Materialize.toast('Se agrego nuevo usuario a ETAD!', 4000, 'green');
-            this.router.navigate(['home/usuarios/etad']);
+            this.router.navigate(['home/usuarios/sonarh']);
 
           } else {
             Materialize.toast(result.response.message, 4000, 'red');

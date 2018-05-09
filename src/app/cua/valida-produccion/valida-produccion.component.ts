@@ -11,6 +11,7 @@ declare var Materialize: any;
 export class ValidaProduccionComponent implements OnInit {
   
   @Input() idMeta: number;
+  @Input() seccion: string;
   @Output() accion = new EventEmitter();
   
   constructor() { }

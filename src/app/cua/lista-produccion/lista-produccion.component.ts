@@ -36,8 +36,9 @@ declare var Materialize: any;
 export class ListaProduccionComponent implements OnInit {
 
   public loading: boolean;
+  public showBtnRegistrar: boolean;
   public busquedaPersonalizada: boolean;
-  public noMostrarComponentValidacion:boolean;
+  public noMostrarComponentValidacion: boolean;
   public mostrarTabla: boolean;
   public status: string;
   public periodoAcutal: any = {
@@ -46,6 +47,7 @@ export class ListaProduccionComponent implements OnInit {
   }
 
   public idMetaSeleccionada: number;
+  public seccion:string;
   public mensajeModal: string;
   public producciones: Array<Produccion>;
 
@@ -54,6 +56,7 @@ export class ListaProduccionComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
+    this.showBtnRegistrar = false;
     this.noMostrarComponentValidacion = false;
     this.mostrarTabla = false;
     this.status = "inactive";
@@ -67,11 +70,21 @@ export class ListaProduccionComponent implements OnInit {
 
   init(): void {
     this.service.getInitProduccion(this.auth.getIdUsuario()).subscribe(result => {
-     
+
       if (result.response.sucessfull) {
         this.loading = false;
         this.mostrarTabla = true;
         this.producciones = result.data.listProduccion || [];
+        //si es undefined no viene meta
+        if (typeof result.data.listDetalle != "undefined") {
+
+          if (result.data.listDetalle.length > 0) {
+            this.showBtnRegistrar = false;
+          } else {
+            this.showBtnRegistrar = true;
+          }
+        }
+
         setTimeout(() => { this.ngAfterViewHttp() }, 200)
       } else {
         Materialize.toast('Ocurrió  un error al consultar catalogos!', 4000, 'red');
@@ -130,12 +143,13 @@ export class ListaProduccionComponent implements OnInit {
           }
         });
       }, 200);
-    }else{
+    } else {
       this.init();
     }
   }
 
-  verProduccion(idMeta:number):void{
+  verProduccion(idMeta: number): void {
+    this.seccion = "consulta";
     this.idMetaSeleccionada = idMeta;
     this.noMostrarComponentValidacion = !this.noMostrarComponentValidacion;
   }

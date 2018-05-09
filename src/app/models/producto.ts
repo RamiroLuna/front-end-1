@@ -9,4 +9,6 @@ export class Producto {
      valor_linea:string;
      valor_tipo_producto:string;
 
+     asignacion:string="";
+     id_produccion?:number;
 }

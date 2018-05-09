@@ -52,13 +52,13 @@ function isValidId(id: any): boolean {
 
 /**
  * @function isNumeroAsignacionValid
- * @param  {int} numero - Numero ingresado 
+ * @param  {string} numero - Numero ingresado 
  * @return  boolean
  */
 let isNumeroAsignacionValid = (numero) => {
-    if (numero == undefined || numero.trim() == '') {
-        return false;
-    } else {
+    if(numero.trim() == ''){
+      return false;    
+    }else{
         return /^[0-9]*([.][0-9]+)?$/.test(numero.trim())
     }
 

@@ -22,7 +22,7 @@ import { ListaProduccionComponent } from './lista-produccion/lista-produccion.co
 import { RptEtadComponent } from './rpt-etad/rpt-etad.component';
 import { AuthGuardCua } from '../auth/auth.guard.cua';
 import { ValidaProduccionComponent } from './valida-produccion/valida-produccion.component';
-
+import { PipeClass } from '../pipes';
 
 
 const routesMetas: Routes = [
@@ -51,7 +51,12 @@ const routesMetas: Routes = [
 
   /* Registro de produccion */
   { path: 'opciones/produccion', component: ListaProduccionComponent },
-  { path: 'opciones/produccion/:id', component: FormularioProduccionComponent }
+  {
+    path: 'opciones/produccion/:id', component: FormularioProduccionComponent, canActivate: [AuthGuardCua],
+    data: {
+      expectedRole: 17
+    }
+  }
 
 
 
@@ -83,7 +88,8 @@ const routesMetas: Routes = [
     FormularioProduccionComponent,
     ListaProduccionComponent,
     RptEtadComponent,
-    ValidaProduccionComponent
+    ValidaProduccionComponent,
+    PipeClass
   ],
   providers: [
     AuthGuardCua

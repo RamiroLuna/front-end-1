@@ -9,8 +9,8 @@
           <i class="material-icons">arrow_back</i>
         </i>
       </a>
-      <a routerLink="nuevo" class="btn-floating btn light-green darken-1 waves-effect waves-light tooltipped" data-position="top"
-        data-delay="50" data-tooltip="Agregar producción" (click)="agregar()">
+      <a *ngIf="showBtnRegistrar" routerLink="nuevo" class="btn-floating btn light-green darken-1 waves-effect waves-light tooltipped"
+        data-position="top" data-delay="50" data-tooltip="Agregar producción" (click)="agregar()">
         <i class="material-icons">add</i>
       </a>
     </div>
@@ -19,7 +19,7 @@
     <!-- Inicio vista para mostrar producciones registradas -->
 
     <h4 class="color_titulo center-align">Producción</h4>
-    <div class="row">
+    <div class="row" *ngIf="false">
       <ul class="center-align">
         <li class="col s12 m12 l12 xl12">
           <a (click)="activaBusqueda()" [ngClass]="busquedaPersonalizada? 'txt_inactivo': 'txt_activo'">
@@ -74,8 +74,8 @@
             <td class="center-align">{{produccion.valor_turno}}</td>
             <td class="center-align">{{produccion.valor_grupo}}</td>
             <td class="center-align">
-              <i *ngIf="produccion.estatus == 1" class="material-icons">hourglass_full</i>
-              <i *ngIf="produccion.estatus == 0" class="material-icons">done</i>
+              <i *ngIf="produccion.estatus == 0" class="material-icons">hourglass_full</i>
+              <i *ngIf="produccion.estatus == 1" class="material-icons">done</i>
             </td>
             <td class="center-align">
               <a class="btn-floating light-green lighten-1" (click)="verProduccion(produccion.id_meta)">
@@ -97,6 +97,7 @@
         </div>
 
       </div>
+
       <!-- Fin vista para mostrar producciones registradas -->
     </div>
     <!-- Inicio solo para pantallas-->
@@ -108,8 +109,8 @@
             <i class="material-icons">arrow_back</i>
           </i>
         </a>
-        <a routerLink="nuevo" class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped" data-position="top"
-          data-delay="50" data-tooltip="Agregar producción" (click)="agregar()">
+        <a *ngIf="showBtnRegistrar" routerLink="nuevo" class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped"
+          data-position="top" data-delay="50" data-tooltip="Agregar producción" (click)="agregar()">
           <i class="material-icons">add</i>
         </a>
       </div>
@@ -118,7 +119,7 @@
   </div>
 </div>
 <div *ngIf="noMostrarComponentValidacion">
-  <app-valida-produccion (click)="verProduccion()" [idMeta]="idMetaSeleccionada"></app-valida-produccion>
+  <app-formulario-produccion (accion)="verProduccion()" [seccion]="seccion" [idMeta]="idMetaSeleccionada"></app-formulario-produccion>
 </div>
 
 <div class="container" *ngIf="loading">
