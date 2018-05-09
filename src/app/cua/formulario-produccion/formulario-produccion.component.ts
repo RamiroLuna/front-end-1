@@ -60,7 +60,6 @@ export class FormularioProduccionComponent implements OnInit {
 
     if (this.seccion == 'add') {
       this.service.init(this.auth.getIdUsuario()).subscribe(result => {
-        console.log('meta',result)
         if (result.response.sucessfull) {
           this.grupos = result.data.listGrupos || [];
           this.lineas = result.data.listLineas || [];

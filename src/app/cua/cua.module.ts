@@ -57,10 +57,10 @@ const routesMetas: Routes = [
     data: {
       expectedRole: 17
     }
-  }
-
-
-
+  }, 
+  /* Validacion de produccion */
+  { path: 'opciones/validaciones', component: ListaValidacionComponent },
+  { path: 'opciones/validaciones/:id', component: ValidaProduccionComponent }
 ];
 
 @NgModule({

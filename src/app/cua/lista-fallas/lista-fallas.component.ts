@@ -173,7 +173,7 @@ export class ListaFallasComponent implements OnInit {
 
     if (this.formBusqueda.valid) {
       this.service.getAllFallasByDays(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-        console.log('result fallas',result)
+
         if (result.response.sucessfull) {
           this.fallas = result.data.listFallas || [];
           this.bVistaPre = true;

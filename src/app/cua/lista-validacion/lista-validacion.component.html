@@ -3,7 +3,7 @@
   <div class="col s12 m12 l8 xl8">
 
     <h5 class="color_titulo center-align">
-      <b>PRODUCCION POR VALIDAR</b>
+      <b>Producción pendientes por validar</b>
     </h5>
     <!-- Solo para dispositivos moviles -->
     <div class="hide-on-large-only right-align">
@@ -12,28 +12,27 @@
     <!-- Fin solo para dispositivos moviles -->
     <div class="section"></div>
     <div class="row">
-      <table id="tabla_usuarios_sonarh" class="display" cellspacing="0" width="100%">
+      <table id="tabla" class="display" cellspacing="0" width="100%">
         <thead>
           <tr>
-            <th class="center-align">Num empleado</th>
-            <th class="center-align">Nombre de empleado</th>
+            <th class="center-align">Dia</th>
+            <th class="center-align">Linea</th>
             <th class="center-align">Grupo</th>
-            <th class="center-align">Area</th>
-            <th class="center-align" *ngIf="permission.altaEtad">Activar en ETAD</th>
+            <th class="center-align">Turno</th>
+            <th class="center-align">Informe de producción</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr *ngFor="let usuario of usuarios_sonarh" [class]="usuario.NumEmpleado">
-            <td class="center-align">{{ usuario.NumEmpleado }}</td>
-            <td class="center-align">{{ usuario.Nombre + ' '+ usuario.Paterno + ' '+ usuario.Materno }}</td>
-            <td class="center-align">{{ usuario.Grupo}}</td>
-            <td class="center-align">{{ usuario.Area }}</td>
-            <td class="center-align" *ngIf="permission.altaEtad">
-              <a *ngIf="!usuario.activo_etad" [routerLink]="['../usuario-sonarh/' + usuario.NumEmpleado]" class="btn-floating waves-effect waves-light light-green lighten-1">
-                <i class="material-icons">add</i>
+          <tr *ngFor="let produccion of listaProduccion">
+            <td class="center-align">{{ produccion.dia }}</td>
+            <td class="center-align">{{ produccion.valor_linea  }}</td>
+            <td class="center-align">{{ produccion.valor_grupo }}</td>
+            <td class="center-align">{{ produccion.valor_turno }}</td>
+            <td class="center-align">
+              <a [routerLink]="['../validaciones/' + produccion.id_meta ]" class="btn-floating waves-effect waves-light light-green lighten-1">
+                <i class="material-icons">description</i>
               </a>
-              <p *ngIf="usuario.activo_etad"> Activo </p>
             </td>
           </tr>
         </tbody>

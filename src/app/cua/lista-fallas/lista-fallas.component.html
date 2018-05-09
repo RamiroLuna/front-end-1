@@ -131,7 +131,20 @@
 
         <tbody>
           <tr *ngIf="fallas.length == 0">
-            <td class="center-align" colspan="7">NO HAY FALLAS REGISTRADAS</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>NO HAY FALLAS REGISTRADAS</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
           </tr>
           <tr *ngFor="let falla of fallas" [class]="falla.id_falla">
             <td class="center-align">{{falla.diaString}}</td>

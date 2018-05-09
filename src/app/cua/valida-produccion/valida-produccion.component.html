@@ -1,57 +1,60 @@
-<div class="container">
+<div class="container" *ngIf="!loading">
 
   <div class="col s12 m12 l12 xl12">
-    <h4 class="color_titulo center-align">Detalle de producción</h4>
-    <div class="section"></div>
+    <h4 class="color_titulo center-align">Informe de producción</h4>
     <!-- Solo para dispositivos moviles -->
 
     <div class="hide-on-large-only right-align">
-      <a class="tooltipped" data-position="top" data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+      <a routerLink="../../validaciones" class="tooltipped" data-position="top" data-delay="50" data-tooltip="Regresar" (click)="regresar()">
         Regresar
       </a>
     </div>
     <br>
 
     <!-- Fin solo para dispositivos moviles -->
-    <form class="col s12 m12 l12 xl12" autocomplete="off">
+    <form class="col s12 m12 l12 xl12" [formGroup]="formulario" autocomplete="off">
       <fieldset>
         <legend class="color_titulo">
           <b>Datos de producción:</b>
         </legend>
         <div class="section"></div>
         <div class="row">
-          <div class="input-field col s12 m12 l3 xl3">
-            <select class="opciones">
-              <option value="" selected>Seleccione</option>
-              <option value="1">AMUT1</option>
-              <option value="1">TODOS</option>
+          <div class="col s12 m12 l3 xl3">
+            <label>Línea</label>
+            <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="id_linea" [(ngModel)]="meta.id_linea">
+              <option value="">SELECCIONE</option>
+              <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{ linea.valor }}</option>
             </select>
-            <label>Linea</label>
+            <div *ngIf="formulario.controls.id_linea.errors?.required && (formulario.controls.id_linea?.touched || submitted)" class="error">
+              Se requiere la linea
+            </div>
           </div>
-          <div class="input-field col s12 m12 l3 xl3">
-            <select>
-              <option value="" selected>Seleccione</option>
-              <option value="1">A</option>
-              <option value="1">B</option>
-              <option value="1">C</option>
-              <option value="1">D</option>
-              <option value="1">TODOS</option>
-            </select>
+          <div class="col s12 m12 l3 xl3">
             <label>Grupo</label>
-          </div>
-          <div class="input-field col s12 m12 l3 xl3">
-            <select class="opciones">
-              <option value="" selected>Seleccione</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="1">TODOS</option>
+            <select materialize="material_select" [materializeSelectOptions]="grupos" formControlName="id_grupo" [(ngModel)]="meta.id_grupo">
+              <option value="">SELECCIONE</option>
+              <option *ngFor="let grupo of grupos" [value]="grupo.id">{{ grupo.valor }}</option>
             </select>
+            <div *ngIf="formulario.controls.id_grupo.errors?.required && (formulario.controls.id_grupo?.touched || submitted)" class="error">
+              Se requiere el grupo
+            </div>
+          </div>
+          <div class="col s12 m12 l3 xl3">
             <label>Turno</label>
+            <select materialize="material_select" [materializeSelectOptions]="turnos" formControlName="id_turno" [(ngModel)]="meta.id_turno">
+              <option value="">SELECCIONE</option>
+              <option *ngFor="let turno of turnos" [value]="turno.id">{{ turno.valor }}</option>
+            </select>
+            <div *ngIf="formulario.controls.id_turno.errors?.required && (formulario.controls.id_turno?.touched || submitted)" class="error">
+              Se requiere el turno
+            </div>
           </div>
           <div class="input-field col s12 m12 l3 xl3">
-            <label for="dia" class="active">Día de registro</label>
-            <input id="dia" type="text">
+            <label for="dia">Día</label>
+            <input id="dia" type="text" formControlName="diaString" [(ngModel)]="meta.diaString">
+            <div *ngIf="formulario.controls.diaString.errors?.required && (formulario.controls.diaString?.touched || submitted)" class="error">
+              Se requiere el día
+            </div>
           </div>
         </div>
       </fieldset>
@@ -62,21 +65,70 @@
         <ul id="issues-collection" class="collection">
           <li class="collection-item light-green lighten-5">
             <span class="collection-header">
-              <b>Productos. </b> Ingrese el valor obtenido</span>
+              <b>Productos. </b> Producción registrada</span>
           </li>
           <li class="collection-item">
             <div class="row" *ngFor="let producto of productos">
               <div class="col s8">
                 <p class="collections-title">
-                  <b>{{ '(' + producto.valor + ')' }}&nbsp;&nbsp;</b>{{ producto.descripcion }}</p>
+                  <b>{{ '(' + producto.valor_producto + ')' }}&nbsp;&nbsp;</b>{{ producto.descripcion_producto }}</p>
               </div>
               <div class="col s4">
-                <input type="text" placeholder="Escribe aquí">
+                <input type="text" placeholder="Escribe aquí" [value]="producto.valor | toneladas" disabled>
               </div>
             </div>
-            <div class="row right-align">
-              <div class="col s8"></div>
-              <a class="btn light-green darken-1 waves-effect waves-light btn col s4" (click)="modalQuestionFails()">Modificar valores</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="section"></div>
+    <div class="row">
+      <div class="col s12 m12 l12 xl12">
+        <ul id="issues-collection" class="collection">
+          <li class="collection-item light-green lighten-5">
+            <span class="collection-header">
+              <b>Fallas. </b></span>
+          </li>
+          <li class="collection-item">
+            <div class="row scroll_ejex_tabla_reporte">
+                <table id="tabla" class="display" cellspacing="0" width="100%">
+                    <thead>
+                      <tr>
+                        <th class="center-align">Día</th>
+                        <th class="center-align">Linea</th>
+                        <th class="center-align">Grupo</th>
+                        <th class="center-align">Turno</th>
+                        <th class="center-align">Fuente del Paro</th>
+                        <th class="center-align">Razón del Paro</th>
+                        <th class="center-align">Equipo</th>
+                        <th class="center-align">Nombre del Equipo</th>
+                        <th class="center-align">Problema</th>
+                        <th class="center-align">Hora de inicio</th>
+                        <th class="center-align">Hora de final</th>
+                        <th class="center-align">Horas de paro</th>
+                      </tr>
+                    </thead>
+            
+                    <tbody>
+                      <tr *ngIf="fallas.length == 0">
+                        <td class="center-align" colspan="12">NO HAY FALLAS REGISTRADAS</td>
+                      </tr>
+                      <tr *ngFor="let falla of fallas">
+                        <td class="center-align">{{falla.diaString}}</td>
+                        <td class="center-align">{{falla.valor_linea}}</td>
+                        <td class="center-align">{{falla.valor_grupo}}</td>
+                        <td class="center-align">{{falla.valor_turno}}</td>
+                        <td class="center-align">{{falla.valor_fuente}}</td>
+                        <td class="center-align">{{falla.valor_razon}}</td>
+                        <td class="center-align">{{falla.valor_equipo}}</td>
+                        <td class="center-align">{{falla.descripcion_equipo}}</td>
+                        <td class="center-align">{{falla.descripcion}}</td>
+                        <td class="center-align">{{falla.hora_inicio}}</td>
+                        <td class="center-align">{{falla.hora_final}}</td>
+                        <td class="center-align">{{falla.tiempo_paro + ' Hrs'}}</td>                  
+                      </tr>
+                    </tbody>
+                  </table>
             </div>
           </li>
         </ul>
@@ -87,8 +139,8 @@
   <!-- solo para pantallas -->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-      <a class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
-        data-tooltip="Regresar" (click)="regresar()">
+      <a routerLink="../../validaciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Regresar" (click)="regresar()">
         <i class="material-icons">
           <i class="material-icons">arrow_back</i>
         </i>
@@ -113,4 +165,13 @@
   <br>
   <!-- Fin solo para dispositivos moviles -->
 
+</div>
+
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
 </div>

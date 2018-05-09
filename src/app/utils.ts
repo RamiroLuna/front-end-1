@@ -166,6 +166,7 @@ function getMilisegundosHoras(date: string, time: string): number {
 function DataTable(el): void {
     $(el).DataTable({
         "dom": '<lf<t>ip>',
+        "ordering": false,
         "bPaginate": true,
         "scrollX": true,
         "autoWidth": "*",
@@ -205,6 +206,7 @@ function DataTableReporte(el): void {
     $(el).DataTable({
         "dom": '<l<t>ip>',
         "bPaginate": false,
+        "ordering": false,
         "scrollX": true,
         "autoWidth": "*",
         "scrollCollapse": true,
@@ -241,6 +243,7 @@ function DataTableFallas(el): void {
     $(el).DataTable({
         "dom": '<lf<t>ip>',
         "bPaginate": false,
+        "ordering": false,
         "scrollX": true,
         "autoWidth": "*",
         "scrollCollapse": true,
