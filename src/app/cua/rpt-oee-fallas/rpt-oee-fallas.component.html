@@ -84,7 +84,7 @@
       <div class="section"></div>
       <div class="row" *ngIf="ver_tabla && seccion == 0">
         <div class="col s12 m12 l12 xl12">
-          <table>
+          <table id="tblReporte">
             <tr class="light-green darken-1 texto header">
               <th>Fuentes de pérdida</th>
               <th class="center-align">Hrs</th>
@@ -114,7 +114,7 @@
             </tr>
           </table>
           <br>
-          <a class="waves-effect waves-light btn light-green lighten-1">EXPORTAR A EXCEL</a>
+          <a class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
         </div>
       </div>
     </div>

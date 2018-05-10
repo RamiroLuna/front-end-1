@@ -255,9 +255,8 @@ export class RptOeeFallasComponent implements OnInit {
 
   downloadCharts(event):void{
     event.preventDefault();
-    var img = document.createElement('a');
-    
-   
+    let img = document.createElement('a');
+
     let canvas = $('#chart');
     let data = canvas[0].toDataURL("image/png");
 
@@ -267,6 +266,31 @@ export class RptOeeFallasComponent implements OnInit {
     
     img.click();
     img.remove();
+
+  }
+
+  exportarExcel():void{
+    let linkFile = document.createElement('a');
+    let data_type = 'data:application/vnd.ms-excel;';
+
+    let tabla_div = document.getElementById('tblReporte');
+    let tabla_html  = tabla_div.outerHTML.replace(/ /g, '%20')
+                                         .replace(/á/g, '%e1')
+                                         .replace(/Á/g, '%c1')
+                                         .replace(/é/g, '%e9')
+                                         .replace(/É/g, '%c9')
+                                         .replace(/í/g, '%a1')
+                                         .replace(/Í/g, '%ed')
+                                         .replace(/ó/g, '%f3')
+                                         .replace(/Ó/g, '%d3')
+                                         .replace(/ú/g, '%fa')
+                                         .replace(/Ú/g, '%da')
+    
+    linkFile.href = data_type + ', ' + tabla_html;
+    linkFile.download = 'ReporteDeFallas';
+
+    linkFile.click();
+    linkFile.remove();
 
   }
 
