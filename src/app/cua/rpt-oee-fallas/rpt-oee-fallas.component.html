@@ -4,7 +4,7 @@
     <form class="col s12 m12 l12 xl12" autocomplete="off" [formGroup]="formBusqueda" (ngSubmit)="busqueda(paramsBusqueda)">
       <fieldset>
         <legend class="color_titulo">
-          <b>Capture para generar reporte:</b>
+          <b>Capture para generar reporte fallas:</b>
         </legend>
         <div class="row">
           <div class="input-field col s12 m12 l4 xl4">
@@ -40,6 +40,29 @@
         </div>
       </fieldset>
     </form>
+    <!-- Solo para dispositivos moviles -->
+    <div class="hide-on-large-only right-align">
+      <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+    <br>
+    <!-- Fin solo para dispositivos moviles -->
+    <!-- Inicio solo para pantallas-->
+    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a routerLink="../../lista-reportes" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped"
+          data-position="top" data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
+    </div>
+    <!-- Fin solo para pantallas-->
   </div>
   <div class="section"></div>
   <div *ngIf="viewReport">
@@ -63,7 +86,7 @@
               <th class="center-align">Hrs</th>
               <th class="center-align">%</th>
             </tr>
-           
+
             <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
               <ng-template [ngIf]="row.padre == 1">
                 <td colspan="3">{{ row.fuente }}</td>
@@ -73,39 +96,22 @@
                 <td class="center-align">{{ row.hrs }}</td>
                 <td class="center-align">{{ row.porcentaje }}</td>
               </ng-template>
-              <ng-template  [ngIf]="row.padre == 2">
-                      <td class="right-align"><b>{{ row.fuente }}</b></td>
-                      <td class="center-align"><b>{{ row.hrs }}</b></td>
-                      <td class="center-align"><b>{{ row.porcentaje }}</b></td>
+              <ng-template [ngIf]="row.padre == 2">
+                <td class="right-align">
+                  <b>{{ row.fuente }}</b>
+                </td>
+                <td class="center-align">
+                  <b>{{ row.hrs }}</b>
+                </td>
+                <td class="center-align">
+                  <b>{{ row.porcentaje }}</b>
+                </td>
               </ng-template>
             </tr>
           </table>
           <br>
         </div>
       </div>
-      <!-- Solo para dispositivos moviles -->
-      <div class="hide-on-large-only right-align">
-        <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-          data-delay="50" data-tooltip="Reportes" (click)="regresar()">
-          <i class="material-icons">
-            <i class="material-icons">arrow_back</i>
-          </i>
-        </a>
-      </div>
-      <br>
-      <!-- Fin solo para dispositivos moviles -->
-      <!-- Inicio solo para pantallas-->
-      <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
-        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-          <a routerLink="../../lista-reportes" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped"
-            data-position="top" data-delay="50" data-tooltip="Reportes" (click)="regresar()">
-            <i class="material-icons">
-              <i class="material-icons">arrow_back</i>
-            </i>
-          </a>
-        </div>
-      </div>
-      <!-- Fin solo para pantallas-->
     </div>
   </div>
 </div>

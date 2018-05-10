@@ -60,14 +60,29 @@ const routesMetas: Routes = [
     }
   },
   /* rutas de catalogos */
-  { path: 'opciones/catalogos', component: ListCatalogsComponent },
-  { path: 'opciones/catalogos/:name', component: ListByCatalogComponent },
-  { path: 'opciones/catalogos/:name/formulario/:id', component: FormularioDetalleComponent },
+  {
+    path: 'opciones/catalogos', component: ListCatalogsComponent, canActivate: [AuthGuardCua],
+    data: {
+      expectedRole: 22
+    }
+  },
+  {
+    path: 'opciones/catalogos/:name', component: ListByCatalogComponent, canActivate: [AuthGuardCua],
+    data: {
+      expectedRole: 22
+    }
+  },
+  {
+    path: 'opciones/catalogos/:name/formulario/:id', component: FormularioDetalleComponent, canActivate: [AuthGuardCua],
+    data: {
+      expectedRole: 22
+    }
+  },
   /* rutas de reportes */
   { path: 'opciones/lista-reportes', component: ListaReportesComponent },
-  { path: 'opciones/lista-reportes/oee-fallas', component: RptOeeFallasComponent },
+  { path: 'opciones/lista-reportes/fallas', component: RptOeeFallasComponent },
   { path: 'opciones/lista-reportes/judo', component: RptJudoComponent },
-  { path: 'opciones/lista-reportes/fallas', component: RptFallasComponent },
+  // { path: 'opciones/lista-reportes/fallas', component: RptFallasComponent },
   { path: 'opciones/lista-reportes/etad', component: RptEtadComponent },
 
   /* Registro de produccion */

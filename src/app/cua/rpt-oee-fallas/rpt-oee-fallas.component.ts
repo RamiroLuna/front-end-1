@@ -53,7 +53,7 @@ export class RptOeeFallasComponent implements OnInit {
     },
     title: {
       display: true,
-      text: 'OEE Fallas',
+      text: 'Fallas',
       fontColor: '#303f9f',
       fontStyle: 'bold',
       fontSize: 26
@@ -89,6 +89,7 @@ export class RptOeeFallasComponent implements OnInit {
 
       if (result.response.sucessfull) {
         this.lineas = result.data.listLineas || [];
+        this.lineas = this.lineas.filter(el=>el.id_linea != 6).map(el=>el);
         this.loading = false;
         this.loadFormulario();
 

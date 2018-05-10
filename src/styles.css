@@ -7,6 +7,10 @@
     color: red;
 }
 
+.disabled_menu{
+    pointer-events: none;
+}
+
 /* Estilos para bloquear */
 .bloquear{
     filter: url('#grayscale'); /* Versión SVG para IE10, Chrome 17, FF3.5, Safari 5.2 and Opera 11.6 */
