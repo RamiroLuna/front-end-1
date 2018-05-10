@@ -1,10 +1,11 @@
 <div *ngIf="!loading">
   <div class="container">
+    <h4 class="color_titulo center-align">Reporte de fallas</h4>
     <div class="section"></div>
     <form class="col s12 m12 l12 xl12" autocomplete="off" [formGroup]="formBusqueda" (ngSubmit)="busqueda(paramsBusqueda)">
       <fieldset>
         <legend class="color_titulo">
-          <b>Capture para generar reporte fallas:</b>
+          <b>Capture para generar:</b>
         </legend>
         <div class="row">
           <div class="input-field col s12 m12 l4 xl4">
@@ -69,9 +70,12 @@
     <div class="carousel carousel-slider center">
       <div class="carousel-item white" href="#one!">
         <div class="container">
-          <canvas id="chartFails" width="50" height="20">
+          <canvas id="chart" width="50" height="20">
             Su navegador no soporta canvas
           </canvas>
+          <div class="row right-align">
+            <a id="downloadChart" href="" (click)="downloadCharts($event)">Descargar gráfica</a>
+          </div>
         </div>
       </div>
     </div>
@@ -110,6 +114,7 @@
             </tr>
           </table>
           <br>
+          <a class="waves-effect waves-light btn light-green lighten-1">EXPORTAR A EXCEL</a>
         </div>
       </div>
     </div>

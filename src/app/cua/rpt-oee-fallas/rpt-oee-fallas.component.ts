@@ -21,11 +21,12 @@ export class RptOeeFallasComponent implements OnInit {
   public formBusqueda: FormGroup;
   public paramsBusqueda: any;
   public lineas: Array<Linea>;
+  public tituloGrafica:string;
 
-  public texto_link: string = "Ver datos en tabla";
-  public seccion: number = 0;
-  public ver_tabla: boolean = false;
-  public rows: Array<any> = [];
+  public texto_link: string;
+  public seccion: number;
+  public ver_tabla: boolean;
+  public rows: Array<any>;
 
   public options: any = {
     scales: {
@@ -53,10 +54,10 @@ export class RptOeeFallasComponent implements OnInit {
     },
     title: {
       display: true,
-      text: 'Fallas',
+      text: '',
       fontColor: '#303f9f',
-      fontStyle: 'bold',
-      fontSize: 26
+      fontStyle: 'normal',
+      fontSize: 16
     },
     responsive: true
   };
@@ -83,6 +84,11 @@ export class RptOeeFallasComponent implements OnInit {
     this.loading = true;
     this.submitted = false;
     this.viewReport = false;
+    this.ver_tabla = false;
+    this.rows = [];
+    this.seccion = 0;
+    this.tituloGrafica ="";
+    this.texto_link = "Ver datos en tabla";
     this.paramsBusqueda = {};
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
@@ -168,7 +174,7 @@ export class RptOeeFallasComponent implements OnInit {
     $('.carousel li').css('background-color', '#bdbdbd');
     $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
 
-    let ctx = $('#chartFails').get(0).getContext('2d');
+    let ctx = $('#chart').get(0).getContext('2d');
     let disp = new Chart(ctx, {
       type: 'horizontalBar',
       data: this.data,
@@ -207,6 +213,9 @@ export class RptOeeFallasComponent implements OnInit {
       this.service.getOEEFallasByLinea(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
      
         if (result.response.sucessfull) {
+          this.tituloGrafica = "Fallas de " + this.getTextoLinea(this.lineas, parametrosBusqueda.id_linea) +
+                                " del " + parametrosBusqueda.inicio + " al "+  parametrosBusqueda.fin;
+          this.options.title.text = this.tituloGrafica;
           this.rows = result.data.listaOEEFallas || [];
           let labels = this.rows.filter((el) => el.padre == 0).map((el) => el.fuente);
           let horas = this.rows.filter((el) => el.padre == 0).map((el) => el.hrs);
@@ -232,6 +241,33 @@ export class RptOeeFallasComponent implements OnInit {
       this.viewReport = false;
       Materialize.toast('Ingrese todos los datos para mostrar reporte!', 4000, 'red');
     }
+  }
+
+  getTextoLinea(lineas:Array<Linea>, id_linea:number):string{
+     let el = lineas.filter(el=>el.id_linea == id_linea);
+
+     if(el.length > 0){
+      return el[0].descripcion;
+     }else{
+      return "Linea no identificada"
+     }
+  }
+
+  downloadCharts(event):void{
+    event.preventDefault();
+    var img = document.createElement('a');
+    
+   
+    let canvas = $('#chart');
+    let data = canvas[0].toDataURL("image/png");
+
+    img.setAttribute("id","tmpImagen");
+    img.href = data;
+    img.download = "Grafica_fallas";
+    
+    img.click();
+    img.remove();
+
   }
 
 
