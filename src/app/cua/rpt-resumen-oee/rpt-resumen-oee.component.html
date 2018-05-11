@@ -1,0 +1,125 @@
+<div *ngIf="!loading">
+    <div class="container">
+      <h4 class="color_titulo center-align">Reporte Resumen de OEE</h4>
+      <div class="section"></div>
+      <form class="col s12 m12 l12 xl12" autocomplete="off" [formGroup]="formBusqueda" (ngSubmit)="busqueda(paramsBusqueda)">
+        <fieldset>
+          <legend class="color_titulo">
+            <b>Capture para generar:</b>
+          </legend>
+          <div class="row">
+            <div class="input-field col s12 m12 l4 xl4">
+              <label for="">Fecha inicio</label>
+              <input type="text" class="inicio" formControlName="inicio" [(ngModel)]="paramsBusqueda.inicio" (ngModelChange)="changeCombo()">
+              <div *ngIf="formBusqueda.controls.inicio.errors?.required && (formBusqueda.controls.inicio?.touched || submitted)" class="error">
+                Se requiere fecha inicio
+              </div>
+            </div>
+            <div class="input-field col s12 m12 l4 xl4">
+              <label for="">Fecha fin</label>
+              <input type="text" class="fin" formControlName="fin" [(ngModel)]="paramsBusqueda.fin" (ngModelChange)="changeCombo()">
+              <div *ngIf="formBusqueda.controls.fin.errors?.required && (formBusqueda.controls.fin?.touched || submitted)" class="error">
+                Se requiere fecha fin
+              </div>
+            </div>
+            <div class="col s12 m12 l3 xl3">
+              <label for="">Linea</label>
+              <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="id_linea" [(ngModel)]="paramsBusqueda.id_linea"
+                (ngModelChange)="changeCombo()">
+                <option value="">SELECCIONE</option>
+                <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{ linea.valor }}</option>
+              </select>
+              <div *ngIf="formBusqueda.controls.id_linea.errors?.required && (formBusqueda.controls.id_linea?.touched || submitted)" class="error">
+                Se requiere la linea
+              </div>
+            </div>
+            <div class="input-field col s12 m12 l1 xl1">
+              <button type="submit" class="btn col s12 m12 l12 xl12 waves-effect waves-light light-green darken-1">
+                <i class="material-icons">play_arrow</i>
+              </button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+      <!-- Solo para dispositivos moviles -->
+      <div class="hide-on-large-only right-align">
+        <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
+      <br>
+      <!-- Fin solo para dispositivos moviles -->
+      <!-- Inicio solo para pantallas-->
+      <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+          <a routerLink="../../lista-reportes" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped"
+            data-position="top" data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+            <i class="material-icons">
+              <i class="material-icons">arrow_back</i>
+            </i>
+          </a>
+        </div>
+      </div>
+      <!-- Fin solo para pantallas-->
+    </div>
+    <div class="section"></div>
+    <div *ngIf="viewReport">
+      <div class="carousel carousel-slider center">
+        <div class="carousel-item white" href="#one!">
+          <div class="container">
+            <canvas id="chart" width="50" height="20">
+              Su navegador no soporta canvas
+            </canvas>
+            <div class="row right-align">
+              <a id="downloadChart" href="" (click)="downloadCharts($event)">Descargar gráfica</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container center">
+        <a href="#" (click)="verTablas($event)">{{ texto_link }}</a>
+        <div class="section"></div>
+        <div class="row" *ngIf="ver_tabla && seccion == 0">
+          <div class="col s12 m12 l12 xl12">
+            <table id="tblReporte">
+              <tr class="light-green darken-1 texto header">
+                <th colspan="2" class="center-align">OEE</th>
+                <th class="center-align">Real</th>
+              </tr>
+  
+              <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
+                <ng-template [ngIf]="row.padre == 0">
+                  <td>{{ row.titulo }}</td>
+                  <td class="center-align">{{ row.hrs }}</td>
+                  <td class="center-align">{{ row.porcentaje + ' % ' }}</td>
+                </ng-template>
+                <ng-template [ngIf]="row.padre == 2">
+                  <td class="right-align">
+                    <b>{{ row.titulo }}</b>
+                  </td>
+                  <td class="center-align">
+                    <b>{{ row.hrs }}</b>
+                  </td>
+                  <td class="center-align">
+                    <b>{{ row.porcentaje + ' % '}}</b>
+                  </td>
+                </ng-template>
+              </tr>
+            </table>
+            <br>
+            <a class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container" *ngIf="loading">
+    <div id="loader-wrapper">
+      <div id="loader"></div>
+      <div class="loader-section section-left"></div>
+      <div class="loader-section section-right"></div>
+    </div>
+  </div>
