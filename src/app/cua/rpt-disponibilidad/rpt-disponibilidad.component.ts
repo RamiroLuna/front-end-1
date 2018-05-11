@@ -4,6 +4,7 @@ import { RptDisponibilidadService } from "./rpt-disponibilidad.service";
 import { Linea } from '../../models/linea';
 import * as Chart from 'chart.js';
 import { AuthService } from '../../auth/auth.service';
+import { Periodo } from '../../models/periodo';
 
 declare var $: any;
 declare var Materialize: any;
@@ -17,7 +18,7 @@ export class RptDisponibilidadComponent implements OnInit {
   public loading: boolean;
   public submitted: boolean;
   public viewReport: boolean;
-  public formBusqueda: FormGroup;
+  public formConsultaPeriodo: FormGroup;
   public paramsBusqueda: any;
   public lineas: Array<Linea>;
   public tituloGrafica: string;
@@ -27,6 +28,10 @@ export class RptDisponibilidadComponent implements OnInit {
   public ver_tabla: boolean;
   public rows: Array<any>;
   public rowsProduccion: Array<any>;
+
+  public anios: Array<any>;
+  public meses: Array<any>;
+  public periodos: Array<Periodo>;
 
   public options: any = {
     scales: {
@@ -96,12 +101,23 @@ export class RptDisponibilidadComponent implements OnInit {
     this.tituloGrafica = "";
     this.texto_link = "Ver datos en tabla";
     this.paramsBusqueda = {};
+    this.anios = [];
+    this.meses = [];
+    this.periodos = [];
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
       if (result.response.sucessfull) {
         this.lineas = result.data.listLineas || [];
         this.lineas = this.lineas.filter(el => el.id_linea != 6).map(el => el);
+        this.periodos = result.data.listPeriodos || [];
+        let tmpAnios = this.periodos.map(el => el.anio);
+        this.periodos.filter((el, index) => {
+          if (tmpAnios.indexOf(el.anio) === index) {
+            this.anios.push({ valor: el.anio });
+          }
+        });
+
         this.loading = false;
         this.loadFormulario();
 
@@ -121,13 +137,13 @@ export class RptDisponibilidadComponent implements OnInit {
   }
 
   loadFormulario(): void {
-    this.formBusqueda = this.fb.group({
-      inicio: new FormControl({ value: this.paramsBusqueda.inicio, disabled: false }, [Validators.required]),
-      fin: new FormControl({ value: this.paramsBusqueda.fin, disabled: false }, [Validators.required]),
-      id_linea: new FormControl({ value: this.paramsBusqueda.id_linea, disabled: false }, [Validators.required])
+    this.formConsultaPeriodo = this.fb.group({
+      idLinea: new FormControl({ value: this.paramsBusqueda.idLinea }, [Validators.required]),
+      anio: new FormControl({ value: this.paramsBusqueda.anio }, [Validators.required]),
+      idPeriodo: new FormControl({ value: this.paramsBusqueda.idPeriodo }, [Validators.required])
     });
-
   }
+
 
   /*
  * Carga plugins despues de cargar y mostrar objetos en el DOM cuando carga la pagina
@@ -136,23 +152,6 @@ export class RptDisponibilidadComponent implements OnInit {
     $('.tooltipped').tooltip({ delay: 50 });
     $('select').material_select();
 
-    $('.inicio, .fin').pickadate({
-      selectMonths: true, // Creates a dropdown to control month
-      selectYears: 15, // Creates a dropdown of 15 years to control year,
-      today: '',
-      clear: 'Limpiar',
-      close: 'OK',
-      monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-      monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-      weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-      weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-      format: 'dd/mm/yyyy',
-      closeOnSelect: false, // Close upon selecting a date,
-      onClose: () => {
-        this.paramsBusqueda.inicio = $('.inicio').val();
-        this.paramsBusqueda.fin = $('.fin').val();
-      }
-    });
   }
 
   /*
@@ -205,8 +204,11 @@ export class RptDisponibilidadComponent implements OnInit {
     $('.tooltipped').tooltip('hide');
   }
 
-  changeCombo(): void {
+  changeCombo(params: string): void {
     this.viewReport = false;
+    if (params == 'anio') {
+      this.meses = this.periodos.filter(el => el.anio == this.paramsBusqueda.anio)
+    }
   }
 
   busqueda(parametrosBusqueda: any) {
@@ -214,13 +216,12 @@ export class RptDisponibilidadComponent implements OnInit {
     this.viewReport = false;
     this.submitted = true;
 
-    if (this.formBusqueda.valid) {
+    if (this.formConsultaPeriodo.valid) {
 
       this.service.reporteDisponibilidad(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-       
+
         if (result.response.sucessfull) {
-          this.tituloGrafica = "Disponibilidad de " + this.getTextoLinea(this.lineas, parametrosBusqueda.id_linea) +
-            "  del  " + parametrosBusqueda.inicio + "  al  " + parametrosBusqueda.fin;
+          this.tituloGrafica = "Disponibilidad de " + this.getTextoLinea(this.lineas, parametrosBusqueda.id_linea) + this.getPeriodo(this.periodos, parametrosBusqueda.paramsBusqueda.idPeriodo);
           this.options.title.text = this.tituloGrafica;
           this.rows = result.data.reporteDisponibilidad || [];
           this.rowsProduccion = result.data.datosProduccion || [];
@@ -231,15 +232,15 @@ export class RptDisponibilidadComponent implements OnInit {
           this.data.datasets[0].label = 'Horas';
           this.data.datasets[0].data = horas;
 
-          this.options.animation.onComplete = function(){
-          //   let ctx = $('#chart').get(0).getContext('2d');
-          //   console.log('fin')
-          //   this.data.datasets[0].data.forEach(function (dataset) {
-          //     console.log(dataset)
-          //     dataset.bars.forEach(function (bar) {
-          //         ctx.fillText(bar.value, bar.x, bar.y - 5);
-          //     });
-          // })
+          this.options.animation.onComplete = function () {
+            //   let ctx = $('#chart').get(0).getContext('2d');
+            //   console.log('fin')
+            //   this.data.datasets[0].data.forEach(function (dataset) {
+            //     console.log(dataset)
+            //     dataset.bars.forEach(function (bar) {
+            //         ctx.fillText(bar.value, bar.x, bar.y - 5);
+            //     });
+            // })
           }
 
           this.viewReport = true;
@@ -266,6 +267,16 @@ export class RptDisponibilidadComponent implements OnInit {
 
     if (el.length > 0) {
       return el[0].descripcion;
+    } else {
+      return "Linea no identificada"
+    }
+  }
+
+  getPeriodo(periodos: Array<Periodo>, id_periodo: number): string {
+    let el = periodos.filter(el => el.id_periodo == id_periodo);
+
+    if (el.length > 0) {
+      return el[0].descripcion_mes + el[0].anio;
     } else {
       return "Linea no identificada"
     }

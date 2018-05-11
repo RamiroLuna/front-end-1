@@ -2,45 +2,52 @@
   <div class="container">
     <h4 class="color_titulo center-align">Reporte de disponibilidad</h4>
     <div class="section"></div>
-    <form class="col s12 m12 l12 xl12" autocomplete="off" [formGroup]="formBusqueda" (ngSubmit)="busqueda(paramsBusqueda)">
-      <fieldset>
-        <legend class="color_titulo">
-          <b>Capture para generar:</b>
-        </legend>
-        <div class="row">
-          <div class="input-field col s12 m12 l4 xl4">
-            <label for="">Fecha inicio</label>
-            <input type="text" class="inicio" formControlName="inicio" [(ngModel)]="paramsBusqueda.inicio" (ngModelChange)="changeCombo()">
-            <div *ngIf="formBusqueda.controls.inicio.errors?.required && (formBusqueda.controls.inicio?.touched || submitted)" class="error">
-              Se requiere fecha inicio
-            </div>
-          </div>
-          <div class="input-field col s12 m12 l4 xl4">
-            <label for="">Fecha fin</label>
-            <input type="text" class="fin" formControlName="fin" [(ngModel)]="paramsBusqueda.fin" (ngModelChange)="changeCombo()">
-            <div *ngIf="formBusqueda.controls.fin.errors?.required && (formBusqueda.controls.fin?.touched || submitted)" class="error">
-              Se requiere fecha fin
-            </div>
-          </div>
-          <div class="col s12 m12 l3 xl3">
-            <label for="">Linea</label>
-            <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="id_linea" [(ngModel)]="paramsBusqueda.id_linea"
-              (ngModelChange)="changeCombo()">
-              <option value="">SELECCIONE</option>
-              <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{ linea.valor }}</option>
-            </select>
-            <div *ngIf="formBusqueda.controls.id_linea.errors?.required && (formBusqueda.controls.id_linea?.touched || submitted)" class="error">
-              Se requiere la linea
-            </div>
-          </div>
-          <div class="input-field col s12 m12 l1 xl1">
-            <button type="submit" class="btn col s12 m12 l12 xl12 waves-effect waves-light light-green darken-1">
-              <i class="material-icons">play_arrow</i>
-            </button>
+    <div class="row">
+      <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="busqueda(paramsBusqueda)" autocomplete="off">
+        <div class="input-field col s12 m12 l3 xl3">
+          <select class="anio" materialize="material_select" [materializeSelectOptions]="anios" formControlName="anio" [(ngModel)]="paramsBusqueda.anio"
+            (ngModelChange)="changeCombo('anio')">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let anio of anios" [value]="anio.valor">{{anio.valor}}</option>
+          </select>
+          <label for="anio">año</label>
+          <div *ngIf="formConsultaPeriodo.controls.anio.errors?.required && (formConsultaPeriodo.controls.anio?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
           </div>
         </div>
-      </fieldset>
-    </form>
+        <div class="input-field col s12 m12 l3 xl3">
+          <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="paramsBusqueda.idPeriodo"
+            (ngModelChange)="changeCombo()">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
+          </select>
+          <label for="mes">mes</label>
+          <div *ngIf="formConsultaPeriodo.controls.idPeriodo.errors?.required && (formConsultaPeriodo.controls.idPeriodo?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l5 xl5">
+          <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="idLinea" [(ngModel)]="paramsBusqueda.idLinea"
+            (ngModelChange)="changeCombo()">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{linea.descripcion}}</option>
+          </select>
+          <label for="linea">Linea</label>
+          <div *ngIf="formConsultaPeriodo.controls.idLinea.errors?.required && (formConsultaPeriodo.controls.idLinea?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l1 xl1">
+          <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
+            <i class="material-icons">search</i>
+          </button>
+          <label></label>
+        </div>
+      </form>
+    </div>
     <!-- Solo para dispositivos moviles -->
     <div class="hide-on-large-only right-align">
       <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
@@ -92,7 +99,7 @@
             </tr>
 
             <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
-            
+
               <ng-template [ngIf]="row.padre == 0">
                 <td>{{ row.titulo }}</td>
                 <td class="center-align">{{ row.hrs }}</td>

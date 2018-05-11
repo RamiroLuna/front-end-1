@@ -21,7 +21,7 @@ export class RptDisponibilidadService {
    * Consulta reporte de fallas
    */
   reporteDisponibilidad(id_usuario: number, params:any): Observable<any> {
-    return this.http.get<any>(this.URL + '?action=reporteEficiencia&id_usuario=' + id_usuario + '&fecha_inicio='+params.inicio +'&fecha_termino='+params.fin+'&id_linea='+params.id_linea);
+    return this.http.get<any>(this.URL + '?action=reporteEficiencia&id_usuario=' + id_usuario + '&id_periodo='+params.idPeriodo +'&id_linea='+params.idLinea);
   }
 
 }
