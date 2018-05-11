@@ -5,7 +5,7 @@ import { BASE_URL_SERVICE } from '../../constants';
 
 
 @Injectable()
-export class RptOeeFallasService {
+export class RptFuentePerdidasService {
 
   private URL = BASE_URL_SERVICE + '/Reportes';
 

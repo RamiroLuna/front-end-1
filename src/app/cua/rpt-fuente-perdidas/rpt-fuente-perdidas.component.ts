@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { RptOeeFallasService } from "./rpt-oee-fallas.service";
+import { RptFuentePerdidasService } from "./rpt-fuente-perdidas.service";
 import { Linea } from '../../models/linea';
 import * as Chart from 'chart.js';
 import { AuthService } from '../../auth/auth.service';
@@ -8,12 +8,12 @@ import { AuthService } from '../../auth/auth.service';
 declare var $: any;
 declare var Materialize: any;
 @Component({
-  selector: 'app-rpt-oee-fallas',
-  templateUrl: './rpt-oee-fallas.component.html',
-  styleUrls: ['./rpt-oee-fallas.component.css'],
-  providers: [RptOeeFallasService]
+  selector: 'app-rpt-fuente-perdidas',
+  templateUrl: './rpt-fuente-perdidas.component.html',
+  styleUrls: ['./rpt-fuente-perdidas.component.css'],
+  providers: [RptFuentePerdidasService]
 })
-export class RptOeeFallasComponent implements OnInit {
+export class RptFuentePerdidasComponent implements OnInit {
 
   public loading: boolean;
   public submitted: boolean;
@@ -75,7 +75,7 @@ export class RptOeeFallasComponent implements OnInit {
   };
 
   constructor(
-    private service: RptOeeFallasService,
+    private service: RptFuentePerdidasService,
     private auth: AuthService,
     private fb: FormBuilder) { }
 
@@ -213,8 +213,8 @@ export class RptOeeFallasComponent implements OnInit {
       this.service.getOEEFallasByLinea(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
      
         if (result.response.sucessfull) {
-          this.tituloGrafica = "Fallas de " + this.getTextoLinea(this.lineas, parametrosBusqueda.id_linea) +
-                                " del " + parametrosBusqueda.inicio + " al "+  parametrosBusqueda.fin;
+          this.tituloGrafica = "Fuente de perdidas de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.id_linea) +
+                                "  del  " + parametrosBusqueda.inicio + "  al  "+  parametrosBusqueda.fin;
           this.options.title.text = this.tituloGrafica;
           this.rows = result.data.listaOEEFallas || [];
           let labels = this.rows.filter((el) => el.padre == 0).map((el) => el.fuente);

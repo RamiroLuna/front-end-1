@@ -13,7 +13,7 @@ import { ListByCatalogComponent } from './list-by-catalog/list-by-catalog.compon
 import { FormularioDetalleComponent } from './list-by-catalog/formulario-detalle/formulario-detalle.component';
 import { NgPipesModule } from 'ngx-pipes';
 import { ListaReportesComponent } from './lista-reportes/lista-reportes.component';
-import { RptOeeFallasComponent } from './rpt-oee-fallas/rpt-oee-fallas.component';
+import { RptFuentePerdidasComponent } from './rpt-fuente-perdidas/rpt-fuente-perdidas.component';
 import { MetaMasivaComponent } from './meta-masiva/meta-masiva.component';
 import { FormularioProduccionComponent } from './formulario-produccion/formulario-produccion.component';
 import { ListaProduccionComponent } from './lista-produccion/lista-produccion.component';
@@ -21,7 +21,7 @@ import { AuthGuardCua } from '../auth/auth.guard.cua';
 import { ValidaProduccionComponent } from './valida-produccion/valida-produccion.component';
 import { PipeClass } from '../pipes';
 import { ListaValidacionComponent } from './lista-validacion/lista-validacion.component';
-import { RptDisponibilidadComponent } from './rpt-eficiencia/rpt-disponibilidad.component';
+import { RptDisponibilidadComponent } from './rpt-disponibilidad/rpt-disponibilidad.component';
 
 
 const routesMetas: Routes = [
@@ -78,7 +78,7 @@ const routesMetas: Routes = [
   },
   /* rutas de reportes */
   { path: 'opciones/lista-reportes', component: ListaReportesComponent },
-  { path: 'opciones/lista-reportes/fallas', component: RptOeeFallasComponent },
+  { path: 'opciones/lista-reportes/fuente-perdidas', component: RptFuentePerdidasComponent },
   { path: 'opciones/lista-reportes/disponibilidad', component: RptDisponibilidadComponent },
 
   /* Registro de produccion */
@@ -128,7 +128,7 @@ const routesMetas: Routes = [
     ListByCatalogComponent,
     FormularioDetalleComponent,
     ListaReportesComponent,
-    RptOeeFallasComponent,
+    RptFuentePerdidasComponent,
     MetaMasivaComponent,
     FormularioProduccionComponent,
     ListaProduccionComponent,
