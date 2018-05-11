@@ -14,16 +14,14 @@ import { FormularioDetalleComponent } from './list-by-catalog/formulario-detalle
 import { NgPipesModule } from 'ngx-pipes';
 import { ListaReportesComponent } from './lista-reportes/lista-reportes.component';
 import { RptOeeFallasComponent } from './rpt-oee-fallas/rpt-oee-fallas.component';
-import { RptJudoComponent } from './rpt-judo/rpt-judo.component';
-import { RptFallasComponent } from './rpt-fallas/rpt-fallas.component';
 import { MetaMasivaComponent } from './meta-masiva/meta-masiva.component';
 import { FormularioProduccionComponent } from './formulario-produccion/formulario-produccion.component';
 import { ListaProduccionComponent } from './lista-produccion/lista-produccion.component';
-import { RptEtadComponent } from './rpt-etad/rpt-etad.component';
 import { AuthGuardCua } from '../auth/auth.guard.cua';
 import { ValidaProduccionComponent } from './valida-produccion/valida-produccion.component';
 import { PipeClass } from '../pipes';
 import { ListaValidacionComponent } from './lista-validacion/lista-validacion.component';
+import { RptDisponibilidadComponent } from './rpt-eficiencia/rpt-disponibilidad.component';
 
 
 const routesMetas: Routes = [
@@ -81,9 +79,7 @@ const routesMetas: Routes = [
   /* rutas de reportes */
   { path: 'opciones/lista-reportes', component: ListaReportesComponent },
   { path: 'opciones/lista-reportes/fallas', component: RptOeeFallasComponent },
-  { path: 'opciones/lista-reportes/judo', component: RptJudoComponent },
-  // { path: 'opciones/lista-reportes/fallas', component: RptFallasComponent },
-  { path: 'opciones/lista-reportes/etad', component: RptEtadComponent },
+  { path: 'opciones/lista-reportes/disponibilidad', component: RptDisponibilidadComponent },
 
   /* Registro de produccion */
   {
@@ -133,15 +129,13 @@ const routesMetas: Routes = [
     FormularioDetalleComponent,
     ListaReportesComponent,
     RptOeeFallasComponent,
-    RptJudoComponent,
-    RptFallasComponent,
     MetaMasivaComponent,
     FormularioProduccionComponent,
     ListaProduccionComponent,
-    RptEtadComponent,
     ValidaProduccionComponent,
     PipeClass,
-    ListaValidacionComponent
+    ListaValidacionComponent,
+    RptDisponibilidadComponent
   ],
   providers: [
     AuthGuardCua

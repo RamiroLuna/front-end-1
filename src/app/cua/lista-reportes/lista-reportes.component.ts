@@ -13,7 +13,7 @@ export class ListaReportesComponent implements  AfterViewInit {
    * En este arreglo se deben agregar los reportes para el modulo de CUA
    */ 
   public reportes: Array<any>=[
-    { id : 1 , nombre_reporte: 'Eficiencia' , link:'' , activo: true},
+    { id : 1 , nombre_reporte: 'Disponibilidad' , link:'disponibilidad' , activo: true},
     { id : 2 , nombre_reporte: 'OEE' , link:'' , activo: true},
     { id : 3 , nombre_reporte: 'Fallas' , link:'fallas' , activo: true},
     { id : 5 , nombre_reporte: 'Diario de producción' , link:'' , activo: true},
