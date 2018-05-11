@@ -285,6 +285,8 @@ export class RptOeeFallasComponent implements OnInit {
                                          .replace(/Ó/g, '%d3')
                                          .replace(/ú/g, '%fa')
                                          .replace(/Ú/g, '%da')
+                                         .replace(/Ñ/g, '%d1')
+                                         .replace(/ñ/g, '%f1')
     
     linkFile.href = data_type + ', ' + tabla_html;
     linkFile.download = 'ReporteDeFallas';
