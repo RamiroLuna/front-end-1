@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { RptFuentePerdidasService } from "./rpt-fuente-perdidas.service";
+import { RptOeeService } from "./rpt-oee.service";
 import { Linea } from '../../models/linea';
 import * as Chart from 'chart.js';
 import { AuthService } from '../../auth/auth.service';
@@ -8,12 +8,11 @@ import { AuthService } from '../../auth/auth.service';
 declare var $: any;
 declare var Materialize: any;
 @Component({
-  selector: 'app-rpt-fuente-perdidas',
-  templateUrl: './rpt-fuente-perdidas.component.html',
-  styleUrls: ['./rpt-fuente-perdidas.component.css'],
-  providers: [RptFuentePerdidasService]
+  selector: 'app-rpt-oee',
+  templateUrl: './rpt-oee.component.html',
+  providers: [RptOeeService]
 })
-export class RptFuentePerdidasComponent implements OnInit {
+export class RptOeeComponent implements OnInit {
 
   public loading: boolean;
   public submitted: boolean;
@@ -21,7 +20,7 @@ export class RptFuentePerdidasComponent implements OnInit {
   public formBusqueda: FormGroup;
   public paramsBusqueda: any;
   public lineas: Array<Linea>;
-  public tituloGrafica:string;
+  public tituloGrafica: string;
 
   public texto_link: string;
   public seccion: number;
@@ -35,17 +34,20 @@ export class RptFuentePerdidasComponent implements OnInit {
         ticks: {
           autoSkip: false
         }, scaleLabel: {
-          display: true,
-          labelString: 'Horas muertas',
+          display: false,
+          labelString: '',
         }
       }],
       yAxes: [{
         ticks: {
-          beginAtZero: true
+          beginAtZero: true,
+          callback: function (value, index, values) {
+            return value + '%';
+          }
         },
         scaleLabel: {
           display: false,
-          // labelString: '%',
+          labelString: '%',
         }
       }]
     },
@@ -68,14 +70,14 @@ export class RptFuentePerdidasComponent implements OnInit {
     datasets: [{
       label: '',
       data: [],
-      backgroundColor: 'rgba(255, 99, 132, 0.2)',
-      borderColor: 'rgba(255,99,132,1)',
+      backgroundColor: 'rgba(102,187,106)',
+      borderColor: 'rgba(56,142,60)',
       borderWidth: 1
     }]
   };
 
   constructor(
-    private service: RptFuentePerdidasService,
+    private service: RptOeeService,
     private auth: AuthService,
     private fb: FormBuilder) { }
 
@@ -87,7 +89,7 @@ export class RptFuentePerdidasComponent implements OnInit {
     this.ver_tabla = false;
     this.rows = [];
     this.seccion = 0;
-    this.tituloGrafica ="";
+    this.tituloGrafica = "";
     this.texto_link = "Ver datos en tabla";
     this.paramsBusqueda = {};
 
@@ -95,7 +97,7 @@ export class RptFuentePerdidasComponent implements OnInit {
 
       if (result.response.sucessfull) {
         this.lineas = result.data.listLineas || [];
-        this.lineas = this.lineas.filter(el=>el.id_linea != 6).map(el=>el);
+        this.lineas = this.lineas.filter(el => el.id_linea != 6).map(el => el);
         this.loading = false;
         this.loadFormulario();
 
@@ -176,7 +178,7 @@ export class RptFuentePerdidasComponent implements OnInit {
 
     let ctx = $('#chart').get(0).getContext('2d');
     let disp = new Chart(ctx, {
-      type: 'horizontalBar',
+      type: 'bar',
       data: this.data,
       options: this.options
     });
@@ -210,18 +212,18 @@ export class RptFuentePerdidasComponent implements OnInit {
 
     if (this.formBusqueda.valid) {
 
-      this.service.getOEEFallasByLinea(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
+      this.service.getOEE(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
 
         if (result.response.sucessfull) {
-          this.tituloGrafica = "Fuente de perdidas de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.id_linea) +
+          this.tituloGrafica = "OEE de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.id_linea) +
             "  del  " + parametrosBusqueda.inicio + "  al  " + parametrosBusqueda.fin;
           this.options.title.text = this.tituloGrafica;
-          this.rows = result.data.listaOEEFallas || [];
-          let labels = this.rows.filter((el) => el.padre == 0).map((el) => el.fuente);
-          let horas = this.rows.filter((el) => el.padre == 0).map((el) => el.hrs);
+          this.rows = result.data.reporteOEE || [];
+          let labels = this.rows.filter((el) => el.padre == 0).map((el) => el.titulo);
+          let horas = this.rows.filter((el) => el.padre == 0).map((el) => el.porcentaje);
 
           this.data.labels = labels;
-          this.data.datasets[0].label = 'Horas Muertas';
+          this.data.datasets[0].label = 'OEE';
           this.data.datasets[0].data = horas;
 
           this.viewReport = true;
@@ -295,7 +297,6 @@ export class RptFuentePerdidasComponent implements OnInit {
     linkFile.remove();
 
   }
-
 
 
 }

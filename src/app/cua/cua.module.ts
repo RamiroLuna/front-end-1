@@ -22,6 +22,7 @@ import { ValidaProduccionComponent } from './valida-produccion/valida-produccion
 import { PipeClass } from '../pipes';
 import { ListaValidacionComponent } from './lista-validacion/lista-validacion.component';
 import { RptDisponibilidadComponent } from './rpt-disponibilidad/rpt-disponibilidad.component';
+import { RptOeeComponent } from './rpt-oee/rpt-oee.component';
 
 
 const routesMetas: Routes = [
@@ -80,6 +81,7 @@ const routesMetas: Routes = [
   { path: 'opciones/lista-reportes', component: ListaReportesComponent },
   { path: 'opciones/lista-reportes/fuente-perdidas', component: RptFuentePerdidasComponent },
   { path: 'opciones/lista-reportes/disponibilidad', component: RptDisponibilidadComponent },
+  { path: 'opciones/lista-reportes/oee', component: RptOeeComponent },
 
   /* Registro de produccion */
   {
@@ -135,7 +137,8 @@ const routesMetas: Routes = [
     ValidaProduccionComponent,
     PipeClass,
     ListaValidacionComponent,
-    RptDisponibilidadComponent
+    RptDisponibilidadComponent,
+    RptOeeComponent
   ],
   providers: [
     AuthGuardCua
