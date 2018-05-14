@@ -36,6 +36,11 @@ export class RptResumenOeeComponent implements OnInit {
   public rowsProduccion: Array<any>;
   public rowsPerdidas: Array<any>;
 
+  /** Variables para contener el grafico */
+  public chartsOee: any;
+  public chartDisponibilidad: any;
+  public chartsPerdidas: any;
+
   /** Configuracion grafica OEE */
   public options: any = {
     scales: {
@@ -128,7 +133,7 @@ export class RptResumenOeeComponent implements OnInit {
       fontSize: 16
     },
     animation: {
-      duration: 3000,
+      duration: 2000,
       easing: 'easeInQuad'
     },
     responsive: true
@@ -269,6 +274,8 @@ export class RptResumenOeeComponent implements OnInit {
    * Carga plugins para mostrar grafica 
    */
   ngAfterViewHttpRpt(): void {
+    let b = false;
+
     $('.carousel.carousel-slider').carousel({
       fullWidth: true,
       indicators: true,
@@ -281,16 +288,42 @@ export class RptResumenOeeComponent implements OnInit {
 
         switch (this.seccion) {
           case 0:
-            let cjs =  $('#chart').get(0).getContext('2d');
-           // cjs.update();
+            let ctx = $('#chart').get(0).getContext('2d');
+            this.chartsOee = new Chart(ctx, {
+              type: 'bar',
+              data: this.data,
+              options: this.options
+            });
+            if (b) {
+
+              this.chartDisponibilidad.destroy();
+              this.chartsPerdidas.destroy();
+            }
+            // 
             break;
           case 1:
-            let t = $('#chartDisponibilidad').get(0).getContext('2d');
-            // t.update();
+            //
+            b = true;
+            let ctxDispo = $('#chartDisponibilidad').get(0).getContext('2d');
+            this.chartDisponibilidad = new Chart(ctxDispo, {
+              type: 'horizontalBar',
+              data: this.dataDisponibilidad,
+              options: this.optionsDisponibilidad
+            });
+            this.chartsOee.destroy();
+            this.chartsPerdidas.destroy();
             break;
           case 2:
-            let c = $('#chartPerdidas').get(0).getContext('2d');
-            // c.update();
+            b = true;
+            let ctx1 = $('#chartPerdidas').get(0).getContext('2d');
+            this.chartsPerdidas = new Chart(ctx1, {
+              type: 'horizontalBar',
+              data: this.dataPerdidas,
+              options: this.optionsPerdidas
+            }
+            );
+            this.chartsOee.destroy();
+            this.chartDisponibilidad.destroy();
             break;
         }
       }
@@ -298,36 +331,19 @@ export class RptResumenOeeComponent implements OnInit {
 
     $('.carousel li').css('background-color', '#bdbdbd');
     $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
-
-    let ctx = $('#chart').get(0).getContext('2d');
-    let ctxDispo = $('#chartDisponibilidad').get(0).getContext('2d');
-
-    let disp = new Chart(ctx, {
-      type: 'bar',
-      data: this.data,
-      options: this.options
-    }
-    );
-
-    let chartdis = new Chart(ctxDispo, {
-      type: 'horizontalBar',
-      data: this.dataDisponibilidad,
-      options: this.optionsDisponibilidad
-    });
-
   }
 
   /*
    * Carga plugins para mostrar grafica 
    */
   ngAfterViewHttpRptPerdida(): void {
-    let ctx = $('#chartPerdidas').get(0).getContext('2d');
-    let disp = new Chart(ctx, {
-      type: 'horizontalBar',
-      data: this.dataPerdidas,
-      options: this.optionsPerdidas
-    }
-    );
+    // let ctx = $('#chartPerdidas').get(0).getContext('2d');
+    // this.chartsPerdidas = new Chart(ctx, {
+    //   type: 'horizontalBar',
+    //   data: this.dataPerdidas,
+    //   options: this.optionsPerdidas
+    // }
+    // );
   }
 
 
@@ -412,7 +428,7 @@ export class RptResumenOeeComponent implements OnInit {
     }
 
     this.service.getOEEFallasByLinea(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
- 
+
       if (result.response.sucessfull) {
         this.tituloGraficaPerdida = "Fuente de perdidas de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea) + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);;
         this.optionsPerdidas.title.text = this.tituloGraficaPerdida;
