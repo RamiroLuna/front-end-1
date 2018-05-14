@@ -1,5 +1,18 @@
 <div *ngIf="!loading">
   <div class="container">
+    <!-- Solo para dispositivos moviles -->
+    <br>
+    <div class="hide-on-large-only">
+      <div class="row right-align">
+        <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
+    </div>
+    <!-- Fin solo para dispositivos moviles -->
     <h4 class="color_titulo center-align">Reporte resumen OEE</h4>
     <div class="section"></div>
     <div class="row">
@@ -48,17 +61,6 @@
         </div>
       </form>
     </div>
-    <!-- Solo para dispositivos moviles -->
-    <div class="hide-on-large-only right-align">
-      <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-        data-delay="50" data-tooltip="Reportes" (click)="regresar()">
-        <i class="material-icons">
-          <i class="material-icons">arrow_back</i>
-        </i>
-      </a>
-    </div>
-    <br>
-    <!-- Fin solo para dispositivos moviles -->
     <!-- Inicio solo para pantallas-->
     <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
       <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
@@ -73,6 +75,31 @@
     <!-- Fin solo para pantallas-->
   </div>
   <div class="section"></div>
+  <!-- btn action -->
+  <div class="container">
+    <div *ngIf="viewReport" class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn horizontal" style="bottom: 110px; right: 24px;">
+        <a class="btn-floating btn-large light-green darken-1">
+          <i class="large material-icons">font_download</i>
+        </a>
+        <ul>
+          <li>
+            <a (click)="exportarTodoToExcel()" class="btn-floating  light-green">
+              <i class="material-icons">cloud_download</i>
+            </a>
+          </li>
+          <li>
+            <a class="btn-floating  light-green">
+              <i class="material-icons">print</i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- Fin solo para pantallas-->
+  </div>
+
+  <!-- fin btn action -->
   <div *ngIf="viewReport">
     <div class="carousel carousel-slider center">
       <div class="carousel-item white" href="#one!">
@@ -97,15 +124,17 @@
         </div>
       </div>
     </div>
-    <div class="container">
+    <!-- activar solo si solicita descargar grafica individual -->
+    <div class="container" *ngIf="false">
       <div class="row right-align">
-        <a id="downloadChart" href="" (click)="downloadCharts($event)">Descargar gráfica</a>
+        <a id="downloadChart" href="" (click)="downloadCharts($event)">Descargar esta gráfica</a>
       </div>
     </div>
+      <!-- Fin activar solo si solicita descargar grafica individual -->
     <div class="container center">
       <a href="#" (click)="verTablas($event)">{{ texto_link }}</a>
       <div class="section"></div>
-      <div class="row" *ngIf="ver_tabla && seccion == 0">
+      <div class="row" [hidden]="!(ver_tabla && seccion == 0)">
         <div class="col s12 m12 l12 xl12">
           <table id="tblReporte">
             <tr class="light-green darken-1 texto header">
@@ -133,12 +162,14 @@
             </tr>
           </table>
           <br>
-          <a class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
+          <!-- solo si solicita -->
+          <a *ngIf="false" class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR TABLA A EXCEL</a>
+           <!-- fin solo si solicita -->
         </div>
       </div>
-      <div class="row" *ngIf="ver_tabla && seccion == 1">
+      <div class="row" [hidden]="!(ver_tabla && seccion == 1)">
         <div class="col s12 m12 l6 xl6">
-          <table id="tblReporte">
+          <table id="tblReporteDisponibilidad">
             <tr class="light-green darken-1 texto header">
               <th>Tiempo</th>
               <th class="center-align">Hrs</th>
@@ -190,12 +221,14 @@
           <br>
         </div>
       </div>
+      <!-- Solo si solicita -->
       <div class="row center-align" *ngIf="ver_tabla && seccion == 1">
-        <a class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
+        <a *ngIf="false"  class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR TABLA A EXCEL</a>
       </div>
-      <div class="row" *ngIf="ver_tabla && seccion == 2">
+        <!-- Fin solo si solicita -->
+      <div class="row" [hidden]="!(ver_tabla && seccion == 2)">
         <div class="col s12 m12 l12 xl12">
-          <table id="tblReporte">
+          <table id="tblReportePerdidas">
             <tr class="light-green darken-1 texto header">
               <th>Fuentes de pérdida</th>
               <th class="center-align">Hrs</th>
@@ -225,11 +258,27 @@
             </tr>
           </table>
           <br>
-          <a class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
+          <!-- solo si solicita -->
+          <a *ngIf="false" class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR TABLA A EXCEL</a>
+          <!-- fin solo si solicita -->
         </div>
       </div>
     </div>
   </div>
+</div>
+<div class="container">
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only">
+    <hr>
+    <div class="row center-align">
+      <a> Ver resumen en pdf</a>
+    </div>
+    <div class="row  center-align">
+      <a (click)="exportarTodoToExcel()"> Exportar resumen a excel</a>
+    </div>
+  </div>
+  <br>
+  <!-- Fin solo para dispositivos moviles -->
 </div>
 <div class="container" *ngIf="loading">
   <div id="loader-wrapper">

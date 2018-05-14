@@ -5,6 +5,7 @@ import { Linea } from '../../models/linea';
 import * as Chart from 'chart.js';
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
+import { getTablaUtf8 } from '../../utils';
 
 declare var $: any;
 declare var Materialize: any;
@@ -303,37 +304,9 @@ export class RptDisponibilidadComponent implements OnInit {
     let linkFile = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel;';
 
-    let tabla_div = document.getElementById('tblReporte');
-    let tabla_html = tabla_div.outerHTML.replace(/ /g, '%20')
-      .replace(/á/g, '%e1')
-      .replace(/Á/g, '%c1')
-      .replace(/é/g, '%e9')
-      .replace(/É/g, '%c9')
-      .replace(/í/g, '%a1')
-      .replace(/Í/g, '%ed')
-      .replace(/ó/g, '%f3')
-      .replace(/Ó/g, '%d3')
-      .replace(/ú/g, '%fa')
-      .replace(/Ú/g, '%da')
-      .replace(/Ñ/g, '%d1')
-      .replace(/ñ/g, '%f1')
-
-    let tablaProduccion = document.getElementById('tblReporteProduccion');
-    let tablaHtmlProduccion = tablaProduccion.outerHTML.replace(/ /g, '%20')
-      .replace(/á/g, '%e1')
-      .replace(/Á/g, '%c1')
-      .replace(/é/g, '%e9')
-      .replace(/É/g, '%c9')
-      .replace(/í/g, '%a1')
-      .replace(/Í/g, '%ed')
-      .replace(/ó/g, '%f3')
-      .replace(/Ó/g, '%d3')
-      .replace(/ú/g, '%fa')
-      .replace(/Ú/g, '%da')
-      .replace(/Ñ/g, '%d1')
-      .replace(/ñ/g, '%f1')
-
-    linkFile.href = data_type + ', ' + tabla_html + tablaHtmlProduccion;
+    let tablas = getTablaUtf8('tblReporte') + getTablaUtf8('tblReporteProduccion');
+   
+    linkFile.href = data_type + ', ' + tablas;
     linkFile.download = 'ReporteDisponibilidad';
 
     linkFile.click();
