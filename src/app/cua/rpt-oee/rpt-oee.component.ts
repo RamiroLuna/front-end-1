@@ -37,7 +37,9 @@ export class RptOeeComponent implements OnInit {
       xAxes: [{
 
         ticks: {
-          autoSkip: false
+          callback: function (value, index, values) {
+            return value;
+          }
         }, scaleLabel: {
           display: false,
           labelString: '',
@@ -57,7 +59,7 @@ export class RptOeeComponent implements OnInit {
       }]
     },
     legend: {
-      display: false,
+      display: true,
     },
     title: {
       display: true,
@@ -72,17 +74,18 @@ export class RptOeeComponent implements OnInit {
 
   public data: any = {
     labels: [],
-    datasets: [{
+    datasets: [
+      {
+        label: '',
+        type: 'line',
+        data: []
+      },{
       label: '',
       data: [],
       backgroundColor: 'rgba(102,187,106)',
       borderColor: 'rgba(56,142,60)',
       borderWidth: 1
-    },{
-      label: '',
-      type: 'line',
-      data: []
-    },]
+    }]
   };
 
   constructor(
@@ -219,7 +222,7 @@ export class RptOeeComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.getOEE(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-        console.log(result)
+
         if (result.response.sucessfull) {
           this.tituloGrafica = "OEE de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea) + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
           this.options.title.text = this.tituloGrafica;
@@ -229,14 +232,11 @@ export class RptOeeComponent implements OnInit {
           let horas = this.rows.filter((el) => el.padre == 0).map((el) => el.porcentaje);
 
           this.data.labels = labels;
-          this.data.datasets[0].label = 'OEE';
-          this.data.datasets[0].data = horas;
+          this.data.datasets[1].label = 'OEE';
+          this.data.datasets[1].data = horas;
 
-          this.data.datasets[1].label = 'Meta esperada';
-          this.data.datasets[1].data = meta_esperada;
-
-          console.log(meta_esperada)
-          
+          this.data.datasets[0].label = 'Meta esperada';
+          this.data.datasets[0].data = meta_esperada;
 
           this.viewReport = true;
           setTimeout(() => { this.ngAfterViewHttpRpt(); }, 200);
