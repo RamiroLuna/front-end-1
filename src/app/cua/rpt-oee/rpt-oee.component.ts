@@ -78,7 +78,11 @@ export class RptOeeComponent implements OnInit {
       backgroundColor: 'rgba(102,187,106)',
       borderColor: 'rgba(56,142,60)',
       borderWidth: 1
-    }]
+    },{
+      label: '',
+      type: 'line',
+      data: []
+    },]
   };
 
   constructor(
@@ -179,7 +183,8 @@ export class RptOeeComponent implements OnInit {
       type: 'bar',
       data: this.data,
       options: this.options
-    });
+    }
+    );
 
   }
 
@@ -208,24 +213,30 @@ export class RptOeeComponent implements OnInit {
   }
 
   busqueda(parametrosBusqueda: any) {
-
     this.viewReport = false;
     this.submitted = true;
 
     if (this.formConsultaPeriodo.valid) {
 
       this.service.getOEE(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-
+        console.log(result)
         if (result.response.sucessfull) {
-          this.tituloGrafica = "OEE de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.id_linea) + this.getPeriodo(this.periodos, parametrosBusqueda.paramsBusqueda.idPeriodo);
+          this.tituloGrafica = "OEE de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea) + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
           this.options.title.text = this.tituloGrafica;
           this.rows = result.data.reporteOEE || [];
+          let meta_esperada = this.rows.filter((el) => el.padre == 0).map((el) => el.meta);
           let labels = this.rows.filter((el) => el.padre == 0).map((el) => el.titulo);
           let horas = this.rows.filter((el) => el.padre == 0).map((el) => el.porcentaje);
 
           this.data.labels = labels;
           this.data.datasets[0].label = 'OEE';
           this.data.datasets[0].data = horas;
+
+          this.data.datasets[1].label = 'Meta esperada';
+          this.data.datasets[1].data = meta_esperada;
+
+          console.log(meta_esperada)
+          
 
           this.viewReport = true;
           setTimeout(() => { this.ngAfterViewHttpRpt(); }, 200);
@@ -303,7 +314,7 @@ export class RptOeeComponent implements OnInit {
     let el = periodos.filter(el => el.id_periodo == id_periodo);
 
     if (el.length > 0) {
-      return el[0].descripcion_mes + el[0].anio;
+      return " " + el[0].descripcion_mes + " " + el[0].anio;
     } else {
       return "Linea no identificada"
     }

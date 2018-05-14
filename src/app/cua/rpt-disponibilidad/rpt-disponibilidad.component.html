@@ -3,9 +3,9 @@
     <h4 class="color_titulo center-align">Reporte de disponibilidad</h4>
     <div class="section"></div>
     <div class="row">
-      <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="busqueda(paramsBusqueda)" autocomplete="off">
+      <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="busqueda(parametrosBusqueda)" autocomplete="off">
         <div class="input-field col s12 m12 l3 xl3">
-          <select class="anio" materialize="material_select" [materializeSelectOptions]="anios" formControlName="anio" [(ngModel)]="paramsBusqueda.anio"
+          <select class="anio" materialize="material_select" [materializeSelectOptions]="anios" formControlName="anio" [(ngModel)]="parametrosBusqueda.anio"
             (ngModelChange)="changeCombo('anio')">
             <option value="">SELECCIONE</option>
             <option *ngFor="let anio of anios" [value]="anio.valor">{{anio.valor}}</option>
@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="input-field col s12 m12 l3 xl3">
-          <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="paramsBusqueda.idPeriodo"
+          <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="parametrosBusqueda.idPeriodo"
             (ngModelChange)="changeCombo()">
             <option value="">SELECCIONE</option>
             <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
@@ -29,7 +29,7 @@
           </div>
         </div>
         <div class="input-field col s12 m12 l5 xl5">
-          <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="idLinea" [(ngModel)]="paramsBusqueda.idLinea"
+          <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="idLinea" [(ngModel)]="parametrosBusqueda.idLinea"
             (ngModelChange)="changeCombo()">
             <option value="">SELECCIONE</option>
             <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{linea.descripcion}}</option>

@@ -19,7 +19,7 @@ export class RptDisponibilidadComponent implements OnInit {
   public submitted: boolean;
   public viewReport: boolean;
   public formConsultaPeriodo: FormGroup;
-  public paramsBusqueda: any;
+  public parametrosBusqueda: any;
   public lineas: Array<Linea>;
   public tituloGrafica: string;
 
@@ -100,7 +100,8 @@ export class RptDisponibilidadComponent implements OnInit {
     this.seccion = 0;
     this.tituloGrafica = "";
     this.texto_link = "Ver datos en tabla";
-    this.paramsBusqueda = {};
+    this.parametrosBusqueda = {
+    };
     this.anios = [];
     this.meses = [];
     this.periodos = [];
@@ -138,9 +139,9 @@ export class RptDisponibilidadComponent implements OnInit {
 
   loadFormulario(): void {
     this.formConsultaPeriodo = this.fb.group({
-      idLinea: new FormControl({ value: this.paramsBusqueda.idLinea }, [Validators.required]),
-      anio: new FormControl({ value: this.paramsBusqueda.anio }, [Validators.required]),
-      idPeriodo: new FormControl({ value: this.paramsBusqueda.idPeriodo }, [Validators.required])
+      idLinea: new FormControl({ value: this.parametrosBusqueda.idLinea }, [Validators.required]),
+      anio: new FormControl({ value: this.parametrosBusqueda.anio }, [Validators.required]),
+      idPeriodo: new FormControl({ value: this.parametrosBusqueda.idPeriodo }, [Validators.required])
     });
   }
 
@@ -207,7 +208,7 @@ export class RptDisponibilidadComponent implements OnInit {
   changeCombo(params: string): void {
     this.viewReport = false;
     if (params == 'anio') {
-      this.meses = this.periodos.filter(el => el.anio == this.paramsBusqueda.anio)
+      this.meses = this.periodos.filter(el => el.anio == this.parametrosBusqueda.anio)
     }
   }
 
@@ -221,7 +222,7 @@ export class RptDisponibilidadComponent implements OnInit {
       this.service.reporteDisponibilidad(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
 
         if (result.response.sucessfull) {
-          this.tituloGrafica = "Disponibilidad de " + this.getTextoLinea(this.lineas, parametrosBusqueda.id_linea) + this.getPeriodo(this.periodos, parametrosBusqueda.paramsBusqueda.idPeriodo);
+          this.tituloGrafica = "Disponibilidad de " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea) + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
           this.options.title.text = this.tituloGrafica;
           this.rows = result.data.reporteDisponibilidad || [];
           this.rowsProduccion = result.data.datosProduccion || [];
@@ -276,7 +277,7 @@ export class RptDisponibilidadComponent implements OnInit {
     let el = periodos.filter(el => el.id_periodo == id_periodo);
 
     if (el.length > 0) {
-      return el[0].descripcion_mes + el[0].anio;
+      return "  " + el[0].descripcion_mes + "  " + el[0].anio;
     } else {
       return "Linea no identificada"
     }
