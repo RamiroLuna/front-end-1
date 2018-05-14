@@ -24,4 +24,11 @@ export class RptResumenOeeService {
     return this.http.get<any>(this.URL + '?action=reporteEficiencia&id_usuario=' + id_usuario + '&id_periodo='+params.idPeriodo +'&id_linea='+params.idLinea);
   }
 
+    /*
+   * Consulta reporte de fuente de perdidas
+   */
+  getOEEFallasByLinea(id_usuario: number, params:any): Observable<any> {
+    return this.http.get<any>(this.URL + '?action=getOEEFallasByLinea&id_usuario=' + id_usuario + '&id_periodo='+params.idPeriodo +'&id_linea='+params.idLinea);
+  }
+
 }

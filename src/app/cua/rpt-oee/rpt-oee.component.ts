@@ -303,7 +303,7 @@ export class RptOeeComponent implements OnInit {
       .replace(/ñ/g, '%f1')
 
     linkFile.href = data_type + ', ' + tabla_html;
-    linkFile.download = 'ReporteDeFallas';
+    linkFile.download = 'ReporteDeOEE';
 
     linkFile.click();
     linkFile.remove();

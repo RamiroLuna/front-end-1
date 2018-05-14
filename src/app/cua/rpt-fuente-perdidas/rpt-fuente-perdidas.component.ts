@@ -41,7 +41,7 @@ export class RptFuentePerdidasComponent implements OnInit {
           autoSkip: false
         }, scaleLabel: {
           display: true,
-          labelString: 'Horas muertas',
+          labelString: 'Horas',
         }
       }],
       yAxes: [{
@@ -216,7 +216,7 @@ export class RptFuentePerdidasComponent implements OnInit {
       this.service.getOEEFallasByLinea(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
 
         if (result.response.sucessfull) {
-          this.tituloGrafica = "Fuente de perdidas de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.id_linea) + this.getPeriodo(this.periodos, parametrosBusqueda.paramsBusqueda.idPeriodo);;
+          this.tituloGrafica = "Fuente de perdidas de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea) + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);;
           this.options.title.text = this.tituloGrafica;
           this.rows = result.data.listaOEEFallas || [];
           let labels = this.rows.filter((el) => el.padre == 0).map((el) => el.fuente);
@@ -302,7 +302,7 @@ export class RptFuentePerdidasComponent implements OnInit {
     let el = periodos.filter(el => el.id_periodo == id_periodo);
 
     if (el.length > 0) {
-      return el[0].descripcion_mes + el[0].anio;
+      return "  " + el[0].descripcion_mes + " " + el[0].anio;
     } else {
       return "Linea no identificada"
     }

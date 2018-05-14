@@ -1,6 +1,6 @@
 <div *ngIf="!loading">
   <div class="container">
-    <h4 class="color_titulo center-align">Reporte Resumen de OEE</h4>
+    <h4 class="color_titulo center-align">Reporte resumen OEE</h4>
     <div class="section"></div>
     <div class="row">
       <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="busqueda(paramsBusqueda)" autocomplete="off">
@@ -80,10 +80,26 @@
           <canvas id="chart" width="50" height="20">
             Su navegador no soporta canvas
           </canvas>
-          <div class="row right-align">
-            <a id="downloadChart" href="" (click)="downloadCharts($event)">Descargar gráfica</a>
-          </div>
         </div>
+      </div>
+      <div class="carousel-item white" href="#two!">
+        <div class="container">
+          <canvas id="chartDisponibilidad" width="50" height="20">
+            Su navegador no soporta canvas
+          </canvas>
+        </div>
+      </div>
+      <div class="carousel-item white" href="#three!">
+        <div class="container">
+          <canvas id="chartPerdidas" width="50" height="20">
+            Su navegador no soporta canvas
+          </canvas>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row right-align">
+        <a id="downloadChart" href="" (click)="downloadCharts($event)">Descargar gráfica</a>
       </div>
     </div>
     <div class="container center">
@@ -112,6 +128,98 @@
                 </td>
                 <td class="center-align">
                   <b>{{ row.porcentaje + ' % '}}</b>
+                </td>
+              </ng-template>
+            </tr>
+          </table>
+          <br>
+          <a class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
+        </div>
+      </div>
+      <div class="row" *ngIf="ver_tabla && seccion == 1">
+        <div class="col s12 m12 l6 xl6">
+          <table id="tblReporte">
+            <tr class="light-green darken-1 texto header">
+              <th>Tiempo</th>
+              <th class="center-align">Hrs</th>
+              <th class="center-align">%</th>
+            </tr>
+
+            <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
+
+              <ng-template [ngIf]="row.padre == 0">
+                <td>{{ row.titulo }}</td>
+                <td class="center-align">{{ row.hrs }}</td>
+                <td class="center-align">{{ row.porcentaje }}</td>
+              </ng-template>
+              <ng-template [ngIf]="row.padre == 2">
+                <td class="right-align">
+                  <b>{{ row.titulo }}</b>
+                </td>
+                <td class="center-align">
+                  <b>{{ row.hrs }}</b>
+                </td>
+                <td class="center-align">
+                  <b>{{ row.porcentaje }}</b>
+                </td>
+              </ng-template>
+            </tr>
+          </table>
+          <br>
+        </div>
+        <div class="col s12 m12 l6 xl6">
+          <table id="tblReporteProduccion">
+            <tr class="light-green darken-1 texto header">
+              <th colspan="2">Datos Producción</th>
+            </tr>
+            <tr *ngFor="let row of rowsProduccion" [ngClass]="{'total':row.padre == 1}">
+              <ng-template [ngIf]="row.padre == 0">
+                <td>{{ row.titulo }}</td>
+                <td class="center-align">{{ row.hrs }}</td>
+              </ng-template>
+              <ng-template [ngIf]="row.padre == 2">
+                <td class="right-align">
+                  <b>{{ row.titulo }}</b>
+                </td>
+                <td class="center-align">
+                  <b>{{ row.hrs }}</b>
+                </td>
+              </ng-template>
+            </tr>
+          </table>
+          <br>
+        </div>
+      </div>
+      <div class="row center-align" *ngIf="ver_tabla && seccion == 1">
+        <a class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
+      </div>
+      <div class="row" *ngIf="ver_tabla && seccion == 2">
+        <div class="col s12 m12 l12 xl12">
+          <table id="tblReporte">
+            <tr class="light-green darken-1 texto header">
+              <th>Fuentes de pérdida</th>
+              <th class="center-align">Hrs</th>
+              <th class="center-align">%</th>
+            </tr>
+
+            <tr *ngFor="let row of rowsPerdidas" [ngClass]="{'total':row.padre == 1}">
+              <ng-template [ngIf]="row.padre == 1">
+                <td colspan="3">{{ row.fuente }}</td>
+              </ng-template>
+              <ng-template [ngIf]="row.padre == 0">
+                <td>{{ row.fuente }}</td>
+                <td class="center-align">{{ row.hrs }}</td>
+                <td class="center-align">{{ row.porcentaje }}</td>
+              </ng-template>
+              <ng-template [ngIf]="row.padre == 2">
+                <td class="right-align">
+                  <b>{{ row.fuente }}</b>
+                </td>
+                <td class="center-align">
+                  <b>{{ row.hrs }}</b>
+                </td>
+                <td class="center-align">
+                  <b>{{ row.porcentaje }}</b>
                 </td>
               </ng-template>
             </tr>
