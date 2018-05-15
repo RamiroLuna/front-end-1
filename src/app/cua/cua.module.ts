@@ -24,6 +24,8 @@ import { ListaValidacionComponent } from './lista-validacion/lista-validacion.co
 import { RptDisponibilidadComponent } from './rpt-disponibilidad/rpt-disponibilidad.component';
 import { RptOeeComponent } from './rpt-oee/rpt-oee.component';
 import { RptResumenOeeComponent } from './rpt-resumen-oee/rpt-resumen-oee.component';
+import { FormularioPeriodoComponent } from './formulario-periodo/formulario-periodo.component';
+import { ListaPeriodosComponent } from './lista-periodos/lista-periodos.component';
 
 
 
@@ -79,6 +81,20 @@ const routesMetas: Routes = [
       expectedRole: 22
     }
   },
+  /* rutas de periodos */
+  {
+    path: 'opciones/periodo', component: FormularioPeriodoComponent, canActivate: [AuthGuardCua],
+    data: {
+      expectedRole: 23
+    }
+  },
+  {
+    path: 'opciones/lista-periodos', component: ListaPeriodosComponent, canActivate: [AuthGuardCua],
+    data: {
+      expectedRole: 25
+    }
+  },
+
   /* rutas de reportes */
   { path: 'opciones/lista-reportes', component: ListaReportesComponent },
   { path: 'opciones/lista-reportes/fuente-perdidas', component: RptFuentePerdidasComponent },
@@ -142,7 +158,9 @@ const routesMetas: Routes = [
     ListaValidacionComponent,
     RptDisponibilidadComponent,
     RptOeeComponent,
-    RptResumenOeeComponent
+    RptResumenOeeComponent,
+    FormularioPeriodoComponent,
+    ListaPeriodosComponent
   ],
   providers: [
     AuthGuardCua

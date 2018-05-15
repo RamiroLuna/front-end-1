@@ -9,6 +9,8 @@ declare var $: any;
 export class OptionsComponent implements AfterViewInit {
 
   public permission: any = {
+    abrirPeriodo: false,
+    consultarPeriodos: false,
     cargaMetaManual: false,
     cargaMasiva: false,
     edicionMeta: false,
@@ -24,6 +26,9 @@ export class OptionsComponent implements AfterViewInit {
 
   ngOnInit() {
     this.loading = true;
+    
+    this.permission.abrirPeriodo = findRol(23, this.auth.getRolesCUA());
+    this.permission.consultarPeriodos = findRol(25, this.auth.getRolesCUA());
     this.permission.cargaMetaManual = findRol(2, this.auth.getRolesCUA());
     this.permission.cargaMasiva = findRol(1, this.auth.getRolesCUA());
     this.permission.edicionMeta = findRol(3, this.auth.getRolesCUA());
