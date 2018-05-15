@@ -83,6 +83,10 @@ export class RptResumenOeeComponent implements OnInit {
       fontStyle: 'normal',
       fontSize: 16
     },
+    animation: {
+      duration: 1000,
+      easing: 'easeInQuad'
+    },
     responsive: true
   };
 
@@ -138,7 +142,7 @@ export class RptResumenOeeComponent implements OnInit {
       fontSize: 16
     },
     animation: {
-      duration: 2000,
+      duration: 1000,
       easing: 'easeInQuad'
     },
     responsive: true
@@ -188,6 +192,10 @@ export class RptResumenOeeComponent implements OnInit {
       fontColor: '#303f9f',
       fontStyle: 'normal',
       fontSize: 16
+    },
+    animation: {
+      duration: 1000,
+      easing: 'easeInQuad'
     },
     responsive: true
   };
@@ -279,7 +287,13 @@ export class RptResumenOeeComponent implements OnInit {
    * Carga plugins para mostrar grafica 
    */
   ngAfterViewHttpRpt(): void {
-    let b = false;
+  
+    let ctxDispo = $('#chartDisponibilidad').get(0).getContext('2d');
+    this.chartDisponibilidad = new Chart(ctxDispo, {
+      type: 'horizontalBar',
+      data: this.dataDisponibilidad,
+      options: this.optionsDisponibilidad
+    });
 
     $('.carousel.carousel-slider').carousel({
       fullWidth: true,
@@ -293,42 +307,33 @@ export class RptResumenOeeComponent implements OnInit {
 
         switch (this.seccion) {
           case 0:
+            // this.options.animation= true;
             let ctx = $('#chart').get(0).getContext('2d');
             this.chartsOee = new Chart(ctx, {
               type: 'bar',
               data: this.data,
               options: this.options
             });
-            if (b) {
-
-              this.chartDisponibilidad.destroy();
-              this.chartsPerdidas.destroy();
-            }
-            // 
+           
             break;
           case 1:
-            //
-            b = true;
+          
             let ctxDispo = $('#chartDisponibilidad').get(0).getContext('2d');
             this.chartDisponibilidad = new Chart(ctxDispo, {
               type: 'horizontalBar',
               data: this.dataDisponibilidad,
               options: this.optionsDisponibilidad
             });
-            this.chartsOee.destroy();
-            this.chartsPerdidas.destroy();
+            
             break;
           case 2:
-            b = true;
+           
             let ctx1 = $('#chartPerdidas').get(0).getContext('2d');
             this.chartsPerdidas = new Chart(ctx1, {
               type: 'horizontalBar',
               data: this.dataPerdidas,
               options: this.optionsPerdidas
-            }
-            );
-            this.chartsOee.destroy();
-            this.chartDisponibilidad.destroy();
+            });          
             break;
         }
       }
@@ -342,13 +347,13 @@ export class RptResumenOeeComponent implements OnInit {
    * Carga plugins para mostrar grafica 
    */
   ngAfterViewHttpRptPerdida(): void {
-    // let ctx = $('#chartPerdidas').get(0).getContext('2d');
-    // this.chartsPerdidas = new Chart(ctx, {
-    //   type: 'horizontalBar',
-    //   data: this.dataPerdidas,
-    //   options: this.optionsPerdidas
-    // }
-    // );
+    let ctx = $('#chartPerdidas').get(0).getContext('2d');
+    this.chartsPerdidas = new Chart(ctx, {
+      type: 'horizontalBar',
+      data: this.dataPerdidas,
+      options: this.optionsPerdidas
+    }
+    );
   }
 
 
@@ -549,82 +554,88 @@ export class RptResumenOeeComponent implements OnInit {
 
   }
 
+ 
   printRptPDF(): void {
-    let docDefinition = {
-      header: (currentPage, pageCount) => {
-        // you can apply any logic and return any valid pdfmake element
-        let texto = 'Eficiencia Global de los equipos.  ' +
-          '  Linea:' + this.getTextoLinea(this.lineas, this.paramsBusqueda.idLinea) +
-          '     Periodo:' + this.getPeriodo(this.periodos, this.paramsBusqueda.idPeriodo);
+      let docDefinition = {
+        header: (currentPage, pageCount) => {
+          // you can apply any logic and return any valid pdfmake element
+          let texto = 'Eficiencia Global de los equipos.  ' +
+            '  Linea:' + this.getTextoLinea(this.lineas, this.paramsBusqueda.idLinea) +
+            '     Periodo:' + this.getPeriodo(this.periodos, this.paramsBusqueda.idPeriodo);
 
-        return { text: texto, alignment: 'center', margin: 40, color: '#1a237e', bold: true, fontSize: 14 };
-      },
-      content: [
-        {
-          columns: [
-            {
-              width: '30%',
-              layout: 'noBorders',
-              table: {
-                widths: ['*'],
-                body: [
-                  [
-                    {
-                      table: {
-                        headerRows: 1,
-                        widths: ['*', 'auto', '*'],
+          return { text: texto, alignment: 'center', margin: 40, color: '#1a237e', bold: true, fontSize: 14 };
+        },
+        content: [
+          {
+            columns: [
+              {
+                width: '30%',
+                layout: 'noBorders',
+                table: {
+                  widths: ['*'],
+                  body: [
+                    [
+                      {
+                        table: {
+                          headerRows: 1,
+                          widths: ['*', 'auto', '*'],
 
-                        body: [
-                          ['First', 'Second', 'Third'],
-                          ['Value 1', 'Value 2', 'Value 3'],
-                          [{ text: 'Bold value', bold: true }, 'Val 2', 'Val 3']
-                        ]
+                          body: [
+                            ['First', 'Second', 'Third'],
+                            ['Value 1', 'Value 2', 'Value 3'],
+                            [{ text: 'Bold value', bold: true }, 'Val 2', 'Val 3']
+                          ]
+                        }
                       }
-                    }
-                  ],
-                  [
-                    {
-                      table: {
-                        headerRows: 1,
-                        widths: ['*', 'auto', '*'],
+                    ],
+                    [
+                      {
+                        table: {
+                          headerRows: 1,
+                          widths: ['*', 'auto', '*'],
 
-                        body: [
-                          ['First', 'Second', 'Third'],
-                          ['Value 1', 'Value 2', 'Value 3'],
-                          [{ text: 'Bold value', bold: true }, 'Val 2', 'Val 3']
-                        ]
+                          body: [
+                            ['First', 'Second', 'Third'],
+                            ['Value 1', 'Value 2', 'Value 3'],
+                            [{ text: 'Bold value', bold: true }, 'Val 2', 'Val 3']
+                          ]
+                        }
                       }
-                    }
-                  ],
-                  [''],
-                  ['']
-                ]
+                    ],
+                    [''],
+                    ['']
+                  ]
+                }
+              },
+              {
+                width: '70%',
+                layout: 'noBorders',
+                table: {
+                  widths: ['*'],
+                  body: [
+                    [{ text: '\n'}],
+                    [{ image: this.chartsOee.toBase64Image(), width: 700, height: 250 }],
+                    [{ text: '\n\n\n\n\n\n'}],
+                    [{ image: this.chartDisponibilidad.toBase64Image(), width: 700, height: 250 }],
+                    [{ image: this.chartsPerdidas.toBase64Image(), width: 700, height: 350 }]
+                  ]
+                }
               }
-            },
-            {
-              width: '70%',
-              layout: 'noBorders',
-              table: {
-                widths: ['*'],
-                body: [
-                  [{ image: this.chartsOee.toBase64Image() , width: 800}]
-                ]
-              }
-            }
-          ],
-          // optional space between columns
-          columnGap: 10
-        }
-      ],
-      // a string or { width: number, height: number }
-      pageSize: 'TABLOID',
-      // by default we use portrait, you can change it to landscape if you wish
-      pageOrientation: 'landscape',
+            ],
+            // optional space between columns
+            columnGap: 10
+          }
+        ],
+        // a string or { width: number, height: number }
+        pageSize: 'TABLOID',
+        // by default we use portrait, you can change it to landscape if you wish
+        pageOrientation: 'landscape',
 
-      // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
-      pageMargins: [40, 70, 40, 60]
-    };
-    pdfMake.createPdf(docDefinition).open();
+        // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
+        pageMargins: [40, 70, 40, 60]
+      };
+      pdfMake.createPdf(docDefinition).open();
+
   }
 
 }
