@@ -89,7 +89,7 @@
             </a>
           </li>
           <li>
-            <a class="btn-floating  light-green">
+            <a (click)="printRptPDF()" class="btn-floating  light-green">
               <i class="material-icons">print</i>
             </a>
           </li>
@@ -271,7 +271,7 @@
   <div class="hide-on-large-only">
     <hr>
     <div class="row center-align">
-      <a> Ver resumen en pdf</a>
+      <a (click)="printRptPDF()"> Ver resumen en pdf</a>
     </div>
     <div class="row  center-align">
       <a (click)="exportarTodoToExcel()"> Exportar resumen a excel</a>

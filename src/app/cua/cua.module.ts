@@ -26,6 +26,7 @@ import { RptOeeComponent } from './rpt-oee/rpt-oee.component';
 import { RptResumenOeeComponent } from './rpt-resumen-oee/rpt-resumen-oee.component';
 
 
+
 const routesMetas: Routes = [
   { path: 'opciones', component: OptionsComponent },
   {

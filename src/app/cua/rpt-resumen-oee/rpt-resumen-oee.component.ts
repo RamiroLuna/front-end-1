@@ -6,6 +6,10 @@ import * as Chart from 'chart.js';
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { getTablaUtf8 } from '../../utils';
+import * as pdfMake from 'pdfmake/build/pdfmake.js';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 
 declare var $: any;
 declare var Materialize: any;
@@ -501,7 +505,7 @@ export class RptResumenOeeComponent implements OnInit {
     let data_type = 'data:application/vnd.ms-excel;';
 
     if (this.seccion == 0) {
-      let tabla = getTablaUtf8('tblReporte');    
+      let tabla = getTablaUtf8('tblReporte');
       linkFile.href = data_type + ', ' + tabla;
       linkFile.download = 'ReporteOEE';
     } else if (this.seccion == 1) {
@@ -529,20 +533,98 @@ export class RptResumenOeeComponent implements OnInit {
     }
   }
 
-  exportarTodoToExcel():void{
+  exportarTodoToExcel(): void {
 
     let linkFile = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel;';
-    let tablas = getTablaUtf8('tblReporte') +  
-                getTablaUtf8('tblReporteDisponibilidad') + 
-                getTablaUtf8('tblReporteProduccion') +
-                getTablaUtf8('tblReportePerdidas');
+    let tablas = getTablaUtf8('tblReporte') +
+      getTablaUtf8('tblReporteDisponibilidad') +
+      getTablaUtf8('tblReporteProduccion') +
+      getTablaUtf8('tblReportePerdidas');
 
     linkFile.href = data_type + ', ' + tablas;
     linkFile.download = 'RptGlobalEficiencia';
     linkFile.click();
     linkFile.remove();
 
+  }
+
+  printRptPDF(): void {
+    let docDefinition = {
+      header: (currentPage, pageCount) => {
+        // you can apply any logic and return any valid pdfmake element
+        let texto = 'Eficiencia Global de los equipos.  ' +
+          '  Linea:' + this.getTextoLinea(this.lineas, this.paramsBusqueda.idLinea) +
+          '     Periodo:' + this.getPeriodo(this.periodos, this.paramsBusqueda.idPeriodo);
+
+        return { text: texto, alignment: 'center', margin: 40, color: '#1a237e', bold: true, fontSize: 14 };
+      },
+      content: [
+        {
+          columns: [
+            {
+              width: '30%',
+              layout: 'noBorders',
+              table: {
+                widths: ['*'],
+                body: [
+                  [
+                    {
+                      table: {
+                        headerRows: 1,
+                        widths: ['*', 'auto', '*'],
+
+                        body: [
+                          ['First', 'Second', 'Third'],
+                          ['Value 1', 'Value 2', 'Value 3'],
+                          [{ text: 'Bold value', bold: true }, 'Val 2', 'Val 3']
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      table: {
+                        headerRows: 1,
+                        widths: ['*', 'auto', '*'],
+
+                        body: [
+                          ['First', 'Second', 'Third'],
+                          ['Value 1', 'Value 2', 'Value 3'],
+                          [{ text: 'Bold value', bold: true }, 'Val 2', 'Val 3']
+                        ]
+                      }
+                    }
+                  ],
+                  [''],
+                  ['']
+                ]
+              }
+            },
+            {
+              width: '70%',
+              layout: 'noBorders',
+              table: {
+                widths: ['*'],
+                body: [
+                  [{ image: this.chartsOee.toBase64Image() , width: 800}]
+                ]
+              }
+            }
+          ],
+          // optional space between columns
+          columnGap: 10
+        }
+      ],
+      // a string or { width: number, height: number }
+      pageSize: 'TABLOID',
+      // by default we use portrait, you can change it to landscape if you wish
+      pageOrientation: 'landscape',
+
+      // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
+      pageMargins: [40, 70, 40, 60]
+    };
+    pdfMake.createPdf(docDefinition).open();
   }
 
 }
