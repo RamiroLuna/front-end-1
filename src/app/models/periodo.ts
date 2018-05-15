@@ -4,4 +4,10 @@ export class Periodo {
     mes: number;
     descripcion_mes: string;
     estatus: number;
+
+    disponibilidad?:number;
+    utilizacion?:number;
+    calidad?:number;
+    oee?:number;
+    eficiencia_teorica?:number;
 }

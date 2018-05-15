@@ -179,7 +179,7 @@ export class FormularioProduccionComponent implements OnInit {
           let arregloAsignaciones: Array<any> = [];
 
           this.productos.map((el) => {
-            arregloAsignaciones.push({ 'id_producto': el.id_producto, 'valor': parseInt(el.asignacion) });
+            arregloAsignaciones.push({ 'id_producto': el.id_producto, 'valor': parseFloat(el.asignacion) });
           });
 
           this.service.agregar(this.auth.getIdUsuario(), arregloAsignaciones, this.meta.id_meta).subscribe(result => {

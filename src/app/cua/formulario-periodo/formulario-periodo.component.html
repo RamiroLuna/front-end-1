@@ -1,3 +1,96 @@
-<p>
-  formulario-periodo works!
-</p>
+<div class="container" *ngIf="!loading">
+  <div class="section"></div>
+  <h4 class="color_titulo center-align">Apertura de periodo</h4>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <a routerLink="../../opciones" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">arrow_back</i>
+      </i>
+    </a>
+    <button *ngIf="(lineas.length > 0) && !addMore" [disabled]="disabledBtn" class="btn-floating light-green darken-1  waves-effect waves-light tooltipped"
+       data-position="top" data-delay="50" data-tooltip="Abrir periodo" (click)="openModalConfirmacion(meta,'abrir')">
+      <i class="material-icons">
+        <i class="material-icons">lock_open</i>
+      </i>
+    </button>
+  </div>
+  <!-- fin Solo para dispositivos moviles -->
+  <div class="row">
+    <div class="input-field col s12 m12 l12 xl12">
+      <input id="periodo" type="text" [value]="periodoTexto" disabled>
+      <label for="periodo" class="active">Nuevo Periodo:</label>
+    </div>
+  </div>
+  <div class="row center-align">
+    <p class="color_titulo">Ingrese las metas esperadas en este periodo para cada linea.</p>
+  </div>
+  <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
+    <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
+      <thead>
+        <tr>
+          <th class="center-align">Linea</th>
+          <th class="center-align">Disponibilidad</th>
+          <th class="center-align">Utilización</th>
+          <th class="center-align">Calidad</th>
+          <th class="center-align">OEE</th>
+          <th class="center-align">Eficiencia teórica</th>
+        </tr>
+      </thead>
+
+      <tbody class="datos">
+        <tr *ngIf="lineas.length == 0 ">
+          <th colspan="6" class="center">No hay lineas registradas</th>
+        </tr>
+        <tr *ngFor="let linea of lineas;let i = index" [id]="linea.id_linea">
+          <td class="center-align">{{ linea.descripcion }}</td>
+          <td class="center-align">
+            <input type="text" style="width: 62px;" [disabled]="disabledInput">
+          </td>
+          <td class="center-align">
+            <input type="text" style="width: 62px;" [disabled]="disabledInput">
+          </td>
+          <td class="center-align">
+            <input type="text" style="width: 62px;" [disabled]="disabledInput">
+          </td>
+          <td class="center-align">
+            <input type="text" style="width: 62px;" [disabled]="disabledInput">
+          </td>
+          <td class="center-align">
+            <input type="text" style="width: 62px;" [disabled]="disabledInput">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="addMore" class="row center-align">
+    <a class="waves-effect waves-light btn light-green darken-1" (click)="agregarOtro()">Abrir otro periodo</a>
+  </div>
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a routerLink="../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+      <button *ngIf="(lineas.length > 0) && !addMore" [disabled]="disabledBtn" class="btn-floating btn-large  light-green darken-1  waves-effect waves-light tooltipped"
+        data-position="top" data-delay="50" data-tooltip="Abrir periodo" (click)="openModalConfirmacion('abrir',$event)">
+        <i class="material-icons">
+          <i class="material-icons">lock_open</i>
+        </i>
+      </button>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas-->
+</div>
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>
