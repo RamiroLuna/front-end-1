@@ -1,0 +1,18 @@
+/*
+ * Estilo para la barra de busqueda
+ */
+ .nav-wrapper .input-field label{
+    top: -10px;
+    margin-left: 10px;
+}
+
+.color_txt{
+    color: #7cb342;
+}
+
+li:hover {
+    color: #558b2f;
+    background-color: #f1f8e9;
+    cursor:pointer; 
+    cursor: hand;
+}

@@ -1,3 +1,87 @@
-<p>
-  lista-periodos works!
-</p>
+<div class="container" *ngIf="!loading">
+  <div class="section"></div>
+  <h4 class="color_titulo center-align">Periodos
+    <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar año" (click)="openModalYear($event)">{{ anioSeleccionado }}</a>
+  </h4>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <a routerLink="../../opciones" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">arrow_back</i>
+      </i>
+    </a>
+  </div>
+  <!-- fin Solo para dispositivos moviles -->
+  <div class="row">
+    <nav *ngIf="periodos.length > 0">
+      <div class="nav-wrapper grey lighten-5">
+        <form autocomplete="off">
+          <div class="input-field">
+            <input id="search" type="search" placeholder="Escribe para buscar" [(ngModel)]="texto_busqueda" [ngModelOptions]="{standalone: true}"
+              required>
+            <i class="material-icons" (click)="limpiarInput()">close</i>
+            <label class="label-icon busqueda" for="search">
+              <i class="material-icons" style="color:black">search</i>
+            </label>
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="row" *ngIf="datos_tabla">
+    <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
+      <thead>
+        <tr>
+          <th class="center-align">Periodo</th>
+          <th class="center-align">Estatus del periodo</th>
+          <th class="center-align">Ver metas esperadas</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngIf="(periodos.length == 0 ) || (periodos | filterBy: ['descripcion_mes','anio']: texto_busqueda).length == 0">
+          <th colspan="3" class="center">No hay periodos</th>
+        </tr>
+        <tr *ngFor="let periodo of periodos | filterBy: ['descripcion_mes','anio']: texto_busqueda">
+          <td class="center-align">{{ periodo.anio + ' '+ periodo.descripcion_mes }}</td>
+          <td class="center-align">
+            <div class="switch">
+              <label>
+                Cerrado
+                <input type="checkbox" [checked]="periodo.estatus == 0" (change)="openModalConfirmacion(periodo, 'apertura', $event )">
+                <span class="lever"></span>
+                Abierto
+              </label>
+            </div>
+          </td>
+          <td class="center-align">
+            <a class="btn-floating light-green lighten-1 edit">
+              <i class="material-icons">description</i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a routerLink="../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas-->
+</div>
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>
