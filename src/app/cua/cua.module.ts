@@ -26,6 +26,7 @@ import { RptOeeComponent } from './rpt-oee/rpt-oee.component';
 import { RptResumenOeeComponent } from './rpt-resumen-oee/rpt-resumen-oee.component';
 import { FormularioPeriodoComponent } from './formulario-periodo/formulario-periodo.component';
 import { ListaPeriodosComponent } from './lista-periodos/lista-periodos.component';
+import { RptDiarioProduccionComponent } from './rpt-diario-produccion/rpt-diario-produccion.component';
 
 
 
@@ -101,6 +102,7 @@ const routesMetas: Routes = [
   { path: 'opciones/lista-reportes/disponibilidad', component: RptDisponibilidadComponent },
   { path: 'opciones/lista-reportes/oee', component: RptOeeComponent },
   { path: 'opciones/lista-reportes/resumen-oee', component: RptResumenOeeComponent },
+  { path: 'opciones/lista-reportes/diario-produccion', component: RptDiarioProduccionComponent },
 
   /* Registro de produccion */
   {
@@ -160,7 +162,8 @@ const routesMetas: Routes = [
     RptOeeComponent,
     RptResumenOeeComponent,
     FormularioPeriodoComponent,
-    ListaPeriodosComponent
+    ListaPeriodosComponent,
+    RptDiarioProduccionComponent
   ],
   providers: [
     AuthGuardCua

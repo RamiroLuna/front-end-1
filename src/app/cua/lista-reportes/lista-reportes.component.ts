@@ -17,7 +17,7 @@ export class ListaReportesComponent implements  AfterViewInit {
     { id : 2 , nombre_reporte: 'Fuente de perdidas' , link:'fuente-perdidas' , activo: true},
     { id : 3 , nombre_reporte: 'OEE' , link:'oee' , activo: true},
     { id : 4 , nombre_reporte: 'Resumen OEE' , link:'resumen-oee' , activo: true},
-    { id : 5 , nombre_reporte: 'Diario de producción' , link:'' , activo: true},
+    { id : 5 , nombre_reporte: 'Diario de producción' , link:'diario-produccion' , activo: true},
     { id : 6 , nombre_reporte: 'Producción Real vs Plan' , link:'' , activo: true},
     { id : 7 , nombre_reporte: 'Paros Real vs Plan' , link:'' , activo: true},
     { id : 8 , nombre_reporte: 'Velocidad Promedio' , link:'' , activo: true},

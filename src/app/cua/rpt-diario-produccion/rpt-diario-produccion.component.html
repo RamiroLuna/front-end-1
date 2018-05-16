@@ -1,0 +1,153 @@
+<div *ngIf="!loading">
+  <div class="container">
+    <h4 class="color_titulo center-align">Reporte diario de producción</h4>
+    <!-- Solo para dispositivos moviles -->
+    <br>
+    <div class="hide-on-large-only right-align">
+      <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+    <!-- Fin solo para dispositivos moviles -->
+    <div class="section"></div>
+    <div class="row">
+      <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="busqueda(parametrosBusqueda)" autocomplete="off">
+        <div class="input-field col s12 m12 l3 xl3">
+          <select class="anio" materialize="material_select" [materializeSelectOptions]="anios" formControlName="anio" [(ngModel)]="parametrosBusqueda.anio"
+            (ngModelChange)="changeCombo('anio')">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let anio of anios" [value]="anio.valor">{{anio.valor}}</option>
+          </select>
+          <label for="anio">año</label>
+          <div *ngIf="formConsultaPeriodo.controls.anio.errors?.required && (formConsultaPeriodo.controls.anio?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l3 xl3">
+          <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="parametrosBusqueda.idPeriodo"
+            (ngModelChange)="changeCombo()">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
+          </select>
+          <label for="mes">mes</label>
+          <div *ngIf="formConsultaPeriodo.controls.idPeriodo.errors?.required && (formConsultaPeriodo.controls.idPeriodo?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l5 xl5">
+          <select materialize="material_select" [materializeSelectOptions]="gruposLineas" formControlName="idGpoLinea" [(ngModel)]="parametrosBusqueda.idGpoLinea"
+            (ngModelChange)="changeCombo()">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let grupo of gruposLineas" [value]="grupo.id">{{grupo.valor}}</option>
+          </select>
+          <label for="gpoLinea">Grupo de Linea</label>
+          <div *ngIf="formConsultaPeriodo.controls.idGpoLinea.errors?.required && (formConsultaPeriodo.controls.idGpoLinea?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l1 xl1">
+          <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
+            <i class="material-icons">search</i>
+          </button>
+          <label></label>
+        </div>
+      </form>
+    </div>
+    <div class="section"></div>
+    <div class="row scroll_ejex_tabla_reporte"  *ngIf="viewReport">
+      <table id="tblReporte" cellspacing="0">
+        <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
+          <ng-template [ngIf]="row.padre == 1">
+            <th class="center-align">{{ row.dia }}</th>
+            <th class="center-align">{{ row.molido1 }}</th>
+            <th class="center-align">{{ row.molido2 }}</th>
+            <th class="center-align">{{ row.totalMolido }}</th>
+            <th class="center-align">{{ row.acumulado }}</th>
+            <th class="center-align">{{ row.metaMolido }}</th>
+            <th class="center-align">{{ row.difMolido }}</th>
+            <th class="center-align">{{ row.eficiencia }}</th>
+            <th class="center-align">{{ row.vsMetaM }}</th>
+            <th class="center-align">{{ row.eficTeorica }}</th>
+            <th class="center-align">{{ row.hojuela1 }}</th>
+            <th class="center-align">{{ row.hojuela2 }}</th>
+            <th class="center-align">{{ row.totalHoj }}</th>
+            <th class="center-align">{{ row.acumHoju }}</th>
+            <th class="center-align">{{ row.planHoju }}</th>
+            <th class="center-align">{{ row.difeHoju }}</th>
+            <th class="center-align">{{ row.eficiDia }}</th>
+            <th class="center-align">{{ row.vsMetaH }}</th>
+          </ng-template>
+          <ng-template [ngIf]="row.padre == 0">
+            <td class="center-align">{{ row.dia }}</td>
+            <td class="center-align">{{ convierte(row.molido1)  }}</td>
+            <td class="center-align">{{ convierte(row.molido2) }}</td>
+            <td class="center-align">{{ convierte(row.totalMolido) }}</td>
+            <td class="center-align">{{ convierte(row.acumulado) }}</td>
+            <td class="center-align">{{ convierte(row.metaMolido) }}</td>
+            <td class="center-align">{{ convierte(row.difMolido) }}</td>
+            <td class="center-align">{{ convierte(row.eficiencia) +  ' %' }}</td>
+            <td class="center-align">{{ convierte(row.vsMetaM) +  ' %'  }}</td>
+            <td class="center-align">{{ convierte(row.eficTeorica) + ' %'  }}</td>
+            <td class="center-align">{{ convierte(row.hojuela1) }}</td>
+            <td class="center-align">{{ convierte(row.hojuela2) }}</td>
+            <td class="center-align">{{ convierte(row.totalHoj) }}</td>
+            <td class="center-align">{{ convierte(row.acumHoju) }}</td>
+            <td class="center-align">{{ convierte(row.planHoju) }}</td>
+            <td class="center-align">{{ convierte(row.difeHoju) }}</td>
+            <td class="center-align">{{ convierte(row.eficiDia)  +  ' %' }}</td>
+            <td class="center-align">{{ convierte(row.vsMetaH)  +  ' %' }}</td>
+          </ng-template>
+          <ng-template [ngIf]="row.padre == 2">
+            <td class="right-align"><b>{{ row.dia }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.molido1) }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.molido2) }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.totalMolido) }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.acumulado) }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.metaMolido) }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.difMolido) }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.eficiencia)  +  ' %' }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.vsMetaM)  +  ' %' }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.eficTeorica)  +  ' %' }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.hojuela1) }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.hojuela2) }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.totalHoj) }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.acumHoju) }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.planHoju) }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.difeHoju) }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.eficiDia)  +  ' %' }}</b></td>
+            <td class="center-align"><b>{{ convierte(row.vsMetaH)  +  ' %' }}</b></td>
+          </ng-template>
+        </tr>
+      </table>
+
+    </div>
+    <div *ngIf="viewReport" class="row center-align">
+        <a class="waves-effect waves-light btn light-green darken-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
+    </div>
+    <!-- Inicio solo para pantallas-->
+    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a routerLink="../../lista-reportes" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped"
+          data-position="top" data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
+    </div>
+    <!-- Fin solo para pantallas-->
+  </div>
+</div>
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>
