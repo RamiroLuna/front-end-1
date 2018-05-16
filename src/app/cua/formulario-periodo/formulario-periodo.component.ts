@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Periodo } from '../../models/periodo';
 import { Linea } from '../../models/linea';
 import { FormularioPeriodoService } from './formulario-periodo.service';
@@ -11,7 +11,7 @@ import {
 } from '@angular/animations';
 import { AuthService } from '../../auth/auth.service';
 import swal from 'sweetalert2';
-import { isNumeroAsignacionValid } from '../../utils';
+import { isNumeroAsignacionValid, findRol } from '../../utils';
 
 
 declare var $: any;
@@ -35,11 +35,13 @@ declare var Materialize: any;
 })
 export class FormularioPeriodoComponent implements OnInit {
 
+  @Input() periodo: Periodo;
+  @Input() seccion: string = "add";
+
   public loading: boolean;
   public status: string;
   public datos_tabla: boolean;
   public mensajeModal: string;
-  public submitted: boolean;
   public lineas: Array<Linea> = [];
   public periodoTexto: string;
   public infoPeriodo: any;
@@ -47,18 +49,33 @@ export class FormularioPeriodoComponent implements OnInit {
   public disabledBtn: boolean;
   public addMore: boolean;
   public disabledInput: boolean;
+  public periodosRegistrados: Array<Periodo>;
+
+  public permission: any = {
+    crear: false,
+    editar: false,
+    consultar: false
+  }
 
   constructor(private auth: AuthService,
     private service: FormularioPeriodoService) { }
 
   ngOnInit() {
-    this.initComponent();
+
+    this.permission.crear = findRol(23, this.auth.getRolesCUA());
+    this.permission.editar = findRol(25, this.auth.getRolesCUA());
+    this.permission.consultar = findRol(26, this.auth.getRolesCUA());
+
+    if (this.seccion == "add") {
+      this.initComponent();
+    } else if (this.seccion == "edit") {
+      this.initComponentUpdate(this.periodo);
+    }
   }
 
   initComponent(): void {
     this.loading = true;
     this.datos_tabla = false;
-    this.submitted = false;
     this.periodoTexto = "";
     this.status = "inactive";
     this.infoPeriodo = {};
@@ -86,6 +103,36 @@ export class FormularioPeriodoComponent implements OnInit {
       this.loading = false;
     });
   }
+
+  initComponentUpdate(periodo: Periodo): void {
+    this.loading = true;
+    this.datos_tabla = false;
+    this.periodoTexto = "";
+    this.status = "inactive";
+    this.metasEsperadas = [];
+    this.disabledBtn = true;
+    this.disabledInput = !this.permission.editar;
+    this.periodosRegistrados = [];
+
+    this.service.getDetailsByPeriodo(this.auth.getIdUsuario(), periodo.id_periodo).subscribe(result => {
+      if (result.response.sucessfull) {
+        this.periodosRegistrados = result.data.listDetailsPeriodo || [];
+        this.periodoTexto = periodo.descripcion_mes + " " + periodo.anio;
+        this.disabledBtn = false;
+        this.datos_tabla = true;
+        this.loading = false;
+        setTimeout(() => { this.ngAfterViewInitHttp() }, 200)
+      } else {
+        Materialize.toast('Ocurrió  un error al cargar formulario!', 4000, 'red');
+        this.loading = false;
+      }
+    }, error => {
+      Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+      this.loading = false;
+    });
+  }
+
+
   /*
    * Carga plugins despues de cargar y mostrar objetos en el DOM
    */
@@ -105,12 +152,26 @@ export class FormularioPeriodoComponent implements OnInit {
   openModalConfirmacion(accion: string, event?: any): void {
     $('.tooltipped').tooltip('hide');
     if (this.validaDatos('.datos')) {
+
       this.disabledBtn = true;
       this.mensajeModal = '';
+
+      if (this.seccion == 'edit') {
+        this.periodosRegistrados.forEach((el) => {
+          el.disponibilidad = parseFloat("" + el.disponibilidad);
+          el.utilizacion = parseFloat("" + el.utilizacion);
+          el.oee = parseFloat("" + el.oee);
+          el.calidad = parseFloat("" + el.calidad);
+          el.eficiencia_teorica = parseFloat("" + el.eficiencia_teorica);
+        });
+      }
 
       switch (accion) {
         case 'abrir':
           this.mensajeModal = '¿ Está seguro de hacer la apertura del periodo ? ';
+          break;
+        case 'actualizar':
+          this.mensajeModal = '¿ Está seguro de actualizar la información del periodo ? ';
           break;
       }
 
@@ -149,6 +210,20 @@ export class FormularioPeriodoComponent implements OnInit {
                 Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
               });
               break;
+            case 'actualizar':
+              this.service.update(this.auth.getIdUsuario(), this.periodosRegistrados).subscribe(result => {
+                if (result.response.sucessfull) {
+                  this.disabledBtn = false;
+                  Materialize.toast(' Actualización de periodo correcta ', 4000, 'green');
+                } else {
+                  this.disabledBtn = false;
+                  Materialize.toast(result.response.message, 4000, 'red');
+                }
+              }, error => {
+                this.disabledBtn = false;
+                Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+              });
+              break;
           }
           /*
           * Si cancela accion
@@ -162,7 +237,6 @@ export class FormularioPeriodoComponent implements OnInit {
     }
 
   }
-
 
   validaDatos(clase: string): boolean {
     let bandera = true;
@@ -183,35 +257,40 @@ export class FormularioPeriodoComponent implements OnInit {
           caja.css('background-color', '#ffcdd2');
         } else {
           caja.css('background-color', '');
-          switch (index2) {
-            case 0:
-              objTmp.disponibilidad = parseFloat(caja.val());
-              break;
-            case 1:
-              objTmp.utilizacion = parseFloat(caja.val());
-              break;
-            case 2:
-              objTmp.calidad = parseFloat(caja.val());
-              break;
-            case 3:
-              objTmp.oee = parseFloat(caja.val());
-              break;
-            case 4:
-              objTmp.eficiencia_teorica = parseFloat(caja.val());
-              break;
+          if (this.seccion == 'add') {
+            switch (index2) {
+              case 0:
+                objTmp.disponibilidad = parseFloat(caja.val());
+                break;
+              case 1:
+                objTmp.utilizacion = parseFloat(caja.val());
+                break;
+              case 2:
+                objTmp.calidad = parseFloat(caja.val());
+                break;
+              case 3:
+                objTmp.oee = parseFloat(caja.val());
+                break;
+              case 4:
+                objTmp.eficiencia_teorica = parseFloat(caja.val());
+                break;
+            }
           }
         }
       });
-      metas.push(objTmp);
+      if (this.seccion == 'add') {
+        metas.push(objTmp);
+      }
     });
 
-    this.metasEsperadas = metas;
+    if (this.seccion == 'add') {
+      this.metasEsperadas = metas;
+    }
     return bandera;
   }
 
   agregarOtro(): void {
     this.initComponent();
   }
-
 
 }

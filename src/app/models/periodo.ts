@@ -5,6 +5,7 @@ export class Periodo {
     descripcion_mes: string;
     estatus: number;
 
+    id_metas_periodo?:number;
     disponibilidad?:number;
     utilizacion?:number;
     calidad?:number;

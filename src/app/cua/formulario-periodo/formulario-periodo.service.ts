@@ -28,4 +28,20 @@ export class FormularioPeriodoService {
     return this.http.post(this.URL, body);
   }
 
+  /*
+   * Consulta por id_perido
+   */
+  getDetailsByPeriodo(idUsuario: number,id_periodo:number): Observable<any> {
+    return this.http.get<any>(this.URL + '?action=getDetailsByPeriodo&id_usuario=' + idUsuario + '&id_periodo='+id_periodo);
+  }
+
+  update(id_usuario: number, metas_esperadas:any): Observable<any> {
+    const body = new HttpParams()
+      .set('action', 'updateDetailsPeriodo')
+      .set('metas_esperadas', ''+ JSON.stringify(metas_esperadas))
+      .set('id_usuario', '' + id_usuario)
+
+    return this.http.post(this.URL, body);
+  }
+
 }

@@ -49,14 +49,24 @@
             <div class="switch">
               <label>
                 Cerrado
-                <input type="checkbox" [checked]="periodo.estatus == 0" (change)="openModalConfirmacion(periodo, 'apertura', $event )">
-                <span class="lever"></span>
+                <ng-template [ngIf]="permission.cerrar && !permission.reAbrir">
+                  <input type="checkbox" [disabled]="!(periodo.estatus == 0 && permission.cerrar)" [checked]="periodo.estatus == 0" (change)="openModalConfirmacion(periodo, 'apertura', $event )">
+                  <span class="lever"></span>
+                </ng-template>
+                <ng-template [ngIf]="!permission.cerrar && permission.reAbrir">
+                  <input type="checkbox" [disabled]="!(periodo.estatus == 1 && permission.reAbrir)" [checked]="periodo.estatus == 0" (change)="openModalConfirmacion(periodo, 'apertura', $event )">
+                  <span class="lever"></span>
+                </ng-template>
+                <ng-template [ngIf]="permission.cerrar && permission.reAbrir">
+                  <input type="checkbox" [checked]="periodo.estatus == 0" (change)="openModalConfirmacion(periodo, 'apertura', $event )">
+                  <span class="lever"></span>
+                </ng-template>
                 Abierto
               </label>
             </div>
           </td>
           <td class="center-align">
-            <a class="btn-floating light-green lighten-1 edit">
+            <a (click)="abrirModalDetalle(periodo)" class="btn-floating light-green lighten-1 edit">
               <i class="material-icons">description</i>
             </a>
           </td>
@@ -76,6 +86,12 @@
     </div>
   </div>
   <!-- Fin solo para pantallas-->
+</div>
+
+<div id="modalEdicion" class="modal" style="width: calc(75%)">
+  <div class="modal-content" *ngIf="verDetalle">
+    <app-formulario-periodo [periodo]="periodo" [seccion]="seccion"></app-formulario-periodo>
+  </div>
 </div>
 
 <div class="container" *ngIf="loading">
