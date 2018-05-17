@@ -390,7 +390,7 @@ export class RptResumenOeeComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.getOEE(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-        console.log('resultado', result)
+     
         if (result.response.sucessfull) {
 
           /** Grafica para OEE */
@@ -441,7 +441,7 @@ export class RptResumenOeeComponent implements OnInit {
     }
 
     this.service.getOEEFallasByLinea(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-      console.log(result)
+     
       if (result.response.sucessfull) {
         this.tituloGraficaPerdida = "Fuente de perdidas de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea) + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);;
         this.optionsPerdidas.title.text = this.tituloGraficaPerdida;

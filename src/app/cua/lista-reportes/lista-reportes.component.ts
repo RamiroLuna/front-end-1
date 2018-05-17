@@ -18,10 +18,12 @@ export class ListaReportesComponent implements  AfterViewInit {
     { id : 3 , nombre_reporte: 'OEE' , link:'oee' , activo: true},
     { id : 4 , nombre_reporte: 'Resumen OEE' , link:'resumen-oee' , activo: true},
     { id : 5 , nombre_reporte: 'Diario de producción' , link:'diario-produccion' , activo: true},
-    { id : 6 , nombre_reporte: 'Producción Real vs Plan' , link:'' , activo: true},
-    { id : 7 , nombre_reporte: 'Paros Real vs Plan' , link:'' , activo: true},
-    { id : 8 , nombre_reporte: 'Velocidad Promedio' , link:'' , activo: true},
-    { id : 9 , nombre_reporte: 'Subproductos' , link:'' , activo: true}
+    // { id : 6 , nombre_reporte: 'Producción Real vs Plan' , link:'' , activo: true},
+    // { id : 7 , nombre_reporte: 'Paros Real vs Plan' , link:'' , activo: true},
+    // { id : 8 , nombre_reporte: 'Velocidad Promedio' , link:'' , activo: true},
+    // { id : 9 , nombre_reporte: 'Subproductos' , link:'' , activo: true}
+    { id : 10 , nombre_reporte: 'Desempeño diario' , link:'desempenio-diario' , activo: true},
+    { id : 11 , nombre_reporte: 'Producción diaria - Junta Jucodi' , link:'jucodi' , activo: true}
   ];
 
   constructor() { }
