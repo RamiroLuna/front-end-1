@@ -32,9 +32,9 @@ export class RptDesempenioDiarioComponent implements OnInit {
   public options: any = {
     scales: {
       yAxes: [{
-        stacked: true,
+        stacked: false,
         ticks: {
-          beginAtZero: true
+          beginAtZero: false
         },
         scaleLabel: {
           display: true,
