@@ -40,6 +40,7 @@ export class RptResumenOeeComponent implements OnInit {
   public periodos: Array<Periodo>;
   public rowsProduccion: Array<any>;
   public rowsPerdidas: Array<any>;
+  public rowsDisponibilidad: Array<any>;
 
   /** Variables para contener el grafico */
   public chartsOee: any;
@@ -225,6 +226,8 @@ export class RptResumenOeeComponent implements OnInit {
     this.ver_tabla = false;
     this.rows = [];
     this.rowsPerdidas = [];
+    this.rowsDisponibilidad = [];
+    this.rowsProduccion = [];
     this.seccion = 0;
     this.tituloGraficaOEE = "";
     this.tituloGraficaPerdida = "";
@@ -287,7 +290,7 @@ export class RptResumenOeeComponent implements OnInit {
    * Carga plugins para mostrar grafica 
    */
   ngAfterViewHttpRpt(): void {
-  
+
     let ctxDispo = $('#chartDisponibilidad').get(0).getContext('2d');
     this.chartDisponibilidad = new Chart(ctxDispo, {
       type: 'horizontalBar',
@@ -314,26 +317,26 @@ export class RptResumenOeeComponent implements OnInit {
               data: this.data,
               options: this.options
             });
-           
+
             break;
           case 1:
-          
+
             let ctxDispo = $('#chartDisponibilidad').get(0).getContext('2d');
             this.chartDisponibilidad = new Chart(ctxDispo, {
               type: 'horizontalBar',
               data: this.dataDisponibilidad,
               options: this.optionsDisponibilidad
             });
-            
+
             break;
           case 2:
-           
+
             let ctx1 = $('#chartPerdidas').get(0).getContext('2d');
             this.chartsPerdidas = new Chart(ctx1, {
               type: 'horizontalBar',
               data: this.dataPerdidas,
               options: this.optionsPerdidas
-            });          
+            });
             break;
         }
       }
@@ -387,7 +390,7 @@ export class RptResumenOeeComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.getOEE(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-
+        console.log('resultado', result)
         if (result.response.sucessfull) {
 
           /** Grafica para OEE */
@@ -409,10 +412,10 @@ export class RptResumenOeeComponent implements OnInit {
 
           this.tituloGraficaDisponi = "Disponibilidad de " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea) + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
           this.optionsDisponibilidad.title.text = this.tituloGraficaDisponi;
-          this.rows = result.data.reporteDisponibilidad || [];
+          this.rowsDisponibilidad = result.data.reporteDisponibilidad || [];
           this.rowsProduccion = result.data.datosProduccion || [];
-          let labelsDisponibilidad = this.rows.filter((el) => el.padre == 0).map((el) => el.titulo);
-          let horasDisponibilidad = this.rows.filter((el) => el.padre == 0).map((el) => el.hrs);
+          let labelsDisponibilidad = this.rowsDisponibilidad.filter((el) => el.padre == 0).map((el) => el.titulo);
+          let horasDisponibilidad = this.rowsDisponibilidad.filter((el) => el.padre == 0).map((el) => el.hrs);
 
           this.dataDisponibilidad.labels = labelsDisponibilidad;
           this.dataDisponibilidad.datasets[0].label = 'Horas';
@@ -438,7 +441,7 @@ export class RptResumenOeeComponent implements OnInit {
     }
 
     this.service.getOEEFallasByLinea(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-
+      console.log(result)
       if (result.response.sucessfull) {
         this.tituloGraficaPerdida = "Fuente de perdidas de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea) + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);;
         this.optionsPerdidas.title.text = this.tituloGraficaPerdida;
@@ -554,88 +557,241 @@ export class RptResumenOeeComponent implements OnInit {
 
   }
 
- 
+
   printRptPDF(): void {
-      let docDefinition = {
-        header: (currentPage, pageCount) => {
-          // you can apply any logic and return any valid pdfmake element
-          let texto = 'Eficiencia Global de los equipos.  ' +
-            '  Linea:' + this.getTextoLinea(this.lineas, this.paramsBusqueda.idLinea) +
-            '     Periodo:' + this.getPeriodo(this.periodos, this.paramsBusqueda.idPeriodo);
 
-          return { text: texto, alignment: 'center', margin: 40, color: '#1a237e', bold: true, fontSize: 14 };
-        },
-        content: [
-          {
-            columns: [
-              {
-                width: '30%',
-                layout: 'noBorders',
-                table: {
-                  widths: ['*'],
-                  body: [
-                    [
-                      {
-                        table: {
-                          headerRows: 1,
-                          widths: ['*', 'auto', '*'],
+    let docDefinition = {
+      header: (currentPage, pageCount) => {
+        // you can apply any logic and return any valid pdfmake element
+        let texto = 'Eficiencia Global de los equipos.  ' +
+          '  Linea:' + this.getTextoLinea(this.lineas, this.paramsBusqueda.idLinea) +
+          '     Periodo:' + this.getPeriodo(this.periodos, this.paramsBusqueda.idPeriodo);
 
-                          body: [
-                            ['First', 'Second', 'Third'],
-                            ['Value 1', 'Value 2', 'Value 3'],
-                            [{ text: 'Bold value', bold: true }, 'Val 2', 'Val 3']
-                          ]
-                        }
+        return { text: texto, alignment: 'center', margin: 40, color: '#1a237e', bold: true, fontSize: 14 };
+      },
+      content: [
+        {
+          columns: [
+            {
+              width: '30%',
+              layout: 'noBorders',
+              table: {
+                widths: ['*'],
+                body: [
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [
+                    {
+                      table: {
+                        headerRows: 1,
+                        widths: ['*', 'auto', 'auto'],
+                        body: this.getTableHtmlToArray(this.rows, 'oee')
                       }
-                    ],
-                    [
-                      {
-                        table: {
-                          headerRows: 1,
-                          widths: ['*', 'auto', '*'],
-
-                          body: [
-                            ['First', 'Second', 'Third'],
-                            ['Value 1', 'Value 2', 'Value 3'],
-                            [{ text: 'Bold value', bold: true }, 'Val 2', 'Val 3']
-                          ]
-                        }
+                    }
+                  ],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [
+                    {
+                      table: {
+                        headerRows: 1,
+                        widths: ['*', 'auto', 'auto'],
+                        body: this.getTableHtmlToArray(this.rowsDisponibilidad, 'disponibilidad')
                       }
-                    ],
-                    [''],
-                    ['']
+                    }
+                  ],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [
+                    {
+                      table: {
+                        headerRows: 1,
+                        widths: ['*', 'auto'],
+                        body: this.getTableHtmlToArray(this.rowsProduccion, 'produccion')
+                      }
+                    }
+                  ],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [''],
+                  [
+                    {
+                      table: {
+                        headerRows: 1,
+                        widths: ['*', 'auto', 'auto'],
+                        body: this.getTableHtmlToArray(this.rowsPerdidas, 'perdidas')
+                      }
+                    }
                   ]
-                }
-              },
-              {
-                width: '70%',
-                layout: 'noBorders',
-                table: {
-                  widths: ['*'],
-                  body: [
-                    [{ text: '\n'}],
-                    [{ image: this.chartsOee.toBase64Image(), width: 700, height: 250 }],
-                    [{ text: '\n\n\n\n\n\n'}],
-                    [{ image: this.chartDisponibilidad.toBase64Image(), width: 700, height: 250 }],
-                    [{ image: this.chartsPerdidas.toBase64Image(), width: 700, height: 350 }]
-                  ]
-                }
+                ]
               }
-            ],
-            // optional space between columns
-            columnGap: 10
-          }
-        ],
-        // a string or { width: number, height: number }
-        pageSize: 'TABLOID',
-        // by default we use portrait, you can change it to landscape if you wish
-        pageOrientation: 'landscape',
+            },
+            {
+              width: '70%',
+              layout: 'noBorders',
+              table: {
+                widths: ['*'],
+                body: [
+                  [{ text: '\n' }],
+                  [{ image: this.chartsOee.toBase64Image(), width: 700, height: 250 }],
+                  [{ text: '\n\n\n\n\n\n' }],
+                  [{ image: this.chartDisponibilidad.toBase64Image(), width: 700, height: 250 }],
+                  [{ image: this.chartsPerdidas.toBase64Image(), width: 700, height: 350 }]
+                ]
+              }
+            }
+          ],
+          // optional space between columns
+          columnGap: 10
+        }
+      ],
+      styles: {
+        header: {
+          color: "#FFFFFF",
+          bold: true,
+          fillColor: '#7cb342'
+        },
+        subheader:{
+          color: "#000000",
+          bold: true,
+          fillColor: '#f1f8e9'
+        }
+      },
+      // a string or { width: number, height: number }
+      pageSize: 'TABLOID',
+      // by default we use portrait, you can change it to landscape if you wish
+      pageOrientation: 'landscape',
 
-        // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
-        pageMargins: [40, 70, 40, 60]
-      };
-      pdfMake.createPdf(docDefinition).open();
+      // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
+      pageMargins: [40, 70, 40, 60]
+    };
 
+    pdfMake.createPdf(docDefinition).open();
+
+  }
+
+  getTableHtmlToArray(filas: Array<any>, type: string): Array<any> {
+    let datos = [];
+    let header = [];
+    switch (type) {
+      case 'oee':
+        header = [];
+        header.push({ text: 'OEE', style: 'header' });
+        header.push({ text: '', style: 'header' });
+        header.push({ text: 'Real', style: 'header' });
+        datos.push(header);
+        break;
+      case 'disponibilidad':
+        header = [];
+        header.push({ text: 'Tiempo', style: 'header' });
+        header.push({ text: 'Hrs', style: 'header' });
+        header.push({ text: '%', style: 'header' });
+        datos.push(header);
+        break;
+      case 'produccion':
+        header = [];
+        header.push({ text: 'Datos producción', style: 'header', colSpan: 2 });
+        header.push({});
+        datos.push(header);
+        break;
+
+      case 'perdidas':
+        header = [];
+        header.push({ text: 'Fuentes de perdidas', style: 'header' });
+        header.push({ text: 'Hrs', style: 'header' });
+        header.push({ text: '%', style: 'header' });
+        datos.push(header);
+        break;
+    }
+
+    if (type == 'oee' || type == 'disponibilidad') {
+
+      filas.filter(el => el.padre != 1).forEach(el => {
+        let tmp = [];
+        if (el.padre == 0) {
+          tmp.push('' + el.titulo);
+          tmp.push('' + el.hrs);
+          tmp.push(el.porcentaje + '%');
+        } else if (el.padre == 2) {
+
+          tmp.push({ text: '' + el.titulo, bold: true });
+          tmp.push({ text: '' + el.hrs, bold: true });
+          tmp.push({ text: '' + el.porcentaje, bold: true });
+        }
+        datos.push(tmp)
+      })
+
+    } else if (type == 'produccion') {
+      filas.filter(el => el.padre != 1).forEach(el => {
+        let tmp = [];
+        if (el.padre == 0) {
+          tmp.push('' + el.titulo);
+          tmp.push('' + el.hrs);
+        } else if (el.padre == 2) {
+          tmp.push({ text: '' + el.titulo, bold: true });
+          tmp.push({ text: '' + el.hrs, bold: true });
+        }
+        datos.push(tmp)
+      })
+
+    } else if (type == 'perdidas') {
+
+      filas.forEach(el => {
+        let tmp = [];
+        if (el.padre == 0) {
+          tmp.push('' + el.fuente);
+          tmp.push('' + el.hrs);
+          tmp.push(el.porcentaje + '%');
+        } else if (el.padre == 1) {
+          tmp.push({ text: '' + el.fuente, bold: true, colSpan: 3, style: 'subheader' });
+          tmp.push({});
+          tmp.push({});
+        } else if (el.padre == 2) {
+
+          tmp.push({ text: '' + el.fuente, bold: true });
+          tmp.push({ text: '' + el.hrs, bold: true });
+          tmp.push({ text: '' + el.porcentaje, bold: true });
+        }
+        datos.push(tmp)
+      })
+    }
+
+    return datos;
   }
 
 }

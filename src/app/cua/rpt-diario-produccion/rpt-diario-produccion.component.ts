@@ -110,7 +110,7 @@ export class RptDiarioProduccionComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.reporteProduccionDiaria(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-        console.log(result)
+
         if (result.response.sucessfull) {
           this.rows = result.data.reporteDiario || [];
           this.viewReport = true;
@@ -137,6 +137,10 @@ export class RptDiarioProduccionComponent implements OnInit {
   convierte(numero:number):string{
     let result = parseFloat(''+numero).toFixed(3);
     return result;
+  }
+
+  regresar() {
+    $('.tooltipped').tooltip('hide');
   }
 
   

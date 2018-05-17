@@ -176,7 +176,7 @@
               <th class="center-align">%</th>
             </tr>
 
-            <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
+            <tr *ngFor="let row of rowsDisponibilidad" [ngClass]="{'total':row.padre == 1}">
 
               <ng-template [ngIf]="row.padre == 0">
                 <td>{{ row.titulo }}</td>
