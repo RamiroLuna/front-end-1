@@ -77,9 +77,9 @@
           <td class="center-align" data-field="dia"  [id]="i" [scope]="'3,'+i">{{meta.dia_string}}</td>
           <td class="center-align" data-field="turno" [scope]="'4,'+i">{{meta.id_turno}}</td>
           <td class="center-align" data-field="grupo" [scope]="'5,'+i">{{meta.nombre_grupo}}</td>
-          <td class="center-align" data-field="meta" [scope]="'6,'+i">{{meta.meta }}</td>
-          <td class="center-align" data-field="tmp" [scope]="'7,'+i">{{meta.tmp }}</td>
-          <td class="center-align" data-field="velocidad" [scope]="'8,'+i">{{meta.velocidad }}</td>
+          <td class="center-align" data-field="meta" [scope]="'6,'+i">{{ convierte(meta.meta,3) }}</td>
+          <td class="center-align" data-field="tmp" [scope]="'7,'+i">{{ convierte(meta.tmp,2) }}</td>
+          <td class="center-align" data-field="velocidad" [scope]="'8,'+i">{{ convierte(meta.velocidad,3) }}</td>
           <td class="center-align">
             <a class="btn-floating light-green lighten-1 edit" (click)="changeIcono($event)" [id]="'btn'+i">
               <i class="material-icons">edit</i>

@@ -375,4 +375,9 @@ export class ListaMetasEdicionComponent implements OnInit {
       return meta;
   }
 
+  convierte(numero:number,decimal:number):string{
+    let result = parseFloat(''+numero).toFixed(decimal);
+    return result;
+  }
+
 }

@@ -123,7 +123,7 @@ export class ValidaProduccionComponent implements OnInit {
       if (result.value) {
 
         this.service.liberarDatos(this.auth.getIdUsuario(), this.meta.id_meta).subscribe(result => {
-          console.log('Produccion valida', result)
+
           if (result.response.sucessfull) {
             this.mostrarBtnValidar = false;
             Materialize.toast('Validación exitosa!', 4000, 'green');

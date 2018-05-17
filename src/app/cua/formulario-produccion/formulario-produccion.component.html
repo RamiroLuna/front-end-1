@@ -84,7 +84,9 @@
               </div>
               <div class="row right-align">
                 <div class="col s8"></div>
-                <a class="btn light-green darken-1 waves-effect waves-light btn col s4" (click)="modalQuestionRegistrarProduccion()">Registrar producción</a>
+                <div *ngIf="btnAdd">
+                  <a class="btn light-green darken-1 waves-effect waves-light btn col s4" (click)="modalQuestionRegistrarProduccion()">Registrar producción</a>
+                </div>
               </div>
             </li>
           </ul>

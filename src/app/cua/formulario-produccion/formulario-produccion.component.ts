@@ -42,6 +42,7 @@ export class FormularioProduccionComponent implements OnInit {
   public lineas: Array<Linea>;
   public grupos: Array<Catalogo>;
   public turnos: Array<Catalogo>;
+  public btnAdd:boolean;
 
   public permission: any = {
     updateProduccion:false
@@ -65,6 +66,7 @@ export class FormularioProduccionComponent implements OnInit {
     this.lineas = [];
     this.grupos = [];
     this.turnos = [];
+    this.btnAdd = true;
 
     if (this.seccion == 'add') {
       this.service.init(this.auth.getIdUsuario()).subscribe(result => {
@@ -185,6 +187,7 @@ export class FormularioProduccionComponent implements OnInit {
           this.service.agregar(this.auth.getIdUsuario(), arregloAsignaciones, this.meta.id_meta).subscribe(result => {
 
             if (result.response.sucessfull) {
+              this.btnAdd = false;
               Materialize.toast('Producción registrada', 4000, 'green');
 
             } else {
@@ -343,6 +346,11 @@ export class FormularioProduccionComponent implements OnInit {
       });
 
     }
+  }
+
+  convierte(numero:number,decimal:number):string{
+    let result = parseFloat(''+numero).toFixed(decimal);
+    return result;
   }
 
 }
