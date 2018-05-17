@@ -165,11 +165,16 @@ export class RptJucodiComponent implements OnInit {
     let tablas = getTablaUtf8('tblReporte');
    
     linkFile.href = data_type + ', ' + tablas;
-    linkFile.download = 'ReporteDisponibilidad';
+    linkFile.download = 'ReporteJucodi';
 
     linkFile.click();
     linkFile.remove();
 
+  }
+
+  convierte(numero:number):string{
+    let result = parseFloat(''+numero).toFixed(3);
+    return result;
   }
 
 }

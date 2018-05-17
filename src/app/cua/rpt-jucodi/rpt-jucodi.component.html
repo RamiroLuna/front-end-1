@@ -1,6 +1,6 @@
 <div *ngIf="!loading">
   <div class="container">
-    <h4 class="color_titulo center-align">Reporte Producción diaria, Junta Jucodi			
+    <h4 class="color_titulo center-align">Reporte Producción diaria, Junta Jucodi
     </h4>
     <!-- Solo para dispositivos moviles -->
     <br>
@@ -16,11 +16,12 @@
     <div class="section"></div>
     <div class="row">
       <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="busqueda(parametrosBusqueda)" autocomplete="off">
-        
+
         <div class="input-field col s12 m12 l6 xl6">
           <input id="dia" type="text" class="datepicker" formControlName="dia" [(ngModel)]="parametrosBusqueda.dia">
           <label for="dia" class="active">Día</label>
-          <div *ngIf="formConsultaPeriodo.controls.dia.errors?.required && (formConsultaPeriodo.controls.dia?.touched || submitted)" class="error">
+          <div *ngIf="formConsultaPeriodo.controls.dia.errors?.required && (formConsultaPeriodo.controls.dia?.touched || submitted)"
+            class="error">
             El dia es requerido
           </div>
         </div>
@@ -45,15 +46,42 @@
       </form>
     </div>
     <div class="section"></div>
-    <div class="row scroll_ejex_tabla_reporte"  *ngIf="viewReport">
-      <table id="tblReporte" cellspacing="0">
-        <tr *ngFor="let row of rows">
+    <div class="row" *ngIf="viewReport">
+      <table id="tblReporte" class="highlight striped" cellspacing="0">
+        <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
+          <ng-template [ngIf]="row.padre == 1">
+            <td class="center-align"><b>{{ row.linea }}</b></td>
+            <td class="center-align"><b>{{ row.dia }}</b></td>
+            <td class="center-align"><b>{{ row.produccion }}</b></td>
+            <td class="center-align"><b>{{ row.meta }}</b></td>
+            <td class="center-align"><b>{{ row.desempeno }}</b></td>
+            <td class="center-align">Meta cumplida</td>
+          </ng-template>
+          <ng-template [ngIf]="row.padre == 0">
+            <td class="center-align">{{ row.linea }}</td>
+            <td class="center-align">{{ row.dia }}</td>
+            <td class="center-align">{{ convierte(row.produccion) }}</td>
+            <td class="center-align">{{ convierte(row.meta) }}</td>
+            <td class="center-align">{{ convierte(row.desempeno) +'%'}}</td>
+            <td class="center-align">
+                <i *ngIf="row.icon == 1 || row.icon == 0" class="material-icons">check</i>
+                <i *ngIf="row.icon == -1 " class="material-icons">close</i>
+            </td>
+          </ng-template>
+          <ng-template [ngIf]="row.padre == 2">
+            <td class="center-align">{{ row.linea }}</td>
+            <td class="center-align">{{ row.dia }}</td>
+            <td class="center-align">{{ convierte(row.produccion) }}</td>
+            <td class="center-align">{{ convierte(row.meta) }}</td>
+            <td class="center-align">{{ convierte(row.desempeno) }}</td>
+            <td class="center-align"></td>
+          </ng-template>
         </tr>
       </table>
 
     </div>
     <div *ngIf="viewReport" class="row center-align">
-        <a class="waves-effect waves-light btn light-green darken-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
+      <a class="waves-effect waves-light btn light-green darken-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
     </div>
     <!-- Inicio solo para pantallas-->
     <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
