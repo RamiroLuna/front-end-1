@@ -18,7 +18,7 @@ export class RptDiarioProduccionService {
     return this.http.get<any>(this.URL + '?action=loadCombobox&id_usuario=' + id_usuario);
   }
   /*
-   * Consulta reporte de fallas
+   * Consulta reporte 
    */
   reporteProduccionDiaria(id_usuario: number, params:any): Observable<any> {
     return this.http.get<any>(this.URL + '?action=reporteDiarioProduccion&id_usuario=' + id_usuario + '&id_periodo='+params.idPeriodo +'&id_gpo_linea='+params.idGpoLinea);

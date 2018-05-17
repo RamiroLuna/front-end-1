@@ -1,3 +1,78 @@
-<p>
-  rpt-jucodi works!
-</p>
+<div *ngIf="!loading">
+  <div class="container">
+    <h4 class="color_titulo center-align">Reporte Producción diaria, Junta Jucodi			
+    </h4>
+    <!-- Solo para dispositivos moviles -->
+    <br>
+    <div class="hide-on-large-only right-align">
+      <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+    <!-- Fin solo para dispositivos moviles -->
+    <div class="section"></div>
+    <div class="row">
+      <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="busqueda(parametrosBusqueda)" autocomplete="off">
+        
+        <div class="input-field col s12 m12 l6 xl6">
+          <input id="dia" type="text" class="datepicker" formControlName="dia" [(ngModel)]="parametrosBusqueda.dia">
+          <label for="dia" class="active">Día</label>
+          <div *ngIf="formConsultaPeriodo.controls.dia.errors?.required && (formConsultaPeriodo.controls.dia?.touched || submitted)" class="error">
+            El dia es requerido
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l5 xl5">
+          <select materialize="material_select" [materializeSelectOptions]="gruposLineas" formControlName="idGpoLinea" [(ngModel)]="parametrosBusqueda.idGpoLinea"
+            (ngModelChange)="changeCombo()">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let grupo of gruposLineas" [value]="grupo.id">{{grupo.valor}}</option>
+          </select>
+          <label for="gpoLinea">Grupo de Linea</label>
+          <div *ngIf="formConsultaPeriodo.controls.idGpoLinea.errors?.required && (formConsultaPeriodo.controls.idGpoLinea?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l1 xl1">
+          <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
+            <i class="material-icons">search</i>
+          </button>
+          <label></label>
+        </div>
+      </form>
+    </div>
+    <div class="section"></div>
+    <div class="row scroll_ejex_tabla_reporte"  *ngIf="viewReport">
+      <table id="tblReporte" cellspacing="0">
+        <tr *ngFor="let row of rows">
+        </tr>
+      </table>
+
+    </div>
+    <div *ngIf="viewReport" class="row center-align">
+        <a class="waves-effect waves-light btn light-green darken-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
+    </div>
+    <!-- Inicio solo para pantallas-->
+    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a routerLink="../../lista-reportes" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped"
+          data-position="top" data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
+    </div>
+    <!-- Fin solo para pantallas-->
+  </div>
+</div>
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>
