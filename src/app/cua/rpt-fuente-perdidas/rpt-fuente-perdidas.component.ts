@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { RptFuentePerdidasService } from "./rpt-fuente-perdidas.service";
 import { Linea } from '../../models/linea';
-// import * as Chart from 'chart.js';
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { getTablaUtf8 } from '../../utils';
+import { Highcharts } from 'highcharts';
+import { configChart } from './rpt.config.export';
 
 declare var $: any;
 declare var Materialize: any;
@@ -33,52 +34,6 @@ export class RptFuentePerdidasComponent implements OnInit {
   public anios: Array<any>;
   public meses: Array<any>;
   public periodos: Array<Periodo>;
-
-  public options: any = {
-    scales: {
-      xAxes: [{
-
-        ticks: {
-          autoSkip: false
-        }, scaleLabel: {
-          display: true,
-          labelString: 'Horas',
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        },
-        scaleLabel: {
-          display: false,
-          // labelString: '%',
-        }
-      }]
-    },
-    legend: {
-      display: false,
-    },
-    title: {
-      display: true,
-      text: '',
-      fontColor: '#303f9f',
-      fontStyle: 'normal',
-      fontSize: 16
-    },
-    responsive: true
-  };
-
-
-  public data: any = {
-    labels: [],
-    datasets: [{
-      label: '',
-      data: [],
-      backgroundColor: 'rgba(255, 99, 132, 0.2)',
-      borderColor: 'rgba(255,99,132,1)',
-      borderWidth: 1
-    }]
-  };
 
   constructor(
     private service: RptFuentePerdidasService,
@@ -154,33 +109,27 @@ export class RptFuentePerdidasComponent implements OnInit {
    * Carga plugins para mostrar grafica 
    */
   ngAfterViewHttpRpt(): void {
-    $('.carousel.carousel-slider').carousel({
-      fullWidth: true,
-      indicators: true,
-      onCycleTo: (ele, dragged) => {
-        this.texto_link = "Ver datos en tabla(s)";
-        this.ver_tabla = false;
-        this.seccion = $(ele).index();
-        $('.carousel li').css('background-color', '#bdbdbd');
-        $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
+    // $('.carousel.carousel-slider').carousel({
+    //   fullWidth: true,
+    //   indicators: true,
+    //   onCycleTo: (ele, dragged) => {
+    //     this.texto_link = "Ver datos en tabla(s)";
+    //     this.ver_tabla = false;
+    //     this.seccion = $(ele).index();
+    //     $('.carousel li').css('background-color', '#bdbdbd');
+    //     $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
 
-        switch (this.seccion) {
-          case 1:
-            // disp.update();
-            break;
-        }
-      }
-    });
-
-    $('.carousel li').css('background-color', '#bdbdbd');
-    $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
-
-    let ctx = $('#chart').get(0).getContext('2d');
-    // let disp = new Chart(ctx, {
-    //   type: 'horizontalBar',
-    //   data: this.data,
-    //   options: this.options
+    //     switch (this.seccion) {
+    //       case 1:
+    //         break;
+    //     }
+    //   }
     // });
+
+    // $('.carousel li').css('background-color', '#bdbdbd');
+    // $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
+
+    $('#divGrafica').highcharts(configChart);
 
   }
 
@@ -217,15 +166,16 @@ export class RptFuentePerdidasComponent implements OnInit {
       this.service.getOEEFallasByLinea(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
 
         if (result.response.sucessfull) {
-          this.tituloGrafica = "Fuente de perdidas de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea) + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);;
-          this.options.title.text = this.tituloGrafica;
+          this.tituloGrafica = "Fuente de perdidas de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea);
           this.rows = result.data.listaOEEFallas || [];
           let labels = this.rows.filter((el) => el.padre == 0).map((el) => el.fuente);
           let horas = this.rows.filter((el) => el.padre == 0).map((el) => el.hrs);
 
-          this.data.labels = labels;
-          this.data.datasets[0].label = 'Horas Muertas';
-          this.data.datasets[0].data = horas;
+          configChart.series = [];
+          configChart.title.text = this.tituloGrafica;
+          configChart.subtitle.text = 'Periodo: ' + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
+          configChart.xAxis.categories = labels ;
+          configChart.series.push({ name: 'Horas Muertas' , data :  horas });
 
           this.viewReport = true;
           setTimeout(() => { this.ngAfterViewHttpRpt(); }, 200);
@@ -256,21 +206,6 @@ export class RptFuentePerdidasComponent implements OnInit {
     }
   }
 
-  downloadCharts(event): void {
-    event.preventDefault();
-    let img = document.createElement('a');
-
-    let canvas = $('#chart');
-    let data = canvas[0].toDataURL("image/png");
-
-    img.setAttribute("id", "tmpImagen");
-    img.href = data;
-    img.download = "Grafica_fallas";
-
-    img.click();
-    img.remove();
-
-  }
 
   exportarExcel(): void {
     let linkFile = document.createElement('a');

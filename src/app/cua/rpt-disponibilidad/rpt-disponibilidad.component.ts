@@ -5,7 +5,7 @@ import { Linea } from '../../models/linea';
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { getTablaUtf8 } from '../../utils';
-import Highcharts from 'highcharts';
+import { Highcharts } from 'highcharts';
 import { configChart } from './rpt.config.export';
 
 declare var $: any;
@@ -123,7 +123,6 @@ export class RptDisponibilidadComponent implements OnInit {
 
         switch (this.seccion) {
           case 1:
-            // disp.update();
             break;
         }
       }
@@ -225,22 +224,6 @@ export class RptDisponibilidadComponent implements OnInit {
     } else {
       return "Linea no identificada"
     }
-  }
-
-  downloadCharts(event): void {
-    event.preventDefault();
-    let img = document.createElement('a');
-
-    let canvas = $('#chart');
-    let data = canvas[0].toDataURL("image/png");
-
-    img.setAttribute("id", "tmpImagen");
-    img.href = data;
-    img.download = "Grafica_fallas";
-
-    img.click();
-    img.remove();
-
   }
 
   exportarExcel(): void {
