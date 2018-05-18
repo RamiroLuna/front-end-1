@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { RptFuentePerdidasService } from "./rpt-fuente-perdidas.service";
 import { Linea } from '../../models/linea';
-import * as Chart from 'chart.js';
+// import * as Chart from 'chart.js';
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { getTablaUtf8 } from '../../utils';
@@ -166,7 +166,7 @@ export class RptFuentePerdidasComponent implements OnInit {
 
         switch (this.seccion) {
           case 1:
-            disp.update();
+            // disp.update();
             break;
         }
       }
@@ -176,11 +176,11 @@ export class RptFuentePerdidasComponent implements OnInit {
     $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
 
     let ctx = $('#chart').get(0).getContext('2d');
-    let disp = new Chart(ctx, {
-      type: 'horizontalBar',
-      data: this.data,
-      options: this.options
-    });
+    // let disp = new Chart(ctx, {
+    //   type: 'horizontalBar',
+    //   data: this.data,
+    //   options: this.options
+    // });
 
   }
 

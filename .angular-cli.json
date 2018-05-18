@@ -30,7 +30,9 @@
         "../node_modules/datatables.net/js/jquery.dataTables.js",
         "../node_modules/table-edits/build/table-edits.min.js",
         "../node_modules/pdfmake/build/pdfmake.js",
-        "../node_modules/pdfmake/build/vfs_fonts.js"
+        "../node_modules/pdfmake/build/vfs_fonts.js",
+        "../node_modules/highcharts/highcharts.js",
+        "../node_modules/highcharts/highcharts-3d.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

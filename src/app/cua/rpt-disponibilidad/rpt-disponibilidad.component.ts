@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { RptDisponibilidadService } from "./rpt-disponibilidad.service";
 import { Linea } from '../../models/linea';
-import * as Chart from 'chart.js';
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { getTablaUtf8 } from '../../utils';
+import Highcharts from 'highcharts';
+import { configChart } from './rpt.config.export';
 
 declare var $: any;
 declare var Materialize: any;
@@ -34,57 +35,7 @@ export class RptDisponibilidadComponent implements OnInit {
   public meses: Array<any>;
   public periodos: Array<Periodo>;
 
-  public options: any = {
-    scales: {
-      xAxes: [{
-
-        ticks: {
-          callback: function (value, index, values) {
-            return value + 'Hrs';
-          }
-        }, scaleLabel: {
-          display: false,
-          labelString: 'Horas',
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        },
-        scaleLabel: {
-          display: false,
-        }
-      }]
-    },
-    legend: {
-      display: true
-    },
-    title: {
-      display: true,
-      text: '',
-      fontColor: '#303f9f',
-      fontStyle: 'normal',
-      fontSize: 16
-    },
-    animation: {
-      duration: 3000,
-      easing: 'easeInQuad'
-    },
-    responsive: true
-  };
-
-
-  public data: any = {
-    labels: [],
-    datasets: [{
-      label: '',
-      data: [],
-      backgroundColor: 'rgba(205,220,57)',
-      borderColor: 'rgba(130,119,23)',
-      borderWidth: 1
-    }]
-  };
-
+ 
   constructor(
     private service: RptDisponibilidadService,
     private auth: AuthService,
@@ -172,7 +123,7 @@ export class RptDisponibilidadComponent implements OnInit {
 
         switch (this.seccion) {
           case 1:
-            disp.update();
+            // disp.update();
             break;
         }
       }
@@ -181,12 +132,9 @@ export class RptDisponibilidadComponent implements OnInit {
     $('.carousel li').css('background-color', '#bdbdbd');
     $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
 
-    let ctx = $('#chart').get(0).getContext('2d');
-    let disp = new Chart(ctx, {
-      type: 'horizontalBar',
-      data: this.data,
-      options: this.options
-    });
+
+
+    $('#divGrafica').highcharts(configChart);
 
   }
 
@@ -223,27 +171,22 @@ export class RptDisponibilidadComponent implements OnInit {
       this.service.reporteDisponibilidad(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
 
         if (result.response.sucessfull) {
-          this.tituloGrafica = "Disponibilidad de " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea) + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
-          this.options.title.text = this.tituloGrafica;
+          this.tituloGrafica = "Disponibilidad de " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea);
+         
           this.rows = result.data.reporteDisponibilidad || [];
           this.rowsProduccion = result.data.datosProduccion || [];
           let labels = this.rows.filter((el) => el.padre == 0).map((el) => el.titulo);
           let horas = this.rows.filter((el) => el.padre == 0).map((el) => el.hrs);
 
-          this.data.labels = labels;
-          this.data.datasets[0].label = 'Horas';
-          this.data.datasets[0].data = horas;
+          configChart.series = [];
+          configChart.title.text = this.tituloGrafica;
+          configChart.subtitle.text = 'Periodo: ' + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
+          configChart.xAxis.categories = labels ;
+          configChart.series.push({ name: ' Horas ' , data :  horas });
 
-          this.options.animation.onComplete = function () {
-            //   let ctx = $('#chart').get(0).getContext('2d');
-            //   console.log('fin')
-            //   this.data.datasets[0].data.forEach(function (dataset) {
-            //     console.log(dataset)
-            //     dataset.bars.forEach(function (bar) {
-            //         ctx.fillText(bar.value, bar.x, bar.y - 5);
-            //     });
-            // })
-          }
+
+       
+          
 
           this.viewReport = true;
           setTimeout(() => { this.ngAfterViewHttpRpt(); }, 200);
@@ -305,7 +248,7 @@ export class RptDisponibilidadComponent implements OnInit {
     let data_type = 'data:application/vnd.ms-excel;';
 
     let tablas = getTablaUtf8('tblReporte') + getTablaUtf8('tblReporteProduccion');
-   
+
     linkFile.href = data_type + ', ' + tablas;
     linkFile.download = 'ReporteDisponibilidad';
 

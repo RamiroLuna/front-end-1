@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { RptOeeService } from "./rpt-oee.service";
 import { Linea } from '../../models/linea';
-import * as Chart from 'chart.js';
+// import * as Chart from 'chart.js';
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { getTablaUtf8 } from '../../utils';
@@ -173,7 +173,7 @@ export class RptOeeComponent implements OnInit {
 
         switch (this.seccion) {
           case 1:
-            disp.update();
+            // disp.update();
             break;
         }
       }
@@ -183,12 +183,12 @@ export class RptOeeComponent implements OnInit {
     $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
 
     let ctx = $('#chart').get(0).getContext('2d');
-    let disp = new Chart(ctx, {
-      type: 'bar',
-      data: this.data,
-      options: this.options
-    }
-    );
+    // let disp = new Chart(ctx, {
+    //   type: 'bar',
+    //   data: this.data,
+    //   options: this.options
+    // }
+    // );
 
   }
 

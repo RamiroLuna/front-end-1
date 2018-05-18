@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { RptResumenOeeService } from "./rpt-resumen-oee.service";
 import { Linea } from '../../models/linea';
-import * as Chart from 'chart.js';
+// import * as Chart from 'chart.js';
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { getTablaUtf8 } from '../../utils';
@@ -292,11 +292,11 @@ export class RptResumenOeeComponent implements OnInit {
   ngAfterViewHttpRpt(): void {
 
     let ctxDispo = $('#chartDisponibilidad').get(0).getContext('2d');
-    this.chartDisponibilidad = new Chart(ctxDispo, {
-      type: 'horizontalBar',
-      data: this.dataDisponibilidad,
-      options: this.optionsDisponibilidad
-    });
+    // this.chartDisponibilidad = new Chart(ctxDispo, {
+    //   type: 'horizontalBar',
+    //   data: this.dataDisponibilidad,
+    //   options: this.optionsDisponibilidad
+    // });
 
     $('.carousel.carousel-slider').carousel({
       fullWidth: true,
@@ -312,31 +312,31 @@ export class RptResumenOeeComponent implements OnInit {
           case 0:
             // this.options.animation= true;
             let ctx = $('#chart').get(0).getContext('2d');
-            this.chartsOee = new Chart(ctx, {
-              type: 'bar',
-              data: this.data,
-              options: this.options
-            });
+            // this.chartsOee = new Chart(ctx, {
+            //   type: 'bar',
+            //   data: this.data,
+            //   options: this.options
+            // });
 
             break;
           case 1:
 
             let ctxDispo = $('#chartDisponibilidad').get(0).getContext('2d');
-            this.chartDisponibilidad = new Chart(ctxDispo, {
-              type: 'horizontalBar',
-              data: this.dataDisponibilidad,
-              options: this.optionsDisponibilidad
-            });
+            // this.chartDisponibilidad = new Chart(ctxDispo, {
+            //   type: 'horizontalBar',
+            //   data: this.dataDisponibilidad,
+            //   options: this.optionsDisponibilidad
+            // });
 
             break;
           case 2:
 
-            let ctx1 = $('#chartPerdidas').get(0).getContext('2d');
-            this.chartsPerdidas = new Chart(ctx1, {
-              type: 'horizontalBar',
-              data: this.dataPerdidas,
-              options: this.optionsPerdidas
-            });
+            // let ctx1 = $('#chartPerdidas').get(0).getContext('2d');
+            // this.chartsPerdidas = new Chart(ctx1, {
+            //   type: 'horizontalBar',
+            //   data: this.dataPerdidas,
+            //   options: this.optionsPerdidas
+            // });
             break;
         }
       }
@@ -351,12 +351,12 @@ export class RptResumenOeeComponent implements OnInit {
    */
   ngAfterViewHttpRptPerdida(): void {
     let ctx = $('#chartPerdidas').get(0).getContext('2d');
-    this.chartsPerdidas = new Chart(ctx, {
-      type: 'horizontalBar',
-      data: this.dataPerdidas,
-      options: this.optionsPerdidas
-    }
-    );
+    // this.chartsPerdidas = new Chart(ctx, {
+    //   type: 'horizontalBar',
+    //   data: this.dataPerdidas,
+    //   options: this.optionsPerdidas
+    // }
+    // );
   }
 
 
