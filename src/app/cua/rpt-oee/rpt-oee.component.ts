@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { RptOeeService } from "./rpt-oee.service";
 import { Linea } from '../../models/linea';
-// import * as Chart from 'chart.js';
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { getTablaUtf8 } from '../../utils';
+import { Highcharts } from 'highcharts';
+import { configChart } from './rpt.config.export';
 
 declare var $: any;
 declare var Materialize: any;
@@ -161,35 +162,34 @@ export class RptOeeComponent implements OnInit {
    * Carga plugins para mostrar grafica 
    */
   ngAfterViewHttpRpt(): void {
-    $('.carousel.carousel-slider').carousel({
-      fullWidth: true,
-      indicators: true,
-      onCycleTo: (ele, dragged) => {
-        this.texto_link = "Ver datos en tabla(s)";
-        this.ver_tabla = false;
-        this.seccion = $(ele).index();
-        $('.carousel li').css('background-color', '#bdbdbd');
-        $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
+    // $('.carousel.carousel-slider').carousel({
+    //   fullWidth: true,
+    //   indicators: true,
+    //   onCycleTo: (ele, dragged) => {
+    //     this.texto_link = "Ver datos en tabla(s)";
+    //     this.ver_tabla = false;
+    //     this.seccion = $(ele).index();
+    //     $('.carousel li').css('background-color', '#bdbdbd');
+    //     $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
 
-        switch (this.seccion) {
-          case 1:
-            // disp.update();
-            break;
-        }
-      }
-    });
+    //     switch (this.seccion) {
+    //       case 1:
+    //         break;
+    //     }
+    //   }
+    // });
 
-    $('.carousel li').css('background-color', '#bdbdbd');
-    $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
+    // $('.carousel li').css('background-color', '#bdbdbd');
+    // $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
 
-    let ctx = $('#chart').get(0).getContext('2d');
+    // let ctx = $('#chart').get(0).getContext('2d');
     // let disp = new Chart(ctx, {
     //   type: 'bar',
     //   data: this.data,
     //   options: this.options
     // }
     // );
-
+    $('#divGrafica').highcharts(configChart);
   }
 
 
@@ -266,22 +266,6 @@ export class RptOeeComponent implements OnInit {
     } else {
       return "Linea no identificada"
     }
-  }
-
-  downloadCharts(event): void {
-    event.preventDefault();
-    let img = document.createElement('a');
-
-    let canvas = $('#chart');
-    let data = canvas[0].toDataURL("image/png");
-
-    img.setAttribute("id", "tmpImagen");
-    img.href = data;
-    img.download = "Grafica_fallas";
-
-    img.click();
-    img.remove();
-
   }
 
   exportarExcel(): void {

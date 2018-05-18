@@ -19,7 +19,8 @@ import { FormularioProduccionComponent } from './formulario-produccion/formulari
 import { ListaProduccionComponent } from './lista-produccion/lista-produccion.component';
 import { AuthGuardCua } from '../auth/auth.guard.cua';
 import { ValidaProduccionComponent } from './valida-produccion/valida-produccion.component';
-import { PipeClass } from '../pipes';
+import { FormatNumberPipeClass } from '../pipes/format.number.pipe';
+import { ToneladasPipeClass } from '../pipes/toneladas.pipe';
 import { ListaValidacionComponent } from './lista-validacion/lista-validacion.component';
 import { RptDisponibilidadComponent } from './rpt-disponibilidad/rpt-disponibilidad.component';
 import { RptOeeComponent } from './rpt-oee/rpt-oee.component';
@@ -161,7 +162,6 @@ const routesMetas: Routes = [
     FormularioProduccionComponent,
     ListaProduccionComponent,
     ValidaProduccionComponent,
-    PipeClass,
     ListaValidacionComponent,
     RptDisponibilidadComponent,
     RptOeeComponent,
@@ -170,7 +170,9 @@ const routesMetas: Routes = [
     ListaPeriodosComponent,
     RptDiarioProduccionComponent,
     RptDesempenioDiarioComponent,
-    RptJucodiComponent
+    RptJucodiComponent,
+    FormatNumberPipeClass,
+    ToneladasPipeClass
   ],
   providers: [
     AuthGuardCua

@@ -124,7 +124,7 @@
             <tr *ngFor="let row of rowsProduccion" [ngClass]="{'total':row.padre == 1}">
               <ng-template [ngIf]="row.padre == 0">
                 <td>{{ row.titulo }}</td>
-                <td class="center-align">{{ row.hrs }}</td>
+                <td class="center-align">{{ row.hrs  | formatDecimal: 3  }}</td>
               </ng-template>
               <ng-template [ngIf]="row.padre == 2">
                 <td class="right-align">
