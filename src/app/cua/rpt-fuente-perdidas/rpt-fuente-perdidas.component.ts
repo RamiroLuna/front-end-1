@@ -109,25 +109,6 @@ export class RptFuentePerdidasComponent implements OnInit {
    * Carga plugins para mostrar grafica 
    */
   ngAfterViewHttpRpt(): void {
-    // $('.carousel.carousel-slider').carousel({
-    //   fullWidth: true,
-    //   indicators: true,
-    //   onCycleTo: (ele, dragged) => {
-    //     this.texto_link = "Ver datos en tabla(s)";
-    //     this.ver_tabla = false;
-    //     this.seccion = $(ele).index();
-    //     $('.carousel li').css('background-color', '#bdbdbd');
-    //     $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
-
-    //     switch (this.seccion) {
-    //       case 1:
-    //         break;
-    //     }
-    //   }
-    // });
-
-    // $('.carousel li').css('background-color', '#bdbdbd');
-    // $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
 
     $('#divGrafica').highcharts(configChart);
 

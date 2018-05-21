@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { RptResumenOeeService } from "./rpt-resumen-oee.service";
 import { Linea } from '../../models/linea';
-// import * as Chart from 'chart.js';
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { getTablaUtf8 } from '../../utils';
 import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import { Highcharts } from 'highcharts';
+import { configChartOEE, configChartDisp, configChartPerdidas } from './rpt.config.export';
 
 
 declare var $: any;
@@ -17,6 +18,7 @@ declare var Materialize: any;
 @Component({
   selector: 'app-rpt-resumen-oee',
   templateUrl: './rpt-resumen-oee.component.html',
+  styleUrls: ['./rpt-resumen-oee.component.css'],
   providers: [RptResumenOeeService]
 })
 export class RptResumenOeeComponent implements OnInit {
@@ -42,176 +44,6 @@ export class RptResumenOeeComponent implements OnInit {
   public rowsPerdidas: Array<any>;
   public rowsDisponibilidad: Array<any>;
 
-  /** Variables para contener el grafico */
-  public chartsOee: any;
-  public chartDisponibilidad: any;
-  public chartsPerdidas: any;
-
-  /** Configuracion grafica OEE */
-  public options: any = {
-    scales: {
-      xAxes: [{
-
-        ticks: {
-          callback: function (value, index, values) {
-            return value;
-          }
-        }, scaleLabel: {
-          display: false,
-          labelString: '',
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true,
-          callback: function (value, index, values) {
-            return value + '%';
-          }
-        },
-        scaleLabel: {
-          display: false,
-          labelString: '%',
-        }
-      }]
-    },
-    legend: {
-      display: true,
-    },
-    title: {
-      display: true,
-      text: '',
-      fontColor: '#303f9f',
-      fontStyle: 'normal',
-      fontSize: 16
-    },
-    animation: {
-      duration: 1000,
-      easing: 'easeInQuad'
-    },
-    responsive: true
-  };
-
-
-  public data: any = {
-    labels: [],
-    datasets: [
-      {
-        label: '',
-        type: 'line',
-        data: []
-      }, {
-        label: '',
-        data: [],
-        backgroundColor: 'rgba(102,187,106)',
-        borderColor: 'rgba(56,142,60)',
-        borderWidth: 1
-      }]
-  };
-
-  /** Configuracion grafica disponibilidad */
-
-  public optionsDisponibilidad: any = {
-    scales: {
-      xAxes: [{
-
-        ticks: {
-          callback: function (value, index, values) {
-            return value + 'Hrs';
-          }
-        }, scaleLabel: {
-          display: false,
-          labelString: 'Horas',
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        },
-        scaleLabel: {
-          display: false,
-        }
-      }]
-    },
-    legend: {
-      display: true
-    },
-    title: {
-      display: true,
-      text: '',
-      fontColor: '#303f9f',
-      fontStyle: 'normal',
-      fontSize: 16
-    },
-    animation: {
-      duration: 1000,
-      easing: 'easeInQuad'
-    },
-    responsive: true
-  };
-
-
-  public dataDisponibilidad: any = {
-    labels: [],
-    datasets: [{
-      label: '',
-      data: [],
-      backgroundColor: 'rgba(205,220,57)',
-      borderColor: 'rgba(130,119,23)',
-      borderWidth: 1
-    }]
-  };
-
-  /** Configuracion grafica perdidas */
-
-  public optionsPerdidas: any = {
-    scales: {
-      xAxes: [{
-
-        ticks: {
-          autoSkip: false
-        }, scaleLabel: {
-          display: true,
-          labelString: 'Horas',
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        },
-        scaleLabel: {
-          display: false,
-          // labelString: '%',
-        }
-      }]
-    },
-    legend: {
-      display: false,
-    },
-    title: {
-      display: true,
-      text: '',
-      fontColor: '#303f9f',
-      fontStyle: 'normal',
-      fontSize: 16
-    },
-    animation: {
-      duration: 1000,
-      easing: 'easeInQuad'
-    },
-    responsive: true
-  };
-
-
-  public dataPerdidas: any = {
-    labels: [],
-    datasets: [{
-      label: '',
-      data: [],
-      backgroundColor: 'rgba(255, 99, 132, 0.2)',
-      borderColor: 'rgba(255,99,132,1)',
-      borderWidth: 1
-    }]
-  };
 
   constructor(
     private service: RptResumenOeeService,
@@ -291,52 +123,33 @@ export class RptResumenOeeComponent implements OnInit {
    */
   ngAfterViewHttpRpt(): void {
 
-    let ctxDispo = $('#chartDisponibilidad').get(0).getContext('2d');
-    // this.chartDisponibilidad = new Chart(ctxDispo, {
-    //   type: 'horizontalBar',
-    //   data: this.dataDisponibilidad,
-    //   options: this.optionsDisponibilidad
-    // });
+    let graficaOee = $('#chartOee').highcharts(configChartOEE);
+    let b = false;
 
     $('.carousel.carousel-slider').carousel({
       fullWidth: true,
       indicators: true,
+      duration: 400,
       onCycleTo: (ele, dragged) => {
         this.texto_link = "Ver datos en tabla(s)";
         this.ver_tabla = false;
         this.seccion = $(ele).index();
         $('.carousel li').css('background-color', '#bdbdbd');
         $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
-
         switch (this.seccion) {
           case 0:
-            // this.options.animation= true;
-            let ctx = $('#chart').get(0).getContext('2d');
-            // this.chartsOee = new Chart(ctx, {
-            //   type: 'bar',
-            //   data: this.data,
-            //   options: this.options
-            // });
-
+            if (b) {
+             $('#chartOee').highcharts(configChartOEE);
+            }
+            b = true;
             break;
           case 1:
-
-            let ctxDispo = $('#chartDisponibilidad').get(0).getContext('2d');
-            // this.chartDisponibilidad = new Chart(ctxDispo, {
-            //   type: 'horizontalBar',
-            //   data: this.dataDisponibilidad,
-            //   options: this.optionsDisponibilidad
-            // });
-
+            b = true;
+             $('#chartDisponibilidad').highcharts(configChartDisp);
             break;
           case 2:
-
-            // let ctx1 = $('#chartPerdidas').get(0).getContext('2d');
-            // this.chartsPerdidas = new Chart(ctx1, {
-            //   type: 'horizontalBar',
-            //   data: this.dataPerdidas,
-            //   options: this.optionsPerdidas
-            // });
+            b = true;
+            $('#chartPerdidas').highcharts(configChartPerdidas);
             break;
         }
       }
@@ -350,13 +163,7 @@ export class RptResumenOeeComponent implements OnInit {
    * Carga plugins para mostrar grafica 
    */
   ngAfterViewHttpRptPerdida(): void {
-    let ctx = $('#chartPerdidas').get(0).getContext('2d');
-    // this.chartsPerdidas = new Chart(ctx, {
-    //   type: 'horizontalBar',
-    //   data: this.dataPerdidas,
-    //   options: this.optionsPerdidas
-    // }
-    // );
+    //  $('#chartPerdidas').highcharts(configChartPerdidas);
   }
 
 
@@ -390,36 +197,42 @@ export class RptResumenOeeComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.getOEE(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-     
+
         if (result.response.sucessfull) {
 
           /** Grafica para OEE */
-          this.tituloGraficaOEE = "OEE de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea) + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
-          this.options.title.text = this.tituloGraficaOEE;
+          this.tituloGraficaOEE = "OEE de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea);
+
           this.rows = result.data.reporteOEE || [];
           let meta_esperada = this.rows.filter((el) => el.padre == 0).map((el) => el.meta);
           let labels = this.rows.filter((el) => el.padre == 0).map((el) => el.titulo);
           let horas = this.rows.filter((el) => el.padre == 0).map((el) => el.porcentaje);
 
-          this.data.labels = labels;
-          this.data.datasets[1].label = 'OEE';
-          this.data.datasets[1].data = horas;
+          horas = horas.map(el => el = parseFloat(el).toFixed(3));
+          horas = horas.map(el => el = parseFloat(el));
+          meta_esperada = meta_esperada.map(el => el = parseFloat(el).toFixed(3));
+          meta_esperada = meta_esperada.map(el => el = parseFloat(el));
 
-          this.data.datasets[0].label = 'Meta esperada';
-          this.data.datasets[0].data = meta_esperada;
+          configChartOEE.series = [];
+          configChartOEE.title.text = this.tituloGraficaOEE;
+          configChartOEE.subtitle.text = 'Periodo: ' + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
+          configChartOEE.xAxis.categories = labels;
+          configChartOEE.series.push({ name: ' OEE ', data: horas });
+          configChartOEE.series.push({ name: ' Meta esperada ', data: meta_esperada, type: 'line' });
 
           /**  Grafica para Disponiblidad */
 
-          this.tituloGraficaDisponi = "Disponibilidad de " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea) + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
-          this.optionsDisponibilidad.title.text = this.tituloGraficaDisponi;
+          this.tituloGraficaDisponi = "Disponibilidad de " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea);
           this.rowsDisponibilidad = result.data.reporteDisponibilidad || [];
           this.rowsProduccion = result.data.datosProduccion || [];
           let labelsDisponibilidad = this.rowsDisponibilidad.filter((el) => el.padre == 0).map((el) => el.titulo);
           let horasDisponibilidad = this.rowsDisponibilidad.filter((el) => el.padre == 0).map((el) => el.hrs);
 
-          this.dataDisponibilidad.labels = labelsDisponibilidad;
-          this.dataDisponibilidad.datasets[0].label = 'Horas';
-          this.dataDisponibilidad.datasets[0].data = horasDisponibilidad;
+          configChartDisp.series = [];
+          configChartDisp.title.text = this.tituloGraficaDisponi;
+          configChartDisp.subtitle.text = 'Periodo: ' + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
+          configChartDisp.xAxis.categories = labelsDisponibilidad;
+          configChartDisp.series.push({ name: ' Horas ', data: horasDisponibilidad });
 
 
           this.viewReport = true;
@@ -441,25 +254,27 @@ export class RptResumenOeeComponent implements OnInit {
     }
 
     this.service.getOEEFallasByLinea(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-     
+
       if (result.response.sucessfull) {
-        this.tituloGraficaPerdida = "Fuente de perdidas de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea) + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);;
-        this.optionsPerdidas.title.text = this.tituloGraficaPerdida;
+        this.tituloGraficaPerdida = "Fuente de perdidas de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea);
+
         this.rowsPerdidas = result.data.listaOEEFallas || [];
         let labels = this.rowsPerdidas.filter((el) => el.padre == 0).map((el) => el.fuente);
         let horas = this.rowsPerdidas.filter((el) => el.padre == 0).map((el) => el.hrs);
 
-        this.dataPerdidas.labels = labels;
-        this.dataPerdidas.datasets[0].label = 'Horas Muertas';
-        this.dataPerdidas.datasets[0].data = horas;
+        configChartPerdidas.series = [];
+        configChartPerdidas.title.text = this.tituloGraficaPerdida;
+        configChartPerdidas.subtitle.text = 'Periodo: ' + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
+        configChartPerdidas.xAxis.categories = labels;
+        configChartPerdidas.series.push({ name: 'Horas Muertas', data: horas });
 
         setTimeout(() => { this.ngAfterViewHttpRptPerdida(); }, 200);
 
       } else {
-        // Materialize.toast(result.response.message, 4000, 'red');
+
       }
     }, error => {
-      // Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+
     });
 
   }
@@ -668,10 +483,10 @@ export class RptResumenOeeComponent implements OnInit {
                 widths: ['*'],
                 body: [
                   [{ text: '\n' }],
-                  [{ image: this.chartsOee.toBase64Image(), width: 700, height: 250 }],
+                  [{ image: 'base64OEE', width: 700, height: 250 }],
                   [{ text: '\n\n\n\n\n\n' }],
-                  [{ image: this.chartDisponibilidad.toBase64Image(), width: 700, height: 250 }],
-                  [{ image: this.chartsPerdidas.toBase64Image(), width: 700, height: 350 }]
+                  [{ image: 'base64Disponiblidad', width: 700, height: 250 }],
+                  [{ image: 'base64Perdidas', width: 700, height: 350 }]
                 ]
               }
             }
@@ -686,7 +501,7 @@ export class RptResumenOeeComponent implements OnInit {
           bold: true,
           fillColor: '#7cb342'
         },
-        subheader:{
+        subheader: {
           color: "#000000",
           bold: true,
           fillColor: '#f1f8e9'

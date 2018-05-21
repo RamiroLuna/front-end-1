@@ -152,7 +152,6 @@ export class RptOeeComponent implements OnInit {
           horas = horas.map(el => el = parseFloat(el).toFixed(3));
           horas = horas.map(el => el = parseFloat(el));
 
-          console.log("asasas",horas)
 
           meta_esperada = meta_esperada.map(el => el = parseFloat(el).toFixed(3));
           meta_esperada = meta_esperada.map(el => el = parseFloat(el));

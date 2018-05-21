@@ -104,23 +104,17 @@
     <div class="carousel carousel-slider center">
       <div class="carousel-item white" href="#one!">
         <div class="container">
-          <canvas id="chart" width="50" height="20">
-            Su navegador no soporta canvas
-          </canvas>
+          <div id="chartOee" style="width:100%; height:400px;"></div>
         </div>
       </div>
       <div class="carousel-item white" href="#two!">
         <div class="container">
-          <canvas id="chartDisponibilidad" width="50" height="20">
-            Su navegador no soporta canvas
-          </canvas>
+          <div id="chartDisponibilidad" style="width:100%; height:400px;"></div>
         </div>
       </div>
       <div class="carousel-item white" href="#three!">
         <div class="container">
-          <canvas id="chartPerdidas" width="50" height="20">
-            Su navegador no soporta canvas
-          </canvas>
+          <div id="chartPerdidas" style="width:100%; height:400px;"></div>
         </div>
       </div>
     </div>
@@ -130,7 +124,7 @@
         <a id="downloadChart" href="" (click)="downloadCharts($event)">Descargar esta gráfica</a>
       </div>
     </div>
-      <!-- Fin activar solo si solicita descargar grafica individual -->
+    <!-- Fin activar solo si solicita descargar grafica individual -->
     <div class="container center">
       <a href="#" (click)="verTablas($event)">{{ texto_link }}</a>
       <div class="section"></div>
@@ -145,8 +139,8 @@
             <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
               <ng-template [ngIf]="row.padre == 0">
                 <td>{{ row.titulo }}</td>
-                <td class="center-align">{{ row.hrs }}</td>
-                <td class="center-align">{{ row.porcentaje + ' % ' }}</td>
+                <td class="center-align">{{ row.hrs| formatDecimal: 3 }}</td>
+                <td class="center-align">{{ (row.porcentaje | formatDecimal: 3) + ' % ' }}</td>
               </ng-template>
               <ng-template [ngIf]="row.padre == 2">
                 <td class="right-align">
@@ -164,7 +158,7 @@
           <br>
           <!-- solo si solicita -->
           <a *ngIf="false" class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR TABLA A EXCEL</a>
-           <!-- fin solo si solicita -->
+          <!-- fin solo si solicita -->
         </div>
       </div>
       <div class="row" [hidden]="!(ver_tabla && seccion == 1)">
@@ -181,7 +175,7 @@
               <ng-template [ngIf]="row.padre == 0">
                 <td>{{ row.titulo }}</td>
                 <td class="center-align">{{ row.hrs }}</td>
-                <td class="center-align">{{ row.porcentaje }}</td>
+                <td class="center-align">{{ (row.porcentaje | formatDecimal: 3) }}</td>
               </ng-template>
               <ng-template [ngIf]="row.padre == 2">
                 <td class="right-align">
@@ -191,7 +185,7 @@
                   <b>{{ row.hrs }}</b>
                 </td>
                 <td class="center-align">
-                  <b>{{ row.porcentaje }}</b>
+                  <b>{{ (row.porcentaje | formatDecimal: 3 ) }}</b>
                 </td>
               </ng-template>
             </tr>
@@ -206,14 +200,14 @@
             <tr *ngFor="let row of rowsProduccion" [ngClass]="{'total':row.padre == 1}">
               <ng-template [ngIf]="row.padre == 0">
                 <td>{{ row.titulo }}</td>
-                <td class="center-align">{{ row.hrs }}</td>
+                <td class="center-align">{{ (row.hrs | formatDecimal: 3) }}</td>
               </ng-template>
               <ng-template [ngIf]="row.padre == 2">
                 <td class="right-align">
                   <b>{{ row.titulo }}</b>
                 </td>
                 <td class="center-align">
-                  <b>{{ row.hrs }}</b>
+                  <b>{{ (row.hrs| formatDecimal: 3) }}</b>
                 </td>
               </ng-template>
             </tr>
@@ -223,9 +217,9 @@
       </div>
       <!-- Solo si solicita -->
       <div class="row center-align" *ngIf="ver_tabla && seccion == 1">
-        <a *ngIf="false"  class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR TABLA A EXCEL</a>
+        <a *ngIf="false" class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR TABLA A EXCEL</a>
       </div>
-        <!-- Fin solo si solicita -->
+      <!-- Fin solo si solicita -->
       <div class="row" [hidden]="!(ver_tabla && seccion == 2)">
         <div class="col s12 m12 l12 xl12">
           <table id="tblReportePerdidas">
@@ -237,12 +231,14 @@
 
             <tr *ngFor="let row of rowsPerdidas" [ngClass]="{'total':row.padre == 1}">
               <ng-template [ngIf]="row.padre == 1">
-                <td colspan="3">{{ row.fuente }}</td>
+                  <td>{{ row.fuente }}</td>
+                  <td class="center-align">{{ row.hrs }}</td>
+                  <td class="center-align">{{ (row.porcentaje  | formatDecimal: 3) + ' % ' }}</td>
               </ng-template>
               <ng-template [ngIf]="row.padre == 0">
                 <td>{{ row.fuente }}</td>
                 <td class="center-align">{{ row.hrs }}</td>
-                <td class="center-align">{{ row.porcentaje }}</td>
+                <td class="center-align">{{ (row.porcentaje | formatDecimal: 3) + ' % ' }}</td>
               </ng-template>
               <ng-template [ngIf]="row.padre == 2">
                 <td class="right-align">
@@ -252,7 +248,7 @@
                   <b>{{ row.hrs }}</b>
                 </td>
                 <td class="center-align">
-                  <b>{{ row.porcentaje }}</b>
+                  <b>{{ (row.porcentaje | formatDecimal: 3) + ' % ' }}</b>
                 </td>
               </ng-template>
             </tr>
