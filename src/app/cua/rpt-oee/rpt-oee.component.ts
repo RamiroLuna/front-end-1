@@ -34,62 +34,6 @@ export class RptOeeComponent implements OnInit {
   public meses: Array<any>;
   public periodos: Array<Periodo>;
 
-  public options: any = {
-    scales: {
-      xAxes: [{
-
-        ticks: {
-          callback: function (value, index, values) {
-            return value;
-          }
-        }, scaleLabel: {
-          display: false,
-          labelString: '',
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true,
-          callback: function (value, index, values) {
-            return value + '%';
-          }
-        },
-        scaleLabel: {
-          display: false,
-          labelString: '%',
-        }
-      }]
-    },
-    legend: {
-      display: true,
-    },
-    title: {
-      display: true,
-      text: '',
-      fontColor: '#303f9f',
-      fontStyle: 'normal',
-      fontSize: 16
-    },
-    responsive: true
-  };
-
-
-  public data: any = {
-    labels: [],
-    datasets: [
-      {
-        label: '',
-        type: 'line',
-        data: []
-      },{
-      label: '',
-      data: [],
-      backgroundColor: 'rgba(102,187,106)',
-      borderColor: 'rgba(56,142,60)',
-      borderWidth: 1
-    }]
-  };
-
   constructor(
     private service: RptOeeService,
     private auth: AuthService,
@@ -162,33 +106,6 @@ export class RptOeeComponent implements OnInit {
    * Carga plugins para mostrar grafica 
    */
   ngAfterViewHttpRpt(): void {
-    // $('.carousel.carousel-slider').carousel({
-    //   fullWidth: true,
-    //   indicators: true,
-    //   onCycleTo: (ele, dragged) => {
-    //     this.texto_link = "Ver datos en tabla(s)";
-    //     this.ver_tabla = false;
-    //     this.seccion = $(ele).index();
-    //     $('.carousel li').css('background-color', '#bdbdbd');
-    //     $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
-
-    //     switch (this.seccion) {
-    //       case 1:
-    //         break;
-    //     }
-    //   }
-    // });
-
-    // $('.carousel li').css('background-color', '#bdbdbd');
-    // $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
-
-    // let ctx = $('#chart').get(0).getContext('2d');
-    // let disp = new Chart(ctx, {
-    //   type: 'bar',
-    //   data: this.data,
-    //   options: this.options
-    // }
-    // );
     $('#divGrafica').highcharts(configChart);
   }
 
@@ -225,19 +142,28 @@ export class RptOeeComponent implements OnInit {
       this.service.getOEE(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
 
         if (result.response.sucessfull) {
-          this.tituloGrafica = "OEE de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea) + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
-          this.options.title.text = this.tituloGrafica;
+          this.tituloGrafica = "OEE de  " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea);
+
           this.rows = result.data.reporteOEE || [];
           let meta_esperada = this.rows.filter((el) => el.padre == 0).map((el) => el.meta);
           let labels = this.rows.filter((el) => el.padre == 0).map((el) => el.titulo);
           let horas = this.rows.filter((el) => el.padre == 0).map((el) => el.porcentaje);
 
-          this.data.labels = labels;
-          this.data.datasets[1].label = 'OEE';
-          this.data.datasets[1].data = horas;
+          horas = horas.map(el => el = parseFloat(el).toFixed(3));
+          horas = horas.map(el => el = parseFloat(el));
 
-          this.data.datasets[0].label = 'Meta esperada';
-          this.data.datasets[0].data = meta_esperada;
+          console.log("asasas",horas)
+
+          meta_esperada = meta_esperada.map(el => el = parseFloat(el).toFixed(3));
+          meta_esperada = meta_esperada.map(el => el = parseFloat(el));
+
+
+          configChart.series = [];
+          configChart.title.text = this.tituloGrafica;
+          configChart.subtitle.text = 'Periodo: ' + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
+          configChart.xAxis.categories = labels;
+          configChart.series.push({ name: ' OEE ', data: horas });
+          configChart.series.push({ name: ' Meta esperada ', data: meta_esperada, type: 'line' });
 
           this.viewReport = true;
           setTimeout(() => { this.ngAfterViewHttpRpt(); }, 200);
@@ -272,7 +198,7 @@ export class RptOeeComponent implements OnInit {
     let linkFile = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel;';
 
-    let tabla= getTablaUtf8('tblReporte');
+    let tabla = getTablaUtf8('tblReporte');
     linkFile.href = data_type + ', ' + tabla;
     linkFile.download = 'ReporteDeOEE';
 

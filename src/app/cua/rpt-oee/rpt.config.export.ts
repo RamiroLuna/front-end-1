@@ -1,6 +1,6 @@
 let configChart = {
     chart: {
-        type: 'bar',
+        type: 'column',
         backgroundColor: {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
@@ -52,7 +52,7 @@ let configChart = {
                 color: '#ffffff',
             },
             formatter: function () {
-                return this.value + ' Hrs';
+                return this.value + ' %';
             }
         }
 
@@ -65,13 +65,18 @@ let configChart = {
                 inside: false,
                 y: 10,
                 distance: -10
+            },
+            events: {
+                legendItemClick: function () {
+                    return false;
+                }
             }
         },
-        bar:{
+        bar: {
             depth: 75
         }
     },
-    colors: ['#c0ca33'],
+    colors: ['#388e3c', '#4fc3f7'],
     series: [],
 };
 

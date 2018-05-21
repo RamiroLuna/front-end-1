@@ -1,5 +1,16 @@
 <div *ngIf="!loading">
   <div class="container">
+    <!-- Solo para dispositivos moviles -->
+    <br>
+    <div class="hide-on-large-only right-align">
+      <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+    <!-- Fin solo para dispositivos moviles -->
     <h4 class="color_titulo center-align">Reporte de OEE</h4>
     <div class="section"></div>
     <div class="row">
@@ -48,17 +59,6 @@
         </div>
       </form>
     </div>
-    <!-- Solo para dispositivos moviles -->
-    <div class="hide-on-large-only right-align">
-      <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-        data-delay="50" data-tooltip="Reportes" (click)="regresar()">
-        <i class="material-icons">
-          <i class="material-icons">arrow_back</i>
-        </i>
-      </a>
-    </div>
-    <br>
-    <!-- Fin solo para dispositivos moviles -->
     <!-- Inicio solo para pantallas-->
     <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
       <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
@@ -74,12 +74,8 @@
   </div>
   <div class="section"></div>
   <div *ngIf="viewReport">
-    <div class="carousel carousel-slider center">
-      <div class="carousel-item white" href="#one!">
-        <div class="container">
-            <div id="divGrafica" style="width:100%; height:400px;"></div> 
-        </div>
-      </div>
+    <div class="container">
+      <div id="divGrafica" style="width:100%; height:400px;"></div>
     </div>
     <div class="container center">
       <a href="#" (click)="verTablas($event)">{{ texto_link }}</a>
@@ -95,18 +91,18 @@
             <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
               <ng-template [ngIf]="row.padre == 0">
                 <td>{{ row.titulo }}</td>
-                <td class="center-align">{{ row.hrs }}</td>
-                <td class="center-align">{{ row.porcentaje + ' % ' }}</td>
+                <td class="center-align">{{  row.hrs | formatDecimal: 3 }}</td>
+                <td class="center-align"> {{( row.porcentaje | formatDecimal: 3 ) + ' % ' }}</td>
               </ng-template>
               <ng-template [ngIf]="row.padre == 2">
                 <td class="right-align">
                   <b>{{ row.titulo }}</b>
                 </td>
                 <td class="center-align">
-                  <b>{{ row.hrs }}</b>
+                  <b>{{ row.hrs | formatDecimal: 3  }}</b>
                 </td>
                 <td class="center-align">
-                  <b>{{ row.porcentaje + ' % '}}</b>
+                  <b>{{ (row.porcentaje | formatDecimal: 3 ) + ' % '}}</b>
                 </td>
               </ng-template>
             </tr>
