@@ -4,7 +4,7 @@ import { RptJucodiService } from "./rpt-jucodi.service";
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { Catalogo } from '../../models/catalogo';
-import { getTablaUtf8, clone } from '../../utils';
+import { getTablaUtf8, clone, getFechaActual } from '../../utils';
 import { configChart } from './rpt.config.export';
 
 
@@ -31,6 +31,7 @@ export class RptJucodiComponent implements OnInit {
   public datos: Array<any>;
   public tituloGrafica: any;
   public datosConfiguracion: Array<any>;
+  public rows: Array<any>;
 
 
   constructor(
@@ -45,14 +46,15 @@ export class RptJucodiComponent implements OnInit {
     this.submitted = false;
     this.viewReport = false;
     this.parametrosBusqueda = {
-      dia: ""
+      dia: getFechaActual()
     };
     this.anios = [];
     this.meses = [];
     this.periodos = [];
     this.gruposLineas = [];
-    this.tituloGrafica = "";
+    this.tituloGrafica = '';
     this.datosConfiguracion = [];
+    this.rows = [];
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
@@ -99,25 +101,6 @@ export class RptJucodiComponent implements OnInit {
   ngAfterViewHttp(): void {
     $('.tooltipped').tooltip({ delay: 50 });
     $('select').material_select();
-
-    $('#dia').pickadate({
-      selectMonths: true, // Creates a dropdown to control month
-      selectYears: 15, // Creates a dropdown of 15 years to control year,
-      today: '',
-      clear: 'Limpiar',
-      close: 'OK',
-      monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-      monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-      weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-      weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-      format: 'dd/mm/yyyy',
-      closeOnSelect: false, // Close upon selecting a date,
-      onClose: () => {
-        this.parametrosBusqueda.dia = $('#dia').val();
-        this.viewReport = false;
-      }
-    });
-
   }
 
   rptAfterViewGenerate(): void {
@@ -138,6 +121,23 @@ export class RptJucodiComponent implements OnInit {
 
     $('.carousel li').css('background-color', '#bdbdbd');
     $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
+
+    $('#dia').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 15, // Creates a dropdown of 15 years to control year,
+      today: '',
+      clear: '',
+      close: 'OK',
+      monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+      weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+      weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+      format: 'dd/mm/yyyy',
+      closeOnSelect: false, // Close upon selecting a date,
+      onClose: () => {
+        this.parametrosBusqueda.dia = $('#dia').val();
+      }
+    });
   }
 
   changeCombo(params: string): void {
@@ -161,10 +161,10 @@ export class RptJucodiComponent implements OnInit {
         if (result.response.sucessfull) {
           this.datos = result.data.reporteDailyPerformance;
           for (let i = 0; i <= this.datos.length - 1; i++) {
-  
+
             let confTmp = clone(configChart);
             let datosPorLinea = this.datos[i];
-           
+
             let titulo = 'Desempeño diario de  ' + datosPorLinea[0].Linea;
             let labels = datosPorLinea.filter((el) => el.padre == 0).map(element => element.dia);
             let dataGrupoA = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.a);
@@ -186,9 +186,11 @@ export class RptJucodiComponent implements OnInit {
             confTmp.series.push({ name: ' D ', data: dataGrupoD });
             confTmp.series.push({ name: ' Meta 1ro ', data: dataMeta1, type: 'line', color: '#64b5f6' });
             confTmp.series.push({ name: ' Meta 2do ', data: dataMeta2, type: 'line', color: '#e0f2f1' });
-            confTmp.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#fff3e0' });        
+            confTmp.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#fff3e0' });
             this.datosConfiguracion.push(confTmp);
           }
+
+          this.getJuntaJucodi(parametrosBusqueda);
 
           this.viewReport = true;
           setTimeout(() => {
@@ -209,6 +211,20 @@ export class RptJucodiComponent implements OnInit {
       this.viewReport = false;
       Materialize.toast('Ingrese todos los datos para mostrar reporte!', 4000, 'red');
     }
+
+
+  }
+
+  getJuntaJucodi(parametrosBusqueda:any): void {
+    this.service.reporteJUCODI(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
+      console.log('resultado de jucodi', result)
+      if (result.response.sucessfull) {
+        
+      } else {
+        Materialize.toast(result.response.message, 4000, 'red');
+      }
+    }, error => {
+    });
   }
 
   regresar() {

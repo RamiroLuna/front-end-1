@@ -16,6 +16,14 @@ export class RptJucodiService {
   getCatalogos(id_usuario: number): Observable<any> {
     return this.http.get<any>(this.URL + '?action=loadCombobox&id_usuario=' + id_usuario);
   }
+
+  /*
+   * Consulta reporte 
+   */
+  reporteJUCODI(id_usuario: number, params:any): Observable<any> {
+    return this.http.get<any>(this.URL + '?action=reporteJUCODI&id_usuario=' + id_usuario + '&dia='+params.dia +'&id_gpo_linea='+params.idGpoLinea);
+  }
+
   /*
    * Consulta reporte 
    */
