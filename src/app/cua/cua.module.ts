@@ -29,6 +29,8 @@ import { FormularioPeriodoComponent } from './formulario-periodo/formulario-peri
 import { ListaPeriodosComponent } from './lista-periodos/lista-periodos.component';
 import { RptDiarioProduccionComponent } from './rpt-diario-produccion/rpt-diario-produccion.component';
 import { RptJucodiComponent } from './rpt-jucodi/rpt-jucodi.component';
+import { RptVelocidadPromedioComponent } from './rpt-velocidad-promedio/rpt-velocidad-promedio.component';
+import { RptSubproductosComponent } from './rpt-subproductos/rpt-subproductos.component';
 
 
 
@@ -106,6 +108,8 @@ const routesMetas: Routes = [
   { path: 'opciones/lista-reportes/resumen-oee', component: RptResumenOeeComponent },
   { path: 'opciones/lista-reportes/diario-produccion', component: RptDiarioProduccionComponent },
   { path: 'opciones/lista-reportes/jucodi', component: RptJucodiComponent },
+  { path: 'opciones/lista-reportes/velocidad-promedio', component: RptVelocidadPromedioComponent },
+  { path: 'opciones/lista-reportes/subproductos', component: RptSubproductosComponent },
   
   
   /* Registro de produccion */
@@ -169,7 +173,9 @@ const routesMetas: Routes = [
     RptDiarioProduccionComponent,
     RptJucodiComponent,
     FormatNumberPipeClass,
-    ToneladasPipeClass
+    ToneladasPipeClass,
+    RptVelocidadPromedioComponent,
+    RptSubproductosComponent
   ],
   providers: [
     AuthGuardCua
