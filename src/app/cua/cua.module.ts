@@ -28,7 +28,6 @@ import { RptResumenOeeComponent } from './rpt-resumen-oee/rpt-resumen-oee.compon
 import { FormularioPeriodoComponent } from './formulario-periodo/formulario-periodo.component';
 import { ListaPeriodosComponent } from './lista-periodos/lista-periodos.component';
 import { RptDiarioProduccionComponent } from './rpt-diario-produccion/rpt-diario-produccion.component';
-import { RptDesempenioDiarioComponent } from './rpt-desempenio-diario/rpt-desempenio-diario.component';
 import { RptJucodiComponent } from './rpt-jucodi/rpt-jucodi.component';
 
 
@@ -106,7 +105,6 @@ const routesMetas: Routes = [
   { path: 'opciones/lista-reportes/oee', component: RptOeeComponent },
   { path: 'opciones/lista-reportes/resumen-oee', component: RptResumenOeeComponent },
   { path: 'opciones/lista-reportes/diario-produccion', component: RptDiarioProduccionComponent },
-  { path: 'opciones/lista-reportes/desempenio-diario', component: RptDesempenioDiarioComponent },
   { path: 'opciones/lista-reportes/jucodi', component: RptJucodiComponent },
   
   
@@ -169,7 +167,6 @@ const routesMetas: Routes = [
     FormularioPeriodoComponent,
     ListaPeriodosComponent,
     RptDiarioProduccionComponent,
-    RptDesempenioDiarioComponent,
     RptJucodiComponent,
     FormatNumberPipeClass,
     ToneladasPipeClass

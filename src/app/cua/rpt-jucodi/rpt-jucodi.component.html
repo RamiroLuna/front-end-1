@@ -1,9 +1,7 @@
 <div *ngIf="!loading">
   <div class="container">
-    <h4 class="color_titulo center-align">Reporte Producción diaria, Junta Jucodi
-    </h4>
+    <div class="secton"></div>
     <!-- Solo para dispositivos moviles -->
-    <br>
     <div class="hide-on-large-only right-align">
       <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
         data-delay="50" data-tooltip="Reportes" (click)="regresar()">
@@ -13,16 +11,34 @@
       </a>
     </div>
     <!-- Fin solo para dispositivos moviles -->
+    <h4 class="color_titulo center-align">Reporte Producción diaria, Junta Jucodi
+    </h4>
     <div class="section"></div>
     <div class="row">
       <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="busqueda(parametrosBusqueda)" autocomplete="off">
 
-        <div class="input-field col s12 m12 l6 xl6">
-          <input id="dia" type="text" class="datepicker" formControlName="dia" [(ngModel)]="parametrosBusqueda.dia">
-          <label for="dia" class="active">Día</label>
-          <div *ngIf="formConsultaPeriodo.controls.dia.errors?.required && (formConsultaPeriodo.controls.dia?.touched || submitted)"
+        <div class="input-field col s12 m12 l3 xl3">
+          <select class="anio" materialize="material_select" [materializeSelectOptions]="anios" formControlName="anio" [(ngModel)]="parametrosBusqueda.anio"
+            (ngModelChange)="changeCombo('anio')">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let anio of anios" [value]="anio.valor">{{anio.valor}}</option>
+          </select>
+          <label for="anio">año</label>
+          <div *ngIf="formConsultaPeriodo.controls.anio.errors?.required && (formConsultaPeriodo.controls.anio?.touched || submitted)"
             class="error">
-            El dia es requerido
+            Seleccione una opcion
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l3 xl3">
+          <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="parametrosBusqueda.idPeriodo"
+            (ngModelChange)="changeCombo()">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
+          </select>
+          <label for="mes">mes</label>
+          <div *ngIf="formConsultaPeriodo.controls.idPeriodo.errors?.required && (formConsultaPeriodo.controls.idPeriodo?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
           </div>
         </div>
         <div class="input-field col s12 m12 l5 xl5">
@@ -45,16 +61,25 @@
         </div>
       </form>
     </div>
-    <div class="section"></div>
-    <div class="row" *ngIf="viewReport">
+    <!-- <div class="row" *ngIf="viewReport">
       <table id="tblReporte" class="highlight striped" cellspacing="0">
         <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
           <ng-template [ngIf]="row.padre == 1">
-            <td class="center-align"><b>{{ row.linea }}</b></td>
-            <td class="center-align"><b>{{ row.dia }}</b></td>
-            <td class="center-align"><b>{{ row.produccion }}</b></td>
-            <td class="center-align"><b>{{ row.meta }}</b></td>
-            <td class="center-align"><b>{{ row.desempeno }}</b></td>
+            <td class="center-align">
+              <b>{{ row.linea }}</b>
+            </td>
+            <td class="center-align">
+              <b>{{ row.dia }}</b>
+            </td>
+            <td class="center-align">
+              <b>{{ row.produccion }}</b>
+            </td>
+            <td class="center-align">
+              <b>{{ row.meta }}</b>
+            </td>
+            <td class="center-align">
+              <b>{{ row.desempeno }}</b>
+            </td>
             <td class="center-align">Meta cumplida</td>
           </ng-template>
           <ng-template [ngIf]="row.padre == 0">
@@ -64,8 +89,8 @@
             <td class="center-align">{{ convierte(row.meta) }}</td>
             <td class="center-align">{{ convierte(row.desempeno) +'%'}}</td>
             <td class="center-align">
-                <i *ngIf="row.icon == 1 || row.icon == 0" class="material-icons">check</i>
-                <i *ngIf="row.icon == -1 " class="material-icons">close</i>
+              <i *ngIf="row.icon == 1 || row.icon == 0" class="material-icons">check</i>
+              <i *ngIf="row.icon == -1 " class="material-icons">close</i>
             </td>
           </ng-template>
           <ng-template [ngIf]="row.padre == 2">
@@ -79,10 +104,10 @@
         </tr>
       </table>
 
-    </div>
-    <div *ngIf="viewReport" class="row center-align">
+    </div> -->
+    <!-- <div *ngIf="viewReport" class="row center-align">
       <a class="waves-effect waves-light btn light-green darken-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
-    </div>
+    </div> -->
     <!-- Inicio solo para pantallas-->
     <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
       <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
@@ -95,6 +120,21 @@
       </div>
     </div>
     <!-- Fin solo para pantallas-->
+  </div>
+  <div *ngIf="viewReport">
+    <div class="carousel carousel-slider center">
+      <ng-container *ngFor="let seccion of datos; let i = index">
+        <div class="carousel-item white" href="#one!">
+          <div class="row">
+            <div class="col s12">
+              <div [id]="'chart'+i" style="width:100%; height:400px;"></div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div *ngIf="viewReport">
   </div>
 </div>
 <div class="container" *ngIf="loading">

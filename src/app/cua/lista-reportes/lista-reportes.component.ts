@@ -22,8 +22,7 @@ export class ListaReportesComponent implements  AfterViewInit {
     // { id : 7 , nombre_reporte: 'Paros Real vs Plan' , link:'' , activo: true},
     // { id : 8 , nombre_reporte: 'Velocidad Promedio' , link:'' , activo: true},
     // { id : 9 , nombre_reporte: 'Subproductos' , link:'' , activo: true}
-    { id : 10 , nombre_reporte: 'Desempeño diario' , link:'desempenio-diario' , activo: true},
-    { id : 11 , nombre_reporte: 'Producción diaria - Junta Jucodi' , link:'jucodi' , activo: true}
+    { id : 10 , nombre_reporte: 'Producción diaria - Junta Jucodi' , link:'jucodi' , activo: true}
   ];
 
   constructor() { }

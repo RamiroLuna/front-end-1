@@ -19,7 +19,7 @@ export class RptJucodiService {
   /*
    * Consulta reporte 
    */
-  reporteJUCODI(id_usuario: number, params:any): Observable<any> {
-    return this.http.get<any>(this.URL + '?action=reporteJUCODI&id_usuario=' + id_usuario + '&dia='+params.dia +'&id_gpo_linea='+params.idGpoLinea);
+  reporteDailyPerformance(id_usuario: number, params:any): Observable<any> {
+    return this.http.get<any>(this.URL + '?action=reporteDailyPerformance&id_usuario=' + id_usuario + '&id_periodo='+params.idPeriodo +'&id_gpo_linea='+params.idGpoLinea);
   }
 }

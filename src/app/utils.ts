@@ -56,9 +56,9 @@ function isValidId(id: any): boolean {
  * @return  boolean
  */
 let isNumeroAsignacionValid = (numero) => {
-    if(numero.trim() == ''){
-      return false;    
-    }else{
+    if (numero.trim() == '') {
+        return false;
+    } else {
         return /^[0-9]*([.][0-9]+)?$/.test(numero.trim())
     }
 
@@ -361,22 +361,32 @@ function findRol(idRol: number, roles: string): boolean {
  * @return  {string} 
  * @description funcion utilizada para quitar caracteres especiales cuando se exporta a excel
  */
-function  getTablaUtf8(id:string): string{
+function getTablaUtf8(id: string): string {
     let tabla = document.getElementById(id);
     return tabla.outerHTML.replace(/ /g, '%20')
-    .replace(/á/g, '%e1')
-    .replace(/Á/g, '%c1')
-    .replace(/é/g, '%e9')
-    .replace(/É/g, '%c9')
-    .replace(/í/g, '%a1')
-    .replace(/Í/g, '%ed')
-    .replace(/ó/g, '%f3')
-    .replace(/Ó/g, '%d3')
-    .replace(/ú/g, '%fa')
-    .replace(/Ú/g, '%da')
-    .replace(/Ñ/g, '%d1')
-    .replace(/ñ/g, '%f1');
-  }
+        .replace(/á/g, '%e1')
+        .replace(/Á/g, '%c1')
+        .replace(/é/g, '%e9')
+        .replace(/É/g, '%c9')
+        .replace(/í/g, '%a1')
+        .replace(/Í/g, '%ed')
+        .replace(/ó/g, '%f3')
+        .replace(/Ó/g, '%d3')
+        .replace(/ú/g, '%fa')
+        .replace(/Ú/g, '%da')
+        .replace(/Ñ/g, '%d1')
+        .replace(/ñ/g, '%f1');
+}
+
+/**
+* @function clone
+* @param  {JSON} json -  atributos
+* @return  {string} 
+* @description permite clonar objeto
+*/
+function clone(json) {
+    return JSON.parse(JSON.stringify(json));
+}
 
 
 export {
@@ -395,5 +405,6 @@ export {
     findRol,
     getMesActual,
     contraseniaValida,
-    getTablaUtf8
+    getTablaUtf8,
+    clone
 }
