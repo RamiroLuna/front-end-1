@@ -85,43 +85,43 @@
           </ng-template>
           <ng-template [ngIf]="row.padre == 0">
             <td class="center-align">{{ row.dia }}</td>
-            <td class="center-align">{{ convierte(row.molido1)  }}</td>
-            <td class="center-align">{{ convierte(row.molido2) }}</td>
-            <td class="center-align">{{ convierte(row.totalMolido) }}</td>
-            <td class="center-align">{{ convierte(row.acumulado) }}</td>
-            <td class="center-align">{{ convierte(row.metaMolido) }}</td>
-            <td class="center-align">{{ convierte(row.difMolido) }}</td>
-            <td class="center-align">{{ convierte(row.eficiencia) +  '%' }}</td>
-            <td class="center-align">{{ convierte(row.vsMetaM) +  '%'  }}</td>
-            <td class="center-align">{{ convierte(row.eficTeorica) + '%'  }}</td>
-            <td class="center-align">{{ convierte(row.hojuela1) }}</td>
-            <td class="center-align">{{ convierte(row.hojuela2) }}</td>
-            <td class="center-align">{{ convierte(row.totalHoj) }}</td>
-            <td class="center-align">{{ convierte(row.acumHoju) }}</td>
-            <td class="center-align">{{ convierte(row.planHoju) }}</td>
-            <td class="center-align">{{ convierte(row.difeHoju) }}</td>
-            <td class="center-align">{{ convierte(row.eficiDia)  +  '%' }}</td>
-            <td class="center-align">{{ convierte(row.vsMetaH)  +  '%' }}</td>
+            <td class="center-align">{{ ( row.molido1 | formatDecimal:3 ) | milles }}</td>
+            <td class="center-align">{{ ( row.molido2 | formatDecimal:3 )  | milles }}</td>
+            <td class="center-align">{{ ( row.totalMolido | formatDecimal:3 )  | milles  }}</td>
+            <td class="center-align">{{ ( row.acumulado | formatDecimal:3 )  | milles }}</td>
+            <td class="center-align">{{ ( row.metaMolido | formatDecimal:3 )  | milles }}</td>
+            <td class="center-align">{{ ( row.difMolido | formatDecimal:3 )  | milles }}</td>
+            <td class="center-align">{{ (( row.eficiencia | formatDecimal:3 )  | milles )+  '%' }}</td>
+            <td class="center-align">{{ (( row.vsMetaM | formatDecimal:3 )| milles ) +  '%'  }}</td>
+            <td class="center-align">{{ (( row.eficTeorica | formatDecimal:3 )| milles ) + '%'  }}</td>
+            <td class="center-align">{{ ( row.hojuela1 | formatDecimal:3 )| milles }}</td>
+            <td class="center-align">{{ ( row.hojuela2 | formatDecimal:3 )| milles }}</td>
+            <td class="center-align">{{ ( row.totalHoj | formatDecimal:3 )| milles }}</td>
+            <td class="center-align">{{ ( row.acumHoju | formatDecimal:3 )| milles }}</td>
+            <td class="center-align">{{ ( row.planHoju | formatDecimal:3 )| milles }}</td>
+            <td class="center-align">{{ ( row.difeHoju | formatDecimal:3 )| milles }}</td>
+            <td class="center-align">{{ (( row.eficiDia | formatDecimal:3 )| milles ) +  '%' }}</td>
+            <td class="center-align">{{ (( row.vsMetaH  | formatDecimal:3 )| milles ) +  '%' }}</td>
           </ng-template>
           <ng-template [ngIf]="row.padre == 2">
             <td class="right-align"><b>{{ row.dia }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.molido1) }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.molido2) }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.totalMolido) }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.acumulado) }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.metaMolido) }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.difMolido) }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.eficiencia)  +  '%' }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.vsMetaM)  +  '%' }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.eficTeorica)  +  '%' }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.hojuela1) }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.hojuela2) }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.totalHoj) }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.acumHoju) }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.planHoju) }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.difeHoju) }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.eficiDia)  +  '%' }}</b></td>
-            <td class="center-align"><b>{{ convierte(row.vsMetaH)  +  '%' }}</b></td>
+            <td class="center-align"><b>{{ (row.molido1 | formatDecimal:3 ) | milles }}</b></td>
+            <td class="center-align"><b>{{ (row.molido2 | formatDecimal:3 ) | milles  }}</b></td>
+            <td class="center-align"><b>{{ (row.totalMolido | formatDecimal:3 ) | milles  }}</b></td>
+            <td class="center-align"><b>{{ (row.acumulado | formatDecimal:3 ) | milles  }}</b></td>
+            <td class="center-align"><b>{{ (row.metaMolido | formatDecimal:3 ) | milles  }}</b></td>
+            <td class="center-align"><b>{{ (row.difMolido | formatDecimal:3 ) | milles  }}</b></td>
+            <td class="center-align"><b>{{ ((row.eficiencia | formatDecimal:3 )| milles )  +  '%' }}</b></td>
+            <td class="center-align"><b>{{ ((row.vsMetaM | formatDecimal:3 )| milles )  +  '%' }}</b></td>
+            <td class="center-align"><b>{{ ((row.eficTeorica | formatDecimal:3 )| milles )  +  '%' }}</b></td>
+            <td class="center-align"><b>{{ (row.hojuela1 | formatDecimal:3 )| milles }}</b></td>
+            <td class="center-align"><b>{{ (row.hojuela2 | formatDecimal:3 )| milles }}</b></td>
+            <td class="center-align"><b>{{ (row.totalHoj | formatDecimal:3 )| milles }}</b></td>
+            <td class="center-align"><b>{{ (row.acumHoju | formatDecimal:3 )| milles }}</b></td>
+            <td class="center-align"><b>{{ (row.planHoju | formatDecimal:3 )| milles }}</b></td>
+            <td class="center-align"><b>{{ (row.difeHoju | formatDecimal:3 )| milles }}</b></td>
+            <td class="center-align"><b>{{ ((row.eficiDia | formatDecimal:3 )| milles )  +  '%' }}</b></td>
+            <td class="center-align"><b>{{ ((row.vsMetaH | formatDecimal:3 )| milles )  +  '%' }}</b></td>
           </ng-template>
         </tr>
       </table>

@@ -134,11 +134,6 @@ export class RptDiarioProduccionComponent implements OnInit {
     }
   }
 
-  convierte(numero:number):string{
-    let result = parseFloat(''+numero).toFixed(3);
-    return result;
-  }
-
   regresar() {
     $('.tooltipped').tooltip('hide');
   }

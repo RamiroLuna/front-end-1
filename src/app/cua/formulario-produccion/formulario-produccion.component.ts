@@ -188,6 +188,7 @@ export class FormularioProduccionComponent implements OnInit {
 
             if (result.response.sucessfull) {
               this.btnAdd = false;
+
               Materialize.toast('Producción registrada', 4000, 'green');
 
             } else {

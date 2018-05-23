@@ -21,6 +21,7 @@ import { AuthGuardCua } from '../auth/auth.guard.cua';
 import { ValidaProduccionComponent } from './valida-produccion/valida-produccion.component';
 import { FormatNumberPipeClass } from '../pipes/format.number.pipe';
 import { ToneladasPipeClass } from '../pipes/toneladas.pipe';
+import { SeparatorPipeClass } from '../pipes/separator.pipe';
 import { ListaValidacionComponent } from './lista-validacion/lista-validacion.component';
 import { RptDisponibilidadComponent } from './rpt-disponibilidad/rpt-disponibilidad.component';
 import { RptOeeComponent } from './rpt-oee/rpt-oee.component';
@@ -31,6 +32,7 @@ import { RptDiarioProduccionComponent } from './rpt-diario-produccion/rpt-diario
 import { RptJucodiComponent } from './rpt-jucodi/rpt-jucodi.component';
 import { RptVelocidadPromedioComponent } from './rpt-velocidad-promedio/rpt-velocidad-promedio.component';
 import { RptSubproductosComponent } from './rpt-subproductos/rpt-subproductos.component';
+import { RptProduccionRealPlanComponent } from './rpt-produccion-real-plan/rpt-produccion-real-plan.component';
 
 
 
@@ -110,7 +112,7 @@ const routesMetas: Routes = [
   { path: 'opciones/lista-reportes/jucodi', component: RptJucodiComponent },
   { path: 'opciones/lista-reportes/velocidad-promedio', component: RptVelocidadPromedioComponent },
   { path: 'opciones/lista-reportes/subproductos', component: RptSubproductosComponent },
-  
+  { path: 'opciones/lista-reportes/produccion-real-plan', component: RptProduccionRealPlanComponent },
   
   /* Registro de produccion */
   {
@@ -173,9 +175,11 @@ const routesMetas: Routes = [
     RptDiarioProduccionComponent,
     RptJucodiComponent,
     FormatNumberPipeClass,
+    SeparatorPipeClass,
     ToneladasPipeClass,
     RptVelocidadPromedioComponent,
-    RptSubproductosComponent
+    RptSubproductosComponent,
+    RptProduccionRealPlanComponent
   ],
   providers: [
     AuthGuardCua

@@ -1,0 +1,99 @@
+<div *ngIf="!loading">
+  <div class="container">
+    <div class="secton"></div>
+    <!-- Solo para dispositivos moviles -->
+    <div class="hide-on-large-only right-align">
+      <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+    <!-- Fin solo para dispositivos moviles -->
+    <h4 class="color_titulo center-align">Reporte Producción real vs plan
+    </h4>
+    <div class="section"></div>
+    <div class="row">
+      <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="busqueda(parametrosBusqueda)" autocomplete="off">
+
+        <div class="input-field col s12 m12 l2 xl2">
+          <select class="anio" materialize="material_select" [materializeSelectOptions]="anios" formControlName="anio" [(ngModel)]="parametrosBusqueda.anio"
+            (ngModelChange)="changeCombo('anio')">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let anio of anios" [value]="anio.valor">{{anio.valor}}</option>
+          </select>
+          <label for="anio">año</label>
+          <div *ngIf="formConsultaPeriodo.controls.anio.errors?.required && (formConsultaPeriodo.controls.anio?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l3 xl3">
+          <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="parametrosBusqueda.idPeriodo"
+            (ngModelChange)="changeCombo()">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
+          </select>
+          <label for="mes">mes</label>
+          <div *ngIf="formConsultaPeriodo.controls.idPeriodo.errors?.required && (formConsultaPeriodo.controls.idPeriodo?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l3 xl3">
+          <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="idLinea" [(ngModel)]="parametrosBusqueda.idLinea"
+            (ngModelChange)="changeCombo()">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{linea.descripcion}}</option>
+          </select>
+          <label for="linea">Linea</label>
+          <div *ngIf="formConsultaPeriodo.controls.idLinea.errors?.required && (formConsultaPeriodo.controls.idLinea?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l3 xl3">
+          <select materialize="material_select" [materializeSelectOptions]="vista" formControlName="report" [(ngModel)]="parametrosBusqueda.report"
+            (ngModelChange)="changeCombo()">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let v of vista" [value]="v.value">{{v.text}}</option>
+          </select>
+          <label for="linea">Ver por:</label>
+          <div *ngIf="formConsultaPeriodo.controls.report.errors?.required && (formConsultaPeriodo.controls.report?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l1 xl1">
+          <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
+            <i class="material-icons">search</i>
+          </button>
+          <label></label>
+        </div>
+      </form>
+    </div>
+    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a routerLink="../../lista-reportes" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped"
+          data-position="top" data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
+    </div>
+    <!-- Fin solo para pantallas-->
+  </div>
+  <div *ngIf="viewReport">
+    <div id="chartBarra" style="width:95%; height:400px;"></div>
+  </div>
+</div>
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>
