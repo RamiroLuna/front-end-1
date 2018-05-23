@@ -4,9 +4,9 @@ import { RptJucodiService } from "./rpt-jucodi.service";
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { Catalogo } from '../../models/catalogo';
-import { getTablaUtf8, clone, getFechaActual } from '../../utils';
+import { getTablaUtf8, clone, getFechaActual , calculaDiaPorMes } from '../../utils';
 import { configChart } from './rpt.config.export';
-
+import swal from 'sweetalert2';
 
 declare var $: any;
 declare var Materialize: any;
@@ -32,6 +32,8 @@ export class RptJucodiComponent implements OnInit {
   public tituloGrafica: any;
   public datosConfiguracion: Array<any>;
   public rows: Array<any>;
+  public rowsTmp: Array<any>;
+  public verJuntaDiaria:boolean;
 
 
   constructor(
@@ -46,7 +48,7 @@ export class RptJucodiComponent implements OnInit {
     this.submitted = false;
     this.viewReport = false;
     this.parametrosBusqueda = {
-      dia: getFechaActual()
+      dia: ''
     };
     this.anios = [];
     this.meses = [];
@@ -55,6 +57,8 @@ export class RptJucodiComponent implements OnInit {
     this.tituloGrafica = '';
     this.datosConfiguracion = [];
     this.rows = [];
+    this.rowsTmp = [];
+    this.verJuntaDiaria = false;
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
@@ -122,22 +126,6 @@ export class RptJucodiComponent implements OnInit {
     $('.carousel li').css('background-color', '#bdbdbd');
     $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
 
-    $('#dia').pickadate({
-      selectMonths: true, // Creates a dropdown to control month
-      selectYears: 15, // Creates a dropdown of 15 years to control year,
-      today: '',
-      clear: '',
-      close: 'OK',
-      monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-      monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-      weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-      weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-      format: 'dd/mm/yyyy',
-      closeOnSelect: false, // Close upon selecting a date,
-      onClose: () => {
-        this.parametrosBusqueda.dia = $('#dia').val();
-      }
-    });
   }
 
   changeCombo(params: string): void {
@@ -148,7 +136,7 @@ export class RptJucodiComponent implements OnInit {
   }
 
   busqueda(parametrosBusqueda: any) {
-
+    this.verJuntaDiaria = false;
     this.viewReport = false;
     this.submitted = true;
     this.datosConfiguracion = [];
@@ -189,9 +177,8 @@ export class RptJucodiComponent implements OnInit {
             confTmp.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#fff3e0' });
             this.datosConfiguracion.push(confTmp);
           }
-
-          this.getJuntaJucodi(parametrosBusqueda);
-
+          
+      
           this.viewReport = true;
           setTimeout(() => {
             this.rptAfterViewGenerate();
@@ -215,11 +202,14 @@ export class RptJucodiComponent implements OnInit {
 
   }
 
-  getJuntaJucodi(parametrosBusqueda:any): void {
+  reporteJUCODI(parametrosBusqueda:any): void {
+    this.verJuntaDiaria = false;
     this.service.reporteJUCODI(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-      console.log('resultado de jucodi', result)
+
       if (result.response.sucessfull) {
-        
+        this.verJuntaDiaria = true;
+        this.rows = result.data.reporteDesempeno || [];        
+        this.rowsTmp = result.data.reporteMap || [];        
       } else {
         Materialize.toast(result.response.message, 4000, 'red');
       }
@@ -236,7 +226,7 @@ export class RptJucodiComponent implements OnInit {
     let linkFile = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel;';
 
-    let tablas = getTablaUtf8('tblReporte');
+    let tablas = getTablaUtf8('tblReporte') + getTablaUtf8('tblReporteTmp');
 
     linkFile.href = data_type + ', ' + tablas;
     linkFile.download = 'ReporteJucodi';
@@ -256,9 +246,51 @@ export class RptJucodiComponent implements OnInit {
     }
   }
 
-  convierte(numero: number): string {
-    let result = parseFloat('' + numero).toFixed(3);
-    return result;
+  changeDia():void{
+    let mes: number = this.obtenerMesDelPeriodo(this.periodos, this.parametrosBusqueda.idPeriodo);
+    let totalDias = calculaDiaPorMes(this.parametrosBusqueda.anio, mes);
+    let argDias = {};
+
+    for (let i = 1; i <= totalDias; i++) {
+      let dia =  i <= 9 ? '0' + i : i;
+      argDias[i]= dia;
+    }
+
+    swal({
+      title: 'Seleccione un día del periodo ' + this.getPeriodo(this.periodos,this.parametrosBusqueda.idPeriodo),
+      input: 'select',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'OK',
+      inputOptions: argDias,
+      inputPlaceholder: 'SELECCIONE',
+      showCancelButton: true,
+      inputValidator: (value) => {
+
+        return new Promise((resolve) => {
+        
+          if (value != '') {
+            resolve();
+            let fecha = (value <= 9 ? '0' + value : value) + '/' + (mes <= 9 ? '0' + mes : mes) + '/' + this.parametrosBusqueda.anio;
+            this.parametrosBusqueda.dia = fecha;
+            this.reporteJUCODI( this.parametrosBusqueda);
+          
+          } else {
+            resolve('Seleccione un dia')
+          }
+        })
+      }
+    })
+
+  
+  }
+
+  obtenerMesDelPeriodo(arg: Array<Periodo>, idPeriodo: number): number {
+    let result = arg.filter((el) => el.id_periodo == idPeriodo);
+    if (result.length > 0) {
+      return result[0].mes;
+    } else {
+      return -1;
+    }
   }
 
 }

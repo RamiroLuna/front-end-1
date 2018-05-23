@@ -113,7 +113,7 @@ export class ListaMetasEdicionComponent implements OnInit {
     let argDias = [];
 
     for (let i = 1; i <= totalDias; i++) {
-      argDias.push(i < 9 ? "0" + i : i);
+      argDias.push(i <= 9 ? "0" + i : i);
     }
 
     $("table tr").editable({

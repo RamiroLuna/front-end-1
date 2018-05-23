@@ -11,7 +11,7 @@
       </a>
     </div>
     <!-- Fin solo para dispositivos moviles -->
-    <h4 class="color_titulo center-align">Reporte Producción diaria, Junta Jucodi
+    <h4 class="color_titulo center-align">Reporte Junta Jucodi
     </h4>
     <div class="section"></div>
     <div class="row">
@@ -91,57 +91,121 @@
     </div>
   </div>
   <div class="container" *ngIf="viewReport">
-    <div class="row">
-      <div class="input-field col s12 m12 l12 xl12">
-        <i class="material-icons prefix">
-          calendar_today
-        </i>
-        <input id="dia" type="text" [value]="parametrosBusqueda.dia">
-        <label class="active" for="dia">Producción diaria por día</label>
-      </div>
+    <div class="row center">
+      <h6>Para ver la producción de un día en específico<a (click)="changeDia()" class="link_fecha">&nbsp; haga click aquí</a></h6>
     </div>
-    <div class="row">
-      <table id="tblReporte" class="highlight striped" cellspacing="0">
-        <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
-          <ng-template [ngIf]="row.padre == 1">
-            <td class="center-align">
-              <b>{{ row.linea }}</b>
-            </td>
-            <td class="center-align">
-              <b>{{ row.dia }}</b>
-            </td>
-            <td class="center-align">
-              <b>{{ row.produccion }}</b>
-            </td>
-            <td class="center-align">
-              <b>{{ row.meta }}</b>
-            </td>
-            <td class="center-align">
-              <b>{{ row.desempeno }}</b>
-            </td>
-            <td class="center-align">Meta cumplida</td>
+    <div class="row" *ngIf="verJuntaDiaria">
+      <table id="tblReporte" class="highlight" cellspacing="0">
+        <thead>
+          <tr>
+            <th colspan="6" class="center-align color_titulo">Producción diaria. {{ ' '+parametrosBusqueda.dia }}
+            </th>
+          </tr>
+          <tr class="total">
+            <th class="center-align">Linea</th>
+            <th class="center-align">Dia</th>
+            <th class="center-align">Producción</th>
+            <th class="center-align">Meta</th>
+            <th class="center-align">% Desempeño</th>
+            <th class="center-align"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-template [ngIf]="rows.length == 0">
+            <tr>
+              <td colspan="6" class="center-align">No hay datos registrados</td>
+            </tr>
           </ng-template>
-          <ng-template [ngIf]="row.padre == 0">
-            <td class="center-align">{{ row.linea }}</td>
-            <td class="center-align">{{ row.dia }}</td>
-            <td class="center-align">{{ convierte(row.produccion) }}</td>
-            <td class="center-align">{{ convierte(row.meta) }}</td>
-            <td class="center-align">{{ convierte(row.desempeno) +'%'}}</td>
-            <td class="center-align">
-              <i *ngIf="row.icon == 1 || row.icon == 0" class="material-icons">check</i>
-              <i *ngIf="row.icon == -1 " class="material-icons">close</i>
-            </td>
-          </ng-template>
-          <ng-template [ngIf]="row.padre == 2">
-            <td class="center-align">{{ row.linea }}</td>
-            <td class="center-align">{{ row.dia }}</td>
-            <td class="center-align">{{ convierte(row.produccion) }}</td>
-            <td class="center-align">{{ convierte(row.meta) }}</td>
-            <td class="center-align">{{ convierte(row.desempeno) }}</td>
-            <td class="center-align"></td>
-          </ng-template>
-        </tr>
+          <tr *ngFor="let row of rows">
+            <ng-template [ngIf]="row.padre == 0">
+              <td class="center-align">{{ row.linea }}</td>
+              <td class="center-align">{{ row.dia }}</td>
+              <td class="center-align">{{ row.produccion | formatDecimal : 3 }}</td>
+              <td class="center-align">{{ row.meta | formatDecimal : 3 }}</td>
+              <td class="center-align">{{ (row.desempeno | formatDecimal : 3) +'%'}}</td>
+              <td class="center-align">
+                <i *ngIf="row.icon == 1 || row.icon == 0" class="material-icons">check</i>
+                <i *ngIf="row.icon == -1 " class="material-icons">close</i>
+              </td>
+            </ng-template>
+            <ng-template [ngIf]="row.padre == 2">
+              <td class="center-align">
+                <b>{{ row.linea }}</b>
+              </td>
+              <td class="center-align">
+                <b>{{ row.dia }}</b>
+              </td>
+              <td class="center-align">
+                <b>{{ row.produccion | formatDecimal : 3 }}</b>
+              </td>
+              <td class="center-align">
+                <b>{{ row.meta | formatDecimal : 3 }}</b>
+              </td>
+              <td class="center-align">
+                <b>{{ (row.desempeno | formatDecimal : 3) + '%' }}</b>
+              </td>
+              <td class="center-align"></td>
+            </ng-template>
+          </tr>
+        </tbody>
       </table>
+      <div class="section"></div>
+      <table id="tblReporteTmp" class="highlight" cellspacing="0">
+        <thead>
+          <tr>
+            <th colspan="6" class="center-align color_titulo">Tiempo Horas de paro {{ ' '+parametrosBusqueda.dia }}</th>
+          </tr>
+          <tr class="total">
+            <th class="center-align">Linea</th>
+            <th class="center-align">Dia</th>
+            <th class="center-align">TMT Real</th>
+            <th class="center-align">TMT Meta</th>
+            <th class="center-align">% Desempeño</th>
+            <th class="center-align"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-template [ngIf]="rows.length == 0">
+            <tr>
+              <td colspan="6" class="center-align">No hay datos registrados</td>
+            </tr>
+          </ng-template>
+          <tr *ngFor="let row of rowsTmp">
+            <ng-template [ngIf]="row.padre == 0">
+              <td class="center-align">{{ row.linea }}</td>
+              <td class="center-align">{{ row.dia }}</td>
+              <td class="center-align">{{ row.tmpReal | formatDecimal : 3 }}</td>
+              <td class="center-align">{{ row.tmpMeta | formatDecimal : 3 }}</td>
+              <td class="center-align">{{ (row.desempeno | formatDecimal : 3) +'%'}}</td>
+              <td class="center-align">
+                <i *ngIf="row.icon == 1 || row.icon == 0" class="material-icons">check</i>
+                <i *ngIf="row.icon == -1 " class="material-icons">close</i>
+              </td>
+            </ng-template>
+            <ng-template [ngIf]="row.padre == 2">
+              <td class="center-align">
+                <b>{{ row.linea }}</b>
+              </td>
+              <td class="center-align">
+                <b>{{ row.dia }}</b>
+              </td>
+              <td class="center-align">
+                <b>{{ row.tmpReal | formatDecimal : 3 }}</b>
+              </td>
+              <td class="center-align">
+                <b>{{ row.tmpMeta | formatDecimal : 3 }}</b>
+              </td>
+              <td class="center-align">
+                <b>{{ (row.desempeno | formatDecimal : 3) +'%' }}</b>
+              </td>
+              <td class="center-align"></td>
+            </ng-template>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row center" *ngIf="verJuntaDiaria">
+      <a class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
     </div>
   </div>
 </div>

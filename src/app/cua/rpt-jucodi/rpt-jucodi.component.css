@@ -7,6 +7,12 @@
 }
 
 .total{
-    background-color:#f1f8e9 ;
+    background-color:#7cb342;
     font-weight: bold;
+    color: white;
+}
+
+.link_fecha{
+    cursor:pointer;
+    cursor: hand;
 }
