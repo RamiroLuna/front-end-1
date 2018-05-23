@@ -5,7 +5,7 @@ import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { Catalogo } from '../../models/catalogo';
 import { getTablaUtf8, clone, getFechaActual, calculaDiaPorMes } from '../../utils';
-import { configChart } from './rpt.config.export';
+import { configChart, configChartSpider } from './rpt.config.export';
 import { Linea } from '../../models/linea';
 
 declare var $: any;
@@ -26,7 +26,8 @@ export class RptProduccionRealPlanComponent implements OnInit {
   public meses: Array<any>;
   public periodos: Array<Periodo>;
   public lineas: Array<Linea>;
-  public vista:Array<any>;
+  public vista: Array<any>;
+  public vercombo: boolean;
 
 
 
@@ -41,6 +42,7 @@ export class RptProduccionRealPlanComponent implements OnInit {
     this.loading = true;
     this.submitted = false;
     this.viewReport = false;
+    this.vercombo = true;
     this.parametrosBusqueda = {
       dia: ''
     };
@@ -48,9 +50,9 @@ export class RptProduccionRealPlanComponent implements OnInit {
     this.meses = [];
     this.periodos = [];
     this.vista = [
-      { value: 'byWeeks', text:'SEMANA'},
-      { value: 'byDays', text:'MES'},
-      { value: 'byMonths', text:'AÑO'},
+      { value: 'byWeeks', text: 'SEMANA' },
+      { value: 'byDays', text: 'MES' },
+      { value: 'byMonths', text: 'AÑO' },
     ];
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
@@ -103,12 +105,17 @@ export class RptProduccionRealPlanComponent implements OnInit {
 
   rptAfterViewGenerate(): void {
     $('#chartBarra').highcharts(configChart);
+    $('#chartSpider').highcharts(configChartSpider);
   }
 
   changeCombo(params: string): void {
     this.viewReport = false;
     if (params == 'anio') {
-      this.meses = this.periodos.filter(el => el.anio == this.parametrosBusqueda.anio)
+      this.meses = this.periodos.filter(el => el.anio == this.parametrosBusqueda.anio);
+     
+
+    } else if (params == 'tipo') {
+      this.vercombo = this.parametrosBusqueda.report == 'byMonths';
     }
   }
 
@@ -123,7 +130,7 @@ export class RptProduccionRealPlanComponent implements OnInit {
 
           let datos = result.data.reporteMap || [];
           let titulo = 'Reporte de desempeño por grupo ' + this.getLinea(this.lineas, this.parametrosBusqueda.idLinea);
-          let labels = datos.filter((el) => el.padre == 0).map(element => element.dia);
+          let labels = datos.filter((el) => el.padre == 0).map(element => element.periodo);
           let dataGrupoA = datos.filter((el) => el.padre == 0).map((el) => el.a);
           let dataGrupoB = datos.filter((el) => el.padre == 0).map((el) => el.b);
           let dataGrupoC = datos.filter((el) => el.padre == 0).map((el) => el.c);
@@ -135,15 +142,21 @@ export class RptProduccionRealPlanComponent implements OnInit {
           configChart.series = [];
           configChart.xAxis.categories = labels;
           configChart.title.text = titulo;
-          configChart.subtitle.text = 'Periodo: ' + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
+
+          if (this.parametrosBusqueda.report == 'byWeeks') {
+            configChart.tooltip.headerFormat = '<b>Semana: {point.x}</b><br/>';
+          } else if (this.parametrosBusqueda.report == 'byDays') {
+            configChart.tooltip.headerFormat = '<b>Dia : {point.x}</b><br/>';
+          } else if (this.parametrosBusqueda.report == 'byMonths') {
+            configChart.tooltip.headerFormat = '<b>Mes: {point.x}</b><br/>';
+          }
+
 
           configChart.series.push({ name: ' A ', data: dataGrupoA, color: '#4db6ac' });
           configChart.series.push({ name: ' B ', data: dataGrupoB, color: '#66bb6a' });
           configChart.series.push({ name: ' C ', data: dataGrupoC, color: '#78909c' });
           configChart.series.push({ name: ' D ', data: dataGrupoD });
-          configChart.series.push({ name: ' Meta 1ro ', data: dataMeta1, type: 'line', color: '#64b5f6' });
-          configChart.series.push({ name: ' Meta 2do ', data: dataMeta2, type: 'line', color: '#e0f2f1' });
-          configChart.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#fff3e0' });
+          // configChart.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#fff3e0' });
 
           this.viewReport = true;
           setTimeout(() => {

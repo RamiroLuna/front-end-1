@@ -27,7 +27,7 @@ let configChart = {
     },
     yAxis: {
         title: {
-            text: ' Toneladas '
+            text: ' Producción '
         },
         labels: {
             style: {
@@ -64,11 +64,67 @@ let configChart = {
         }
     },
     tooltip: {
-        headerFormat: '<b>Dia: {point.x}</b><br/>'
+        headerFormat: ''
     },
     series: [],
 };
 
+let configChartSpider = {
+    chart: {
+        polar: true,
+        type: 'line'
+    },
+    credits: {
+        enabled: false
+    },
+    title: {
+        text: 'Real vs Plan',
+        x: -80
+    },
+
+    pane: {
+        size: '80%'
+    },
+
+    xAxis: {
+        categories: ['Grupo A', 'Grupo B', 'Grupo C', 'Grupo D'],
+        tickmarkPlacement: 'on',
+        lineWidth: 0
+    },
+
+    yAxis: {
+        gridLineInterpolation: 'polygon',
+        lineWidth: 0,
+        min: 0
+    },
+
+    tooltip: {
+        shared: true,
+        pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>'
+    },
+
+    legend: {
+        align: 'right',
+        verticalAlign: 'top',
+        y: 70,
+        layout: 'vertical'
+    },
+
+    series: [{
+        name: 'Producción real',
+        data: [43000, 19000, 60000, 35000],
+        pointPlacement: 'on'
+    }, {
+        name: 'Producción planeada',
+        data: [50000, 39000, 42000, 31000],
+        pointPlacement: 'on'
+    }]
+
+};
+
+
+
 export {
-    configChart
+    configChart,
+    configChartSpider
 }

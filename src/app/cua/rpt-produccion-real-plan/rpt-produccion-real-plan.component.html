@@ -16,7 +16,6 @@
     <div class="section"></div>
     <div class="row">
       <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="busqueda(parametrosBusqueda)" autocomplete="off">
-
         <div class="input-field col s12 m12 l2 xl2">
           <select class="anio" materialize="material_select" [materializeSelectOptions]="anios" formControlName="anio" [(ngModel)]="parametrosBusqueda.anio"
             (ngModelChange)="changeCombo('anio')">
@@ -26,11 +25,11 @@
           <label for="anio">año</label>
           <div *ngIf="formConsultaPeriodo.controls.anio.errors?.required && (formConsultaPeriodo.controls.anio?.touched || submitted)"
             class="error">
-            Seleccione una opcion
+            Seleccione
           </div>
         </div>
         <div class="input-field col s12 m12 l3 xl3">
-          <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="parametrosBusqueda.idPeriodo"
+          <select materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="parametrosBusqueda.idPeriodo"
             (ngModelChange)="changeCombo()">
             <option value="">SELECCIONE</option>
             <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
@@ -55,7 +54,7 @@
         </div>
         <div class="input-field col s12 m12 l3 xl3">
           <select materialize="material_select" [materializeSelectOptions]="vista" formControlName="report" [(ngModel)]="parametrosBusqueda.report"
-            (ngModelChange)="changeCombo()">
+            (ngModelChange)="changeCombo('tipo')">
             <option value="">SELECCIONE</option>
             <option *ngFor="let v of vista" [value]="v.value">{{v.text}}</option>
           </select>
@@ -86,7 +85,14 @@
     <!-- Fin solo para pantallas-->
   </div>
   <div *ngIf="viewReport">
-    <div id="chartBarra" style="width:95%; height:400px;"></div>
+    <div class="row">
+      <div class="col s12 m12 l8 xl8">
+        <div id="chartBarra" style="width:100%; height:400px;"></div>
+      </div>
+      <div class="col s12 m12 l4 xl4">
+        <div id="chartSpider" style="width:100%; height:400px;"></div>
+      </div>
+    </div>
   </div>
 </div>
 

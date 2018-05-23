@@ -240,11 +240,12 @@ export class FormularioPeriodoComponent implements OnInit {
 
   validaDatos(clase: string): boolean {
     let bandera = true;
+    let tmp = this.seccion;
     let metas = [];
     this.metasEsperadas = [];
 
     $(clase + ' tr').each(function (index) {
-
+     
       let objTmp = {
         id_linea: -1, disponibilidad: 0, utilizacion: 0, calidad: 0, oee: 0, eficiencia_teorica: 0
       };
@@ -252,12 +253,15 @@ export class FormularioPeriodoComponent implements OnInit {
 
       $(this).find('input').each(function (index2) {
         let caja = $(this);
+
         if (!isNumeroAsignacionValid(caja.val())) {
           bandera = false;
           caja.css('background-color', '#ffcdd2');
         } else {
           caja.css('background-color', '');
-          if (this.seccion == 'add') {
+         
+          if (tmp == 'add') {
+          
             switch (index2) {
               case 0:
                 objTmp.disponibilidad = parseFloat(caja.val());
@@ -275,15 +279,17 @@ export class FormularioPeriodoComponent implements OnInit {
                 objTmp.eficiencia_teorica = parseFloat(caja.val());
                 break;
             }
+       
           }
         }
       });
-      if (this.seccion == 'add') {
+      if (tmp == 'add') {
         metas.push(objTmp);
       }
+
     });
 
-    if (this.seccion == 'add') {
+    if (tmp == 'add') {
       this.metasEsperadas = metas;
     }
     return bandera;
