@@ -11,6 +11,7 @@ import { Linea } from '../../models/linea';
 import { RazonParo } from '../../models/razon-paro';
 import { Equipo } from '../../models/equipo';
 
+
 declare var $: any;
 declare var Materialize: any;
 @Component({
@@ -54,6 +55,7 @@ export class FormularioFallasComponent implements OnInit, OnChanges {
     this.textoBtn = "";
     this.textoFormulario = "";
     this.falla = new Falla();
+
 
     this.route.paramMap.subscribe(params => {
       if (params.get('id') == 'nuevo') {
@@ -149,8 +151,8 @@ export class FormularioFallasComponent implements OnInit, OnChanges {
       id_razon: new FormControl(this.falla.id_razon, [Validators.required]),
       id_equipo: new FormControl(this.falla.id_equipo, [Validators.required]),
       descripcion_equipo: new FormControl({ value: this.falla.descripcion_equipo, disabled: true }),
-      hora_inicio: new FormControl(this.falla.hora_inicio, [Validators.required]),
-      hora_final: new FormControl(this.falla.hora_final, [Validators.required]),
+      hora_inicio: new FormControl(this.falla.hora_inicio, [Validators.required, Validators.pattern('^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]')]),
+      hora_final: new FormControl(this.falla.hora_final, [Validators.required, Validators.pattern('^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]')]),
       tiempo_paro: new FormControl({ vallue: this.falla.tiempo_paro, disabled: true }, [Validators.required]),
       descripcion: new FormControl(this.falla.descripcion, [Validators.required]),
     });
@@ -164,47 +166,30 @@ export class FormularioFallasComponent implements OnInit, OnChanges {
 
     $('textarea#problema').characterCounter();
     $('.tooltipped').tooltip({ delay: 50 });
-    $('.hora_inicio, .hora_final').pickatime({
-      editable: true,
-      default: 'now', // Set default time: 'now', '1:30AM', '16:30'
-      fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
-      twelvehour: false, // Use AM/PM or 24-hour format
-      donetext: 'OK', // text for done-button
-      cleartext: '', // text for clear-button
-      canceltext: '', // Text for cancel-button
-      autoclose: false, // automatic close timepicker
-      ampmclickable: true, // make AM PM clickable
-      aftershow: function () { }, //Function for after opening timepicker
-      afterDone: (Element, Time) => {
-        this.falla.hora_inicio = $('.hora_inicio').val();
-        this.falla.hora_final = $('.hora_final').val();
-
-        if (this.falla.hora_inicio != "" && this.falla.hora_final) {
-
-
-          let milisegundos_inicio = getMilisegundosHoras(this.falla.diaString, this.falla.hora_inicio);
-          let milisegundos_fin = getMilisegundosHoras(this.falla.diaString, this.falla.hora_final);
-
-          if (milisegundos_fin >= milisegundos_inicio) {
-            let total = milisegundos_fin - milisegundos_inicio;
-
-            let horas = (((total / 1000) / 60) / 60).toFixed(2);
-
-            this.falla.tiempo_paro = "" + horas;
-
-          } else {
-            this.falla.tiempo_paro = "";
-            Materialize.toast('La hora de inicio es mayor a la hora final!', 4000, 'red');
-
-          }
-
-        }
-
-      }
-    });
   }
 
   cambioHora(): void {
+    let regex = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+    if (regex.test(this.falla.hora_inicio) && regex.test(this.falla.hora_final)) {
+      let milisegundos_inicio = getMilisegundosHoras(this.falla.diaString, this.falla.hora_inicio);
+      let milisegundos_fin = getMilisegundosHoras(this.falla.diaString, this.falla.hora_final);
+
+      if (milisegundos_fin >= milisegundos_inicio) {
+        let total = milisegundos_fin - milisegundos_inicio;
+
+        let horas = (((total / 1000) / 60) / 60).toFixed(2);
+
+        this.falla.tiempo_paro = "" + horas;
+
+      } else {
+        this.falla.tiempo_paro = "0";
+        Materialize.toast('La hora de inicio es mayor a la hora final!', 4000, 'red');
+
+      }
+
+    }else{
+      this.falla.tiempo_paro = "0";
+    }
 
   }
 
