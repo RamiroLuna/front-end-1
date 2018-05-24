@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ListaFallasService } from './lista-fallas.service';
 import swal from 'sweetalert2';
-import { DataTableFallas , deleteItemArray} from '../../utils';
+import { DataTableFallas , deleteItemArray, findRol} from '../../utils';
 import { Falla } from '../../models/falla';
 import { Linea } from '../../models/linea';
 import { Catalogo } from '../../models/catalogo';
@@ -54,6 +54,13 @@ export class ListaFallasComponent implements OnInit {
   public grupos: Array<Catalogo>;
   public turnos: Array<Catalogo>;
 
+  public permission: any = {
+    consultFails: false,
+    addFail: false,
+    editFail:false,
+    deleteFail: false
+  };
+
   constructor(
     private service: ListaFallasService,
     private auth: AuthService,
@@ -69,6 +76,11 @@ export class ListaFallasComponent implements OnInit {
     this.fallaSeleccionada = 0;
     this.pintaForm = false;
     this.noVerBtnFallas = false;
+
+    this.permission.addFail = findRol(6, this.auth.getRolesCUA());
+    this.permission.consultFails = findRol(7, this.auth.getRolesCUA());
+    this.permission.editFail = findRol(9, this.auth.getRolesCUA());
+    this.permission.deleteFail = findRol(8, this.auth.getRolesCUA());
 
 
     this.paramsBusqueda.id_grupo = this.auth.getId_Grupo();

@@ -5,7 +5,7 @@ import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { Catalogo } from '../../models/catalogo';
 import { getTablaUtf8, clone, getFechaActual, calculaDiaPorMes } from '../../utils';
-import { configChart, configChartSpider } from './rpt.config.export';
+import { configChartSpider } from './rpt.config.export';
 import { Linea } from '../../models/linea';
 
 declare var $: any;
@@ -104,7 +104,7 @@ export class RptProduccionRealPlanComponent implements OnInit {
   }
 
   rptAfterViewGenerate(): void {
-    $('#chartBarra').highcharts(configChart);
+    // $('#chartBarra').highcharts(configChart);
     $('#chartSpider').highcharts(configChartSpider);
   }
 
@@ -139,23 +139,23 @@ export class RptProduccionRealPlanComponent implements OnInit {
           let dataMeta2 = datos.filter((el) => el.padre == 0).map((el) => el.meta2);
           let dataMeta3 = datos.filter((el) => el.padre == 0).map((el) => el.meta3);
 
-          configChart.series = [];
-          configChart.xAxis.categories = labels;
-          configChart.title.text = titulo;
+          // configChart.series = [];
+          // configChart.xAxis.categories = labels;
+          // configChart.title.text = titulo;
 
-          if (this.parametrosBusqueda.report == 'byWeeks') {
-            configChart.tooltip.headerFormat = '<b>Semana: {point.x}</b><br/>';
-          } else if (this.parametrosBusqueda.report == 'byDays') {
-            configChart.tooltip.headerFormat = '<b>Dia : {point.x}</b><br/>';
-          } else if (this.parametrosBusqueda.report == 'byMonths') {
-            configChart.tooltip.headerFormat = '<b>Mes: {point.x}</b><br/>';
-          }
+          // if (this.parametrosBusqueda.report == 'byWeeks') {
+          //   configChart.tooltip.headerFormat = '<b>Semana: {point.x}</b><br/>';
+          // } else if (this.parametrosBusqueda.report == 'byDays') {
+          //   configChart.tooltip.headerFormat = '<b>Dia : {point.x}</b><br/>';
+          // } else if (this.parametrosBusqueda.report == 'byMonths') {
+          //   configChart.tooltip.headerFormat = '<b>Mes: {point.x}</b><br/>';
+          // }
 
 
-          configChart.series.push({ name: ' A ', data: dataGrupoA, color: '#4db6ac' });
-          configChart.series.push({ name: ' B ', data: dataGrupoB, color: '#66bb6a' });
-          configChart.series.push({ name: ' C ', data: dataGrupoC, color: '#78909c' });
-          configChart.series.push({ name: ' D ', data: dataGrupoD });
+          // configChart.series.push({ name: ' A ', data: dataGrupoA, color: '#4db6ac' });
+          // configChart.series.push({ name: ' B ', data: dataGrupoB, color: '#66bb6a' });
+          // configChart.series.push({ name: ' C ', data: dataGrupoC, color: '#78909c' });
+          // configChart.series.push({ name: ' D ', data: dataGrupoD });
           // configChart.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#fff3e0' });
 
           this.viewReport = true;

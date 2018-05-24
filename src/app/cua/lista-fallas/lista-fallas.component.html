@@ -27,15 +27,23 @@
       </li>
 
     </ul>
+    <div class="col s12 m12 l12 xl12 center-align" *ngIf="!permission.addFail">
+        <p class="color_titulo">No cuenta con permiso para registrar fallas</p>
+    </div>
 
     <div class="col s12 m12 l6 xl6 center-align">
       <div class="section"></div>
       <a class="waves-effect waves-light btn-large light-green darken-1" (click)="modoEdicion()">
         <i class="material-icons right">search</i>Consultar</a>
     </div>
-    <div class="col s12 m12 l6 xl6 center-align">
+    <div class="col s12 m12 l6 xl6 center-align" *ngIf="permission.addFail">
       <div class="section"></div>
       <a routerLink="nuevo" class="waves-effect waves-light btn-large light-green darken-1">
+        <i class="material-icons right">add</i>Agregar</a>
+    </div>
+    <div class="col s12 m12 l6 xl6 center-align" *ngIf="!permission.addFail">
+      <div class="section"></div>
+      <a disabled class="waves-effect waves-light btn-large light-green darken-1">
         <i class="material-icons right">add</i>Agregar</a>
     </div>
   </div>
@@ -124,8 +132,8 @@
             <th class="center-align">Hora de inicio</th>
             <th class="center-align">Hora de final</th>
             <th class="center-align">Horas de paro</th>
-            <th class="center-align">Editar</th>
-            <th class="center-align">Eliminar</th>
+            <th class="center-align" *ngIf="permission.editFail">Editar</th>
+            <th class="center-align" *ngIf="permission.deleteFail">Eliminar</th>
           </tr>
         </thead>
 
@@ -143,8 +151,8 @@
             <td></td>
             <td></td>
             <td></td>
-            <td></td>
-            <td></td>
+            <td *ngIf="permission.editFail"></td>
+            <td *ngIf="permission.deleteFail"></td>
           </tr>
           <tr *ngFor="let falla of fallas" [class]="falla.id_falla">
             <td class="center-align">{{falla.diaString}}</td>
@@ -159,12 +167,12 @@
             <td class="center-align">{{falla.hora_inicio}}</td>
             <td class="center-align">{{falla.hora_final}}</td>
             <td class="center-align">{{falla.tiempo_paro + ' Hrs'}}</td>
-            <td class="center-align">
+            <td class="center-align" *ngIf="permission.editFail">
               <a class="btn-floating light-green lighten-1" (click)="openModalEdicion(falla.id_falla)">
                 <i class="material-icons">description</i>
               </a>
             </td>
-            <td class="center-align">
+            <td class="center-align" *ngIf="permission.deleteFail">
               <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(falla,'eliminar')">
                 <i class="material-icons">delete</i>
               </a>

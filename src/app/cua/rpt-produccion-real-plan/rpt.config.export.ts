@@ -1,84 +1,83 @@
-let configChart = {
-    chart: {
-        type: 'column',
-    },
-    credits: {
-        enabled: false
-    },
-    title: {
-        text: '',
-        style: {
-            color: '#000'
-        }
-    },
-    subtitle: {
-        text: '',
-        style: {
-            color: '#000'
-        }
-    },
-    xAxis: {
-        categories: [],
-        labels: {
-            style: {
-                color: '#000'
-            }
-        }
-    },
-    yAxis: {
-        title: {
-            text: ' Producción '
-        },
-        labels: {
-            style: {
-                color: '#000000',
-            },
-            formatter: function () {
-                return this.value + 'T';
-            }
-        }
+// let configChart = {
+//     chart: {
+//         type: 'column',
+//     },
+//     credits: {
+//         enabled: false
+//     },
+//     title: {
+//         text: '',
+//         style: {
+//             color: '#000'
+//         }
+//     },
+//     subtitle: {
+//         text: '',
+//         style: {
+//             color: '#000'
+//         }
+//     },
+//     xAxis: {
+//         categories: [],
+//         labels: {
+//             style: {
+//                 color: '#000'
+//             }
+//         }
+//     },
+//     yAxis: {
+//         title: {
+//             text: ' Producción '
+//         },
+//         labels: {
+//             style: {
+//                 color: '#000000',
+//             },
+//             formatter: function () {
+//                 return this.value + 'T';
+//             }
+//         }
 
-    },
-    plotOptions: {
-        series: {
-            dataLabels: {
-                enabled: false,
-                color: '#FFFFFF',
-                inside: false,
-                // y: 10,
-                // distance: -10
-            },
-            events: {
-                legendItemClick: function () {
-                    return false;
-                }
-            }
-        },
-        column: {
-            stacking: 'normal'
-        },
-        line: {
-            marker: {
-                enabled: false
-            }
-        }
-    },
-    tooltip: {
-        headerFormat: ''
-    },
-    series: [],
-};
+//     },
+//     plotOptions: {
+//         series: {
+//             dataLabels: {
+//                 enabled: false,
+//                 color: '#FFFFFF',
+//                 inside: false,
+//                 // y: 10,
+//                 // distance: -10
+//             },
+//             events: {
+//                 legendItemClick: function () {
+//                     return false;
+//                 }
+//             }
+//         },
+//         column: {
+//             stacking: 'normal'
+//         },
+//         line: {
+//             marker: {
+//                 enabled: false
+//             }
+//         }
+//     },
+//     tooltip: {
+//         headerFormat: ''
+//     },
+//     series: [],
+// };
 
 let configChartSpider = {
+
     chart: {
         polar: true,
         type: 'line'
     },
-    credits: {
-        enabled: false
-    },
+
     title: {
-        text: 'Real vs Plan',
+        text: 'Budget vs spending',
         x: -80
     },
 
@@ -87,7 +86,8 @@ let configChartSpider = {
     },
 
     xAxis: {
-        categories: ['Grupo A', 'Grupo B', 'Grupo C', 'Grupo D'],
+        categories: ['Sales', 'Marketing', 'Development', 'Customer Support',
+            'Information Technology', 'Administration'],
         tickmarkPlacement: 'on',
         lineWidth: 0
     },
@@ -111,12 +111,12 @@ let configChartSpider = {
     },
 
     series: [{
-        name: 'Producción real',
-        data: [43000, 19000, 60000, 35000],
+        name: 'Allocated Budget',
+        data: [43000, 19000, 60000, 35000, 17000, 10000],
         pointPlacement: 'on'
     }, {
-        name: 'Producción planeada',
-        data: [50000, 39000, 42000, 31000],
+        name: 'Actual Spending',
+        data: [50000, 39000, 42000, 31000, 26000, 14000],
         pointPlacement: 'on'
     }]
 
@@ -125,6 +125,6 @@ let configChartSpider = {
 
 
 export {
-    configChart,
+
     configChartSpider
 }

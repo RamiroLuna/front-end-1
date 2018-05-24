@@ -32,7 +32,8 @@
         "../node_modules/pdfmake/build/pdfmake.js",
         "../node_modules/pdfmake/build/vfs_fonts.js",
         "../node_modules/highcharts/highcharts.js",
-        "../node_modules/highcharts/highcharts-3d.js"
+        "../node_modules/highcharts/highcharts-3d.js",
+        "../node_modules/highcharts/highcharts-more.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
