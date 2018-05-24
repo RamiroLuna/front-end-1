@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FormularioFallasService } from './formulario-fallas.service';
 import { AuthService } from '../../auth/auth.service';
-import { isValidId, getMilisegundosHoras } from '../../utils';
+import { isValidId, getMilisegundosHoras, getTodayMilisegundos } from '../../utils';
 import { Falla } from '../../models/falla';
 import { Catalogo } from '../../models/catalogo';
 import swal from 'sweetalert2';
@@ -182,12 +182,30 @@ export class FormularioFallasComponent implements OnInit, OnChanges {
         this.falla.tiempo_paro = "" + horas;
 
       } else {
-        this.falla.tiempo_paro = "0";
-        Materialize.toast('La hora de inicio es mayor a la hora final!', 4000, 'red');
+
+        let milisegundos_today = getTodayMilisegundos(this.falla.diaString);
+
+        let milisegundos_only_day = 24 * 60 * 60 * 1000;
+        let hms = this.falla.hora_final || "00:00";
+        let arg = hms.split(':');
+        let horasTmp = parseInt(arg[0])*60*60*1000;
+        let minutosTmp = parseInt(arg[1])*60*1000;
+
+        let tmp_final =  milisegundos_today + horasTmp + minutosTmp + milisegundos_only_day;
+
+        let total = (tmp_final - milisegundos_inicio);
+
+        let horas = (((total / 1000) / 60) / 60).toFixed(2);
+
+        this.falla.tiempo_paro = "" + horas;
+
+        Materialize.toast('<i class="material-icons">warning</i>&nbsp;La hora de inicio es mayor a la hora final! <br>'
+                            + '&nbsp;Los datos serán guardados así', 7000, 'orange');
 
       }
 
     }else{
+    
       this.falla.tiempo_paro = "0";
     }
 

@@ -107,10 +107,15 @@
                 <label for="nameEquipo" class="active"></label>
               </div>
             </div>
-
+            <div class="row">
+              <div class="col s12 m12 l4 xl4">
+                <p class="color_titulo">Ingrese las hora con formato HH:mm</p>
+              </div>
+            </div>
             <div class="row">
               <div class="input-field col s12 m12 l4 xl4">
-                <input placeholder="00:00" id="horainicio" type="text" class="hora_inicio" formControlName="hora_inicio" [(ngModel)]="falla.hora_inicio" (ngModelChange)="cambioHora()">
+                <input placeholder="00:00" id="horainicio" type="text" class="hora_inicio" formControlName="hora_inicio" [(ngModel)]="falla.hora_inicio"
+                  (ngModelChange)="cambioHora()">
                 <div *ngIf="formFalla.controls.hora_inicio.errors?.required && !formFalla.controls.hora_inicio.errors?.pattern && (formFalla.controls.hora_inicio?.touched || submitted)"
                   class="error">
                   Se requiere hora de inicio
@@ -123,7 +128,8 @@
               </div>
 
               <div class="input-field col s12 m12 l4 xl4">
-                <input placeholder="00:00" id="horafin" type="text" class="hora_final" formControlName="hora_final" [(ngModel)]="falla.hora_final" (ngModelChange)="cambioHora()">
+                <input placeholder="00:00" id="horafin" type="text" class="hora_final" formControlName="hora_final" [(ngModel)]="falla.hora_final"
+                  (ngModelChange)="cambioHora()">
                 <label for="horafin" class="active">Hora Fin</label>
                 <div *ngIf="formFalla.controls.hora_final.errors?.required && !formFalla.controls.hora_final.errors?.pattern && (formFalla.controls.hora_final?.touched || submitted)"
                   class="error">

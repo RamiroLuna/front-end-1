@@ -144,6 +144,19 @@ function getMilisegundos(date: string): number {
     let f = new Date(numbers[1] + "/" + numbers[0] + "/" + numbers[2]);
     return f.getTime();
 }
+
+/**
+ * @function getTodayMilisegundos
+ * @param date fecha 
+ * @return  {string} 
+ * @description Devuelve la fecha actual en milisegundos
+ */
+function getTodayMilisegundos(date: string): number {
+    let numbers = date.split("/");
+    let f = new Date(numbers[2] + "/" + numbers[1] + "/" + numbers[0]);
+    return f.getTime();
+}
+
 /**
  * @function getMilisegundosHoras
  * @param date fecha 
@@ -155,7 +168,7 @@ function getMilisegundosHoras(date: string, time: string): number {
     let numbers = date.split("/");
     let hora = time.split(":");
 
-    let f = new Date(parseInt(numbers[2]), parseInt(numbers[1]), parseInt(numbers[0]), parseInt(hora[0]), parseInt(hora[1]));
+    let f = new Date(parseInt(numbers[2]), parseInt(numbers[1])-1, parseInt(numbers[0]), parseInt(hora[0]), parseInt(hora[1]));
     return f.getTime();
 }
 
@@ -406,5 +419,6 @@ export {
     getMesActual,
     contraseniaValida,
     getTablaUtf8,
-    clone
+    clone,
+    getTodayMilisegundos
 }
