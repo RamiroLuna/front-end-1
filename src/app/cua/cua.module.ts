@@ -54,7 +54,7 @@ const routesMetas: Routes = [
   {
     path: 'opciones/metas-lista-edicion', component: ListaMetasEdicionComponent, canActivate: [AuthGuardCua],
     data: {
-      expectedRole: 3
+      expectedRole: 4
     }
   },
   {

@@ -10,7 +10,7 @@
       </i>
     </a>
     <button *ngIf="(lineas.length > 0) && !addMore" [disabled]="disabledBtn" class="btn-floating light-green darken-1  waves-effect waves-light tooltipped"
-       data-position="top" data-delay="50" data-tooltip="Abrir periodo" (click)="openModalConfirmacion(meta,'abrir')">
+      data-position="top" data-delay="50" data-tooltip="Abrir periodo" (click)="openModalConfirmacion(meta,'abrir')">
       <i class="material-icons">
         <i class="material-icons">lock_open</i>
       </i>
@@ -25,7 +25,8 @@
   </div>
   <div class="row center-align">
     <p class="color_titulo" *ngIf="seccion == 'add'">Ingrese las metas esperadas en este periodo para cada linea.</p>
-    <p class="color_titulo" *ngIf="seccion == 'edit'">Metas esperadas en este periodo para cada linea.</p>
+    <p class="color_titulo" *ngIf="seccion == 'edit'">Metas esperadas en este periodo para cada linea. <span class="waves-effect" *ngIf="!estatusPeriodo">
+        <i class="material-icons left">lock</i>Periodo cerrado</span></p>
   </div>
   <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla && seccion == 'add'">
     <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
@@ -65,52 +66,53 @@
       </tbody>
     </table>
   </div>
+
   <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla && seccion == 'edit'">
-      <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
-        <thead>
-          <tr>
-            <th class="center-align">Linea</th>
-            <th class="center-align">Disponibilidad</th>
-            <th class="center-align">Utilización</th>
-            <th class="center-align">Calidad</th>
-            <th class="center-align">OEE</th>
-            <th class="center-align">Eficiencia teórica</th>
-          </tr>
-        </thead>
-  
-        <tbody class="datos">
-          <tr *ngIf="periodosRegistrados.length == 0 ">
-            <th colspan="6" class="center">No hay lineas registradas</th>
-          </tr>
-          <tr *ngFor="let periodo of periodosRegistrados;let i = index" [id]="periodo.id_periodo">
-            <td class="center-align">{{ periodo.valor_linea }}</td>
-            <td class="center-align">
-              <input type="text" style="width: 62px;" [disabled]="disabledInput" [(ngModel)]="periodo.disponibilidad" [ngModelOptions]="{standalone: true}" >
-            </td>
-            <td class="center-align">
-              <input type="text" style="width: 62px;" [disabled]="disabledInput" [(ngModel)]="periodo.utilizacion" [ngModelOptions]="{standalone: true}" >
-            </td>
-            <td class="center-align">
-              <input type="text" style="width: 62px;" [disabled]="disabledInput" [(ngModel)]="periodo.calidad" [ngModelOptions]="{standalone: true}" >
-            </td>
-            <td class="center-align">
-              <input type="text" style="width: 62px;" [disabled]="disabledInput" [(ngModel)]="periodo.oee" [ngModelOptions]="{standalone: true}" >
-            </td>
-            <td class="center-align">
-              <input type="text" style="width: 62px;" [disabled]="disabledInput" [(ngModel)]="periodo.eficiencia_teorica" [ngModelOptions]="{standalone: true}" >
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
+      <thead>
+        <tr>
+          <th class="center-align">Linea</th>
+          <th class="center-align">Disponibilidad</th>
+          <th class="center-align">Utilización</th>
+          <th class="center-align">Calidad</th>
+          <th class="center-align">OEE</th>
+          <th class="center-align">Eficiencia teórica</th>
+        </tr>
+      </thead>
+
+      <tbody class="datos">
+        <tr *ngIf="periodosRegistrados.length == 0 ">
+          <th colspan="6" class="center">No hay lineas registradas</th>
+        </tr>
+        <tr *ngFor="let periodo of periodosRegistrados;let i = index" [id]="periodo.id_periodo">
+          <td class="center-align">{{ periodo.valor_linea }}</td>
+          <td class="center-align">
+            <input type="text" style="width: 62px;" [disabled]="disabledInput" [(ngModel)]="periodo.disponibilidad" [ngModelOptions]="{standalone: true}">
+          </td>
+          <td class="center-align">
+            <input type="text" style="width: 62px;" [disabled]="disabledInput" [(ngModel)]="periodo.utilizacion" [ngModelOptions]="{standalone: true}">
+          </td>
+          <td class="center-align">
+            <input type="text" style="width: 62px;" [disabled]="disabledInput" [(ngModel)]="periodo.calidad" [ngModelOptions]="{standalone: true}">
+          </td>
+          <td class="center-align">
+            <input type="text" style="width: 62px;" [disabled]="disabledInput" [(ngModel)]="periodo.oee" [ngModelOptions]="{standalone: true}">
+          </td>
+          <td class="center-align">
+            <input type="text" style="width: 62px;" [disabled]="disabledInput" [(ngModel)]="periodo.eficiencia_teorica" [ngModelOptions]="{standalone: true}">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <div *ngIf="addMore && seccion == 'add'" class="row center-align">
     <a class="waves-effect waves-light btn light-green darken-1" (click)="agregarOtro()">Abrir otro periodo</a>
   </div>
-  <div *ngIf="seccion == 'edit' && permission.editar" class="row center-align">
+  <div *ngIf="seccion == 'edit' && permission.editar && estatusPeriodo" class="row center-align">
     <button class="waves-effect waves-light btn light-green darken-1" (click)="openModalConfirmacion('actualizar',$event)" [disabled]="disabledBtn">Actualizar metas</button>
   </div>
   <!-- Inicio solo para pantallas-->
-  <div *ngIf="seccion == 'add'"  class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+  <div *ngIf="seccion == 'add'" class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
       <a routerLink="../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
         data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">

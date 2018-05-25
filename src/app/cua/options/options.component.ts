@@ -31,7 +31,7 @@ export class OptionsComponent implements AfterViewInit {
     this.permission.consultarPeriodos = findRol(25, this.auth.getRolesCUA());
     this.permission.cargaMetaManual = findRol(2, this.auth.getRolesCUA());
     this.permission.cargaMasiva = findRol(1, this.auth.getRolesCUA());
-    this.permission.edicionMeta = findRol(3, this.auth.getRolesCUA());
+    this.permission.edicionMeta = findRol(4, this.auth.getRolesCUA());
     this.permission.fallas = findRol(7, this.auth.getRolesCUA());
     this.permission.produccion = findRol(18, this.auth.getRolesCUA());
     this.permission.validacion = findRol(20, this.auth.getRolesCUA());

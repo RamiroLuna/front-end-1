@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
 import { Meta } from '../../models/meta';
-import { deleteItemArray, getAnioActual, calculaDiaPorMes, isNumeroAsignacionValid } from '../../utils';
+import { deleteItemArray, getAnioActual, calculaDiaPorMes, isNumeroAsignacionValid, findRol } from '../../utils';
 import swal from 'sweetalert2';
 import { ListaMetasEdicionService } from './lista-metas-edicion.service';
 import { Periodo } from '../../models/periodo';
@@ -40,6 +40,7 @@ export class ListaMetasEdicionComponent implements OnInit {
   public loading: boolean;
   public datos_tabla: boolean;
   public mensajeModal: string;
+  public estatusPeriodo: boolean;
 
   public anioSeleccionado: number;
   public submitted: boolean;
@@ -58,6 +59,12 @@ export class ListaMetasEdicionComponent implements OnInit {
   public idLinea: number;
   public idPeriodo: number;
 
+
+  public permission: any = {
+    editarMeta: false,
+    eliminarMeta: false
+  }
+
   constructor(private auth: AuthService,
     private service: ListaMetasEdicionService,
     private fb: FormBuilder
@@ -68,12 +75,18 @@ export class ListaMetasEdicionComponent implements OnInit {
     this.datos_tabla = false;
     this.submitted = false;
     this.disabled = false;
+    this.estatusPeriodo = true;
+
+    this.permission.editarMeta = findRol(3, this.auth.getRolesCUA());
+    this.permission.eliminarMeta = findRol(5, this.auth.getRolesCUA());
+
 
     this.anioSeleccionado = getAnioActual();
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-      
+
       if (result.response.sucessfull) {
+
         this.lineas = result.data.listLineas || [];
         this.periodos = result.data.listPeriodos || [];
         this.grupos = result.data.listGrupos || [];
@@ -140,22 +153,22 @@ export class ListaMetasEdicionComponent implements OnInit {
             Materialize.toast('Actualización completa', 4000, 'green');
           } else {
             let resetValues = this.findRowForecast(this.metas, values.id_meta);
-            $('td[scope="3,'+values.index+'"]').html(resetValues.dia_string);
-            $('td[scope="4,'+values.index+'"]').html(resetValues.id_turno);
-            $('td[scope="5,'+values.index+'"]').html(resetValues.nombre_grupo);
-            $('td[scope="6,'+values.index+'"]').html(resetValues.meta);
-            $('td[scope="7,'+values.index+'"]').html(resetValues.tmp);
-            $('td[scope="8,'+values.index+'"]').html(resetValues.velocidad);
+            $('td[scope="3,' + values.index + '"]').html(resetValues.dia_string);
+            $('td[scope="4,' + values.index + '"]').html(resetValues.id_turno);
+            $('td[scope="5,' + values.index + '"]').html(resetValues.nombre_grupo);
+            $('td[scope="6,' + values.index + '"]').html(resetValues.meta);
+            $('td[scope="7,' + values.index + '"]').html(resetValues.tmp);
+            $('td[scope="8,' + values.index + '"]').html(resetValues.velocidad);
             Materialize.toast(result.response.message, 4000, 'red');
           }
         }, error => {
           let resetValues = this.findRowForecast(this.metas, values.id_meta);
-          $('td[scope="3,'+values.index+'"]').html(resetValues.dia_string);
-          $('td[scope="4,'+values.index+'"]').html(resetValues.id_turno);
-          $('td[scope="5,'+values.index+'"]').html(resetValues.nombre_grupo);
-          $('td[scope="6,'+values.index+'"]').html(resetValues.meta);
-          $('td[scope="7,'+values.index+'"]').html(resetValues.tmp);
-          $('td[scope="8,'+values.index+'"]').html(resetValues.velocidad);
+          $('td[scope="3,' + values.index + '"]').html(resetValues.dia_string);
+          $('td[scope="4,' + values.index + '"]').html(resetValues.id_turno);
+          $('td[scope="5,' + values.index + '"]').html(resetValues.nombre_grupo);
+          $('td[scope="6,' + values.index + '"]').html(resetValues.meta);
+          $('td[scope="7,' + values.index + '"]').html(resetValues.tmp);
+          $('td[scope="8,' + values.index + '"]').html(resetValues.velocidad);
           Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
         });
 
@@ -212,6 +225,7 @@ export class ListaMetasEdicionComponent implements OnInit {
   }
 
   changeCombo(): void {
+    this.estatusPeriodo = true;
     this.datos_tabla = false;
     this.status = "inactive";
   }
@@ -264,8 +278,9 @@ export class ListaMetasEdicionComponent implements OnInit {
       this.datos_tabla = false;
 
       this.service.getAllMetas(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea).subscribe(result => {
-      
+
         if (result.response.sucessfull) {
+          this.estatusPeriodo = result.data.estatusPeriodo;
           this.metas = result.data.listMetas || [];
           this.datos_tabla = true;
           this.disabled = false;
@@ -273,7 +288,7 @@ export class ListaMetasEdicionComponent implements OnInit {
           setTimeout(() => {
             this.ngAfterViewInitHttp();
             this.status = 'active';
-          }, 20);
+          }, 200);
 
 
         } else {
@@ -326,7 +341,7 @@ export class ListaMetasEdicionComponent implements OnInit {
                 deleteItemArray(this.metas, rowForecast.id_meta, 'id_meta');
                 Materialize.toast('Se eliminó correctamente ', 4000, 'green');
               } else {
-          
+
                 Materialize.toast(result.response.message, 4000, 'red');
               }
             }, error => {
@@ -366,18 +381,14 @@ export class ListaMetasEdicionComponent implements OnInit {
 
   }
 
-  findRowForecast(metas:Array<Meta>, id_meta:number):Meta{
-      let meta: Meta;
-      let el = metas.filter(el=>el.id_meta == id_meta);
-      if(el.length > 0){
-        meta = el[0];
-      }
-      return meta;
+  findRowForecast(metas: Array<Meta>, id_meta: number): Meta {
+    let meta: Meta;
+    let el = metas.filter(el => el.id_meta == id_meta);
+    if (el.length > 0) {
+      meta = el[0];
+    }
+    return meta;
   }
 
-  convierte(numero:number,decimal:number):string{
-    let result = parseFloat(''+numero).toFixed(decimal);
-    return result;
-  }
 
 }

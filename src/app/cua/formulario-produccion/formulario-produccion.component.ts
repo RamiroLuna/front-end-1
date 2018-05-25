@@ -30,6 +30,7 @@ export class FormularioProduccionComponent implements OnInit {
   public modificacion: boolean;
   public mensaje: string;
   public formulario: FormGroup;
+  public estatusPeriodo: boolean;
   public meta: any = {
     id_meta: 0,
     id_linea: 0,
@@ -67,6 +68,7 @@ export class FormularioProduccionComponent implements OnInit {
     this.grupos = [];
     this.turnos = [];
     this.btnAdd = true;
+    this.estatusPeriodo = true;
 
     if (this.seccion == 'add') {
       this.service.init(this.auth.getIdUsuario()).subscribe(result => {
@@ -104,7 +106,9 @@ export class FormularioProduccionComponent implements OnInit {
       });
     } else if (this.seccion == 'consulta') {
       this.service.getDetailsProduccion(this.auth.getIdUsuario(), this.idMeta).subscribe(result => {
+        console.log('result produc details', result)
         if (result.response.sucessfull) {
+          this.estatusPeriodo = result.data.estatusPeriodo;
           this.grupos = result.data.listGrupos || [];
           this.lineas = result.data.listLineas || [];
           this.turnos = result.data.listTurnos || [];

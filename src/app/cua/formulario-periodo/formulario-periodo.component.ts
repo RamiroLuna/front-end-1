@@ -50,6 +50,7 @@ export class FormularioPeriodoComponent implements OnInit {
   public addMore: boolean;
   public disabledInput: boolean;
   public periodosRegistrados: Array<Periodo>;
+  public estatusPeriodo: boolean;
 
   public permission: any = {
     crear: false,
@@ -63,8 +64,8 @@ export class FormularioPeriodoComponent implements OnInit {
   ngOnInit() {
 
     this.permission.crear = findRol(23, this.auth.getRolesCUA());
-    this.permission.editar = findRol(25, this.auth.getRolesCUA());
-    this.permission.consultar = findRol(26, this.auth.getRolesCUA());
+    this.permission.editar = findRol(26, this.auth.getRolesCUA());
+    this.permission.consultar = findRol(25, this.auth.getRolesCUA());
 
     if (this.seccion == "add") {
       this.initComponent();
@@ -83,6 +84,7 @@ export class FormularioPeriodoComponent implements OnInit {
     this.disabledBtn = false;
     this.addMore = false;
     this.disabledInput = false;
+    this.estatusPeriodo = true;
 
     this.service.getInit(this.auth.getIdUsuario()).subscribe(result => {
       if (result.response.sucessfull) {
@@ -113,9 +115,18 @@ export class FormularioPeriodoComponent implements OnInit {
     this.disabledBtn = true;
     this.disabledInput = !this.permission.editar;
     this.periodosRegistrados = [];
+    this.estatusPeriodo = true;
+
 
     this.service.getDetailsByPeriodo(this.auth.getIdUsuario(), periodo.id_periodo).subscribe(result => {
+   
       if (result.response.sucessfull) {
+        this.estatusPeriodo = result.data.estatusPeriodo;
+
+        if(!this.estatusPeriodo){
+          this.disabledInput = true;
+        }
+  
         this.periodosRegistrados = result.data.listDetailsPeriodo || [];
         this.periodoTexto = periodo.descripcion_mes + " " + periodo.anio;
         this.disabledBtn = false;
@@ -245,7 +256,7 @@ export class FormularioPeriodoComponent implements OnInit {
     this.metasEsperadas = [];
 
     $(clase + ' tr').each(function (index) {
-     
+
       let objTmp = {
         id_linea: -1, disponibilidad: 0, utilizacion: 0, calidad: 0, oee: 0, eficiencia_teorica: 0
       };
@@ -259,9 +270,9 @@ export class FormularioPeriodoComponent implements OnInit {
           caja.css('background-color', '#ffcdd2');
         } else {
           caja.css('background-color', '');
-         
+
           if (tmp == 'add') {
-          
+
             switch (index2) {
               case 0:
                 objTmp.disponibilidad = parseFloat(caja.val());
@@ -279,7 +290,7 @@ export class FormularioPeriodoComponent implements OnInit {
                 objTmp.eficiencia_teorica = parseFloat(caja.val());
                 break;
             }
-       
+
           }
         }
       });

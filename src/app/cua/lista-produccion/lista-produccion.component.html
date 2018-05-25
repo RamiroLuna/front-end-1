@@ -18,43 +18,50 @@
 
     <!-- Inicio vista para mostrar producciones registradas -->
 
-    <h4 class="color_titulo center-align">Producción</h4>
-    <div class="row" *ngIf="false">
-      <ul class="center-align">
-        <li class="col s12 m12 l12 xl12">
-          <a (click)="activaBusqueda()" [ngClass]="busquedaPersonalizada? 'txt_inactivo': 'txt_activo'">
-            <span *ngIf="!busquedaPersonalizada">Activar Busqueda Personalizada</span>
-            <span *ngIf="busquedaPersonalizada">Desactivar Busqueda Personalizada</span>
-          </a>
-          <hr [ngClass]="busquedaPersonalizada? 'inactive': 'active'">
-        </li>
-      </ul>
-    </div>
-    <div class="row" *ngIf="busquedaPersonalizada">
-      <form autocomplete="off" [@visibility]="status">
-        <fieldset>
-          <legend class="color_titulo">
-            <label>
-              <span>Seleccione rango de fecha</span>
-            </label>
-          </legend>
-          <div class="input-field col s6">
-            <input id="inicio" type="text" class="active" />
-            <label for="inicio">Inicio</label>
+    <h4 class="color_titulo center-align">Producción
+      <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar año" (click)="openModalYear($event)">{{ anioSeleccionado }}</a>
+    </h4>
+    <div class="row">
+      <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="consultaPeriodo()" autocomplete="off">
+        <div class="input-field col s12 m12 l6 xl6">
+          <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="idPeriodo"
+            (ngModelChange)="changeCombo()">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
+          </select>
+          <label for="mes">mes</label>
+          <div *ngIf="formConsultaPeriodo.controls.idPeriodo.errors?.required && (formConsultaPeriodo.controls.idPeriodo?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
           </div>
-          <div class="input-field col s6">
-            <input id="fin" type="text" class="active" />
-            <label for="inicio">Fin</label>
+        </div>
+        <div class="input-field col s12 m12 l5 xl5">
+          <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="idLinea" [(ngModel)]="idLinea"
+            (ngModelChange)="changeCombo()">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{linea.descripcion}}</option>
+          </select>
+          <label for="linea">Linea</label>
+          <div *ngIf="formConsultaPeriodo.controls.idLinea.errors?.required && (formConsultaPeriodo.controls.idLinea?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
           </div>
-        </fieldset>
+        </div>
+        <div class="input-field col s12 m12 l1 xl1">
+          <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
+            <i class="material-icons">search</i>
+          </button>
+          <label></label>
+        </div>
       </form>
     </div>
-
-    <div class="row" *ngIf="mostrarTabla">
-      <div class="center-align color_titulo">
-        <b>{{ 'Registros de producción ' + periodoAcutal.mes + ' '+ periodoAcutal.anio }}</b>
+    <div class="row" *ngIf="!estatusPeriodo">
+      <div class="color_titulo center-align">
+        <span class="waves-effect">
+          <i class="material-icons left">lock</i>Periodo cerrado</span>
       </div>
-      <br>
+    </div>
+    <div class="row" *ngIf="datos_tabla">
       <table id="tabla" class="display" cellspacing="0" width="100%">
         <thead>
           <tr>
@@ -85,7 +92,7 @@
           </tr>
         </tbody>
       </table>
-      <div class="row">
+      <div class="row" *ngIf="producciones.length > 0">
         <div class="section"></div>
 
         <div class="col s112 m12 l6 xl6 valign-wrapper">

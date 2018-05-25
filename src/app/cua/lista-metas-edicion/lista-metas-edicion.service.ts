@@ -8,7 +8,6 @@ import { BASE_URL_SERVICE } from '../../constants';
 export class ListaMetasEdicionService {
 
   private URL = BASE_URL_SERVICE + '/Metas';
-  private URL_UPLOAD = BASE_URL_SERVICE + '/UploadFile';
 
   constructor(private http: HttpClient) { }
 
@@ -16,7 +15,7 @@ export class ListaMetasEdicionService {
    * Consulta de catalogos
    */
   getInitCatalogos(idUsuario:number): Observable<any> {
-    return this.http.get<any>(this.URL_UPLOAD + '?action=loadCombobox&id_usuario='+idUsuario);
+    return this.http.get<any>(this.URL + '?action=loadCombobox&id_usuario='+idUsuario);
   }
 
   getAllMetas(id_usuario:number, idPeriodo:number, IdLinea:number): Observable<any>{

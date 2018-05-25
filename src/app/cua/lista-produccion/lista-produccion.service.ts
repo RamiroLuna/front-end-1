@@ -10,8 +10,16 @@ export class ListaProduccionService {
 
   constructor(private http: HttpClient) { }
 
-  getInitProduccion(id_usuario:number): Observable<any>{
-    return this.http.get<any>(this.URL + '?action=getProduccionByPeriodo&id_usuario='+id_usuario);
+  
+  /*
+   * Consulta de catalogos
+   */
+  getInitCatalogos(idUsuario:number): Observable<any> {
+    return this.http.get<any>(this.URL + '?action=loadCombobox&id_usuario='+idUsuario);
+  }
+
+  getProduccion(id_usuario:number,id_periodo:number): Observable<any>{
+    return this.http.get<any>(this.URL + '?action=getProduccionByPeriodo&id_usuario='+id_usuario+'&id_periodo='+id_periodo);
   }
 
 

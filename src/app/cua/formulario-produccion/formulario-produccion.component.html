@@ -92,14 +92,18 @@
           </ul>
         </div>
       </div>
-
+      <div class="row" *ngIf="!estatusPeriodo">
+        <div class="center-align">
+          <p class="color_titulo">El periodo de la producción esta cerrado</p>
+        </div>
+      </div>
       <div class="row" *ngIf="seccion == 'consulta'">
         <div class="col s12 m12 l12 xl12">
           <ul id="issues-collection" class="collection">
             <li class="collection-item light-green lighten-5">
               <span class="collection-header">
                 <b>Productos. </b> Producción registrada</span>
-              <div class="secondary-content" *ngIf="permission.updateProduccion">
+              <div class="secondary-content" *ngIf="permission.updateProduccion && estatusPeriodo">
                 <a href="#" (click)="modificarDatos($event)">
                   {{ modificacion ? 'Cancelar' : 'Modificar' }}
                 </a>

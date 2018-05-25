@@ -48,6 +48,11 @@
       </div>
     </form>
   </div>
+  <div class="row" *ngIf="!estatusPeriodo">
+    <div class="color_titulo center-align">
+        <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
+    </div>
+  </div>
   <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
     <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
       <thead>
@@ -61,8 +66,8 @@
           <th class="center-align">Meta</th>
           <th class="center-align">TMP</th>
           <th class="center-align">Vel</th>
-          <th class="center-align">Editar</th>
-          <th class="center-align">Eliminar</th>
+          <th class="center-align" *ngIf="permission.editarMeta && estatusPeriodo">Editar</th>
+          <th class="center-align" *ngIf="permission.eliminarMeta && estatusPeriodo">Eliminar</th>
         </tr>
       </thead>
 
@@ -77,15 +82,15 @@
           <td class="center-align" data-field="dia"  [id]="i" [scope]="'3,'+i">{{meta.dia_string}}</td>
           <td class="center-align" data-field="turno" [scope]="'4,'+i">{{meta.id_turno}}</td>
           <td class="center-align" data-field="grupo" [scope]="'5,'+i">{{meta.nombre_grupo}}</td>
-          <td class="center-align" data-field="meta" [scope]="'6,'+i">{{ convierte(meta.meta,3) }}</td>
-          <td class="center-align" data-field="tmp" [scope]="'7,'+i">{{ convierte(meta.tmp,2) }}</td>
-          <td class="center-align" data-field="velocidad" [scope]="'8,'+i">{{ convierte(meta.velocidad,3) }}</td>
-          <td class="center-align">
+          <td class="center-align" data-field="meta" [scope]="'6,'+i">{{ meta.meta |formatDecimal : 3 }}</td>
+          <td class="center-align" data-field="tmp" [scope]="'7,'+i">{{  meta.tmp | formatDecimal : 2 }}</td>
+          <td class="center-align" data-field="velocidad" [scope]="'8,'+i">{{ meta.velocidad | formatDecimal: 3 }}</td>
+          <td class="center-align" *ngIf="permission.editarMeta && estatusPeriodo">
             <a class="btn-floating light-green lighten-1 edit" (click)="changeIcono($event)" [id]="'btn'+i">
               <i class="material-icons">edit</i>
             </a>
           </td>
-          <td class="center-align">
+          <td class="center-align" *ngIf="permission.eliminarMeta && estatusPeriodo">
             <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(meta,'eliminar')">
               <i class="material-icons">delete</i>
             </a>

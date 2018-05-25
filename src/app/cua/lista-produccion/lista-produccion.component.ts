@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { ListaProduccionService } from './lista-produccion.service';
-import { DataTableReporte, getAnioActual, getMesActual } from '../../utils';
-
+import { DataTableProduccion, getAnioActual, getMesActual } from '../../utils';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import swal from 'sweetalert2';
 import {
   trigger,
   state,
@@ -11,6 +12,8 @@ import {
   transition
 } from '@angular/animations';
 import { Produccion } from '../../models/produccion';
+import { Periodo } from '../../models/periodo';
+import { Linea } from '../../models/linea';
 
 declare var $: any;
 declare var Materialize: any;
@@ -37,54 +40,81 @@ export class ListaProduccionComponent implements OnInit {
 
   public loading: boolean;
   public showBtnRegistrar: boolean;
-  public busquedaPersonalizada: boolean;
   public noMostrarComponentValidacion: boolean;
-  public mostrarTabla: boolean;
+
   public status: string;
   public periodoAcutal: any = {
     anio: 0,
     mes: ''
   }
 
+  public datos_tabla: boolean;
+  public submitted: boolean;
+  public disabled: boolean;
   public idMetaSeleccionada: number;
-  public seccion:string;
+  public formConsultaPeriodo: FormGroup;
+  public seccion: string;
   public mensajeModal: string;
   public producciones: Array<Produccion>;
+  public anioSeleccionado: number;
+  public periodos: Array<Periodo> = [];
+  public anios: any = {};
+  public meses: Array<any> = [];
+  public lineas: Array<Linea> = [];
+  public idLinea: number;
+  public idPeriodo: number;
+  public estatusPeriodo:boolean;
+
+
+  public permission: any = {
+    consultaByLine: false
+  }
+
 
   constructor(private auth: AuthService,
-    private service: ListaProduccionService) { }
+    private service: ListaProduccionService,
+    private fb: FormBuilder) { }
 
   ngOnInit() {
     this.loading = true;
     this.showBtnRegistrar = false;
     this.noMostrarComponentValidacion = false;
-    this.mostrarTabla = false;
     this.status = "inactive";
     this.producciones = [];
     this.periodoAcutal.anio = getAnioActual();
     this.periodoAcutal.mes = getMesActual();
-    this.busquedaPersonalizada = false;
+    this.datos_tabla = false;
+    this.submitted = false;
+    this.estatusPeriodo = true;
+    this.anioSeleccionado = getAnioActual();
+    this.permission.consultaByLine = this.auth.permissionEdit(1) || this.auth.permissionEdit(2) || this.auth.permissionEdit(3);
+    if(this.permission.consultaByLine) this.idLinea = this.auth.getId_Linea();
     this.init();
 
   }
 
   init(): void {
-    this.service.getInitProduccion(this.auth.getIdUsuario()).subscribe(result => {
+
+    this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
       if (result.response.sucessfull) {
+
+        this.lineas = result.data.listLineas || [];
+        this.lineas = this.lineas.filter(el => el.id_linea != 6).map(el => el);
+        this.periodos = result.data.listPeriodos || [];
+
+        let tmpAnios = this.periodos.map(el => el.anio);
+        this.periodos.filter((el, index) => {
+          return tmpAnios.indexOf(el.anio) === index;
+        }).forEach((el) => {
+          let tmp = el.anio;
+          this.anios[tmp] = tmp;
+        });
+
+        this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
+
         this.loading = false;
-        this.mostrarTabla = true;
-        this.producciones = result.data.listProduccion || [];
-        //si es undefined no viene meta
-        if (typeof result.data.listDetalle != "undefined") {
-
-          if (result.data.listDetalle.length > 0) {
-            this.showBtnRegistrar = false;
-          } else {
-            this.showBtnRegistrar = true;
-          }
-        }
-
+        this.loadFormulario();
         setTimeout(() => { this.ngAfterViewHttp() }, 200)
       } else {
         Materialize.toast('Ocurrió  un error al consultar catalogos!', 4000, 'red');
@@ -96,12 +126,23 @@ export class ListaProduccionComponent implements OnInit {
     });
   }
 
+  loadFormulario(): void {
+    this.formConsultaPeriodo = this.fb.group({
+      idLinea: new FormControl({ value: this.idLinea, disabled: this.permission.consultaByLine }, [Validators.required]),
+      idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required])
+    });
+  }
+
+  changeCombo(): void {
+    this.estatusPeriodo = true;
+    this.datos_tabla = false;
+    this.status = "inactive";
+  }
+
   /*
  * Carga plugins despues de cargar y mostrar objetos en el DOM
  */
   ngAfterViewHttp(): void {
-
-    DataTableReporte('#tabla');
     $('.tooltipped').tooltip({ delay: 50 });
     Materialize.updateTextFields();
   }
@@ -114,45 +155,87 @@ export class ListaProduccionComponent implements OnInit {
     $('.tooltipped').tooltip('hide');
   }
 
-  activaBusqueda() {
-    this.busquedaPersonalizada = !this.busquedaPersonalizada;
-    this.mostrarTabla = false;
-
-    setTimeout(() => {
-      this.status = this.status == 'inactive' ? 'active' : 'inactive';
-    }, 20);
-
-    if (this.busquedaPersonalizada) {
-
-      setTimeout(() => {
-        $('#inicio,#fin').pickadate({
-          selectMonths: true,
-          selectYears: 15,
-          today: 'Hoy',
-          clear: '',
-          close: 'Ok',
-          monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-          monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-          weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-          weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-          format: 'dd/mm/yyyy',
-          closeOnSelect: false,
-          onClose: () => {
-            // this.inicio = $('#inicio').val();
-            // this.fin = $('#fin').val();
-          }
-        });
-      }, 200);
-    } else {
-      this.init();
-    }
-  }
-
   verProduccion(idMeta: number): void {
     this.seccion = "consulta";
     this.idMetaSeleccionada = idMeta;
+  
     this.noMostrarComponentValidacion = !this.noMostrarComponentValidacion;
   }
+
+  openModalYear(event): void {
+    event.preventDefault();
+    swal({
+      title: 'Seleccione el año',
+      input: 'select',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'OK',
+      inputOptions: this.anios,
+      inputPlaceholder: 'SELECCIONE',
+      showCancelButton: true,
+      inputValidator: (value) => {
+
+        return new Promise((resolve) => {
+          this.formConsultaPeriodo.reset();
+          this.submitted = false;
+          this.status = "inactive";
+          this.datos_tabla = false;
+
+
+          if (value != '') {
+            resolve();
+            this.anioSeleccionado = value;
+            this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
+          } else {
+            resolve('Seleccione un año')
+          }
+        })
+      }
+    })
+  }
+
+  consultaPeriodo(): void {
+    this.submitted = true;
+    this.status = "inactive";
+
+    if (this.formConsultaPeriodo.valid) {
+      this.disabled = true;
+      this.datos_tabla = false;
+
+      this.service.getProduccion(this.auth.getIdUsuario(), this.idPeriodo).subscribe(result => {
+
+        if (result.response.sucessfull) {
+          this.disabled = false;
+          this.datos_tabla = true;
+          this.estatusPeriodo =  result.data.estatusPeriodo;
+
+          this.producciones = result.data.listProduccion || [];
+          //si es undefined no viene meta
+          if (typeof result.data.listDetalle != "undefined") {
+
+            if (result.data.listDetalle.length > 0) {
+              this.showBtnRegistrar = false;
+            } else {
+              this.showBtnRegistrar = true;
+            }
+          }
+
+          setTimeout(() => { 
+            // this.status = "active";
+            DataTableProduccion('#tabla'); 
+          }, 400)
+        } else {
+          Materialize.toast('Ocurrió  un error al consultar la producción!', 4000, 'red');
+        }
+      }, error => {
+        Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+
+      });
+    } else {
+      Materialize.toast('Se encontrarón errores!', 4000, 'red');
+    }
+
+  }
+
 
 
 
