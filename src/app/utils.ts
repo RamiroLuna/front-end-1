@@ -168,7 +168,7 @@ function getMilisegundosHoras(date: string, time: string): number {
     let numbers = date.split("/");
     let hora = time.split(":");
 
-    let f = new Date(parseInt(numbers[2]), parseInt(numbers[1])-1, parseInt(numbers[0]), parseInt(hora[0]), parseInt(hora[1]));
+    let f = new Date(parseInt(numbers[2]), parseInt(numbers[1]) - 1, parseInt(numbers[0]), parseInt(hora[0]), parseInt(hora[1]));
     return f.getTime();
 }
 
@@ -401,6 +401,20 @@ function clone(json) {
     return JSON.parse(JSON.stringify(json));
 }
 
+/**
+* @function hmToMs
+* @param  {string} hora -  hora en formato HH:mm
+* @return  {number} 
+* @description permite clonar objeto
+*/
+function hmToMs(hora: string): number {
+    let HHmm = hora || "00:00";
+    let arg = HHmm.split(':');
+    let horaMs = parseInt(arg[0]) * 60 * 60 * 1000;
+    let MinMs = parseInt(arg[1]) * 60 * 1000;
+    return horaMs + MinMs;
+}
+
 
 export {
     deleteItemArray,
@@ -420,5 +434,6 @@ export {
     contraseniaValida,
     getTablaUtf8,
     clone,
-    getTodayMilisegundos
+    getTodayMilisegundos,
+    hmToMs
 }
