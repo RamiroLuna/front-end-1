@@ -50,8 +50,8 @@ export class RptProduccionRealPlanComponent implements OnInit {
     this.meses = [];
     this.periodos = [];
     this.vista = [
+      { value: 'byDays', text: 'DIA' },
       { value: 'byWeeks', text: 'SEMANA' },
-      { value: 'byDays', text: 'MES' },
       { value: 'byMonths', text: 'AÑO' },
     ];
 
@@ -157,9 +157,9 @@ export class RptProduccionRealPlanComponent implements OnInit {
       
 
 
-          configChart.series.push({ name: ' A ', data: dataGrupoA, color: '#4db6ac' });
+          configChart.series.push({ name: ' A ', data: dataGrupoA, color: '#c0ca33' });
           configChart.series.push({ name: ' B ', data: dataGrupoB, color: '#66bb6a' });
-          configChart.series.push({ name: ' C ', data: dataGrupoC, color: '#78909c' });
+          configChart.series.push({ name: ' C ', data: dataGrupoC, color: '#004d40' });
           configChart.series.push({ name: ' D ', data: dataGrupoD });
           // configChart.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#fff3e0' });
 
@@ -180,9 +180,9 @@ export class RptProduccionRealPlanComponent implements OnInit {
           real.push(realTmp.realb);
           real.push(realTmp.realc);
           real.push(realTmp.reald);
-       
-          configChartSpider.series.push({ color:'#b2dfdb', name: ' Meta esperada ', data: esperada, pointPlacement: 'on'});
-          configChartSpider.series.push({ color: '#42a5f5' , name: ' Meta real ', data: real, pointPlacement: 'on'});
+           
+          configChartSpider.series.push({ color:'#1a237e', name: ' Meta esperada ', data: esperada, pointPlacement: 'on'});
+          configChartSpider.series.push({ color: '#c0ca33' , name: ' Meta real ', data: real, pointPlacement: 'on'});
 
           this.viewReport = true;
           setTimeout(() => {

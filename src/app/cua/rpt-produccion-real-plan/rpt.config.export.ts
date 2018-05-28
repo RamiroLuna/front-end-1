@@ -4,7 +4,7 @@ let configChart = {
         backgroundColor: {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
-                [0, 'rgb(38,166,154)'],
+                [0, 'rgb(77,182,172)'],
                 [1, 'rgb(0,137,123)']
             ]
         }
@@ -82,7 +82,7 @@ let configChartSpider = {
 
     chart: {
         polar: true,
-        type: 'area',
+        type: 'line',
         backgroundColor: '#009688'
     },
 
