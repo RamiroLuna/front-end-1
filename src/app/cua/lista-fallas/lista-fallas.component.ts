@@ -88,6 +88,7 @@ export class ListaFallasComponent implements OnInit {
     
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
+      console.log('cataog de fallas',result)
 
       if (result.response.sucessfull) {
         this.lineas = result.data.listLineas || [];

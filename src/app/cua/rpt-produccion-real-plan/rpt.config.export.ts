@@ -1,130 +1,165 @@
-// let configChart = {
-//     chart: {
-//         type: 'column',
-//     },
-//     credits: {
-//         enabled: false
-//     },
-//     title: {
-//         text: '',
-//         style: {
-//             color: '#000'
-//         }
-//     },
-//     subtitle: {
-//         text: '',
-//         style: {
-//             color: '#000'
-//         }
-//     },
-//     xAxis: {
-//         categories: [],
-//         labels: {
-//             style: {
-//                 color: '#000'
-//             }
-//         }
-//     },
-//     yAxis: {
-//         title: {
-//             text: ' Producción '
-//         },
-//         labels: {
-//             style: {
-//                 color: '#000000',
-//             },
-//             formatter: function () {
-//                 return this.value + 'T';
-//             }
-//         }
+let configChart = {
+    chart: {
+        type: 'column',
+        backgroundColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+                [0, 'rgb(38,166,154)'],
+                [1, 'rgb(0,137,123)']
+            ]
+        }
+    },
+    credits: {
+        enabled: false
+    },
+    title: {
+        text: '',
+        style: {
+            color: '#fff'
+        }
+    },
+    subtitle: {
+        text: '',
+        style: {
+            color: '#fff'
+        }
+    },
+    xAxis: {
+        categories: [],
+        labels: {
+            style: {
+                color: '#fff'
+            }
+        }
+    },
+    yAxis: {
+        title: {
+            text: ' Producción '
+        },
+        labels: {
+            style: {
+                color: '#fff',
+            },
+            formatter: function () {
+                return this.value + 'T';
+            }
+        },
+        // gridLineWidth:0
+        gridLineColor: 'transparent',
 
-//     },
-//     plotOptions: {
-//         series: {
-//             dataLabels: {
-//                 enabled: false,
-//                 color: '#FFFFFF',
-//                 inside: false,
-//                 // y: 10,
-//                 // distance: -10
-//             },
-//             events: {
-//                 legendItemClick: function () {
-//                     return false;
-//                 }
-//             }
-//         },
-//         column: {
-//             stacking: 'normal'
-//         },
-//         line: {
-//             marker: {
-//                 enabled: false
-//             }
-//         }
-//     },
-//     tooltip: {
-//         headerFormat: ''
-//     },
-//     series: [],
-// };
+    },
+    plotOptions: {
+        series: {
+            dataLabels: {
+                enabled: false,
+                color: '#FFFFFF',
+                inside: false,
+                // y: 10,
+                // distance: -10
+            },
+            events: {
+                legendItemClick: function () {
+                    return false;
+                }
+            }
+        },
+        column: {
+            stacking: 'normal'
+        },
+        line: {
+            marker: {
+                enabled: false
+            }
+        }
+    },
+    tooltip: {
+        headerFormat: ''
+    },
+    series: [],
+};
 
 let configChartSpider = {
 
     chart: {
         polar: true,
-        type: 'line'
+        type: 'area',
+        backgroundColor: '#009688'
     },
 
     title: {
-        text: 'Budget vs spending',
-        x: -80
+        text: '',
+        style: {
+            color: '#ffffff'
+        }
     },
-
+    credits: {
+        enabled: false
+    },
     pane: {
-        size: '80%'
+        size: '95%'
     },
 
     xAxis: {
-        categories: ['Sales', 'Marketing', 'Development', 'Customer Support',
-            'Information Technology', 'Administration'],
+        categories: ['GRUPO A', 'GRUPO B', 'GRUPO C', 'GRUPO D'],
         tickmarkPlacement: 'on',
-        lineWidth: 0
+        lineWidth: 0,
+        labels: {
+            style: {
+                color: '#ffffff'
+            }
+        }
     },
 
     yAxis: {
         gridLineInterpolation: 'polygon',
         lineWidth: 0,
-        min: 0
+        min: 0,
+        labels: {
+            style: {
+                color: '#000000',
+            },
+            formatter: function () {
+                return this.value + ' T';
+            }
+        }
     },
 
     tooltip: {
         shared: true,
-        pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>'
+        pointFormat: '<span>{series.name}: <b>{point.y:,.0f}</b><br/>'
     },
 
     legend: {
-        align: 'right',
-        verticalAlign: 'top',
-        y: 70,
-        layout: 'vertical'
+        // align: 'right',
+        // verticalAlign: 'top',
+        // y: 70,
+        // layout: 'vertical'
     },
 
-    series: [{
-        name: 'Allocated Budget',
-        data: [43000, 19000, 60000, 35000, 17000, 10000],
-        pointPlacement: 'on'
-    }, {
-        name: 'Actual Spending',
-        data: [50000, 39000, 42000, 31000, 26000, 14000],
-        pointPlacement: 'on'
-    }]
+    plotOptions: {
+        series: {
+            dataLabels: {
+                enabled: false,
+                color: '#FFFFFF',
+                inside: false,
+                y: 10,
+                distance: -10
+            },
+            events: {
+                legendItemClick: function () {
+                    return false;
+                }
+            }
+        }
+    },
+
+    series: []
 
 };
 
 
 
 export {
-
+    configChart,
     configChartSpider
 }

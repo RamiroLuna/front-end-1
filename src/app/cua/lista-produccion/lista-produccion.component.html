@@ -9,7 +9,11 @@
           <i class="material-icons">arrow_back</i>
         </i>
       </a>
-      <a *ngIf="showBtnRegistrar" routerLink="nuevo" class="btn-floating btn light-green darken-1 waves-effect waves-light tooltipped"
+      <a *ngIf="permission.agregarProduccion" class="btn-floating indigo darken-4  waves-effect waves-light tooltipped"
+        data-position="top" data-delay="50" data-tooltip="Ayuda" (click)="help($event)">
+        <i class="material-icons">help</i>
+      </a>
+      <a *ngIf="showBtnRegistrar && permission.agregarProduccion" routerLink="nuevo" class="btn-floating btn light-green darken-1 waves-effect waves-light tooltipped"
         data-position="top" data-delay="50" data-tooltip="Agregar producción" (click)="agregar()">
         <i class="material-icons">add</i>
       </a>
@@ -116,7 +120,11 @@
             <i class="material-icons">arrow_back</i>
           </i>
         </a>
-        <a *ngIf="showBtnRegistrar" routerLink="nuevo" class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped"
+        <a *ngIf="permission.agregarProduccion" class="btn-floating btn-large  indigo darken-4  waves-effect waves-light tooltipped"
+          data-position="top" data-delay="50" data-tooltip="Ayuda" (click)="help($event)">
+          <i class="material-icons">help</i>
+        </a>
+        <a *ngIf="showBtnRegistrar && permission.agregarProduccion" routerLink="nuevo" class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped"
           data-position="top" data-delay="50" data-tooltip="Agregar producción" (click)="agregar()">
           <i class="material-icons">add</i>
         </a>

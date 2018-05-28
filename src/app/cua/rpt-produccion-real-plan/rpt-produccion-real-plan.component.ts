@@ -5,7 +5,7 @@ import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { Catalogo } from '../../models/catalogo';
 import { getTablaUtf8, clone, getFechaActual, calculaDiaPorMes } from '../../utils';
-import { configChartSpider } from './rpt.config.export';
+import { configChartSpider, configChart } from './rpt.config.export';
 import { Linea } from '../../models/linea';
 
 declare var $: any;
@@ -104,7 +104,7 @@ export class RptProduccionRealPlanComponent implements OnInit {
   }
 
   rptAfterViewGenerate(): void {
-    // $('#chartBarra').highcharts(configChart);
+    $('#chartBarra').highcharts(configChart);
     $('#chartSpider').highcharts(configChartSpider);
   }
 
@@ -129,7 +129,6 @@ export class RptProduccionRealPlanComponent implements OnInit {
         if (result.response.sucessfull) {
 
           let datos = result.data.reporteMap || [];
-          let titulo = 'Reporte de desempeño por grupo ' + this.getLinea(this.lineas, this.parametrosBusqueda.idLinea);
           let labels = datos.filter((el) => el.padre == 0).map(element => element.periodo);
           let dataGrupoA = datos.filter((el) => el.padre == 0).map((el) => el.a);
           let dataGrupoB = datos.filter((el) => el.padre == 0).map((el) => el.b);
@@ -139,24 +138,51 @@ export class RptProduccionRealPlanComponent implements OnInit {
           let dataMeta2 = datos.filter((el) => el.padre == 0).map((el) => el.meta2);
           let dataMeta3 = datos.filter((el) => el.padre == 0).map((el) => el.meta3);
 
-          // configChart.series = [];
-          // configChart.xAxis.categories = labels;
-          // configChart.title.text = titulo;
+          let tmp='';
+          if (this.parametrosBusqueda.report == 'byWeeks') {
+            configChart.tooltip.headerFormat = '<b>Semana: {point.x}</b><br/>';
+          } else if (this.parametrosBusqueda.report == 'byDays') {
+            configChart.tooltip.headerFormat = '<b>Dia : {point.x}</b><br/>';
+          } else if (this.parametrosBusqueda.report == 'byMonths') {
+            configChart.tooltip.headerFormat = '<b>Mes: {point.x}</b><br/>';
+          }
 
-          // if (this.parametrosBusqueda.report == 'byWeeks') {
-          //   configChart.tooltip.headerFormat = '<b>Semana: {point.x}</b><br/>';
-          // } else if (this.parametrosBusqueda.report == 'byDays') {
-          //   configChart.tooltip.headerFormat = '<b>Dia : {point.x}</b><br/>';
-          // } else if (this.parametrosBusqueda.report == 'byMonths') {
-          //   configChart.tooltip.headerFormat = '<b>Mes: {point.x}</b><br/>';
-          // }
+          let titulo = 'Desempeño '+ tmp +' por grupo '+ this.getLinea(this.lineas, this.parametrosBusqueda.idLinea);
+          
+
+          configChart.series = [];
+          configChart.xAxis.categories = labels;
+          configChart.title.text = titulo;
+
+      
 
 
-          // configChart.series.push({ name: ' A ', data: dataGrupoA, color: '#4db6ac' });
-          // configChart.series.push({ name: ' B ', data: dataGrupoB, color: '#66bb6a' });
-          // configChart.series.push({ name: ' C ', data: dataGrupoC, color: '#78909c' });
-          // configChart.series.push({ name: ' D ', data: dataGrupoD });
+          configChart.series.push({ name: ' A ', data: dataGrupoA, color: '#4db6ac' });
+          configChart.series.push({ name: ' B ', data: dataGrupoB, color: '#66bb6a' });
+          configChart.series.push({ name: ' C ', data: dataGrupoC, color: '#78909c' });
+          configChart.series.push({ name: ' D ', data: dataGrupoD });
           // configChart.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#fff3e0' });
+
+          let datosRRadar = result.data.graficaMap || [];
+          configChartSpider.series = [];
+          configChartSpider.title.text = titulo;
+          let esperada= [];
+          let real = [];
+
+          let esperadaTmp = datosRRadar.filter((el) => el.padre == 0)[0];
+          esperada.push(esperadaTmp.metaa);
+          esperada.push(esperadaTmp.metab);
+          esperada.push(esperadaTmp.metac);
+          esperada.push(esperadaTmp.metad);
+
+          let realTmp = datosRRadar.filter((el) => el.padre == 0)[0];
+          real.push(realTmp.reala);
+          real.push(realTmp.realb);
+          real.push(realTmp.realc);
+          real.push(realTmp.reald);
+       
+          configChartSpider.series.push({ color:'#b2dfdb', name: ' Meta esperada ', data: esperada, pointPlacement: 'on'});
+          configChartSpider.series.push({ color: '#42a5f5' , name: ' Meta real ', data: real, pointPlacement: 'on'});
 
           this.viewReport = true;
           setTimeout(() => {

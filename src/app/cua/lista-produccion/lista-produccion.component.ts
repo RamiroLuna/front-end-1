@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { ListaProduccionService } from './lista-produccion.service';
-import { DataTableProduccion, getAnioActual, getMesActual } from '../../utils';
+import { DataTableProduccion, getAnioActual, getMesActual, findRol } from '../../utils';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import swal from 'sweetalert2';
 import {
@@ -63,11 +63,12 @@ export class ListaProduccionComponent implements OnInit {
   public lineas: Array<Linea> = [];
   public idLinea: number;
   public idPeriodo: number;
-  public estatusPeriodo:boolean;
+  public estatusPeriodo: boolean;
 
 
   public permission: any = {
-    consultaByLine: false
+    consultaByLine: false,
+    agregarProduccion: false
   }
 
 
@@ -87,8 +88,9 @@ export class ListaProduccionComponent implements OnInit {
     this.submitted = false;
     this.estatusPeriodo = true;
     this.anioSeleccionado = getAnioActual();
+    this.permission.agregarProduccion = findRol(17, this.auth.getRolesCUA());
     this.permission.consultaByLine = this.auth.permissionEdit(1) || this.auth.permissionEdit(2) || this.auth.permissionEdit(3);
-    if(this.permission.consultaByLine) this.idLinea = this.auth.getId_Linea();
+    if (this.permission.consultaByLine) this.idLinea = this.auth.getId_Linea();
     this.init();
 
   }
@@ -112,6 +114,16 @@ export class ListaProduccionComponent implements OnInit {
         });
 
         this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
+
+        //si es undefined no viene meta
+        if (typeof result.data.listDetalle != "undefined") {
+
+          if (result.data.listDetalle.length > 0) {
+            this.showBtnRegistrar = false;
+          } else {
+            this.showBtnRegistrar = true;
+          }
+        }
 
         this.loading = false;
         this.loadFormulario();
@@ -158,7 +170,7 @@ export class ListaProduccionComponent implements OnInit {
   verProduccion(idMeta: number): void {
     this.seccion = "consulta";
     this.idMetaSeleccionada = idMeta;
-  
+
     this.noMostrarComponentValidacion = !this.noMostrarComponentValidacion;
   }
 
@@ -206,22 +218,14 @@ export class ListaProduccionComponent implements OnInit {
         if (result.response.sucessfull) {
           this.disabled = false;
           this.datos_tabla = true;
-          this.estatusPeriodo =  result.data.estatusPeriodo;
+          this.estatusPeriodo = result.data.estatusPeriodo;
 
           this.producciones = result.data.listProduccion || [];
-          //si es undefined no viene meta
-          if (typeof result.data.listDetalle != "undefined") {
 
-            if (result.data.listDetalle.length > 0) {
-              this.showBtnRegistrar = false;
-            } else {
-              this.showBtnRegistrar = true;
-            }
-          }
 
-          setTimeout(() => { 
+          setTimeout(() => {
             // this.status = "active";
-            DataTableProduccion('#tabla'); 
+            DataTableProduccion('#tabla');
           }, 400)
         } else {
           Materialize.toast('Ocurrió  un error al consultar la producción!', 4000, 'red');
@@ -233,6 +237,27 @@ export class ListaProduccionComponent implements OnInit {
     } else {
       Materialize.toast('Se encontrarón errores!', 4000, 'red');
     }
+
+  }
+
+  help(event): void {
+    $('.tooltipped').tooltip('hide');
+    event.preventDefault();
+    swal({
+      title: 'Ayuda',
+      type: 'info',
+      html: ' Para agregar la producción haga clic en el boton <i class="material-icons"><i class="material-icons">add</i></i> <br>' + 
+              'El boton estará disponible de acuerdo al siguiente horario:</br>'+
+              '<ul>'+
+                '<li>00:00 a 7:59 turno 1</li>'+
+                '<li>08:00 a 15:59 turno 2</li>'+
+                '<li>16:00 a 23:59 turno 3</li>'+
+              '</ul>',
+      showCloseButton: false,
+      showCancelButton: false,
+      focusConfirm: false,
+      confirmButtonText: 'Ok!'
+    })
 
   }
 
