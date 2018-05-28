@@ -7,6 +7,7 @@ import { Falla } from '../../models/falla';
 import { Linea } from '../../models/linea';
 import { Catalogo } from '../../models/catalogo';
 import { AuthService } from '../../auth/auth.service';
+import { Periodo } from '../../models/periodo';
 import {
   trigger,
   state,
@@ -45,6 +46,7 @@ export class ListaFallasComponent implements OnInit {
   public status: string;
   public mensajeModal:string;
   public noVerBtnFallas: boolean;
+  public estatusPeriodo:boolean;
 
 
   public fallas: Array<Falla> = [];
@@ -53,6 +55,10 @@ export class ListaFallasComponent implements OnInit {
   public lineas: Array<Linea>;
   public grupos: Array<Catalogo>;
   public turnos: Array<Catalogo>;
+
+  public periodos: Array<Periodo> = [];
+  public anios: any = [];
+  public meses: Array<any> = [];
 
   public permission: any = {
     consultFails: false,
@@ -76,6 +82,7 @@ export class ListaFallasComponent implements OnInit {
     this.fallaSeleccionada = 0;
     this.pintaForm = false;
     this.noVerBtnFallas = false;
+    this.estatusPeriodo = true;
 
     this.permission.addFail = findRol(6, this.auth.getRolesCUA());
     this.permission.consultFails = findRol(7, this.auth.getRolesCUA());
@@ -88,12 +95,21 @@ export class ListaFallasComponent implements OnInit {
     
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-      console.log('cataog de fallas',result)
-
       if (result.response.sucessfull) {
         this.lineas = result.data.listLineas || [];
         this.grupos = result.data.listGrupos || [];
         this.turnos = result.data.listTurnos || [];
+        this.periodos = result.data.listPeriodos || []; 
+        
+        let tmpAnios = this.periodos.map(el => el.anio);
+        this.periodos.filter((el, index) => {
+          return tmpAnios.indexOf(el.anio) === index;
+        }).forEach((el) => {
+          let tmp = el.anio;
+          this.anios.push({value: tmp , text: tmp });
+        });
+
+        this.meses = this.periodos.filter(el => el.anio == 0);
 
 
         this.loading = false;
@@ -118,8 +134,8 @@ export class ListaFallasComponent implements OnInit {
 
   loadFormulario(): void {
     this.formBusqueda = this.fb.group({
-      inicio: new FormControl({ value: this.paramsBusqueda.inicio, disabled: false }, [Validators.required]),
-      fin: new FormControl({ value: this.paramsBusqueda.fin, disabled: false }, [Validators.required]),
+      anio: new FormControl({ value: this.paramsBusqueda.anio, disabled: false }, [Validators.required]),
+      idPeriodo: new FormControl({ value: this.paramsBusqueda.idPeriodo, disabled: false }, [Validators.required]),
       id_linea: new FormControl({ value: this.paramsBusqueda.id_linea, disabled: (this.auth.permissionEdit(2) || this.auth.permissionEdit(3)) }, [Validators.required]),
       id_grupo: new FormControl({ value: this.paramsBusqueda.id_grupo, disabled: (this.auth.permissionEdit(2) || this.auth.permissionEdit(3)) }, [Validators.required]),
       id_turno: new FormControl({ value: this.paramsBusqueda.id_turno, disabled: false }, [Validators.required])
@@ -132,32 +148,12 @@ export class ListaFallasComponent implements OnInit {
  */
   ngAfterViewHttp(): void {
 
-    // DataTable('#tabla');
     $('.tooltipped').tooltip({ delay: 50 });
-
-    $('.inicio, .fin').pickadate({
-      selectMonths: true, // Creates a dropdown to control month
-      selectYears: 15, // Creates a dropdown of 15 years to control year,
-      today: '',
-      clear: 'Limpiar',
-      close: 'OK',
-      monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-      monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-      weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-      weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-      format: 'dd/mm/yyyy',
-      closeOnSelect: false, // Close upon selecting a date,
-      onClose: () => {
-        this.paramsBusqueda.inicio = $('.inicio').val();
-        this.paramsBusqueda.fin = $('.fin').val();
-      }
-    });
 
     $('#modalEdicion').modal({
       opacity: 0.6,
       inDuration: 500,
       complete : ()=>{
-         
          this.fallaSeleccionada = 0;
          this.pintaForm = false;
       }
@@ -173,8 +169,11 @@ export class ListaFallasComponent implements OnInit {
     $('.tooltipped').tooltip('hide');
   }
 
-  changeCombo():void{
-  
+  changeCombo(accion:string):void{
+    if(accion == 'anio'){
+      this.meses = this.periodos.filter(el => el.anio == this.paramsBusqueda.anio);
+    }
+    this.estatusPeriodo = true;
     this.bVistaPre = false;
     this.status = 'inactive';
   }
@@ -183,12 +182,14 @@ export class ListaFallasComponent implements OnInit {
     this.status = 'inactive';
     this.bVistaPre = false;
     this.submitted = true;
+    this.estatusPeriodo = true;
 
     if (this.formBusqueda.valid) {
       this.service.getAllFallasByDays(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
 
         if (result.response.sucessfull) {
           this.fallas = result.data.listFallas || [];
+          this.estatusPeriodo = result.data.estatusPeriodo;
           this.bVistaPre = true;
 
           setTimeout(() => { 

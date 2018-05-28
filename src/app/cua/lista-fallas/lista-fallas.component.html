@@ -1,7 +1,7 @@
 <div class="container" *ngIf="!loading">
 
   <div class="section"></div>
-  <h4 class="color_titulo center-align">{{ noVerBtnFallas? 'Consulta y edición de ' : '' }}Fallas</h4>
+  <h4 class="color_titulo center-align">{{ noVerBtnFallas? '' : '' }}Fallas</h4>
   <!-- Solo para dispositivos moviles -->
   <div class="hide-on-large-only right-align" [hidden]="noVerBtnFallas">
     <a routerLink="../../opciones" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
@@ -28,7 +28,7 @@
 
     </ul>
     <div class="col s12 m12 l12 xl12 center-align" *ngIf="!permission.addFail">
-        <p class="color_titulo">No cuenta con permiso para registrar fallas</p>
+      <p class="color_titulo">No cuenta con permiso para registrar fallas</p>
     </div>
 
     <div class="col s12 m12 l6 xl6 center-align">
@@ -55,23 +55,7 @@
           <b>Capture los datos para mostrar registros:</b>
         </legend>
         <div class="row">
-          <div class="input-field col s12 m12 l6 xl6">
-            <label for="">Fecha inicio</label>
-            <input type="text" class="inicio" formControlName="inicio" [(ngModel)]="paramsBusqueda.inicio" (ngModelChange)="changeCombo()">
-            <div *ngIf="formBusqueda.controls.inicio.errors?.required && (formBusqueda.controls.inicio?.touched || submitted)" class="error">
-              Se requiere fecha inicio
-            </div>
-          </div>
-          <div class="input-field col s12 m12 l6 xl6">
-            <label for="">Fecha fin</label>
-            <input type="text" class="fin" formControlName="fin" [(ngModel)]="paramsBusqueda.fin" (ngModelChange)="changeCombo()">
-            <div *ngIf="formBusqueda.controls.fin.errors?.required && (formBusqueda.controls.fin?.touched || submitted)" class="error">
-              Se requiere fecha fin
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col s12 m12 l4 xl4">
+          <div class="col s12 m12 l6 xl6">
             <label for="">Linea</label>
             <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="id_linea" [(ngModel)]="paramsBusqueda.id_linea"
               (ngModelChange)="changeCombo()">
@@ -82,7 +66,7 @@
               Se requiere la linea
             </div>
           </div>
-          <div class="col s12 m12 l4 xl4">
+          <div class="col s12 m12 l6 xl6">
             <label for="">Grupo</label>
             <select materialize="material_select" [materializeSelectOptions]="grupos" formControlName="id_grupo" [(ngModel)]="paramsBusqueda.id_grupo"
               (ngModelChange)="changeCombo()">
@@ -91,6 +75,32 @@
             </select>
             <div *ngIf="formBusqueda.controls.id_grupo.errors?.required && (formBusqueda.controls.id_grupo?.touched || submitted)" class="error">
               Se requiere el grupo
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="input-field col s12 m12 l4 xl4">
+            <label for="" class="active">Año</label>
+            <select materialize="material_select" [materializeSelectOptions]="anios" formControlName="anio" [(ngModel)]="paramsBusqueda.anio"
+              (ngModelChange)="changeCombo('anio')">
+              <option value="">SELECCIONE</option>
+              <option *ngFor="let anio of anios" [value]="anio.value">{{ anio.text }}</option>
+            </select>
+            <div *ngIf="formBusqueda.controls.anio.errors?.required && (formBusqueda.controls.anio?.touched || submitted)" class="error">
+              Se requiere año
+            </div>
+          </div>
+          <div class="input-field col s12 m12 l4 xl4">
+            <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="paramsBusqueda.idPeriodo"
+              (ngModelChange)="changeCombo()">
+              <option value="">SELECCIONE</option>
+              <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
+            </select>
+            <label for="mes">mes</label>
+            <div *ngIf="formBusqueda.controls.idPeriodo.errors?.required && (formBusqueda.controls.idPeriodo?.touched || submitted)"
+              class="error">
+              Se requiere mes
             </div>
           </div>
           <div class="col s12 m12 l3 xl3">
@@ -116,6 +126,12 @@
   </div>
   <div class="section"></div>
   <div class="row" *ngIf="bVistaPre">
+    <div class="row" *ngIf="!estatusPeriodo">
+      <div class="color_titulo center-align">
+        <span class="waves-effect">
+          <i class="material-icons left">lock</i>Periodo cerrado</span>
+      </div>
+    </div>
     <div class="row" [@visibility]="status">
       <table id="tabla" class="display" cellspacing="0" width="100%">
         <thead>
@@ -132,8 +148,8 @@
             <th class="center-align">Hora de inicio</th>
             <th class="center-align">Hora de final</th>
             <th class="center-align">Horas de paro</th>
-            <th class="center-align" *ngIf="permission.editFail">Editar</th>
-            <th class="center-align" *ngIf="permission.deleteFail">Eliminar</th>
+            <th class="center-align" *ngIf="permission.editFail && estatusPeriodo">Editar</th>
+            <th class="center-align" *ngIf="permission.deleteFail && estatusPeriodo">Eliminar</th>
           </tr>
         </thead>
 
@@ -145,14 +161,14 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>NO HAY FALLAS REGISTRADAS</td>
+            <td>NO HAY FALLAS</td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
-            <td *ngIf="permission.editFail"></td>
-            <td *ngIf="permission.deleteFail"></td>
+            <td *ngIf="permission.editFail && estatusPeriodo"></td>
+            <td *ngIf="permission.deleteFail && estatusPeriodo"></td>
           </tr>
           <tr *ngFor="let falla of fallas" [class]="falla.id_falla">
             <td class="center-align">{{falla.diaString}}</td>
@@ -167,12 +183,12 @@
             <td class="center-align">{{falla.hora_inicio}}</td>
             <td class="center-align">{{falla.hora_final}}</td>
             <td class="center-align">{{falla.tiempo_paro + ' Hrs'}}</td>
-            <td class="center-align" *ngIf="permission.editFail">
+            <td class="center-align" *ngIf="permission.editFail && estatusPeriodo">
               <a class="btn-floating light-green lighten-1" (click)="openModalEdicion(falla.id_falla)">
                 <i class="material-icons">description</i>
               </a>
             </td>
-            <td class="center-align" *ngIf="permission.deleteFail">
+            <td class="center-align" *ngIf="permission.deleteFail && estatusPeriodo">
               <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(falla,'eliminar')">
                 <i class="material-icons">delete</i>
               </a>
