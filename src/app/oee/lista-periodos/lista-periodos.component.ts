@@ -71,8 +71,8 @@ export class ListaPeriodosComponent implements OnInit {
     this.periodo = new Periodo();
     
 
-    this.permission.reAbrir = findRol(27, this.auth.getRolesCUA());
-    this.permission.cerrar = findRol(24, this.auth.getRolesCUA());
+    this.permission.reAbrir = findRol(27, this.auth.getRolesOee());
+    this.permission.cerrar = findRol(24, this.auth.getRolesOee());
 
     this.service.getInit(this.auth.getIdUsuario()).subscribe(result => {
 

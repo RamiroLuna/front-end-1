@@ -59,7 +59,7 @@ export class FormularioProduccionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.permission.updateProduccion = findRol(19, this.auth.getRolesCUA());
+    this.permission.updateProduccion = findRol(19, this.auth.getRolesOee());
     this.loading = true;
     this.insertProduccion = true;
     this.modificacion = false;

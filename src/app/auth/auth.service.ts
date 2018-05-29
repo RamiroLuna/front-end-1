@@ -21,8 +21,8 @@ export class AuthService {
      
   }
 
-  public getRolesCUA():string{
-    return jwt_decode(this.getToken()).roles_cua || "0";
+  public getRolesOee():string{
+    return jwt_decode(this.getToken()).roles_oee || "0";
   }
   public getRolesKpi():string{
     return jwt_decode(this.getToken()).roles_kpi || "0";

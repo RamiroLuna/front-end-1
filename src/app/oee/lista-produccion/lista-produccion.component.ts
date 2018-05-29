@@ -88,7 +88,7 @@ export class ListaProduccionComponent implements OnInit {
     this.submitted = false;
     this.estatusPeriodo = true;
     this.anioSeleccionado = getAnioActual();
-    this.permission.agregarProduccion = findRol(17, this.auth.getRolesCUA());
+    this.permission.agregarProduccion = findRol(17, this.auth.getRolesOee());
     this.permission.consultaByLine = this.auth.permissionEdit(1) || this.auth.permissionEdit(2) || this.auth.permissionEdit(3);
     if (this.permission.consultaByLine) this.idLinea = this.auth.getId_Linea();
     this.init();

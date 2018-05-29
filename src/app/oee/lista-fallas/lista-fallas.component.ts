@@ -84,10 +84,10 @@ export class ListaFallasComponent implements OnInit {
     this.noVerBtnFallas = false;
     this.estatusPeriodo = true;
 
-    this.permission.addFail = findRol(6, this.auth.getRolesCUA());
-    this.permission.consultFails = findRol(7, this.auth.getRolesCUA());
-    this.permission.editFail = findRol(9, this.auth.getRolesCUA());
-    this.permission.deleteFail = findRol(8, this.auth.getRolesCUA());
+    this.permission.addFail = findRol(6, this.auth.getRolesOee());
+    this.permission.consultFails = findRol(7, this.auth.getRolesOee());
+    this.permission.editFail = findRol(9, this.auth.getRolesOee());
+    this.permission.deleteFail = findRol(8, this.auth.getRolesOee());
 
 
     this.paramsBusqueda.id_grupo = this.auth.getId_Grupo();

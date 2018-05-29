@@ -10,9 +10,9 @@ export class AuthGuardOee implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot): boolean {
         const expectedRole = route.data.expectedRole;
     
-        let roles_cua = this.auth.getRolesCUA().split(",").map((el)=>parseInt(el));
+        let roles_oee = this.auth.getRolesOee().split(",").map((el)=>parseInt(el));
     
-        if(roles_cua.indexOf(expectedRole) == -1){
+        if(roles_oee.indexOf(expectedRole) == -1){
             this.router.navigate(['home']);
             return false;
         }

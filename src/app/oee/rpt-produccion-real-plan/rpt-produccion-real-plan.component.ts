@@ -125,7 +125,7 @@ export class RptProduccionRealPlanComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.reportePerformance(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-        console.log('resuktado performace', result)
+
         if (result.response.sucessfull) {
 
           let datos = result.data.reporteMap || [];

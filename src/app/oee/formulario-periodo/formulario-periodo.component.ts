@@ -63,9 +63,9 @@ export class FormularioPeriodoComponent implements OnInit {
 
   ngOnInit() {
 
-    this.permission.crear = findRol(23, this.auth.getRolesCUA());
-    this.permission.editar = findRol(26, this.auth.getRolesCUA());
-    this.permission.consultar = findRol(25, this.auth.getRolesCUA());
+    this.permission.crear = findRol(23, this.auth.getRolesOee());
+    this.permission.editar = findRol(26, this.auth.getRolesOee());
+    this.permission.consultar = findRol(25, this.auth.getRolesOee());
 
     if (this.seccion == "add") {
       this.initComponent();

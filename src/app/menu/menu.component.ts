@@ -34,7 +34,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
     this.fecha = getFechaActual();
 
     /* Si no puede ver el menu trae un "0" en la primer posicion del conjunto de roles */
-    this.menu_cua = !(this.auth.getRolesCUA().split(",")[0] == "0");
+    this.menu_cua = !(this.auth.getRolesOee().split(",")[0] == "0");
     this.menu_kpi = !(this.auth.getRolesKpi().split(",")[0] == "0");
     this.menu_ishikawa = !(this.auth.getRolesIshikawa().split(",")[0] == "0");
     

@@ -5,15 +5,15 @@ import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { getTablaUtf8 } from '../../utils';
 import { RptVelocidadPromedioService } from './rpt-velocidad-promedio.service';
-
+import { configChartSpider } from './rpt.config.export';
 
 declare var $: any;
 declare var Materialize: any;
 @Component({
   selector: 'app-rpt-velocidad-promedio',
   templateUrl: './rpt-velocidad-promedio.component.html',
-  styleUrls: [ './rpt-velocidad-promedio.component.css' ],
-  providers: [ RptVelocidadPromedioService ]
+  styleUrls: ['./rpt-velocidad-promedio.component.css'],
+  providers: [RptVelocidadPromedioService]
 })
 export class RptVelocidadPromedioComponent implements OnInit {
 
@@ -25,9 +25,12 @@ export class RptVelocidadPromedioComponent implements OnInit {
   public lineas: Array<Linea>;
   public tituloGrafica: string;
   public rows: Array<any>;
+  public rowsGrafica: Array<any>;
   public anios: Array<any>;
   public meses: Array<any>;
   public periodos: Array<Periodo>;
+  public ver_tabla: boolean;
+  public texto_link: string;
 
   constructor(
     private service: RptVelocidadPromedioService,
@@ -38,9 +41,13 @@ export class RptVelocidadPromedioComponent implements OnInit {
 
     this.loading = true;
     this.submitted = false;
-    this.viewReport = false;   
+    this.viewReport = false;
+    this.ver_tabla = false;
     this.rows = [];
+    
+    this.rowsGrafica = [];
     this.tituloGrafica = "";
+    this.texto_link = "Ver datos en tabla";
     this.paramsBusqueda = {};
 
     this.anios = [];
@@ -117,14 +124,36 @@ export class RptVelocidadPromedioComponent implements OnInit {
     this.viewReport = false;
     this.submitted = true;
     this.rows = [];
+    this.rowsGrafica = [];
 
     if (this.formConsultaPeriodo.valid) {
 
       this.service.reporteVelocidadPromedio(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-        if (result.response.sucessfull) { 
+
+        if (result.response.sucessfull) {
+          let titulo = 'Velocidad promedio por grupo ' + this.getLinea(this.lineas, this.paramsBusqueda.idLinea);
+          
           this.rows = result.data.reporteMap || [];
+          this.rowsGrafica = result.data.graficaMap || [];
+
+          configChartSpider.series = [];
+          configChartSpider.title.text = titulo;
+
+          let esperada = [];
+          let real = [];
+
+          let esperadaTmp = this.rowsGrafica.filter((el) => el.padre == 0)[0];
+          esperada.push(esperadaTmp.sppeda);
+          esperada.push(esperadaTmp.sppedb);
+          esperada.push(esperadaTmp.sppedc);
+          esperada.push(esperadaTmp.sppedd);
+          configChartSpider.series.push({ color: '#1a237e', name: ' Velocidad promedio ', data: esperada, pointPlacement: 'on' });
+
           this.viewReport = true;
-         
+          setTimeout(() => {
+            this.rptAfterViewGenerate();
+          }, 400);
+
         } else {
 
           this.viewReport = false;
@@ -139,6 +168,16 @@ export class RptVelocidadPromedioComponent implements OnInit {
       this.viewReport = false;
       Materialize.toast('Ingrese todos los datos para mostrar reporte!', 4000, 'red');
     }
+  }
+
+  rptAfterViewGenerate(): void {
+    $('#chartSpider').highcharts(configChartSpider);
+  }
+
+  verTablas(event): void {
+    event.preventDefault();
+    this.ver_tabla = !this.ver_tabla;
+    this.texto_link = this.ver_tabla ? "Ocultar tabla(s)" : "Ver datos en tabla(s)";
   }
 
   getTextoLinea(lineas: Array<Linea>, id_linea: number): string {
@@ -156,8 +195,8 @@ export class RptVelocidadPromedioComponent implements OnInit {
     let linkFile = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel;';
 
-    let tabla= getTablaUtf8('tblReporte');
-   
+    let tabla = getTablaUtf8('tblReporte');
+
     linkFile.href = data_type + ', ' + tabla;
     linkFile.download = 'ReporteVelocidadPromedio';
 
@@ -171,6 +210,16 @@ export class RptVelocidadPromedioComponent implements OnInit {
 
     if (el.length > 0) {
       return "  " + el[0].descripcion_mes + " " + el[0].anio;
+    } else {
+      return "Linea no identificada"
+    }
+  }
+
+  getLinea(lineas: Array<Linea>, id_linea: number): string {
+    let el = lineas.filter(el => el.id_linea == id_linea);
+
+    if (el.length > 0) {
+      return "  " + el[0].descripcion;
     } else {
       return "Linea no identificada"
     }

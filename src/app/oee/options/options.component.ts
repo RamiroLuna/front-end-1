@@ -27,15 +27,15 @@ export class OptionsComponent implements AfterViewInit {
   ngOnInit() {
     this.loading = true;
     
-    this.permission.abrirPeriodo = findRol(23, this.auth.getRolesCUA());
-    this.permission.consultarPeriodos = findRol(25, this.auth.getRolesCUA());
-    this.permission.cargaMetaManual = findRol(2, this.auth.getRolesCUA());
-    this.permission.cargaMasiva = findRol(1, this.auth.getRolesCUA());
-    this.permission.edicionMeta = findRol(4, this.auth.getRolesCUA());
-    this.permission.fallas = findRol(7, this.auth.getRolesCUA());
-    this.permission.produccion = findRol(18, this.auth.getRolesCUA());
-    this.permission.validacion = findRol(20, this.auth.getRolesCUA());
-    this.permission.catalogos = findRol(22, this.auth.getRolesCUA());
+    this.permission.abrirPeriodo = findRol(23, this.auth.getRolesOee());
+    this.permission.consultarPeriodos = findRol(25, this.auth.getRolesOee());
+    this.permission.cargaMetaManual = findRol(2, this.auth.getRolesOee());
+    this.permission.cargaMasiva = findRol(1, this.auth.getRolesOee());
+    this.permission.edicionMeta = findRol(4, this.auth.getRolesOee());
+    this.permission.fallas = findRol(7, this.auth.getRolesOee());
+    this.permission.produccion = findRol(18, this.auth.getRolesOee());
+    this.permission.validacion = findRol(20, this.auth.getRolesOee());
+    this.permission.catalogos = findRol(22, this.auth.getRolesOee());
     this.loading = false;
     setTimeout(() => {
      

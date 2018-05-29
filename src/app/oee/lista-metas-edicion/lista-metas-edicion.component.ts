@@ -77,8 +77,8 @@ export class ListaMetasEdicionComponent implements OnInit {
     this.disabled = false;
     this.estatusPeriodo = true;
 
-    this.permission.editarMeta = findRol(3, this.auth.getRolesCUA());
-    this.permission.eliminarMeta = findRol(5, this.auth.getRolesCUA());
+    this.permission.editarMeta = findRol(3, this.auth.getRolesOee());
+    this.permission.eliminarMeta = findRol(5, this.auth.getRolesOee());
 
 
     this.anioSeleccionado = getAnioActual();
