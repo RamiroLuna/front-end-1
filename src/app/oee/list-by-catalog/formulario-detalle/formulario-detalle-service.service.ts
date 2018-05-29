@@ -37,6 +37,7 @@ export class FormularioDetalleServiceService {
       .set('idCatalogo', "" + catalogo.id)
       .set('activoCatalogo', "" + catalogo.activo)
       .set('descripcion', catalogo.descripcion)
+      .set('valor', catalogo.valor)
       .set('id_usuario', "" + id_usuario);
     return this.http.post(this.URL, body);
   }

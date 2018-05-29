@@ -236,12 +236,12 @@ export class FormularioProduccionComponent implements OnInit {
        * Si acepta
        */
       if (result.value) {
-        this.router.navigate(['home/cua/opciones/fallas/nuevo']);
+        this.router.navigate(['home/oee/opciones/fallas/nuevo']);
         /*
         * Si cancela accion
         */
       } else if (result.dismiss === swal.DismissReason.cancel) {
-        this.router.navigate(['home/cua/opciones/produccion']);
+        this.router.navigate(['home/oee/opciones/produccion']);
       }
     })
 

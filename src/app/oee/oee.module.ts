@@ -17,7 +17,7 @@ import { RptFuentePerdidasComponent } from './rpt-fuente-perdidas/rpt-fuente-per
 import { MetaMasivaComponent } from './meta-masiva/meta-masiva.component';
 import { FormularioProduccionComponent } from './formulario-produccion/formulario-produccion.component';
 import { ListaProduccionComponent } from './lista-produccion/lista-produccion.component';
-import { AuthGuardCua } from '../auth/auth.guard.cua';
+import { AuthGuardOee } from '../auth/auth.guard.oee';
 import { ValidaProduccionComponent } from './valida-produccion/valida-produccion.component';
 import { FormatNumberPipeClass } from '../pipes/format.number.pipe';
 import { ToneladasPipeClass } from '../pipes/toneladas.pipe';
@@ -39,64 +39,64 @@ import { RptProduccionRealPlanComponent } from './rpt-produccion-real-plan/rpt-p
 const routesMetas: Routes = [
   { path: 'opciones', component: OptionsComponent },
   {
-    path: 'opciones/fallas', component: ListaFallasComponent, canActivate: [AuthGuardCua],
+    path: 'opciones/fallas', component: ListaFallasComponent, canActivate: [AuthGuardOee],
     data: {
       expectedRole: 7
     }
   },
   {
-    path: 'opciones/fallas/:id', component: FormularioFallasComponent, canActivate: [AuthGuardCua],
+    path: 'opciones/fallas/:id', component: FormularioFallasComponent, canActivate: [AuthGuardOee],
     data: {
       expectedRole: 6
     }
   },
   /* rutas de metas */
   {
-    path: 'opciones/metas-lista-edicion', component: ListaMetasEdicionComponent, canActivate: [AuthGuardCua],
+    path: 'opciones/metas-lista-edicion', component: ListaMetasEdicionComponent, canActivate: [AuthGuardOee],
     data: {
       expectedRole: 4
     }
   },
   {
-    path: 'opciones/metas-carga-manual/:id', component: MetaManualComponent, canActivate: [AuthGuardCua],
+    path: 'opciones/metas-carga-manual/:id', component: MetaManualComponent, canActivate: [AuthGuardOee],
     data: {
       expectedRole: 2
     }
   },
   {
-    path: 'opciones/metas-carga-masiva', component: MetaMasivaComponent, canActivate: [AuthGuardCua],
+    path: 'opciones/metas-carga-masiva', component: MetaMasivaComponent, canActivate: [AuthGuardOee],
     data: {
       expectedRole: 1
     }
   },
   /* rutas de catalogos */
   {
-    path: 'opciones/catalogos', component: ListCatalogsComponent, canActivate: [AuthGuardCua],
+    path: 'opciones/catalogos', component: ListCatalogsComponent, canActivate: [AuthGuardOee],
     data: {
       expectedRole: 22
     }
   },
   {
-    path: 'opciones/catalogos/:name', component: ListByCatalogComponent, canActivate: [AuthGuardCua],
+    path: 'opciones/catalogos/:name', component: ListByCatalogComponent, canActivate: [AuthGuardOee],
     data: {
       expectedRole: 22
     }
   },
   {
-    path: 'opciones/catalogos/:name/formulario/:id', component: FormularioDetalleComponent, canActivate: [AuthGuardCua],
+    path: 'opciones/catalogos/:name/formulario/:id', component: FormularioDetalleComponent, canActivate: [AuthGuardOee],
     data: {
       expectedRole: 22
     }
   },
   /* rutas de periodos */
   {
-    path: 'opciones/periodo', component: FormularioPeriodoComponent, canActivate: [AuthGuardCua],
+    path: 'opciones/periodo', component: FormularioPeriodoComponent, canActivate: [AuthGuardOee],
     data: {
       expectedRole: 23
     }
   },
   {
-    path: 'opciones/lista-periodos', component: ListaPeriodosComponent, canActivate: [AuthGuardCua],
+    path: 'opciones/lista-periodos', component: ListaPeriodosComponent, canActivate: [AuthGuardOee],
     data: {
       expectedRole: 25
     }
@@ -116,26 +116,26 @@ const routesMetas: Routes = [
   
   /* Registro de produccion */
   {
-    path: 'opciones/produccion', component: ListaProduccionComponent, canActivate: [AuthGuardCua],
+    path: 'opciones/produccion', component: ListaProduccionComponent, canActivate: [AuthGuardOee],
     data: {
       expectedRole: 18
     }
   },
   {
-    path: 'opciones/produccion/:id', component: FormularioProduccionComponent, canActivate: [AuthGuardCua],
+    path: 'opciones/produccion/:id', component: FormularioProduccionComponent, canActivate: [AuthGuardOee],
     data: {
       expectedRole: 17
     }
   },
   /* Validacion de produccion */
   {
-    path: 'opciones/validaciones', component: ListaValidacionComponent, canActivate: [AuthGuardCua],
+    path: 'opciones/validaciones', component: ListaValidacionComponent, canActivate: [AuthGuardOee],
     data: {
       expectedRole: 20
     }
   },
   {
-    path: 'opciones/validaciones/:id', component: ValidaProduccionComponent, canActivate: [AuthGuardCua],
+    path: 'opciones/validaciones/:id', component: ValidaProduccionComponent, canActivate: [AuthGuardOee],
     data: {
       expectedRole: 20
     }
@@ -182,7 +182,7 @@ const routesMetas: Routes = [
     RptProduccionRealPlanComponent
   ],
   providers: [
-    AuthGuardCua
+    AuthGuardOee
   ]
 })
-export class CuaModule { }
+export class OeeModule { }

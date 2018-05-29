@@ -14,7 +14,7 @@ import { NotAuthGuard } from './auth/not.auth.guard';
 import { MenuComponent } from './menu/menu.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UsersModule } from './users/users.module'; 
-import { CuaModule } from './cua/cua.module'; 
+import { OeeModule } from './oee/oee.module'; 
 import { NgPipesModule } from 'ngx-pipes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MenuPrincipalComponent } from './menu-principal/menu-principal.component';
@@ -27,7 +27,7 @@ const routes: Routes = [
     path: 'home', component: HomeComponent, canActivate: [AuthGuard],children: [
       { path: '', component:  MenuPrincipalComponent},
       { path: 'usuarios', loadChildren: './users/users.module#UsersModule' },
-      { path: 'cua', loadChildren: './cua/cua.module#CuaModule' }
+      { path: 'oee', loadChildren: './oee/oee.module#OeeModule' }
     ]
   }
 ];
