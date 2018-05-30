@@ -33,6 +33,7 @@ import { RptJucodiComponent } from './rpt-jucodi/rpt-jucodi.component';
 import { RptVelocidadPromedioComponent } from './rpt-velocidad-promedio/rpt-velocidad-promedio.component';
 import { RptSubproductosComponent } from './rpt-subproductos/rpt-subproductos.component';
 import { RptProduccionRealPlanComponent } from './rpt-produccion-real-plan/rpt-produccion-real-plan.component';
+import { RptDetalladoFallasComponent } from './rpt-detallado-fallas/rpt-detallado-fallas.component';
 
 
 
@@ -113,6 +114,7 @@ const routesMetas: Routes = [
   { path: 'opciones/lista-reportes/velocidad-promedio', component: RptVelocidadPromedioComponent },
   { path: 'opciones/lista-reportes/subproductos', component: RptSubproductosComponent },
   { path: 'opciones/lista-reportes/produccion-real-plan', component: RptProduccionRealPlanComponent },
+  { path: 'opciones/lista-reportes/detalles-fallas', component: RptDetalladoFallasComponent },
   
   /* Registro de produccion */
   {
@@ -179,7 +181,8 @@ const routesMetas: Routes = [
     ToneladasPipeClass,
     RptVelocidadPromedioComponent,
     RptSubproductosComponent,
-    RptProduccionRealPlanComponent
+    RptProduccionRealPlanComponent,
+    RptDetalladoFallasComponent
   ],
   providers: [
     AuthGuardOee
