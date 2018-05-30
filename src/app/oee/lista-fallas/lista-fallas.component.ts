@@ -289,7 +289,31 @@ export class ListaFallasComponent implements OnInit {
   }
 
   refreshDataTable(event):void{
-    console.log('Falla actualizada',event.falla);
+    let tmpFalla = event.falla;
+
+    this.fallas.filter(el=>{
+      if(el.id_falla == tmpFalla.id_falla){
+        el.valor_fuente = tmpFalla.valor_fuente;
+        el.valor_razon = tmpFalla.valor_razon;
+        el.valor_equipo = tmpFalla.valor_equipo; 
+        el.descripcion_equipo = tmpFalla.descripcion_equipo; 
+        el.hora_inicio = tmpFalla.hora_inicio; 
+        el.hora_final = tmpFalla.hora_final;
+        el.tiempo_paro = tmpFalla.tiempo_paro;
+        el.descripcion = tmpFalla.descripcion;
+      
+        let tabla =  $('#tabla').DataTable();
+        tabla.cell('.'+tmpFalla.id_falla,4).data(tmpFalla.valor_fuente);
+        tabla.cell('.'+tmpFalla.id_falla,5).data(tmpFalla.valor_razon);
+        tabla.cell('.'+tmpFalla.id_falla,6).data(tmpFalla.valor_equipo);
+        tabla.cell('.'+tmpFalla.id_falla,7).data(tmpFalla.descripcion_equipo);
+        tabla.cell('.'+tmpFalla.id_falla,9).data(tmpFalla.hora_inicio);
+        tabla.cell('.'+tmpFalla.id_falla,10).data(tmpFalla.hora_final);
+        tabla.cell('.'+tmpFalla.id_falla,11).data(tmpFalla.tiempo_paro);
+        tabla.cell('.'+tmpFalla.id_falla,8).data(tmpFalla.descripcion);
+      }
+    });
+  
   }
 
 

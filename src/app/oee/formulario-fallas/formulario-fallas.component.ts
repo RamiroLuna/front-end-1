@@ -194,8 +194,8 @@ export class FormularioFallasComponent implements OnInit, OnChanges {
 
       }
 
-    }else{
-    
+    } else {
+
       this.falla.tiempo_paro = "0";
     }
 
@@ -224,7 +224,42 @@ export class FormularioFallasComponent implements OnInit, OnChanges {
       this.falla.descripcion_equipo = "";
     }
 
+  }
 
+  descriptivoEquipo(idEquipo: number): string {
+    let el = this.equipos.filter((el) => el.id_equipos == idEquipo);
+    if (el.length > 0) {
+      return el[0].descripcion;
+    } else {
+      return "";
+    }
+  }
+
+  descriptivoValorRazon(idRazon: number): string {
+    let el = this.razones.filter((el) => el.id_razon_paro == idRazon);
+    if (el.length > 0) {
+      return el[0].valor;
+    } else {
+      return "";
+    }
+  }
+
+  descriptivoValorFuente(idFuente: number): string {
+    let el = this.fuentes.filter((el) => el.id == idFuente);
+    if (el.length > 0) {
+      return el[0].valor;
+    } else {
+      return "";
+    }
+  }
+
+  descriptivoValorEquipo(idEquipo: number): string {
+    let el = this.equipos.filter((el) => el.id_equipos == idEquipo);
+    if (el.length > 0) {
+      return el[0].valor;
+    } else {
+      return "";
+    }
   }
 
   openModalConfirmacion(falla: Falla, accion: string, type: string): void {
@@ -279,6 +314,10 @@ export class FormularioFallasComponent implements OnInit, OnChanges {
             this.service.update(this.auth.getIdUsuario(), falla).subscribe(
               result => {
                 if (result.response.sucessfull) {
+                  falla.valor_fuente =  this.descriptivoValorFuente(falla.id_fuente);
+                  falla.valor_razon = this.descriptivoValorRazon(falla.id_razon);
+                  falla.valor_equipo = this.descriptivoValorEquipo(falla.id_equipo);
+                  falla.descripcion_equipo = this.descriptivoEquipo(falla.id_equipo);
                   this.failUpdate.emit({ falla: falla });
                   Materialize.toast('Actualización completa', 4000, 'green');
                 } else {

@@ -25,6 +25,8 @@ export class Falla {
     valor_linea?:string;
     valor_razon?:string;
     valor_turno?:string;
+    valor_fuente?:string;
+    valor_equipo?:string;
 
 
 }
