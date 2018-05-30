@@ -25,8 +25,10 @@
   </div>
   <div class="row center-align">
     <p class="color_titulo" *ngIf="seccion == 'add'">Ingrese las metas esperadas en este periodo para cada linea.</p>
-    <p class="color_titulo" *ngIf="seccion == 'edit'">Metas esperadas en este periodo para cada linea. <span class="waves-effect" *ngIf="!estatusPeriodo">
-        <i class="material-icons left">lock</i>Periodo cerrado</span></p>
+    <p class="color_titulo" *ngIf="seccion == 'edit'">Metas esperadas en este periodo para cada linea.
+      <span class="waves-effect" *ngIf="!estatusPeriodo">
+        <i class="material-icons left">lock</i>Periodo cerrado</span>
+    </p>
   </div>
   <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla && seccion == 'add'">
     <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
@@ -38,6 +40,8 @@
           <th class="center-align">Calidad</th>
           <th class="center-align">OEE</th>
           <th class="center-align">Eficiencia teórica</th>
+          <th class="center-align">No ventas</th>
+          <th class="center-align">Velocidad ideal</th>
         </tr>
       </thead>
 
@@ -47,6 +51,12 @@
         </tr>
         <tr *ngFor="let linea of lineas;let i = index" [id]="linea.id_linea">
           <td class="center-align">{{ linea.descripcion }}</td>
+          <td class="center-align">
+            <input type="text" style="width: 62px;" [disabled]="disabledInput">
+          </td>
+          <td class="center-align">
+            <input type="text" style="width: 62px;" [disabled]="disabledInput">
+          </td>
           <td class="center-align">
             <input type="text" style="width: 62px;" [disabled]="disabledInput">
           </td>
@@ -77,6 +87,8 @@
           <th class="center-align">Calidad</th>
           <th class="center-align">OEE</th>
           <th class="center-align">Eficiencia teórica</th>
+          <th class="center-align">No ventas</th>
+          <th class="center-align">Velocidad ideal</th>
         </tr>
       </thead>
 
@@ -100,6 +112,12 @@
           </td>
           <td class="center-align">
             <input type="text" style="width: 62px;" [disabled]="disabledInput" [(ngModel)]="periodo.eficiencia_teorica" [ngModelOptions]="{standalone: true}">
+          </td>
+          <td class="center-align">
+            <input type="text" style="width: 62px;" [disabled]="disabledInput" [(ngModel)]="periodo.no_ventas" [ngModelOptions]="{standalone: true}">
+          </td>
+          <td class="center-align">
+            <input type="text" style="width: 62px;" [disabled]="disabledInput" [(ngModel)]="periodo.velocidad_ideal" [ngModelOptions]="{standalone: true}">
           </td>
         </tr>
       </tbody>

@@ -161,7 +161,7 @@ export class RptOeeComponent implements OnInit {
           configChart.title.text = this.tituloGrafica;
           configChart.subtitle.text = 'Periodo: ' + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
           configChart.xAxis.categories = labels;
-          configChart.series.push({ name: ' OEE ', data: horas });
+          configChart.series.push({ name: ' Real ', data: horas });
           configChart.series.push({ name: ' Meta esperada ', data: meta_esperada, type: 'line' });
 
           this.viewReport = true;

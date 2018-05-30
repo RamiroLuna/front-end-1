@@ -1,13 +1,14 @@
 let configChart = {
     chart: {
         type: 'column',
-        backgroundColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-            stops: [
-                [0, 'rgb(96, 96, 96)'],
-                [1, 'rgb(16, 16, 16)']
-            ]
-        },
+        // backgroundColor: {
+        //     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+        //     stops: [
+        //         [0, 'rgb(255,255,255)'],
+        //         [1, 'rgb(21,101,192)']
+        //     ]
+        // },
+        backgroundColor: '#e1f5fe',
         borderWidth: 0,
         borderRadius: 0,
         plotBackgroundColor: null,
@@ -57,12 +58,22 @@ let configChart = {
         }
 
     },
+    tooltip: {
+        shared: false,
+        pointFormat: '<span>{series.name}: <b>{point.y}</b><br/>'
+    },
+
+    legend: {
+        itemStyle: {
+            color: '#FFFFFF'
+        }
+    },
     plotOptions: {
         series: {
             dataLabels: {
                 enabled: true,
                 color: '#FFFFFF',
-                inside: false,
+                inside: true,
                 y: 10,
                 distance: -10
             },
@@ -76,7 +87,7 @@ let configChart = {
             depth: 75
         }
     },
-    colors: ['#388e3c', '#4fc3f7'],
+    colors: ['#388e3c', '#1a237e'],
     series: [],
 };
 

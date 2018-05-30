@@ -11,4 +11,6 @@ export class Periodo {
     calidad?:number;
     oee?:number;
     eficiencia_teorica?:number;
+    no_ventas?:number;
+    velocidad_ideal?:number;
 }

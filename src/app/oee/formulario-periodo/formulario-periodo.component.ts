@@ -174,6 +174,8 @@ export class FormularioPeriodoComponent implements OnInit {
           el.oee = parseFloat("" + el.oee);
           el.calidad = parseFloat("" + el.calidad);
           el.eficiencia_teorica = parseFloat("" + el.eficiencia_teorica);
+          el.no_ventas = parseFloat("" + el.no_ventas);
+          el.velocidad_ideal = parseFloat("" + el.velocidad_ideal);
         });
       }
 
@@ -258,7 +260,7 @@ export class FormularioPeriodoComponent implements OnInit {
     $(clase + ' tr').each(function (index) {
 
       let objTmp = {
-        id_linea: -1, disponibilidad: 0, utilizacion: 0, calidad: 0, oee: 0, eficiencia_teorica: 0
+        id_linea: -1, disponibilidad: 0, utilizacion: 0, calidad: 0, oee: 0, eficiencia_teorica: 0, no_ventas:0 , velocidad_ideal: 0
       };
       objTmp.id_linea = parseInt($(this).attr('id'));
 
@@ -288,6 +290,12 @@ export class FormularioPeriodoComponent implements OnInit {
                 break;
               case 4:
                 objTmp.eficiencia_teorica = parseFloat(caja.val());
+                break;
+              case 5:
+                objTmp.no_ventas = parseFloat(caja.val());
+                break;
+              case 6:
+                objTmp.velocidad_ideal = parseFloat(caja.val());
                 break;
             }
 
