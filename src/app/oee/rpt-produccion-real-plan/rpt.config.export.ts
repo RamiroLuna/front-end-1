@@ -44,16 +44,17 @@ let configChart = {
                 return this.value + 'T';
             }
         },
-        // gridLineWidth:0
-        gridLineColor: 'transparent',
-
+        gridLineWidth: 0.1,
+        gridLineColor: '#e0f2f1',
+        gridLineDashStyle: 'longdash'
+        // lineWidth: 1
     },
     plotOptions: {
         series: {
             dataLabels: {
                 enabled: false,
                 color: '#FFFFFF',
-                inside: false,
+                inside: true,
                 // y: 10,
                 // distance: -10
             },
@@ -63,9 +64,9 @@ let configChart = {
                 }
             }
         },
-        column: {
-            stacking: 'normal'
-        },
+        // column: {
+        //     stacking: 'normal'
+        // },
         line: {
             marker: {
                 enabled: false

@@ -125,43 +125,25 @@ export class RptProduccionRealPlanComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.reportePerformance(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-
+        console.log('result', result)
         if (result.response.sucessfull) {
 
           let datos = result.data.reporteMap || [];
           let labels = datos.filter((el) => el.padre == 0).map(element => element.periodo);
-          let dataGrupoA = datos.filter((el) => el.padre == 0).map((el) => el.a);
-          let dataGrupoB = datos.filter((el) => el.padre == 0).map((el) => el.b);
-          let dataGrupoC = datos.filter((el) => el.padre == 0).map((el) => el.c);
-          let dataGrupoD = datos.filter((el) => el.padre == 0).map((el) => el.d);
-          let dataMeta1 = datos.filter((el) => el.padre == 0).map((el) => el.meta1);
-          let dataMeta2 = datos.filter((el) => el.padre == 0).map((el) => el.meta2);
-          let dataMeta3 = datos.filter((el) => el.padre == 0).map((el) => el.meta3);
+          let dataReal = datos.filter((el) => el.padre == 0).map(element => element.real);
+          let dataEsperada = datos.filter((el) => el.padre == 0).map(element => element.meta);
+         
 
-          let tmp='';
-          if (this.parametrosBusqueda.report == 'byWeeks') {
-            configChart.tooltip.headerFormat = '<b>Semana: {point.x}</b><br/>';
-          } else if (this.parametrosBusqueda.report == 'byDays') {
-            configChart.tooltip.headerFormat = '<b>Dia : {point.x}</b><br/>';
-          } else if (this.parametrosBusqueda.report == 'byMonths') {
-            configChart.tooltip.headerFormat = '<b>Mes: {point.x}</b><br/>';
-          }
-
-          let titulo = 'Desempeño '+ tmp +' por grupo '+ this.getLinea(this.lineas, this.parametrosBusqueda.idLinea);
+          let titulo = 'Desempeño por grupo '+ this.getLinea(this.lineas, this.parametrosBusqueda.idLinea);
           
 
           configChart.series = [];
           configChart.xAxis.categories = labels;
           configChart.title.text = titulo;
 
-      
-
-
-          configChart.series.push({ name: ' A ', data: dataGrupoA, color: '#c0ca33' });
-          configChart.series.push({ name: ' B ', data: dataGrupoB, color: '#66bb6a' });
-          configChart.series.push({ name: ' C ', data: dataGrupoC, color: '#004d40' });
-          configChart.series.push({ name: ' D ', data: dataGrupoD });
-          // configChart.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#fff3e0' });
+    
+          configChart.series.push({ name: ' Producción real ', data: dataReal, color: '#c0ca33' });
+          configChart.series.push({ name: ' Meta esperada ', data: dataEsperada, type: 'line', color: '#fff3e0' });
 
           let datosRRadar = result.data.graficaMap || [];
           configChartSpider.series = [];
