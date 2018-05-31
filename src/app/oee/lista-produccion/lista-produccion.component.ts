@@ -213,7 +213,7 @@ export class ListaProduccionComponent implements OnInit {
       this.disabled = true;
       this.datos_tabla = false;
 
-      this.service.getProduccion(this.auth.getIdUsuario(), this.idPeriodo).subscribe(result => {
+      this.service.getProduccion(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea).subscribe(result => {
 
         if (result.response.sucessfull) {
           this.disabled = false;

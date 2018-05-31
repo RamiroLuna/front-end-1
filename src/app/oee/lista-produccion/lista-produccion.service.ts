@@ -18,8 +18,8 @@ export class ListaProduccionService {
     return this.http.get<any>(this.URL + '?action=loadCombobox&id_usuario='+idUsuario);
   }
 
-  getProduccion(id_usuario:number,id_periodo:number): Observable<any>{
-    return this.http.get<any>(this.URL + '?action=getProduccionByPeriodo&id_usuario='+id_usuario+'&id_periodo='+id_periodo);
+  getProduccion(id_usuario:number,id_periodo:number,id_linea:number): Observable<any>{
+    return this.http.get<any>(this.URL + '?action=getProduccionByPeriodo&id_usuario='+id_usuario+'&id_periodo='+id_periodo+'&id_linea='+id_linea);
   }
 
 

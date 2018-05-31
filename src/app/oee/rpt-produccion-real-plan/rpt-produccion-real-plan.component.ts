@@ -112,7 +112,7 @@ export class RptProduccionRealPlanComponent implements OnInit {
     this.viewReport = false;
     if (params == 'anio') {
       this.meses = this.periodos.filter(el => el.anio == this.parametrosBusqueda.anio);
-     
+
 
     } else if (params == 'tipo') {
       this.vercombo = this.parametrosBusqueda.report == 'byMonths';
@@ -125,38 +125,38 @@ export class RptProduccionRealPlanComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.reportePerformance(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-        console.log('result', result)
+
         if (result.response.sucessfull) {
 
           let datos = result.data.reporteMap || [];
           let labels = datos.filter((el) => el.padre == 0).map(element => element.periodo);
           let dataReal = datos.filter((el) => el.padre == 0).map(element => element.real);
           let dataEsperada = datos.filter((el) => el.padre == 0).map(element => element.meta);
-         
 
-          let titulo = 'Desempeño por grupo '+ this.getLinea(this.lineas, this.parametrosBusqueda.idLinea);
-          
 
-          let tmp='';
+          let titulo = 'Desempeño por grupo ' + this.getLinea(this.lineas, this.parametrosBusqueda.idLinea);
+
+
+          let tmp = '';
           if (this.parametrosBusqueda.report == 'byWeeks' || this.parametrosBusqueda.report == 'byMonths') {
             configChart.plotOptions.column.dataLabels.rotation = 0;
           } else if (this.parametrosBusqueda.report == 'byDays') {
             configChart.plotOptions.column.dataLabels.rotation = 270;
-          } 
+          }
 
 
           configChart.series = [];
           configChart.xAxis.categories = labels;
           configChart.title.text = titulo;
 
-    
+
           configChart.series.push({ name: ' Producción real ', data: dataReal, color: '#dcedc8' });
           configChart.series.push({ name: ' Meta esperada ', data: dataEsperada, type: 'line', color: '#1a237e' });
 
           let datosRRadar = result.data.graficaMap || [];
           configChartSpider.series = [];
           configChartSpider.title.text = titulo;
-          let esperada= [];
+          let esperada = [];
           let real = [];
 
           let esperadaTmp = datosRRadar.filter((el) => el.padre == 0)[0];
@@ -170,9 +170,27 @@ export class RptProduccionRealPlanComponent implements OnInit {
           real.push(realTmp.realb);
           real.push(realTmp.realc);
           real.push(realTmp.reald);
-           
-          configChartSpider.series.push({ color:'#1a237e', name: ' Meta esperada ', data: esperada, pointPlacement: 'on'});
-          configChartSpider.series.push({ color: '#c0ca33' , name: ' Meta real ', data: real, pointPlacement: 'on'});
+
+          configChartSpider.series.push({
+            color: '#283593',
+            name: ' Meta esperada ',
+            data: esperada,
+            pointPlacement: 'on',
+            dataLabels: {
+              color: '#1a237e'
+            }
+          });
+
+          configChartSpider.series.push({
+            color: '#9e9d24',
+            name: ' Meta real ',
+            data: real,
+            pointPlacement: 'on',
+            dataLabels: {
+              y: 5,
+              color: '#9e9d24'
+            }
+          });
 
           this.viewReport = true;
           setTimeout(() => {

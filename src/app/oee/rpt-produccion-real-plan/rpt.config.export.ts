@@ -88,21 +88,20 @@ let configChartSpider = {
 
     chart: {
         polar: true,
-        type: 'line',
-        backgroundColor: '#009688'
+        type: 'line'
     },
 
     title: {
         text: '',
         style: {
-            color: '#ffffff'
+            color: '#33691E'
         }
     },
     credits: {
         enabled: false
     },
     pane: {
-        size: '95%'
+        size: '100%'
     },
 
     xAxis: {
@@ -111,7 +110,8 @@ let configChartSpider = {
         lineWidth: 0,
         labels: {
             style: {
-                color: '#ffffff'
+                color: '#33691E',
+                fontWeight: 'bold'
             }
         }
     },
@@ -120,37 +120,40 @@ let configChartSpider = {
         gridLineInterpolation: 'polygon',
         lineWidth: 0,
         min: 0,
+
         labels: {
             style: {
-                color: '#000000',
+                color: '#33691E',
             },
             formatter: function () {
-                return this.value + ' T';
+                return '';
             }
         }
     },
 
     tooltip: {
         shared: true,
-        pointFormat: '<span>{series.name}: <b>{point.y:,.0f}</b><br/>'
+        pointFormat: '<span>{series.name}: <b>{point.y}</b><br/>'
     },
 
     legend: {
-        // align: 'right',
-        // verticalAlign: 'top',
-        // y: 70,
-        // layout: 'vertical'
+        itemStyle: {
+            color: '#33691E'
+        },
+        visible: false
     },
 
     plotOptions: {
         series: {
+
             dataLabels: {
-                enabled: false,
-                color: '#FFFFFF',
-                inside: false,
-                y: 10,
-                distance: -10
+                overflow: 'none',
+                allowOverlap: true,
+                enabled: true,
+                x: 0,
+                y: -6
             },
+
             events: {
                 legendItemClick: function () {
                     return false;
