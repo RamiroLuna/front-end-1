@@ -137,13 +137,21 @@ export class RptProduccionRealPlanComponent implements OnInit {
           let titulo = 'Desempeño por grupo '+ this.getLinea(this.lineas, this.parametrosBusqueda.idLinea);
           
 
+          let tmp='';
+          if (this.parametrosBusqueda.report == 'byWeeks' || this.parametrosBusqueda.report == 'byMonths') {
+            configChart.plotOptions.column.dataLabels.rotation = 0;
+          } else if (this.parametrosBusqueda.report == 'byDays') {
+            configChart.plotOptions.column.dataLabels.rotation = 270;
+          } 
+
+
           configChart.series = [];
           configChart.xAxis.categories = labels;
           configChart.title.text = titulo;
 
     
-          configChart.series.push({ name: ' Producción real ', data: dataReal, color: '#c0ca33' });
-          configChart.series.push({ name: ' Meta esperada ', data: dataEsperada, type: 'line', color: '#fff3e0' });
+          configChart.series.push({ name: ' Producción real ', data: dataReal, color: '#dcedc8' });
+          configChart.series.push({ name: ' Meta esperada ', data: dataEsperada, type: 'line', color: '#1a237e' });
 
           let datosRRadar = result.data.graficaMap || [];
           configChartSpider.series = [];

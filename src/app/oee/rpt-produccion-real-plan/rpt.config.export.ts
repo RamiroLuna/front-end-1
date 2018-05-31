@@ -4,8 +4,8 @@ let configChart = {
         backgroundColor: {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
-                [0, 'rgb(77,182,172)'],
-                [1, 'rgb(0,137,123)']
+                [0, 'rgb(124,179,66)'],
+                [1, 'rgb(51,105,30)']
             ]
         }
     },
@@ -34,7 +34,10 @@ let configChart = {
     },
     yAxis: {
         title: {
-            text: ' Producción '
+            text: ' Producción ',
+            style: {
+                color: '#FFFFFF'
+            }
         },
         labels: {
             style: {
@@ -47,26 +50,28 @@ let configChart = {
         gridLineWidth: 0.1,
         gridLineColor: '#e0f2f1',
         gridLineDashStyle: 'longdash'
-        // lineWidth: 1
+    },
+    legend: {
+        itemStyle: {
+            color: '#FFFFFF'
+        }
     },
     plotOptions: {
         series: {
-            dataLabels: {
-                enabled: false,
-                color: '#FFFFFF',
-                inside: true,
-                // y: 10,
-                // distance: -10
-            },
             events: {
                 legendItemClick: function () {
                     return false;
                 }
             }
         },
-        // column: {
-        //     stacking: 'normal'
-        // },
+        column: {
+            dataLabels: {
+                enabled: true,
+                color: '#000000',
+                inside: true,
+                rotation: 0
+            }
+        },
         line: {
             marker: {
                 enabled: false

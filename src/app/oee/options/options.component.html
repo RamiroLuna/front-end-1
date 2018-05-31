@@ -1,6 +1,10 @@
 <div class="container" *ngIf="!loading">
   <div class="section"></div>
-  <h4 class="color_titulo center-align">OEE</h4>
+  <div cclass="row">
+    <h4 class="color_titulo center-align">Bienvenido al modulo OEE</h4>
+    <h5 class="color_titulo center-align">(Efectividad Global de Equipos)</h5>
+  </div>
+
   <div>
     <ul class="collapsible collection with-header" data-collapsible="accordion">
       <li>
@@ -16,43 +20,43 @@
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     ABRIR
                   </i>
-                </a>            
+                </a>
                 <a disabled *ngIf="!permission.abrirPeriodo" class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1"
                   (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     ABRIR
                   </i>
-                </a>            
+                </a>
                 <div class="col s1 m1 l1 xl1"></div>
-                <a  *ngIf="permission.consultarPeriodos" routerLink="lista-periodos" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                <a *ngIf="permission.consultarPeriodos" routerLink="lista-periodos" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
                   (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     EDICION
                   </i>
-                </a>               
-                <a disabled *ngIf="!permission.consultarPeriodos"  class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                </a>
+                <a disabled *ngIf="!permission.consultarPeriodos" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
                   (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     EDICION
                   </i>
-                </a>               
-                     
+                </a>
+
               </div>
               <!-- Fin solo para moviles -->
               <!-- Inicio solo para pantallas-->
               <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
                 <div class="col s3 m3 l3 xl3"></div>
-                <a  *ngIf="permission.abrirPeriodo"  routerLink="periodo" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                <a *ngIf="permission.abrirPeriodo" routerLink="periodo" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   ABRIR
                 </a>
-                <a disabled *ngIf="!permission.abrirPeriodo"  class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                <a disabled *ngIf="!permission.abrirPeriodo" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   ABRIR
                 </a>
                 <div class="col s1 m1 l1 xl1"></div>
-                <a  *ngIf="permission.consultarPeriodos"  routerLink="lista-periodos" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                <a *ngIf="permission.consultarPeriodos" routerLink="lista-periodos" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   EDICION
                 </a>
-                <a disabled *ngIf="!permission.consultarPeriodos"  class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                <a disabled *ngIf="!permission.consultarPeriodos" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   EDICION
                 </a>
               </div>
