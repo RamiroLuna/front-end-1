@@ -153,7 +153,7 @@ export class RptJucodiComponent implements OnInit {
             let confTmp = clone(configChart);
             let datosPorLinea = this.datos[i];
 
-            let titulo = 'Desempeño diario de  ' + datosPorLinea[0].Linea;
+            let titulo = datosPorLinea[0].titulo_grafica;
             let labels = datosPorLinea.filter((el) => el.padre == 0).map(element => element.dia);
             let dataGrupoA = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.a);
             let dataGrupoB = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.b);

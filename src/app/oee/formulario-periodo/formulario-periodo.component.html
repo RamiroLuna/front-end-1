@@ -41,13 +41,14 @@
           <th class="center-align">OEE</th>
           <th class="center-align">Eficiencia teórica</th>
           <th class="center-align">No ventas</th>
-          <th class="center-align">Velocidad ideal</th>
+          <th class="center-align">Vel. ideal</th>
+          <th class="center-align">Vel. Poliolefinas</th>
         </tr>
       </thead>
 
       <tbody class="datos">
         <tr *ngIf="lineas.length == 0 ">
-          <th colspan="6" class="center">No hay lineas registradas</th>
+          <th colspan="9" class="center">No hay lineas registradas</th>
         </tr>
         <tr *ngFor="let linea of lineas;let i = index" [id]="linea.id_linea">
           <td class="center-align">{{ linea.descripcion }}</td>
@@ -72,6 +73,14 @@
           <td class="center-align">
             <input type="text" style="width: 62px;" [disabled]="disabledInput">
           </td>
+          <td class="center-align">
+            <ng-template [ngIf]="linea.id_gpo_linea == 1">
+              <input type="text" style="width: 62px;" [disabled]="disabledInput">
+            </ng-template>
+            <ng-template [ngIf]="linea.id_gpo_linea != 1">
+              <input type="text" style="width: 62px;" value="0" disabled>
+            </ng-template>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -89,12 +98,13 @@
           <th class="center-align">Eficiencia teórica</th>
           <th class="center-align">No ventas</th>
           <th class="center-align">Velocidad ideal</th>
+          <th class="center-align">Vel. Poliolefinas</th>
         </tr>
       </thead>
 
       <tbody class="datos">
         <tr *ngIf="periodosRegistrados.length == 0 ">
-          <th colspan="6" class="center">No hay lineas registradas</th>
+          <th colspan="9" class="center">No hay lineas registradas</th>
         </tr>
         <tr *ngFor="let periodo of periodosRegistrados;let i = index" [id]="periodo.id_periodo">
           <td class="center-align">{{ periodo.valor_linea }}</td>
@@ -118,6 +128,14 @@
           </td>
           <td class="center-align">
             <input type="text" style="width: 62px;" [disabled]="disabledInput" [(ngModel)]="periodo.velocidad_ideal" [ngModelOptions]="{standalone: true}">
+          </td>
+          <td class="center-align">
+            <ng-template [ngIf]="periodo.id_gpo_linea == 1">
+                <input type="text" style="width: 62px;" [disabled]="disabledInput" [(ngModel)]="periodo.velocidad_po" [ngModelOptions]="{standalone: true}">
+            </ng-template>
+            <ng-template [ngIf]="periodo.id_gpo_linea != 1">
+                <input type="text" value="0" style="width: 62px;" disabled>
+            </ng-template>
           </td>
         </tr>
       </tbody>

@@ -87,6 +87,7 @@ export class FormularioPeriodoComponent implements OnInit {
     this.estatusPeriodo = true;
 
     this.service.getInit(this.auth.getIdUsuario()).subscribe(result => {
+
       if (result.response.sucessfull) {
         this.lineas = result.data.listLineas || [];
         this.lineas = this.lineas.filter(el => el.id_linea != 6).map(el => el);
@@ -119,7 +120,7 @@ export class FormularioPeriodoComponent implements OnInit {
 
 
     this.service.getDetailsByPeriodo(this.auth.getIdUsuario(), periodo.id_periodo).subscribe(result => {
-   
+
       if (result.response.sucessfull) {
         this.estatusPeriodo = result.data.estatusPeriodo;
 
@@ -176,6 +177,7 @@ export class FormularioPeriodoComponent implements OnInit {
           el.eficiencia_teorica = parseFloat("" + el.eficiencia_teorica);
           el.no_ventas = parseFloat("" + el.no_ventas);
           el.velocidad_ideal = parseFloat("" + el.velocidad_ideal);
+          el.velocidad_po = parseFloat("" + el.velocidad_po);
         });
       }
 
@@ -260,7 +262,15 @@ export class FormularioPeriodoComponent implements OnInit {
     $(clase + ' tr').each(function (index) {
 
       let objTmp = {
-        id_linea: -1, disponibilidad: 0, utilizacion: 0, calidad: 0, oee: 0, eficiencia_teorica: 0, no_ventas:0 , velocidad_ideal: 0
+        id_linea: -1, 
+        disponibilidad: 0, 
+        utilizacion: 0, 
+        calidad: 0, 
+        oee: 0, 
+        eficiencia_teorica: 0, 
+        no_ventas:0 , 
+        velocidad_ideal: 0,
+        velocidad_po: 0
       };
       objTmp.id_linea = parseInt($(this).attr('id'));
 
@@ -296,6 +306,9 @@ export class FormularioPeriodoComponent implements OnInit {
                 break;
               case 6:
                 objTmp.velocidad_ideal = parseFloat(caja.val());
+                break;
+              case 7:
+                objTmp.velocidad_po = parseFloat(caja.val());
                 break;
             }
 

@@ -13,4 +13,6 @@ export class Periodo {
     eficiencia_teorica?:number;
     no_ventas?:number;
     velocidad_ideal?:number;
+    velocidad_po?:number;
+    id_gpo_linea?:number;
 }
