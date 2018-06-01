@@ -63,9 +63,8 @@ export class LoginComponent implements OnInit {
             Materialize.toast('LocalStorage no soportado en este navegador!', 4000, 'red');
           }
         } else {
-
           this.mensaje_error = result.response.message;
-          Materialize.toast('Error al ingresar!', 4000, 'red');
+          Materialize.toast(this.mensaje_error, 3000, 'red');
         }
         this.disabled = false;
       }, error =>{
