@@ -1,13 +1,6 @@
 let configChart = {
     chart: {
         type: 'bar',
-        backgroundColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-            stops: [
-                [0, 'rgb(96, 96, 96)'],
-                [1, 'rgb(16, 16, 16)']
-            ]
-        },
         borderWidth: 0,
         borderRadius: 0,
         plotBackgroundColor: null,
@@ -26,20 +19,20 @@ let configChart = {
     title: {
         text: '',
         style: {
-            color: '#ffffff'
+            color: '#b71c1c'
         }
     },
     subtitle: {
         text: '',
         style: {
-            color: '#ffffff'
+            color: '#b71c1c'
         }
     },
     xAxis: {
         categories: [],
         labels: {
             style: {
-                color: '#ffffff'
+                color: '#000'
             }
         }
     },
@@ -49,20 +42,23 @@ let configChart = {
         },
         labels: {
             style: {
-                color: '#ffffff',
+                color: '#000',
             },
             formatter: function () {
                 return this.value + ' Hrs';
             }
-        }
+        },
+        gridLineWidth: .5,
+        gridLineColor: '#e57373',
+        gridLineDashStyle: 'dot'
 
     },
     plotOptions: {
         series: {
             dataLabels: {
                 enabled: true,
-                color: '#FFFFFF',
-                inside: false,
+                color: '#000',
+                inside: true,
                 y: 0,
                 distance: -10
             }

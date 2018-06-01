@@ -1,14 +1,6 @@
 let configChart = {
     chart: {
         type: 'column',
-        // backgroundColor: {
-        //     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-        //     stops: [
-        //         [0, 'rgb(255,255,255)'],
-        //         [1, 'rgb(21,101,192)']
-        //     ]
-        // },
-        backgroundColor: '#e1f5fe',
         borderWidth: 0,
         borderRadius: 0,
         plotBackgroundColor: null,
@@ -17,8 +9,8 @@ let configChart = {
         options3d: {
             enabled: true,
             alpha: 10,
-            beta: 2,
-            depth: 95
+            beta: 1,
+            depth: 56
         }
     },
     credits: {
@@ -27,22 +19,23 @@ let configChart = {
     title: {
         text: '',
         style: {
-            color: '#ffffff'
+            color: '#1a237e'
         }
     },
     subtitle: {
         text: '',
         style: {
-            color: '#ffffff'
+            color: '#1a237e'
         }
     },
     xAxis: {
         categories: [],
         labels: {
             style: {
-                color: '#ffffff'
+                color: '#000000'
             }
-        }
+        },
+        gridLineWidth: 0
     },
     yAxis: {
         title: {
@@ -50,13 +43,19 @@ let configChart = {
         },
         labels: {
             style: {
-                color: '#ffffff',
+                color: '#000000',
             },
             formatter: function () {
                 return this.value + ' %';
             }
-        }
+        },
+        gridLineWidth: 1,
+        gridLineColor: '#607d8b',
+        gridLineDashStyle: 'dot'
 
+    },
+    zAxis:{
+        visible: false
     },
     tooltip: {
         shared: false,
@@ -65,14 +64,14 @@ let configChart = {
 
     legend: {
         itemStyle: {
-            color: '#FFFFFF'
+            color: '#000000'
         }
     },
     plotOptions: {
         series: {
             dataLabels: {
                 enabled: true,
-                color: '#FFFFFF',
+                color: '#000000',
                 inside: true,
                 y: 10,
                 distance: -10
