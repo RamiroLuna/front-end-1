@@ -98,7 +98,7 @@
 
               <ng-template [ngIf]="row.padre == 0">
                 <td>{{ row.titulo }}</td>
-                <td class="center-align">{{ row.hrs }}</td>
+                <td class="center-align">{{ row.hrs | formatDecimal: 2  }}</td>
                 <td class="center-align">{{ row.porcentaje }}</td>
               </ng-template>
               <ng-template [ngIf]="row.padre == 2">
@@ -106,10 +106,10 @@
                   <b>{{ row.titulo }}</b>
                 </td>
                 <td class="center-align">
-                  <b>{{ row.hrs }}</b>
+                  <b>{{ row.hrs | formatDecimal: 2  }}</b>
                 </td>
                 <td class="center-align">
-                  <b>{{ row.porcentaje }}</b>
+                  <b>{{ row.porcentaje | formatDecimal: 2  }}</b>
                 </td>
               </ng-template>
             </tr>
@@ -131,7 +131,7 @@
                   <b>{{ row.titulo }}</b>
                 </td>
                 <td class="center-align">
-                  <b>{{ row.hrs }}</b>
+                  <b>{{ row.hrs  }}</b>
                 </td>
               </ng-template>
             </tr>

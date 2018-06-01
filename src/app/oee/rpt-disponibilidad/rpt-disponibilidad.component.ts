@@ -176,6 +176,10 @@ export class RptDisponibilidadComponent implements OnInit {
           this.rowsProduccion = result.data.datosProduccion || [];
           let labels = this.rows.filter((el) => el.padre == 0).map((el) => el.titulo);
           let horas = this.rows.filter((el) => el.padre == 0).map((el) => el.hrs);
+          this.rows.filter((el) => el.padre == 2).map((el) =>{ 
+            horas.push(el.hrs);
+            labels.push(el.titulo);
+          });
 
           configChart.series = [];
           configChart.title.text = this.tituloGrafica;

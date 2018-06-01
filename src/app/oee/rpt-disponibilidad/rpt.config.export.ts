@@ -64,7 +64,8 @@ let configChart = {
                 color: '#FFFFFF',
                 inside: false,
                 y: 10,
-                distance: -10
+                distance: -10,
+                format: '{point.y:,.2f}'
             }
         },
         bar:{
