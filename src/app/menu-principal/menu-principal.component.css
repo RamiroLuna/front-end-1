@@ -9,7 +9,7 @@
     -ms-filter: grayscale(100%);
     -o-filter: grayscale(100%);
     filter: grayscale(100%); /* Para cuando es estándar funcione en todos */
-    filter: Gray(); /* IE4-8 and 9 */
+    filter: gray; /* IE4-8 and 9 */
 }
 
 .not-active {
