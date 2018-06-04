@@ -30,6 +30,7 @@
         <div class="input-field col s12 m12 l5 xl5">
           <select materialize="material_select" formControlName="anioSeleccionado" [materializeSelectOptions]="anios" [(ngModel)]="anioSeleccionado"
             (ngModelChange)="changeAnio()">
+            <option value="">SELECCIONE</option>
             <option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</option>
           </select>
           <label>Año</label>

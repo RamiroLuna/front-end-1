@@ -90,6 +90,7 @@ export class ListaMetasEdicionComponent implements OnInit {
         this.lineas = result.data.listLineas || [];
         this.periodos = result.data.listPeriodos || [];
         this.grupos = result.data.listGrupos || [];
+        this.grupos = this.grupos.filter((el) => el.id != 6);
         this.turnos = result.data.listTurnos || [];
         let tmpAnios = this.periodos.map(el => el.anio);
         this.periodos.filter((el, index) => {
@@ -144,13 +145,26 @@ export class ListaMetasEdicionComponent implements OnInit {
         $('#tabla select').material_select();
       },
       save: (values) => {
-        values.dia = values.dia + "/" + (mes < 9 ? "0" + mes : mes) + "/" + this.anioSeleccionado;
-        values.grupo = this.idItemCombo(this.grupos, values.grupo);
+        debugger        
+        values.tmpDia = values.dia + "/" + (mes < 9 ? "0" + mes : mes) + "/" + this.anioSeleccionado;
+        values.tmpGrupo = this.idItemCombo(this.grupos, values.grupo);
 
         this.service.updateMeta(this.auth.getIdUsuario(), values).subscribe(result => {
-
+          debugger
           if (result.response.sucessfull) {
             Materialize.toast('Actualización completa', 4000, 'green');
+            this.metas.filter(el=>{
+              if(el.id_meta == values.id_meta){
+                el.dia_string = values.dia;
+                el.id_turno = values.turno;
+                el.nombre_grupo = values.grupo;
+                el.id_grupo = values.tmpGrupo;
+                el.meta = values.meta;
+                el.tmp = values.tmp;
+                el.velocidad = values.velocidad;
+              }
+            });
+
           } else {
             let resetValues = this.findRowForecast(this.metas, values.id_meta);
             $('td[scope="3,' + values.index + '"]').html(resetValues.dia_string);

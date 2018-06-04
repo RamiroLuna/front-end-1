@@ -1,24 +1,7 @@
 let configChart = {
     chart: {
         type: 'column',
-        backgroundColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-            stops: [
-                [0, 'rgb(96, 96, 96)'],
-                [1, 'rgb(16, 16, 16)']
-            ]
-        },
-        borderWidth: 0,
-        borderRadius: 0,
-        plotBackgroundColor: null,
-        plotShadow: false,
-        plotBorderWidth: 0,
-        options3d: {
-            enabled: true,
-            alpha: 10,
-            beta: 2,
-            depth: 95
-        }
+        backgroundColor:'#e1f5fe'
     },
     credits: {
         enabled: false
@@ -54,17 +37,16 @@ let configChart = {
             formatter: function () {
                 return this.value + ' Hrs';
             }
-        }
+        },
+        gridLineWidth: 0
 
     },
     plotOptions: {
         series: {
             dataLabels: {
                 enabled: true,
-                color: '#FFFFFF',
-                inside: false,
-                y: 10,
-                distance: -10,
+                color: '#000000',
+                inside: true,
                 format: '{point.y:,.2f}'
             }
         },
@@ -72,7 +54,7 @@ let configChart = {
             depth: 75
         }
     },
-    colors: ['#c0ca33'],
+    colors: ['#01579b'],
     series: [],
 };
 
