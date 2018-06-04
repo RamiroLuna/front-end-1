@@ -168,7 +168,7 @@ export class RptDisponibilidadComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.reporteDisponibilidad(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-        console.log('rept disponobilidad' , result)
+
         if (result.response.sucessfull) {
           this.tituloGrafica = "Disponibilidad de " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea);
          

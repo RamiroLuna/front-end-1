@@ -228,6 +228,11 @@ export class RptResumenOeeComponent implements OnInit {
           let labelsDisponibilidad = this.rowsDisponibilidad.filter((el) => el.padre == 0).map((el) => el.titulo);
           let horasDisponibilidad = this.rowsDisponibilidad.filter((el) => el.padre == 0).map((el) => el.hrs);
 
+          this.rowsDisponibilidad.filter((el) => el.padre == 2).map((el) =>{ 
+            horasDisponibilidad.push(el.hrs);
+            labelsDisponibilidad.push(el.titulo);
+          });
+
           configChartDisp.series = [];
           configChartDisp.title.text = this.tituloGraficaDisponi;
           configChartDisp.subtitle.text = 'Periodo: ' + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);

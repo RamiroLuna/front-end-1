@@ -61,7 +61,7 @@ export class MetaMasivaComponent implements OnInit {
     private auth: AuthService) { }
 
   ngOnInit() {
-    this.anioSeleccionado = getAnioActual();
+    this.anioSeleccionado = -1;
     this.bVistaPre = false;
     this.submitted = false;
     this.loading = true;
@@ -73,6 +73,7 @@ export class MetaMasivaComponent implements OnInit {
 
       if (result.response.sucessfull) {
         this.lineas = result.data.listLineas || [];
+        this.lineas = this.lineas.filter(el=>el.id_linea != 6);
         this.periodos = result.data.listPeriodos || [];
 
         let tmpAnios = this.periodos.map(el => el.anio);

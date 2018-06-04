@@ -1,7 +1,7 @@
 let configChart = {
     chart: {
         type: 'column',
-        backgroundColor:'#e1f5fe'
+        // backgroundColor:'#e3f2fd'
     },
     credits: {
         enabled: false
@@ -9,20 +9,20 @@ let configChart = {
     title: {
         text: '',
         style: {
-            color: '#ffffff'
+            color: '#0d47a1'
         }
     },
     subtitle: {
         text: '',
         style: {
-            color: '#ffffff'
+            color: '#0d47a1'
         }
     },
     xAxis: {
         categories: [],
         labels: {
             style: {
-                color: '#ffffff'
+                color: '#0d47a1'
             }
         }
     },
@@ -32,13 +32,15 @@ let configChart = {
         },
         labels: {
             style: {
-                color: '#ffffff',
+                color: '#0d47a1',
             },
             formatter: function () {
                 return this.value + ' Hrs';
             }
         },
-        gridLineWidth: 0
+        gridLineWidth: 0.1,
+        gridLineColor: '#bbdefb',
+        gridLineDashStyle: 'longdash'
 
     },
     plotOptions: {
