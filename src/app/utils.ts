@@ -454,6 +454,13 @@ function hmToMs(hora: string): number {
 }
 
 
+
+// Detection function to tell what kind of browser is used
+function getBrowser(){
+
+};
+
+
 export {
     deleteItemArray,
     isValidId,
@@ -474,5 +481,6 @@ export {
     clone,
     getTodayMilisegundos,
     DataTableProduccion,
-    hmToMs
+    hmToMs,
+    getBrowser
 }

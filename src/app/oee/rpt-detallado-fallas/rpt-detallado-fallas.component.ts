@@ -3,7 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { Linea } from '../../models/linea';
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
-import { getTablaUtf8 } from '../../utils';
+import { getTablaUtf8, getBrowser } from '../../utils';
 import { RptDetalladoFallasService } from './rpt-detallado-fallas.service';
 import { Falla } from '../../models/falla';
 
@@ -155,8 +155,12 @@ export class RptDetalladoFallasComponent implements OnInit {
 
 
   exportarExcel(): void {
+
+
     let linkFile = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel;';
+    document.body.appendChild(linkFile);  
+
 
     let tabla = getTablaUtf8('tblReporte');
 
@@ -165,6 +169,7 @@ export class RptDetalladoFallasComponent implements OnInit {
 
     linkFile.click();
     linkFile.remove();
+
 
   }
 

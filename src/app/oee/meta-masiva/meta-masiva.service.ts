@@ -35,4 +35,13 @@ export class MetaMasivaService {
     return this.http.post<any>(this.URL,body);
   }
 
+  reWriteFile(id_usuario:number, idPeriodo:number, IdLinea:number): Observable<any>{
+    const body = new HttpParams()
+    .set('action', 'reWriteFile')
+    .set('id_periodo', ""+idPeriodo)
+    .set('id_linea', ""+IdLinea)
+    .set('id_usuario', ""+id_usuario)
+    return this.http.post<any>(this.URL,body);
+  }
+
 }

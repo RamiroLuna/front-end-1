@@ -10,6 +10,7 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { Highcharts } from 'highcharts';
 import { configChartOEE, configChartDisp, configChartPerdidas } from './rpt.config.export';
+// import save_chart from './imagen.base64.js'
 
 
 declare var $: any;
@@ -139,13 +140,13 @@ export class RptResumenOeeComponent implements OnInit {
         switch (this.seccion) {
           case 0:
             if (b) {
-             $('#chartOee').highcharts(configChartOEE);
+              $('#chartOee').highcharts(configChartOEE);
             }
             b = true;
             break;
           case 1:
             b = true;
-             $('#chartDisponibilidad').highcharts(configChartDisp);
+            $('#chartDisponibilidad').highcharts(configChartDisp);
             break;
           case 2:
             b = true;
@@ -228,7 +229,7 @@ export class RptResumenOeeComponent implements OnInit {
           let labelsDisponibilidad = this.rowsDisponibilidad.filter((el) => el.padre == 0).map((el) => el.titulo);
           let horasDisponibilidad = this.rowsDisponibilidad.filter((el) => el.padre == 0).map((el) => el.hrs);
 
-          this.rowsDisponibilidad.filter((el) => el.padre == 2).map((el) =>{ 
+          this.rowsDisponibilidad.filter((el) => el.padre == 2).map((el) => {
             horasDisponibilidad.push(el.hrs);
             labelsDisponibilidad.push(el.titulo);
           });
@@ -377,9 +378,37 @@ export class RptResumenOeeComponent implements OnInit {
 
   }
 
+  save_chart(chart) {
+    let render_width = 1000;
+    let render_height = render_width * chart.chartHeight / chart.chartWidth
+
+    // Get the cart's SVG code
+    let svg = chart.getSVG({
+      exporting: {
+        sourceWidth: chart.chartWidth,
+        sourceHeight: chart.chartHeight
+      }
+    });
+    
+
+    // console.log(svg)
+
+    // Create a canvas
+    let canvas = document.createElement('canvas').getContext('2d');
+
+    var img = $('#grafica')
+    // img.src = 'data:image/svg+xml;base64,' + window.btoa(svg)
+  
+  
+    
+
+
+  }
+
+
 
   printRptPDF(): void {
-
+    this.save_chart($('#chartOee').highcharts())
     let docDefinition = {
       header: (currentPage, pageCount) => {
         // you can apply any logic and return any valid pdfmake element
@@ -395,15 +424,10 @@ export class RptResumenOeeComponent implements OnInit {
             {
               width: '30%',
               layout: 'noBorders',
+              fontSize: 7,
               table: {
                 widths: ['*'],
                 body: [
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
                   [''],
                   [''],
                   [
@@ -412,17 +436,12 @@ export class RptResumenOeeComponent implements OnInit {
                         headerRows: 1,
                         widths: ['*', 'auto', 'auto'],
                         body: this.getTableHtmlToArray(this.rows, 'oee')
-                      }
+                      },
+                      layout: 'headerLineOnly',
+
+
                     }
                   ],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
                   [''],
                   [''],
                   [
@@ -431,18 +450,10 @@ export class RptResumenOeeComponent implements OnInit {
                         headerRows: 1,
                         widths: ['*', 'auto', 'auto'],
                         body: this.getTableHtmlToArray(this.rowsDisponibilidad, 'disponibilidad')
-                      }
+                      },
+                      layout: 'headerLineOnly'
                     }
                   ],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
                   [''],
                   [''],
                   [
@@ -451,22 +462,10 @@ export class RptResumenOeeComponent implements OnInit {
                         headerRows: 1,
                         widths: ['*', 'auto'],
                         body: this.getTableHtmlToArray(this.rowsProduccion, 'produccion')
-                      }
+                      },
+                      layout: 'headerLineOnly'
                     }
                   ],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
-                  [''],
                   [''],
                   [''],
                   [
@@ -475,7 +474,8 @@ export class RptResumenOeeComponent implements OnInit {
                         headerRows: 1,
                         widths: ['*', 'auto', 'auto'],
                         body: this.getTableHtmlToArray(this.rowsPerdidas, 'perdidas')
-                      }
+                      },
+                      layout: 'headerLineOnly'
                     }
                   ]
                 ]
@@ -487,11 +487,11 @@ export class RptResumenOeeComponent implements OnInit {
               table: {
                 widths: ['*'],
                 body: [
-                  [{ text: '\n' }],
-                  [{ image: 'base64OEE', width: 700, height: 250 }],
-                  [{ text: '\n\n\n\n\n\n' }],
-                  [{ image: 'base64Disponiblidad', width: 700, height: 250 }],
-                  [{ image: 'base64Perdidas', width: 700, height: 350 }]
+                  [{ text: '\n' }]
+                  // [{ image: 'base64OEE', width: 700, height: 250 }],
+                  // [{ text: '\n\n\n\n\n\n' }],
+                  // [{ image: 'base64Disponiblidad', width: 700, height: 250 }],
+                  // [{ image: 'base64Perdidas', width: 700, height: 350 }]
                 ]
               }
             }
@@ -516,6 +516,7 @@ export class RptResumenOeeComponent implements OnInit {
       pageSize: 'TABLOID',
       // by default we use portrait, you can change it to landscape if you wish
       pageOrientation: 'landscape',
+      // pageOrientation: 'portrait',
 
       // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
       pageMargins: [40, 70, 40, 60]
@@ -524,6 +525,7 @@ export class RptResumenOeeComponent implements OnInit {
     pdfMake.createPdf(docDefinition).open();
 
   }
+
 
   getTableHtmlToArray(filas: Array<any>, type: string): Array<any> {
     let datos = [];
@@ -565,13 +567,18 @@ export class RptResumenOeeComponent implements OnInit {
         let tmp = [];
         if (el.padre == 0) {
           tmp.push('' + el.titulo);
-          tmp.push('' + el.hrs);
-          tmp.push(el.porcentaje + '%');
+          if (el.hrs === '' || el.hrs == undefined) {
+            tmp.push({ text: '', alignment: 'right' });
+          } else {
+            tmp.push({ text: '' + parseFloat(el.hrs).toFixed(2), alignment: 'right' });
+          }
+
+          tmp.push({ text: parseFloat(el.porcentaje).toFixed(3) + ' %', alignment: 'right' });
         } else if (el.padre == 2) {
 
           tmp.push({ text: '' + el.titulo, bold: true });
-          tmp.push({ text: '' + el.hrs, bold: true });
-          tmp.push({ text: '' + el.porcentaje, bold: true });
+          tmp.push({ text: '' + parseFloat(el.hrs).toFixed(2), bold: true, alignment: 'right' });
+          tmp.push({ text: '' + parseFloat(el.porcentaje).toFixed(3) + ' %', bold: true, alignment: 'right' });
         }
         datos.push(tmp)
       })
@@ -580,11 +587,11 @@ export class RptResumenOeeComponent implements OnInit {
       filas.filter(el => el.padre != 1).forEach(el => {
         let tmp = [];
         if (el.padre == 0) {
-          tmp.push('' + el.titulo);
-          tmp.push('' + el.hrs);
+          tmp.push({ text: '' + el.titulo });
+          tmp.push({ text: '' + parseFloat(el.hrs).toFixed(3), alignment: 'right' });
         } else if (el.padre == 2) {
           tmp.push({ text: '' + el.titulo, bold: true });
-          tmp.push({ text: '' + el.hrs, bold: true });
+          tmp.push({ text: '' + parseFloat(el.hrs).toFixed(3), bold: true, alignment: 'right' });
         }
         datos.push(tmp)
       })
@@ -595,8 +602,8 @@ export class RptResumenOeeComponent implements OnInit {
         let tmp = [];
         if (el.padre == 0) {
           tmp.push('' + el.fuente);
-          tmp.push('' + el.hrs);
-          tmp.push(el.porcentaje + '%');
+          tmp.push({ text: '' + parseFloat(el.hrs).toFixed(2), alignment: 'right' });
+          tmp.push({ text: parseFloat(el.porcentaje).toFixed(3) + ' %', alignment: 'right' });
         } else if (el.padre == 1) {
           tmp.push({ text: '' + el.fuente, bold: true, colSpan: 3, style: 'subheader' });
           tmp.push({});
@@ -604,8 +611,8 @@ export class RptResumenOeeComponent implements OnInit {
         } else if (el.padre == 2) {
 
           tmp.push({ text: '' + el.fuente, bold: true });
-          tmp.push({ text: '' + el.hrs, bold: true });
-          tmp.push({ text: '' + el.porcentaje, bold: true });
+          tmp.push({ text: '' + parseFloat(el.hrs).toFixed(2), bold: true, alignment: 'right' });
+          tmp.push({ text: '' + parseFloat(el.porcentaje).toFixed(3) + ' %', bold: true, alignment: 'right' });
         }
         datos.push(tmp)
       })

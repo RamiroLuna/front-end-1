@@ -111,11 +111,8 @@
             </thead>
 
             <tbody>
-              <tr *ngIf="fallas.length == 0">
-                <td colspan="11" class="center-align">NO HAY FALLAS</td>
-              </tr>
               <tr *ngIf="(fallas | filterBy: ['diaString','valor_fuente','valor_razon','valor_equipo']: texto_busqueda).length == 0">
-                  <td colspan="11" class="center-align" >NO SE ENCONTRARÓN COINCIDENCIAS</td>
+                  <td colspan="11" class="center-align" >NO SE ENCONTRARÓN FALLAS</td>
               </tr>
               <tr *ngFor="let falla of fallas | filterBy: ['diaString','valor_fuente','valor_razon','valor_equipo']: texto_busqueda">
                 <td class="center-align">{{falla.diaString}}</td>

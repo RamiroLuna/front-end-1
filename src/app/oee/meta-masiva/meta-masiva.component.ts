@@ -13,6 +13,7 @@ import {
   animate,
   transition
 } from '@angular/animations';
+import swal from 'sweetalert2';
 
 
 declare var $: any;
@@ -73,7 +74,7 @@ export class MetaMasivaComponent implements OnInit {
 
       if (result.response.sucessfull) {
         this.lineas = result.data.listLineas || [];
-        this.lineas = this.lineas.filter(el=>el.id_linea != 6);
+        this.lineas = this.lineas.filter(el => el.id_linea != 6);
         this.periodos = result.data.listPeriodos || [];
 
         let tmpAnios = this.periodos.map(el => el.anio);
@@ -187,7 +188,7 @@ export class MetaMasivaComponent implements OnInit {
   }
 
   procesarFile(): void {
-   
+
     this.service.procesarFile(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea).subscribe(result => {
       if (result.response.sucessfull) {
         Materialize.toast('Metas cargadas correctamente', 4000, 'green');
@@ -196,15 +197,77 @@ export class MetaMasivaComponent implements OnInit {
         $('.file-path').val('')
         this.formCargaMasiva.reset();
         this.submitted = false;
-        
+
       } else {
-        Materialize.toast(result.response.message, 4000, 'red');
+        // "999" indica que ya hay metas cargadas para el preiodo seleccionado
+        if(result.response.message == "999"){
+          this.alertConfirmaReemplazo(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea );
+        }else{
+          Materialize.toast(result.response.message, 4000, 'red');
+        }
+
       }
 
     }, error => {
 
       Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
     });
+  }
+
+  alertConfirmaReemplazo(idUsuario: number, idPeriodo: number, idLinea: number): void {
+    /* 
+     * Configuración del modal de confirmación
+     */
+    swal({
+      title: '<span style="color: #303f9f ">Ya existen metas cargadas. ¿Desea reemplazarlas?</span>',
+      type: 'question',
+      html: '<p style="color: #303f9f ">Periodo: ' + this.getPeriodo(this.periodos, idPeriodo) + '</b></p>',
+      showCancelButton: true,
+      confirmButtonColor: '#303f9f',
+      cancelButtonColor: '#9fa8da ',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Si!',
+      allowOutsideClick: false,
+      allowEnterKey: false
+    }).then((result) => {
+      /*
+       * Si acepta
+       */
+      if (result.value) {
+        this.service.reWriteFile(this.auth.getIdUsuario(), idPeriodo, idLinea).subscribe(result => {       
+          if (result.response.sucessfull) {
+            Materialize.toast('Se modificarón las metas correctamente', 4000, 'green');
+            this.bVistaPre = true;
+            this.status = "inactive";
+            $('.file-path').val('')
+            this.formCargaMasiva.reset();
+            this.submitted = false;
+
+          } else {
+            Materialize.toast(result.response.message, 4000, 'red');
+          }
+        }, eror => {
+          Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+        });
+
+        /*
+        * Si cancela accion
+        */
+      } else if (result.dismiss === swal.DismissReason.cancel) {
+      }
+    })
+
+  }
+
+
+  getPeriodo(periodos: Array<Periodo>, id_periodo: number): string {
+    let el = periodos.filter(el => el.id_periodo == id_periodo);
+
+    if (el.length > 0) {
+      return " " + el[0].descripcion_mes + " " + el[0].anio;
+    } else {
+      return "Linea no identificada"
+    }
   }
 
 }
