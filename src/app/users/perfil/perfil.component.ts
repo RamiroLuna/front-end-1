@@ -58,6 +58,7 @@ export class PerfilComponent implements OnInit {
               return parseInt(item);
             });
 
+            this.descripcion_perfiles = "";
             perfiles.forEach((element, index) => {
               if (index > 0) this.descripcion_perfiles += ", ";
               let descripcion = this.perfiles.filter(el => el.id == element)[0].valor;
