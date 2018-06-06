@@ -94,7 +94,7 @@ let configChartSpider = {
     title: {
         text: '',
         style: {
-            color: '#33691E'
+            color: '#FFFFFF'
         }
     },
     credits: {
@@ -105,15 +105,18 @@ let configChartSpider = {
     },
 
     xAxis: {
-        categories: ['GRUPO A', 'GRUPO B', 'GRUPO C', 'GRUPO D'],
+        categories: [],
         tickmarkPlacement: 'on',
         lineWidth: 0,
         labels: {
             style: {
                 color: '#33691E',
                 fontWeight: 'bold'
-            }
-        }
+            },
+            y: 5
+
+        },
+
     },
 
     yAxis: {
@@ -132,6 +135,7 @@ let configChartSpider = {
     },
 
     tooltip: {
+        enabled: false,
         shared: true,
         pointFormat: '<span>{series.name}: <b>{point.y}</b><br/>'
     },
@@ -140,7 +144,8 @@ let configChartSpider = {
         itemStyle: {
             color: '#33691E'
         },
-        visible: false
+        align: 'left',
+        verticalAlign: 'bottom',
     },
 
     plotOptions: {
@@ -149,7 +154,7 @@ let configChartSpider = {
             dataLabels: {
                 overflow: 'none',
                 allowOverlap: true,
-                enabled: true,
+                enabled: false,
                 x: 0,
                 y: -6
             },

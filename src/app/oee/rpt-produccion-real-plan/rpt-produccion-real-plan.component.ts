@@ -138,9 +138,9 @@ export class RptProduccionRealPlanComponent implements OnInit {
 
 
           let tmp = '';
-          if (this.parametrosBusqueda.report == 'byWeeks' || this.parametrosBusqueda.report == 'byMonths') {
+          if (this.parametrosBusqueda.report == 'byWeeks') {
             configChart.plotOptions.column.dataLabels.rotation = 0;
-          } else if (this.parametrosBusqueda.report == 'byDays') {
+          } else if (this.parametrosBusqueda.report == 'byDays' || this.parametrosBusqueda.report == 'byMonths') {
             configChart.plotOptions.column.dataLabels.rotation = 270;
           }
 
@@ -148,32 +148,44 @@ export class RptProduccionRealPlanComponent implements OnInit {
           configChart.series = [];
           configChart.xAxis.categories = labels;
           configChart.title.text = titulo;
+          
 
 
-          configChart.series.push({ name: ' Producción real ', data: dataReal, color: '#dcedc8' });
-          configChart.series.push({ name: ' Meta esperada ', data: dataEsperada, type: 'line', color: '#1a237e' });
+          configChart.series.push({ name: ' Real ', data: dataReal, color: '#dcedc8' });
+          configChart.series.push({ name: ' Meta ', data: dataEsperada, type: 'line', color: '#1a237e' });
 
           let datosRRadar = result.data.graficaMap || [];
           configChartSpider.series = [];
-          configChartSpider.title.text = titulo;
+          configChartSpider.xAxis.categories = [];
+          configChartSpider.title.text = '.';
           let esperada = [];
           let real = [];
+          let legeng = ':grupo:<br><span style="color:#9e9d24">:real:</span><br><span style="color:#283593">:meta:</span>';
 
           let esperadaTmp = datosRRadar.filter((el) => el.padre == 0)[0];
+          let realTmp = datosRRadar.filter((el) => el.padre == 0)[0];
+
           esperada.push(esperadaTmp.metaa);
           esperada.push(esperadaTmp.metab);
           esperada.push(esperadaTmp.metac);
           esperada.push(esperadaTmp.metad);
 
-          let realTmp = datosRRadar.filter((el) => el.padre == 0)[0];
           real.push(realTmp.reala);
           real.push(realTmp.realb);
           real.push(realTmp.realc);
           real.push(realTmp.reald);
 
+          let categorias = [];
+          categorias.push(legeng.replace(':grupo:','Grupo A').replace(':real:',realTmp.reala).replace(':meta:',realTmp.metaa));
+          categorias.push(legeng.replace(':grupo:','Grupo B').replace(':real:',realTmp.realb).replace(':meta:',realTmp.metab));
+          categorias.push(legeng.replace(':grupo:','Grupo C').replace(':real:',realTmp.realc).replace(':meta:',realTmp.metac));
+          categorias.push(legeng.replace(':grupo:','Grupo D').replace(':real:',realTmp.reald).replace(':meta:',realTmp.metad));
+          
+          configChartSpider.xAxis.categories = categorias;
+
           configChartSpider.series.push({
             color: '#283593',
-            name: ' Meta esperada ',
+            name: ' Meta ',
             data: esperada,
             pointPlacement: 'on',
             dataLabels: {
@@ -183,7 +195,7 @@ export class RptProduccionRealPlanComponent implements OnInit {
 
           configChartSpider.series.push({
             color: '#9e9d24',
-            name: ' Meta real ',
+            name: ' Real ',
             data: real,
             pointPlacement: 'on',
             dataLabels: {
