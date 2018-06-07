@@ -10,11 +10,12 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { Highcharts } from 'highcharts';
 import { configChartOEE, configChartDisp, configChartPerdidas } from './rpt.config.export';
-// import save_chart from './imagen.base64.js'
+
 
 
 declare var $: any;
 declare var Materialize: any;
+declare function unescape(s: string): string;
 
 @Component({
   selector: 'app-rpt-resumen-oee',
@@ -44,6 +45,10 @@ export class RptResumenOeeComponent implements OnInit {
   public rowsProduccion: Array<any>;
   public rowsPerdidas: Array<any>;
   public rowsDisponibilidad: Array<any>;
+
+  public base64Oee: any;
+  public base64Dispo: any;
+  public base64Perdida: any;
 
 
   constructor(
@@ -160,11 +165,10 @@ export class RptResumenOeeComponent implements OnInit {
     $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
   }
 
-  /*
-   * Carga plugins para mostrar grafica 
-   */
-  ngAfterViewHttpRptPerdida(): void {
-    //  $('#chartPerdidas').highcharts(configChartPerdidas);
+  loadBase64Charts(): void {
+    this.save_chart($('#chartOee').highcharts(), "oee");
+    this.save_chart($('#chartDisponibilidad').highcharts(), "dispo");
+    this.save_chart($('#chartPerdidas').highcharts(), "perdidas");
   }
 
 
@@ -242,7 +246,13 @@ export class RptResumenOeeComponent implements OnInit {
 
 
           this.viewReport = true;
-          setTimeout(() => { this.ngAfterViewHttpRpt(); }, 200);
+          setTimeout(() => {
+            this.ngAfterViewHttpRpt();
+          }, 200);
+
+          setTimeout(()=>{
+            this.loadBase64Charts();
+          },3000);
 
         } else {
 
@@ -274,7 +284,7 @@ export class RptResumenOeeComponent implements OnInit {
         configChartPerdidas.xAxis.categories = labels;
         configChartPerdidas.series.push({ name: 'Horas Muertas', data: horas });
 
-        setTimeout(() => { this.ngAfterViewHttpRptPerdida(); }, 200);
+
 
       } else {
 
@@ -293,40 +303,6 @@ export class RptResumenOeeComponent implements OnInit {
     } else {
       return "Linea no identificada"
     }
-  }
-
-  downloadCharts(event): void {
-    event.preventDefault();
-    let img = document.createElement('a');
-
-    if (this.seccion == 0) {
-      let canvas = $('#chart');
-      let data = canvas[0].toDataURL("image/png");
-
-      img.setAttribute("id", "tmpImagen");
-      img.href = data;
-      img.download = "Grafica_fallas";
-
-    } else if (this.seccion == 1) {
-      let canvas = $('#chartDisponibilidad');
-      let data = canvas[0].toDataURL("image/png");
-
-      img.setAttribute("id", "tmpImagen");
-      img.href = data;
-      img.download = "Grafica_disponibilidad";
-    } else if (this.seccion == 2) {
-      let canvas = $('#chartPerdidas');
-      let data = canvas[0].toDataURL("image/png");
-
-      img.setAttribute("id", "tmpImagen");
-      img.href = data;
-      img.download = "Graficas_perdidas";
-
-    }
-
-    img.click();
-    img.remove();
-
   }
 
   exportarExcel(): void {
@@ -378,37 +354,46 @@ export class RptResumenOeeComponent implements OnInit {
 
   }
 
-  save_chart(chart) {
+  save_chart(chart: any, tipoGrafica: string): void {
+
     let render_width = 1000;
     let render_height = render_width * chart.chartHeight / chart.chartWidth
 
     // Get the cart's SVG code
     let svg = chart.getSVG({
-      exporting: {
-        sourceWidth: chart.chartWidth,
-        sourceHeight: chart.chartHeight
-      }
+      sourceWidth: chart.chartWidth,
+      sourceHeight: chart.chartHeight
     });
-    
 
-    // console.log(svg)
+    let canvas = document.createElement("canvas");
+    let ctx = canvas.getContext("2d");
+    let img = document.createElement("img");
 
-    // Create a canvas
-    let canvas = document.createElement('canvas').getContext('2d');
+    canvas.height = render_height;
+    canvas.width = render_width;
 
-    var img = $('#grafica')
-    // img.src = 'data:image/svg+xml;base64,' + window.btoa(svg)
-  
-  
-    
+    img.setAttribute("src", "data:image/svg+xml;base64," + window.btoa(unescape(encodeURIComponent(svg))));
 
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0, render_width, render_height);
 
+      if (tipoGrafica == "oee") {
+        this.base64Oee = canvas.toDataURL("image/png");
+      } else if (tipoGrafica == "dispo") {
+        this.base64Dispo = canvas.toDataURL("image/png");
+      } else if (tipoGrafica == "perdidas") {
+        this.base64Perdida = canvas.toDataURL("image/png");
+      }
+    };
+
+    // canvas.remove();
+    img.remove();
   }
 
 
 
   printRptPDF(): void {
-    this.save_chart($('#chartOee').highcharts())
+
     let docDefinition = {
       header: (currentPage, pageCount) => {
         // you can apply any logic and return any valid pdfmake element
@@ -487,11 +472,10 @@ export class RptResumenOeeComponent implements OnInit {
               table: {
                 widths: ['*'],
                 body: [
-                  [{ text: '\n' }]
-                  // [{ image: 'base64OEE', width: 700, height: 250 }],
-                  // [{ text: '\n\n\n\n\n\n' }],
-                  // [{ image: 'base64Disponiblidad', width: 700, height: 250 }],
-                  // [{ image: 'base64Perdidas', width: 700, height: 350 }]
+                  [{ text: '\n' }],
+                  [{ image: this.base64Oee, width: 700, height: 250 }],
+                  [{ image: this.base64Dispo, width: 700, height: 250 }],
+                  [{ image: this.base64Perdida, width: 700, height: 350 }]
                 ]
               }
             }

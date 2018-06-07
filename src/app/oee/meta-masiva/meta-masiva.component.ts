@@ -54,6 +54,7 @@ export class MetaMasivaComponent implements OnInit {
   public disabled: boolean;
   public textoBtn: string;
   public status: string;
+  public height: number;
 
 
 
@@ -103,7 +104,6 @@ export class MetaMasivaComponent implements OnInit {
    */
   ngAfterViewInitHttp(): void {
     $('.tooltipped').tooltip({ delay: 50 });
-
   }
 
   regresar() {
@@ -167,8 +167,11 @@ export class MetaMasivaComponent implements OnInit {
         if (result.response.sucessfull) {
           this.metas = result.data.listMetas || [];
           this.textoBtn = " VISTA PREVIA ";
+          this.height = $( document  ).height();
           this.bVistaPre = true;
-          setTimeout(() => { this.status = 'active'; }, 20)
+          setTimeout(() => { 
+            this.status = 'active';             
+          }, 20)
 
         } else {
           this.textoBtn = " VISTA PREVIA ";
@@ -197,6 +200,7 @@ export class MetaMasivaComponent implements OnInit {
         $('.file-path').val('')
         this.formCargaMasiva.reset();
         this.submitted = false;
+        $(document).height(this.height+'px');
 
       } else {
         // "999" indica que ya hay metas cargadas para el preiodo seleccionado
