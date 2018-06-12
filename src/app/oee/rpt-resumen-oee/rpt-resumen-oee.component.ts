@@ -388,7 +388,7 @@ export class RptResumenOeeComponent implements OnInit {
       }
     };
 
-    // canvas.remove();
+    canvas.remove();
     img.remove();
   }
 
@@ -404,7 +404,7 @@ export class RptResumenOeeComponent implements OnInit {
           // '  Linea:' + this.getTextoLinea(this.lineas, this.paramsBusqueda.idLinea) +
           '     Periodo:' + this.getPeriodo(this.periodos, this.paramsBusqueda.idPeriodo);
 
-        return { text: texto, alignment: 'center', margin: 40, color: '#1a237e', bold: true, fontSize: 14 };
+        return { text: texto, alignment: 'center', margin: 40, color: '#1a237e', bold: true, fontSize: 13 };
       },
       content: [
         {
@@ -412,36 +412,39 @@ export class RptResumenOeeComponent implements OnInit {
             {
               width: '40%',
               layout: 'noBorders',
-              fontSize: 7,
+              fontSize: 6,
               table: {
                 widths: ['*'],
                 body: [
-                  [''],
-                  [''],
                   [
                     {
-                      table: {
-                        headerRows: 1,
-                        widths: ['*', 'auto', 'auto'],
-                        body: this.getTableHtmlToArray(this.rows, 'oee')
-                      },
-                      layout: 'headerLineOnly',
+                      columns: [
+                        [
+                          {
+                            table: {
+                              headerRows: 1,
+                              widths: ['*', 'auto', 'auto'],
+                              body: this.getTableHtmlToArray(this.rows, 'oee')
+                            },
+                            layout: 'headerLineOnly',
 
 
+                          }
+                        ],
+                        [{
+                          table: {
+                            headerRows: 1,
+                            widths: ['*', 'auto'],
+                            body: this.getTableHtmlToArray(this.rowsProduccion, 'produccion')
+                          },
+                          layout: 'headerLineOnly'
+                        }]
+                      ],
                     }
                   ],
                   [''],
                   [''],
-                  [
-                    {
-                      table: {
-                        headerRows: 1,
-                        widths: ['*', 'auto'],
-                        body: this.getTableHtmlToArray(this.rowsProduccion, 'produccion')
-                      },
-                      layout: 'headerLineOnly'
-                    }
-                  ],
+                  [''],
                   [''],
                   [''],
                   [
@@ -454,6 +457,9 @@ export class RptResumenOeeComponent implements OnInit {
                       layout: 'headerLineOnly'
                     }
                   ],
+                  [''],
+                  [''],
+                  [''],
                   [''],
                   [''],
                   [
@@ -470,16 +476,26 @@ export class RptResumenOeeComponent implements OnInit {
               }
             },
             {
-              width: '60%',
+              width: '5%',
               layout: 'noBorders',
               table: {
                 widths: ['*'],
                 body: [
-                  [{ image: this.base64Oee, width: 400, height: 200 }],
+                  ['']
+                ]
+              }
+            },
+            {
+              width: '55%',
+              layout: 'noBorders',
+              table: {
+                widths: ['*'],
+                body: [
+                  [{ image: this.base64Oee, width: 350, height: 165 }],
                   [''],
-                  [{ image: this.base64Dispo, width: 400, height: 200 }],
+                  [{ image: this.base64Dispo, width: 350, height: 165 }],
                   [''],
-                  [{ image: this.base64Perdida, width: 400, height: 250 }]
+                  [{ image: this.base64Perdida, width: 350, height: 165 }]
                 ]
               }
             }
@@ -501,13 +517,13 @@ export class RptResumenOeeComponent implements OnInit {
         }
       },
       // a string or { width: number, height: number }
-      pageSize: 'A4',
+      pageSize: 'LETTER',
       // by default we use portrait, you can change it to landscape if you wish
       pageOrientation: 'landscape',
       // pageOrientation: 'portrait',
 
       // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
-      pageMargins: [20, 70, 80, 20]
+      pageMargins: [40, 70, 30, 20]
     };
 
     pdfMake.createPdf(docDefinition).open();
