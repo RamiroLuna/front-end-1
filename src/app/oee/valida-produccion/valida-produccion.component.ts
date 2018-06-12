@@ -28,6 +28,7 @@ export class ValidaProduccionComponent implements OnInit {
   public grupos: Array<Catalogo>;
   public turnos: Array<Catalogo>;
   public formulario: FormGroup;
+  public height:number;
   public meta: any = {
     id_meta: 0,
     id_linea: 0,
@@ -45,6 +46,7 @@ export class ValidaProduccionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+   
     this.loading = true;
     this.mostrarBtnValidar = true;
     this.productos = [];
@@ -98,6 +100,7 @@ export class ValidaProduccionComponent implements OnInit {
 */
   ngAfterViewInit(): void {
     $('.tooltipped').tooltip({ delay: 50 });
+  
   }
 
   regresar() {

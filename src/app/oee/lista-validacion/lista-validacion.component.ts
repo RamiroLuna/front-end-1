@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserSonarh } from '../../models/user-sonarh';
 import { ListaValidacionService } from './lista-validacion.service';
 import { AuthService } from '../../auth/auth.service';
-import { DataTable , findRol } from '../../utils';
+import { DataTable, findRol } from '../../utils';
 import { Produccion } from '../../models/produccion';
 
 declare var $: any;
@@ -17,7 +17,8 @@ export class ListaValidacionComponent implements OnInit {
 
 
   public loading: boolean;
-  public listaProduccion:Array<Produccion>;
+  public height: number;
+  public listaProduccion: Array<Produccion>;
   public permission: any = {
   };
 
@@ -26,12 +27,12 @@ export class ListaValidacionComponent implements OnInit {
     private auth: AuthService) { }
 
   ngOnInit() {
+
     this.loading = true;
     this.listaProduccion = [];
-    // this.permission.altaEtad = findRol(11,this.auth.getRolesGenerales());
-    // this.permission.showListEtad = findRol(14,this.auth.getRolesGenerales());
+
     this.service.getProducuccionForLiberar(this.auth.getIdUsuario()).subscribe(result => {
-      console.log('Regresa por librerar',result)
+
       if (result.response.sucessfull) {
         this.listaProduccion = result.data.listProduccion || [];
         this.loading = false;
@@ -47,14 +48,17 @@ export class ListaValidacionComponent implements OnInit {
 
   }
 
-    /*
-   * Carga plugins despues de cargar y mostrar objetos en el DOM
-   */
+  /*
+ * Carga plugins despues de cargar y mostrar objetos en el DOM
+ */
   ngAfterViewHttp(): void {
 
-    DataTable('#tabla');
+    
 
+    DataTable('#tabla');
     $('.tooltipped').tooltip({ delay: 50 });
+
+   
   }
 
 

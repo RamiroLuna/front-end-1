@@ -87,48 +87,49 @@
         <ul id="issues-collection" class="collection">
           <li class="collection-item light-green lighten-5">
             <span class="collection-header">
-              <b>Fallas. </b></span>
+              <b>Fallas. </b>
+            </span>
           </li>
           <li class="collection-item">
             <div class="row scroll_ejex_tabla_reporte">
-                <table id="tabla" class="display" cellspacing="0" width="100%">
-                    <thead>
-                      <tr>
-                        <th class="center-align">Día</th>
-                        <th class="center-align">Linea</th>
-                        <th class="center-align">Grupo</th>
-                        <th class="center-align">Turno</th>
-                        <th class="center-align">Fuente del Paro</th>
-                        <th class="center-align">Razón del Paro</th>
-                        <th class="center-align">Equipo</th>
-                        <th class="center-align">Nombre del Equipo</th>
-                        <th class="center-align">Problema</th>
-                        <th class="center-align">Hora de inicio</th>
-                        <th class="center-align">Hora de final</th>
-                        <th class="center-align">Horas de paro</th>
-                      </tr>
-                    </thead>
-            
-                    <tbody>
-                      <tr *ngIf="fallas.length == 0">
-                        <td class="center-align" colspan="12">NO HAY FALLAS REGISTRADAS</td>
-                      </tr>
-                      <tr *ngFor="let falla of fallas">
-                        <td class="center-align">{{falla.diaString}}</td>
-                        <td class="center-align">{{falla.valor_linea}}</td>
-                        <td class="center-align">{{falla.valor_grupo}}</td>
-                        <td class="center-align">{{falla.valor_turno}}</td>
-                        <td class="center-align">{{falla.valor_fuente}}</td>
-                        <td class="center-align">{{falla.valor_razon}}</td>
-                        <td class="center-align">{{falla.valor_equipo}}</td>
-                        <td class="center-align">{{falla.descripcion_equipo}}</td>
-                        <td class="center-align">{{falla.descripcion}}</td>
-                        <td class="center-align">{{falla.hora_inicio}}</td>
-                        <td class="center-align">{{falla.hora_final}}</td>
-                        <td class="center-align">{{falla.tiempo_paro + ' Hrs'}}</td>                  
-                      </tr>
-                    </tbody>
-                  </table>
+              <table id="tabla" class="display" cellspacing="0" width="100%">
+                <thead>
+                  <tr>
+                    <th class="center-align">Día</th>
+                    <th class="center-align">Linea</th>
+                    <th class="center-align">Grupo</th>
+                    <th class="center-align">Turno</th>
+                    <th class="center-align">Fuente del Paro</th>
+                    <th class="center-align">Razón del Paro</th>
+                    <th class="center-align">Equipo</th>
+                    <th class="center-align">Nombre del Equipo</th>
+                    <th class="center-align">Problema</th>
+                    <th class="center-align">Hora de inicio</th>
+                    <th class="center-align">Hora de final</th>
+                    <th class="center-align">Horas de paro</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngIf="fallas.length == 0">
+                    <td class="center-align" colspan="12">NO HAY FALLAS REGISTRADAS</td>
+                  </tr>
+                  <tr *ngFor="let falla of fallas">
+                    <td class="center-align">{{falla.diaString}}</td>
+                    <td class="center-align">{{falla.valor_linea}}</td>
+                    <td class="center-align">{{falla.valor_grupo}}</td>
+                    <td class="center-align">{{falla.valor_turno}}</td>
+                    <td class="center-align">{{falla.valor_fuente}}</td>
+                    <td class="center-align">{{falla.valor_razon}}</td>
+                    <td class="center-align">{{falla.valor_equipo}}</td>
+                    <td class="center-align">{{falla.descripcion_equipo}}</td>
+                    <td class="center-align">{{falla.descripcion}}</td>
+                    <td class="center-align">{{falla.hora_inicio}}</td>
+                    <td class="center-align">{{falla.hora_final}}</td>
+                    <td class="center-align">{{falla.tiempo_paro + ' Hrs'}}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </li>
         </ul>
@@ -145,22 +146,20 @@
           <i class="material-icons">arrow_back</i>
         </i>
       </a>
-      <a *ngIf="mostrarBtnValidar" class="btn-floating btn-large light-green darken-1  waves-effect waves-light tooltipped" data-position="top" data-delay="50"
-        data-tooltip="Validar" (click)="validar()">
-
+      <button class="btn-floating btn-large light-green darken-1  waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+        data-tooltip="Validar" (click)="validar()" [disabled]="!mostrarBtnValidar">
         <i class="material-icons">done</i>
-
-      </a>
+      </button>
     </div>
   </div>
   <!-- fin solo pantallas -->
   <!-- Solo para dispositivos moviles -->
 
   <div class="hide-on-large-only center-align">
-    <a *ngIf="mostrarBtnValidar" class="btn-floating light-green darken-1  waves-effect waves-light tooltipped" data-position="top" data-delay="50" data-tooltip="Validar producción"
-      (click)="validar()">
+    <button class="btn-floating light-green darken-1  waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+      data-tooltip="Validar producción" (click)="validar()" [disabled]="!mostrarBtnValidar">
       <i class="material-icons">done</i>
-    </a>
+    </button>
   </div>
   <br>
   <!-- Fin solo para dispositivos moviles -->
