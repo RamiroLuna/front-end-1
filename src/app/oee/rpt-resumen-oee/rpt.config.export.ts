@@ -70,11 +70,9 @@ let configChartOEE = {
     plotOptions: {
         series: {
             dataLabels: {
-                enabled: true,
                 color: '#000000',
-                inside: true,
-                y: 10,
-                distance: -10
+                enabled: true,
+                inside: true
             },
             events: {
                 legendItemClick: function () {
@@ -82,8 +80,11 @@ let configChartOEE = {
                 }
             }
         },
-        bar: {
-            depth: 75
+        line: {
+            dataLabels: {
+                inside: false,
+                y: -5
+            }
         }
     },
     colors: ['#388e3c', '#1a237e'],

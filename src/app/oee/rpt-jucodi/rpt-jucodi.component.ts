@@ -168,13 +168,13 @@ export class RptJucodiComponent implements OnInit {
             confTmp.title.text = titulo;
             confTmp.subtitle.text = 'Periodo: ' + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
 
-            confTmp.series.push({ name: ' A ', data: dataGrupoA, color: '#4db6ac' });
+            confTmp.series.push({ name: ' A ', data: dataGrupoA, color: '#ef5350' });
             confTmp.series.push({ name: ' B ', data: dataGrupoB, color: '#66bb6a' });
-            confTmp.series.push({ name: ' C ', data: dataGrupoC, color: '#78909c' });
-            confTmp.series.push({ name: ' D ', data: dataGrupoD });
-            confTmp.series.push({ name: ' Meta 1ro ', data: dataMeta1, type: 'line', color: '#64b5f6' });
-            confTmp.series.push({ name: ' Meta 2do ', data: dataMeta2, type: 'line', color: '#e0f2f1' });
-            confTmp.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#fff3e0' });
+            confTmp.series.push({ name: ' C ', data: dataGrupoC, color: '#d4e157' });
+            confTmp.series.push({ name: ' D ', data: dataGrupoD, color: '#42a5f5' });
+            confTmp.series.push({ name: ' Meta 1ro ', data: dataMeta1, type: 'line', color: '#ffcc80',  dashStyle: 'Dash' });
+            confTmp.series.push({ name: ' Meta 2do ', data: dataMeta2, type: 'line', color: '#ff9800',  dashStyle: 'Dash' });
+            confTmp.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#e65100',  dashStyle: 'Dash' });
             this.datosConfiguracion.push(confTmp);
           }
           
