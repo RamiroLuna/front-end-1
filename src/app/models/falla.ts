@@ -28,5 +28,7 @@ export class Falla {
     valor_fuente?:string;
     valor_equipo?:string;
 
+    validado?:boolean;
+
 
 }

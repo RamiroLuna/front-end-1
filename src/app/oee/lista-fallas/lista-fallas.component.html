@@ -183,15 +183,21 @@
             <td class="center-align">{{falla.hora_inicio}}</td>
             <td class="center-align">{{falla.hora_final}}</td>
             <td class="center-align">{{falla.tiempo_paro + ' Hrs'}}</td>
-            <td class="center-align" *ngIf="permission.editFail && estatusPeriodo">
+            <td class="center-align" *ngIf="permission.editFail && estatusPeriodo && !falla.validado">
               <a class="btn-floating light-green lighten-1" (click)="openModalEdicion(falla.id_falla)">
                 <i class="material-icons">description</i>
               </a>
             </td>
-            <td class="center-align" *ngIf="permission.deleteFail && estatusPeriodo">
+            <td class="center-align" *ngIf="permission.editFail && estatusPeriodo && falla.validado">
+              Validada
+            </td>
+            <td class="center-align" *ngIf="permission.deleteFail && estatusPeriodo && !falla.validado">
               <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(falla,'eliminar')">
                 <i class="material-icons">delete</i>
               </a>
+            </td>
+            <td class="center-align" *ngIf="permission.deleteFail &&  estatusPeriodo && falla.validado">
+              Validada
             </td>
           </tr>
         </tbody>

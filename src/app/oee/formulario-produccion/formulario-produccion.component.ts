@@ -31,6 +31,7 @@ export class FormularioProduccionComponent implements OnInit {
   public mensaje: string;
   public formulario: FormGroup;
   public estatusPeriodo: boolean;
+  public estatusValidacion: number;
   public meta: any = {
     id_meta: 0,
     id_linea: 0,
@@ -69,6 +70,7 @@ export class FormularioProduccionComponent implements OnInit {
     this.turnos = [];
     this.btnAdd = true;
     this.estatusPeriodo = true;
+    this.estatusValidacion = 0;
 
     if (this.seccion == 'add') {
       this.service.init(this.auth.getIdUsuario()).subscribe(result => {
@@ -106,7 +108,6 @@ export class FormularioProduccionComponent implements OnInit {
       });
     } else if (this.seccion == 'consulta') {
       this.service.getDetailsProduccion(this.auth.getIdUsuario(), this.idMeta).subscribe(result => {
-        console.log('result produc details', result)
         if (result.response.sucessfull) {
           this.estatusPeriodo = result.data.estatusPeriodo;
           this.grupos = result.data.listGrupos || [];
@@ -119,6 +120,7 @@ export class FormularioProduccionComponent implements OnInit {
           this.meta.id_linea = result.data.meta.id_linea;
           this.meta.id_turno = result.data.meta.id_turno;
           this.meta.id_grupo = result.data.meta.id_grupo;
+          this.estatusValidacion = result.data.meta.estatus;
 
           this.loading = false;
           this.loadFormulario();
@@ -159,6 +161,10 @@ export class FormularioProduccionComponent implements OnInit {
   back() {
     $('.tooltipped').tooltip('hide');
     this.accion.emit();
+  }
+
+  cancel(event):void{
+    event.preventDefault()
   }
 
 

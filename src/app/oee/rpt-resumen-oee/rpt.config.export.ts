@@ -7,7 +7,7 @@ let configChartOEE = {
         plotShadow: false,
         plotBorderWidth: 0,
         options3d: {
-            enabled: true,
+            enabled: false,
             alpha: 10,
             beta: 1,
             depth: 56

@@ -103,10 +103,13 @@
             <li class="collection-item light-green lighten-5">
               <span class="collection-header">
                 <b>Productos. </b> Producción registrada</span>
-              <div class="secondary-content" *ngIf="permission.updateProduccion && estatusPeriodo">
+              <div class="secondary-content" *ngIf="permission.updateProduccion && estatusPeriodo && (estatusValidacion == 0)">
                 <a href="#" (click)="modificarDatos($event)">
                   {{ modificacion ? 'Cancelar' : 'Modificar' }}
                 </a>
+              </div>
+              <div class="secondary-content" *ngIf="estatusValidacion == 1">
+                <a href="#" style="cursor: default" (click)="cancel($event)">Producción validada</a>
               </div>
             </li>
             <li class="collection-item asignacion_productos">
@@ -121,7 +124,7 @@
               </div>
               <div *ngIf="modificacion" class="row right-align">
                 <div class="col s8"></div>
-                <a class="btn light-green darken-1 waves-effect waves-light btn col s4"  (click)="modificarProduccion()">Modificar producción</a>
+                <a class="btn light-green darken-1 waves-effect waves-light btn col s4" (click)="modificarProduccion()">Modificar producción</a>
               </div>
             </li>
           </ul>

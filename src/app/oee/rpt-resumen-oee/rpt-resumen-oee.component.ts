@@ -50,7 +50,6 @@ export class RptResumenOeeComponent implements OnInit {
   public base64Dispo: any;
   public base64Perdida: any;
 
-
   constructor(
     private service: RptResumenOeeService,
     private auth: AuthService,
@@ -122,6 +121,7 @@ export class RptResumenOeeComponent implements OnInit {
   ngAfterViewHttp(): void {
     $('.tooltipped').tooltip({ delay: 50 });
     $('select').material_select();
+
   }
 
   /*
@@ -129,8 +129,10 @@ export class RptResumenOeeComponent implements OnInit {
    */
   ngAfterViewHttpRpt(): void {
 
-    let graficaOee = $('#chartOee').highcharts(configChartOEE);
-    let b = false;
+    $('#chartOee').highcharts(configChartOEE);
+    $('#chartDisponibilidad').highcharts(configChartDisp);
+    $('#chartPerdidas').highcharts(configChartPerdidas);
+    // let b = false;
 
     $('.carousel.carousel-slider').carousel({
       fullWidth: true,
@@ -144,18 +146,20 @@ export class RptResumenOeeComponent implements OnInit {
         $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
         switch (this.seccion) {
           case 0:
-            if (b) {
-              $('#chartOee').highcharts(configChartOEE);
-            }
-            b = true;
+            // if (b) {
+            //   $('#chartOee').highcharts(configChartOEE);
+            // }
+            // b = true;
             break;
           case 1:
-            b = true;
-            $('#chartDisponibilidad').highcharts(configChartDisp);
+            // b = true;
+            // $('#chartDisponibilidad').highcharts(configChartDisp);
+
             break;
           case 2:
-            b = true;
-            $('#chartPerdidas').highcharts(configChartPerdidas);
+            // b = true;
+            // $('#chartPerdidas').highcharts(configChartPerdidas);
+
             break;
         }
       }
@@ -163,13 +167,13 @@ export class RptResumenOeeComponent implements OnInit {
 
     $('.carousel li').css('background-color', '#bdbdbd');
     $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
-  }
 
-  loadBase64Charts(): void {
     this.save_chart($('#chartOee').highcharts(), "oee");
     this.save_chart($('#chartDisponibilidad').highcharts(), "dispo");
     this.save_chart($('#chartPerdidas').highcharts(), "perdidas");
+
   }
+
 
 
   verTablas(event): void {
@@ -249,10 +253,6 @@ export class RptResumenOeeComponent implements OnInit {
           setTimeout(() => {
             this.ngAfterViewHttpRpt();
           }, 200);
-
-          setTimeout(()=>{
-            this.loadBase64Charts();
-          },3000);
 
         } else {
 
@@ -356,26 +356,28 @@ export class RptResumenOeeComponent implements OnInit {
 
   save_chart(chart: any, tipoGrafica: string): void {
 
-    let render_width = 1000;
-    let render_height = render_width * chart.chartHeight / chart.chartWidth
+    // let render_width = 1500;
+    // let render_height = render_width * chart.chartHeight / chart.chartWidth
 
     // Get the cart's SVG code
-    let svg = chart.getSVG({
-      sourceWidth: chart.chartWidth,
-      sourceHeight: chart.chartHeight
-    });
+    let svg = chart.getSVG(
+      {
+        sourceWidth: chart.chartWidth,
+        sourceHeight: chart.chartHeight
+      }
+    );
 
     let canvas = document.createElement("canvas");
     let ctx = canvas.getContext("2d");
     let img = document.createElement("img");
 
-    canvas.height = render_height;
-    canvas.width = render_width;
+    canvas.height = chart.chartHeight;
+    canvas.width = chart.chartWidth;
 
     img.setAttribute("src", "data:image/svg+xml;base64," + window.btoa(unescape(encodeURIComponent(svg))));
 
     img.onload = () => {
-      ctx.drawImage(img, 0, 0, render_width, render_height);
+      ctx.drawImage(img, 0, 0, chart.chartWidth, chart.chartHeight);
 
       if (tipoGrafica == "oee") {
         this.base64Oee = canvas.toDataURL("image/png");
@@ -394,11 +396,12 @@ export class RptResumenOeeComponent implements OnInit {
 
   printRptPDF(): void {
 
+
     let docDefinition = {
       header: (currentPage, pageCount) => {
         // you can apply any logic and return any valid pdfmake element
         let texto = 'Eficiencia Global de los equipos.  ' +
-          '  Linea:' + this.getTextoLinea(this.lineas, this.paramsBusqueda.idLinea) +
+          // '  Linea:' + this.getTextoLinea(this.lineas, this.paramsBusqueda.idLinea) +
           '     Periodo:' + this.getPeriodo(this.periodos, this.paramsBusqueda.idPeriodo);
 
         return { text: texto, alignment: 'center', margin: 40, color: '#1a237e', bold: true, fontSize: 14 };
@@ -407,7 +410,7 @@ export class RptResumenOeeComponent implements OnInit {
         {
           columns: [
             {
-              width: '30%',
+              width: '40%',
               layout: 'noBorders',
               fontSize: 7,
               table: {
@@ -433,8 +436,8 @@ export class RptResumenOeeComponent implements OnInit {
                     {
                       table: {
                         headerRows: 1,
-                        widths: ['*', 'auto', 'auto'],
-                        body: this.getTableHtmlToArray(this.rowsDisponibilidad, 'disponibilidad')
+                        widths: ['*', 'auto'],
+                        body: this.getTableHtmlToArray(this.rowsProduccion, 'produccion')
                       },
                       layout: 'headerLineOnly'
                     }
@@ -445,8 +448,8 @@ export class RptResumenOeeComponent implements OnInit {
                     {
                       table: {
                         headerRows: 1,
-                        widths: ['*', 'auto'],
-                        body: this.getTableHtmlToArray(this.rowsProduccion, 'produccion')
+                        widths: ['*', 'auto', 'auto'],
+                        body: this.getTableHtmlToArray(this.rowsDisponibilidad, 'disponibilidad')
                       },
                       layout: 'headerLineOnly'
                     }
@@ -467,15 +470,16 @@ export class RptResumenOeeComponent implements OnInit {
               }
             },
             {
-              width: '70%',
+              width: '60%',
               layout: 'noBorders',
               table: {
                 widths: ['*'],
                 body: [
-                  [{ text: '\n' }],
-                  [{ image: this.base64Oee, width: 700, height: 250 }],
-                  [{ image: this.base64Dispo, width: 700, height: 250 }],
-                  [{ image: this.base64Perdida, width: 700, height: 350 }]
+                  [{ image: this.base64Oee, width: 400, height: 200 }],
+                  [''],
+                  [{ image: this.base64Dispo, width: 400, height: 200 }],
+                  [''],
+                  [{ image: this.base64Perdida, width: 400, height: 250 }]
                 ]
               }
             }
@@ -497,13 +501,13 @@ export class RptResumenOeeComponent implements OnInit {
         }
       },
       // a string or { width: number, height: number }
-      pageSize: 'TABLOID',
+      pageSize: 'A4',
       // by default we use portrait, you can change it to landscape if you wish
       pageOrientation: 'landscape',
       // pageOrientation: 'portrait',
 
       // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
-      pageMargins: [40, 70, 40, 60]
+      pageMargins: [20, 70, 80, 20]
     };
 
     pdfMake.createPdf(docDefinition).open();
