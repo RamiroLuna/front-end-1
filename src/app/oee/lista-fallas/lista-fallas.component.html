@@ -56,15 +56,28 @@
         </legend>
         <div class="row">
           <div class="col s12 m12 l6 xl6">
-            <label for="">Linea</label>
-            <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="id_linea" [(ngModel)]="paramsBusqueda.id_linea"
-              (ngModelChange)="changeCombo()">
-              <option value="">SELECCIONE</option>
-              <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{ linea.valor }}</option>
-            </select>
-            <div *ngIf="formBusqueda.controls.id_linea.errors?.required && (formBusqueda.controls.id_linea?.touched || submitted)" class="error">
-              Se requiere la linea
-            </div>
+            <ng-template [ngIf]="verGrupo">
+              <label for="">Linea</label>
+              <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="id_linea" [(ngModel)]="paramsBusqueda.id_linea"
+                (ngModelChange)="changeCombo()">
+                <option value="">SELECCIONE</option>
+                <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{ linea.valor }}</option>
+              </select>
+              <div *ngIf="formBusqueda.controls.id_linea.errors?.required && (formBusqueda.controls.id_linea?.touched || submitted)" class="error">
+                Se requiere la linea
+              </div>
+            </ng-template>
+            <ng-template [ngIf]="!verGrupo">
+              <label for="">Grupo de Linea</label>
+              <select materialize="material_select" [materializeSelectOptions]="gruposLineas" formControlName="idGpoLinea" [(ngModel)]="paramsBusqueda.idGpoLinea"
+                (ngModelChange)="changeCombo()">
+                <option value="">SELECCIONE</option>
+                <option *ngFor="let grupo of gruposLineas" [value]="grupo.id">{{grupo.valor}}</option>
+              </select>
+              <div *ngIf="formBusqueda.controls.idGpoLinea.errors?.required && (formBusqueda.controls.idGpoLinea?.touched || submitted)" class="error">
+                Se requiere grupo linea
+              </div>
+            </ng-template>
           </div>
           <div class="col s12 m12 l6 xl6">
             <label for="">Grupo</label>

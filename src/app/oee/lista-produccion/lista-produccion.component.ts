@@ -14,6 +14,7 @@ import {
 import { Produccion } from '../../models/produccion';
 import { Periodo } from '../../models/periodo';
 import { Linea } from '../../models/linea';
+import { Catalogo } from '../../models/catalogo';
 
 declare var $: any;
 declare var Materialize: any;
@@ -62,9 +63,11 @@ export class ListaProduccionComponent implements OnInit {
   public meses: Array<any> = [];
   public lineas: Array<Linea> = [];
   public idLinea: number;
+  public idGpoLinea: number;
   public idPeriodo: number;
   public estatusPeriodo: boolean;
-
+  public gruposLineas: Array<Catalogo>= [];
+  public verGrupo:boolean;
 
   public permission: any = {
     consultaByLine: false,
@@ -78,6 +81,7 @@ export class ListaProduccionComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
+    this.verGrupo = false;
     this.showBtnRegistrar = false;
     this.noMostrarComponentValidacion = false;
     this.status = "inactive";
@@ -90,6 +94,8 @@ export class ListaProduccionComponent implements OnInit {
     this.anioSeleccionado = getAnioActual();
     this.permission.agregarProduccion = findRol(17, this.auth.getRolesOee());
     this.permission.consultaByLine = this.auth.permissionEdit(1) || this.auth.permissionEdit(2) || this.auth.permissionEdit(3);
+    this.idGpoLinea = this.auth.getId_GpoLinea();
+    this.verGrupo = this.auth.permissionEdit(4);
     if (this.permission.consultaByLine) this.idLinea = this.auth.getId_Linea();
     this.init();
 
@@ -104,6 +110,7 @@ export class ListaProduccionComponent implements OnInit {
         this.lineas = result.data.listLineas || [];
         this.lineas = this.lineas.filter(el => el.id_linea != 6).map(el => el);
         this.periodos = result.data.listPeriodos || [];
+        this.gruposLineas = result.data.listGposLinea || [];
 
         let tmpAnios = this.periodos.map(el => el.anio);
         this.periodos.filter((el, index) => {
@@ -141,6 +148,7 @@ export class ListaProduccionComponent implements OnInit {
   loadFormulario(): void {
     this.formConsultaPeriodo = this.fb.group({
       idLinea: new FormControl({ value: this.idLinea, disabled: this.permission.consultaByLine }, [Validators.required]),
+      idGpoLinea: new FormControl({ value: this.idGpoLinea, disabled: this.permission.consultaByLine }, [Validators.required]),
       idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required])
     });
   }
@@ -213,8 +221,8 @@ export class ListaProduccionComponent implements OnInit {
       this.disabled = true;
       this.datos_tabla = false;
 
-      this.service.getProduccion(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea).subscribe(result => {
-
+      this.service.getProduccion(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea, this.idGpoLinea).subscribe(result => {
+      
         if (result.response.sucessfull) {
           this.disabled = false;
           this.datos_tabla = true;

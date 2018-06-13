@@ -24,6 +24,7 @@ export class ListaFallasService {
     return this.http.get<any>(this.URL + '?action=getAllFallasByDays&id_usuario=' + id_usuario + 
     '&id_periodo='+ params.idPeriodo +
     '&id_linea='+ params.id_linea +
+    '&id_gpo_linea='+ params.idGpoLinea +
     '&id_grupo='+ params.id_grupo +
     '&id_turno='+ params.id_turno );
   }

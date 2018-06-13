@@ -9,8 +9,8 @@
           <i class="material-icons">arrow_back</i>
         </i>
       </a>
-      <a *ngIf="permission.agregarProduccion" class="btn-floating indigo darken-4  waves-effect waves-light tooltipped"
-        data-position="top" data-delay="50" data-tooltip="Ayuda" (click)="help($event)">
+      <a *ngIf="permission.agregarProduccion" class="btn-floating indigo darken-4  waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Ayuda" (click)="help($event)">
         <i class="material-icons">help</i>
       </a>
       <a *ngIf="showBtnRegistrar && permission.agregarProduccion" routerLink="nuevo" class="btn-floating btn light-green darken-1 waves-effect waves-light tooltipped"
@@ -40,16 +40,30 @@
           </div>
         </div>
         <div class="input-field col s12 m12 l5 xl5">
-          <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="idLinea" [(ngModel)]="idLinea"
-            (ngModelChange)="changeCombo()">
-            <option value="">SELECCIONE</option>
-            <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{linea.descripcion}}</option>
-          </select>
-          <label for="linea">Linea</label>
-          <div *ngIf="formConsultaPeriodo.controls.idLinea.errors?.required && (formConsultaPeriodo.controls.idLinea?.touched || submitted)"
-            class="error">
-            Seleccione una opcion
-          </div>
+          <ng-template [ngIf]="verGrupo">
+            <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="idLinea" [(ngModel)]="idLinea"
+              (ngModelChange)="changeCombo()">
+              <option value="">SELECCIONE</option>
+              <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{linea.descripcion}}</option>
+            </select>
+            <label for="linea">Linea</label>
+            <div *ngIf="formConsultaPeriodo.controls.idLinea.errors?.required && (formConsultaPeriodo.controls.idLinea?.touched || submitted)"
+              class="error">
+              Seleccione una opcion
+            </div>
+          </ng-template>
+          <ng-template [ngIf]="!verGrupo">
+              <select materialize="material_select" [materializeSelectOptions]="gruposLineas" formControlName="idGpoLinea" [(ngModel)]="idGpoLinea"
+                (ngModelChange)="changeCombo()">
+                <option value="">SELECCIONE</option>
+                <option *ngFor="let grupo of gruposLineas" [value]="grupo.id">{{grupo.valor}}</option>
+              </select>
+              <label for="grupo">Grupo Linea</label>
+              <div *ngIf="formConsultaPeriodo.controls.idGpoLinea.errors?.required && (formConsultaPeriodo.controls.idGpoLinea?.touched || submitted)"
+                class="error">
+                Seleccione una opcion
+              </div>
+            </ng-template>
         </div>
         <div class="input-field col s12 m12 l1 xl1">
           <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">

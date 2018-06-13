@@ -42,6 +42,10 @@ export class AuthService {
     return jwt_decode(this.getToken()).id_linea || -1;
   }
 
+  public getId_GpoLinea():number{
+    return jwt_decode(this.getToken()).id_grupo_linea || -1;
+  }
+
 /**
  * @function permissionEdit
  * @param  {number} idPerfil -  id del perfil que tiene permiso a tener editado el campo

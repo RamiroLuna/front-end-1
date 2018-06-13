@@ -47,9 +47,11 @@ export class ListaFallasComponent implements OnInit {
   public mensajeModal:string;
   public noVerBtnFallas: boolean;
   public estatusPeriodo:boolean;
+  public verGrupo:boolean;
 
 
   public fallas: Array<Falla> = [];
+  public gruposLineas: Array<Catalogo>= [];
   public fallaSeleccionada:number;
   /* Catalogos requeridos */
   public lineas: Array<Linea>;
@@ -75,6 +77,7 @@ export class ListaFallasComponent implements OnInit {
   ngOnInit() {
     
     this.loading = true;
+    this.verGrupo = false;
     this.submitted = false;
     this.bVistaPre = false;
     this.status = "inactive";
@@ -91,15 +94,20 @@ export class ListaFallasComponent implements OnInit {
 
 
     this.paramsBusqueda.id_grupo = this.auth.getId_Grupo();
-    this.paramsBusqueda.id_linea = this.auth.getId_Linea(); 
+    this.paramsBusqueda.id_linea = this.auth.getId_Linea();
+    this.paramsBusqueda.idGpoLinea = this.auth.getId_GpoLinea();
+
+    this.verGrupo = this.auth.permissionEdit(4);
     
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
+
       if (result.response.sucessfull) {
         this.lineas = result.data.listLineas || [];
         this.grupos = result.data.listGrupos || [];
         this.turnos = result.data.listTurnos || [];
         this.periodos = result.data.listPeriodos || []; 
+        this.gruposLineas = result.data.listGposLineas || [];
         
         let tmpAnios = this.periodos.map(el => el.anio);
         this.periodos.filter((el, index) => {
@@ -135,6 +143,7 @@ export class ListaFallasComponent implements OnInit {
   loadFormulario(): void {
     this.formBusqueda = this.fb.group({
       anio: new FormControl({ value: this.paramsBusqueda.anio, disabled: false }, [Validators.required]),
+      idGpoLinea: new FormControl({ value: this.paramsBusqueda.idGpoLinea, disabled: (this.auth.permissionEdit(2) || this.auth.permissionEdit(3)) }, [Validators.required]),
       idPeriodo: new FormControl({ value: this.paramsBusqueda.idPeriodo, disabled: false }, [Validators.required]),
       id_linea: new FormControl({ value: this.paramsBusqueda.id_linea, disabled: (this.auth.permissionEdit(2) || this.auth.permissionEdit(3)) }, [Validators.required]),
       id_grupo: new FormControl({ value: this.paramsBusqueda.id_grupo, disabled: (this.auth.permissionEdit(2) || this.auth.permissionEdit(3)) }, [Validators.required]),
