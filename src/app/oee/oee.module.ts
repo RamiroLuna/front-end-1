@@ -37,7 +37,7 @@ import { RptDetalladoFallasComponent } from './rpt-detallado-fallas/rpt-detallad
 
 
 
-const routesMetas: Routes = [
+const routes: Routes = [
   { path: 'opciones', component: OptionsComponent },
   {
     path: 'opciones/fallas', component: ListaFallasComponent, canActivate: [AuthGuardOee],
@@ -151,7 +151,7 @@ const routesMetas: Routes = [
     ReactiveFormsModule,
     FormsModule,
     NgPipesModule,
-    RouterModule.forChild(routesMetas)
+    RouterModule.forChild(routes)
   ],
   declarations: [
     OptionsComponent,

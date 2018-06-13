@@ -24,8 +24,8 @@ export class AuthService {
   public getRolesOee():string{
     return jwt_decode(this.getToken()).roles_oee || "0";
   }
-  public getRolesKpi():string{
-    return jwt_decode(this.getToken()).roles_kpi || "0";
+  public getRolesEtad():string{
+    return jwt_decode(this.getToken()).roles_etad || "0";
   }
   public getRolesIshikawa():string{
     return jwt_decode(this.getToken()).roles_ishikawa || "0";

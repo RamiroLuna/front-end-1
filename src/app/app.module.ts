@@ -27,7 +27,8 @@ const routes: Routes = [
     path: 'home', component: HomeComponent, canActivate: [AuthGuard],children: [
       { path: '', component:  MenuPrincipalComponent},
       { path: 'usuarios', loadChildren: './users/users.module#UsersModule' },
-      { path: 'oee', loadChildren: './oee/oee.module#OeeModule' }
+      { path: 'oee', loadChildren: './oee/oee.module#OeeModule' },
+      { path: 'etad', loadChildren: './etad/etad.module#EtadModule' }
     ]
   }
 ];
