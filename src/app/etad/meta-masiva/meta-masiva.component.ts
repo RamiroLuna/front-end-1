@@ -5,7 +5,6 @@ import { getAnioActual } from '../../utils';
 import { AuthService } from '../../auth/auth.service';
 import { Linea } from '../../models/linea';
 import { Periodo } from '../../models/periodo';
-import { Forecast } from '../../models/forecast';
 import {
   trigger,
   state,
@@ -41,12 +40,16 @@ export class MetaMasivaComponent implements OnInit {
   public lineas: Array<Linea> = [];
   public anios: Array<any> = [];
   public meses: Array<any> = [];
-  public metas: Array<Forecast> = [];
+
+  public tiposMeta: Array<any> = [];
+  public frecuancias: Array<any> = [];
 
   public formCargaMasiva: FormGroup;
   public anioSeleccionado: number;
-  public idLinea: number;
+  public idEtad: number;
   public idPeriodo: number;
+  public tipoMeta:number;
+  public frecuencia:string;
   public archivoCsv: any;
   public bVistaPre: boolean;
   public loading: boolean;
@@ -63,6 +66,18 @@ export class MetaMasivaComponent implements OnInit {
     private auth: AuthService) { }
 
   ngOnInit() {
+
+    this.tiposMeta = [
+      { id: 1, descripcion: 'Estrategicas' },
+      { id: 2, descripcion: 'Operativas' },
+      { id: 3, descripcion: 'KPI Operativos' }
+    ];
+
+    this.frecuancias = [
+      { id: 'anual', descripcion: 'Anual' },
+      { id: 'mensual', descripcion: 'Mensual' }
+    ];
+
     this.anioSeleccionado = -1;
     this.bVistaPre = false;
     this.submitted = false;
@@ -112,7 +127,9 @@ export class MetaMasivaComponent implements OnInit {
 
   loadFormulario(): void {
     this.formCargaMasiva = this.fb.group({
-      idLinea: new FormControl({ value: this.idLinea }, [Validators.required]),
+      tipoMeta: new FormControl({ value: this.tipoMeta }, [Validators.required]),
+      frecuencia: new FormControl({ value: this.frecuencia }, [Validators.required]),
+      idEtad: new FormControl({ value: this.idEtad }, [Validators.required]),
       anioSeleccionado: new FormControl({ value: this.anioSeleccionado }, [Validators.required]),
       idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required]),
       archivoCsv: new FormControl({ value: this.archivoCsv }, [Validators.required])
@@ -163,14 +180,14 @@ export class MetaMasivaComponent implements OnInit {
       this.disabled = true;
       this.textoBtn = "CARGANDO ...";
       this.bVistaPre = false;
-      this.service.uploadMetasCSV(this.auth.getIdUsuario(), this.archivoCsv, this.idPeriodo, this.idLinea).subscribe(result => {
+      this.service.uploadMetasCSV(this.auth.getIdUsuario(), this.archivoCsv, this.idPeriodo, this.idEtad).subscribe(result => {
         if (result.response.sucessfull) {
-          this.metas = result.data.listMetas || [];
+
           this.textoBtn = " VISTA PREVIA ";
-          this.height = $( document  ).height();
+          this.height = $(document).height();
           this.bVistaPre = true;
-          setTimeout(() => { 
-            this.status = 'active';             
+          setTimeout(() => {
+            this.status = 'active';
           }, 20)
 
         } else {
@@ -192,7 +209,7 @@ export class MetaMasivaComponent implements OnInit {
 
   procesarFile(): void {
 
-    this.service.procesarFile(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea).subscribe(result => {
+    this.service.procesarFile(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad).subscribe(result => {
       if (result.response.sucessfull) {
         Materialize.toast('Metas cargadas correctamente', 4000, 'green');
         this.bVistaPre = true;
@@ -200,13 +217,13 @@ export class MetaMasivaComponent implements OnInit {
         $('.file-path').val('')
         this.formCargaMasiva.reset();
         this.submitted = false;
-        $(document).height(this.height+'px');
+        $(document).height(this.height + 'px');
 
       } else {
         // "999" indica que ya hay metas cargadas para el preiodo seleccionado
-        if(result.response.message == "999"){
-          this.alertConfirmaReemplazo(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea );
-        }else{
+        if (result.response.message == "999") {
+          this.alertConfirmaReemplazo(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad);
+        } else {
           Materialize.toast(result.response.message, 4000, 'red');
         }
 
@@ -218,7 +235,7 @@ export class MetaMasivaComponent implements OnInit {
     });
   }
 
-  alertConfirmaReemplazo(idUsuario: number, idPeriodo: number, idLinea: number): void {
+  alertConfirmaReemplazo(idUsuario: number, idPeriodo: number, idEtad: number): void {
     /* 
      * Configuración del modal de confirmación
      */
@@ -238,7 +255,7 @@ export class MetaMasivaComponent implements OnInit {
        * Si acepta
        */
       if (result.value) {
-        this.service.reWriteFile(this.auth.getIdUsuario(), idPeriodo, idLinea).subscribe(result => {       
+        this.service.reWriteFile(this.auth.getIdUsuario(), idPeriodo, idEtad).subscribe(result => {
           if (result.response.sucessfull) {
             Materialize.toast('Se modificarón las metas correctamente', 4000, 'green');
             this.bVistaPre = true;
