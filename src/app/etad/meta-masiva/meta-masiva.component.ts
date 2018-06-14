@@ -20,6 +20,7 @@ declare var Materialize: any;
 @Component({
   selector: 'app-meta-masiva',
   templateUrl: './meta-masiva.component.html',
+  styleUrls: ['./meta-masiva.component.css'],
   providers: [MetaMasivaService],
   animations: [
     trigger('visibility', [
@@ -42,14 +43,16 @@ export class MetaMasivaComponent implements OnInit {
   public meses: Array<any> = [];
 
   public tiposMeta: Array<any> = [];
-  public frecuancias: Array<any> = [];
+  public frecuanciasDisponibles: Array<any> = [];
+  public frecuencias: Array<any> = [];
+
 
   public formCargaMasiva: FormGroup;
-  public anioSeleccionado: number;
+  public anioSeleccionado: any;
   public idEtad: number;
-  public idPeriodo: number;
-  public tipoMeta:number;
-  public frecuencia:string;
+  public idPeriodo: any;
+  public tipoMeta: number;
+  public frecuencia: string;
   public archivoCsv: any;
   public bVistaPre: boolean;
   public loading: boolean;
@@ -61,28 +64,34 @@ export class MetaMasivaComponent implements OnInit {
 
 
 
+
+
   constructor(private service: MetaMasivaService,
     private fb: FormBuilder,
     private auth: AuthService) { }
 
   ngOnInit() {
-
+    // frecuencia: 2 significa que tiene anual y mensual 
+    // frecuencia: 0 solo anual
+    // frecuencia: 1 solo mensual
     this.tiposMeta = [
-      { id: 1, descripcion: 'Estrategicas' },
-      { id: 2, descripcion: 'Operativas' },
-      { id: 3, descripcion: 'KPI Operativos' }
+      { id: 1, descripcion: 'ESTRATEGICAS', frecuencia: 2 },
+      { id: 2, descripcion: 'OPERATIVAS', frecuencia: 0 },
+      { id: 3, descripcion: 'KPI OPERATIVOS', frecuencia: 0 }
     ];
 
-    this.frecuancias = [
-      { id: 'anual', descripcion: 'Anual' },
-      { id: 'mensual', descripcion: 'Mensual' }
+    this.frecuanciasDisponibles = [
+      { id: 0, value: 'anual', descripcion: 'ANUAL' },
+      { id: 1, value: 'mensual', descripcion: 'MENSUAL' }
     ];
 
-    this.anioSeleccionado = -1;
+    this.frecuencias = [];
+
     this.bVistaPre = false;
     this.submitted = false;
     this.loading = true;
     this.disabled = false;
+
     this.status = "inactive";
     this.textoBtn = " VISTA PREVIA ";
 
@@ -130,8 +139,8 @@ export class MetaMasivaComponent implements OnInit {
       tipoMeta: new FormControl({ value: this.tipoMeta }, [Validators.required]),
       frecuencia: new FormControl({ value: this.frecuencia }, [Validators.required]),
       idEtad: new FormControl({ value: this.idEtad }, [Validators.required]),
-      anioSeleccionado: new FormControl({ value: this.anioSeleccionado }, [Validators.required]),
-      idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required]),
+      anioSeleccionado: new FormControl({ value: this.anioSeleccionado, disabled: true }, [Validators.required]),
+      idPeriodo: new FormControl({ value: this.idPeriodo, disabled: true }, [Validators.required]),
       archivoCsv: new FormControl({ value: this.archivoCsv }, [Validators.required])
     });
   }
@@ -166,9 +175,44 @@ export class MetaMasivaComponent implements OnInit {
     this.bVistaPre = false;
   }
 
-  changeCombo(): void {
+  changeCombo(tipoCombo: string): void {
     this.bVistaPre = false;
     this.status = "inactive";
+
+    if (tipoCombo == 'tipoMeta') {
+
+      let el = this.tiposMeta.filter((el) => el.id == this.tipoMeta);
+      this.frecuencias = [];
+      this.formCargaMasiva.controls.idPeriodo.disable();
+      this.frecuencia = '';
+      this.anioSeleccionado = '';
+      this.idPeriodo = '';
+
+      if (el.length > 0) {
+        if(el[0].frecuencia == 2){
+          this.frecuencias = this.frecuanciasDisponibles.map(el=>el);
+        }else{
+          this.frecuencias = this.frecuanciasDisponibles.filter(element=> element.id == el[0].frecuencia);
+        }
+      }
+
+    }else if(tipoCombo == 'frecuencia'){
+      this.idPeriodo = '';
+      this.anioSeleccionado = '';
+      if(this.frecuencia == 'mensual'){
+        this.formCargaMasiva.controls.idPeriodo.enable();
+        this.formCargaMasiva.controls.anioSeleccionado.enable();
+      }else if(this.frecuencia == 'anual'){
+        this.formCargaMasiva.controls.idPeriodo.disable();
+        this.formCargaMasiva.controls.anioSeleccionado.enable();
+      }else{
+        this.formCargaMasiva.controls.idPeriodo.disable();
+        this.formCargaMasiva.controls.anioSeleccionado.disable();
+      }
+      
+    }
+
+    
   }
 
   uploadMetasCSV(): void {
