@@ -123,24 +123,20 @@
         </legend>
         <table class="striped">
           <thead>
-            <tr>
-              <th>Dia</th>
-              <th>Turno</th>
-              <th>Grupo</th>
-              <th>Meta</th>
-              <th>TMP</th>
-              <th>Vel</th>
+            <tr *ngFor="let header of rowsHeader">
+              <th>{{ header.column0 }}</th>
+              <th>{{ header.column1 }}</th>
+              <th>{{ header.column2 }}</th>
+              <th>{{ header.column3 }}</th>           
             </tr>
           </thead>
 
           <tbody>
-            <tr *ngFor="let meta of metas">
-              <td>{{meta.dia}}</td>
-              <td>{{meta.turno}}</td>
-              <td>{{meta.grupo}}</td>
-              <td>{{meta.meta}}</td>
-              <td>{{meta.tmp}}</td>
-              <td>{{meta.velocidad}}</td>
+            <tr *ngFor="let row of rows">
+             <td>{{ row.column0 }}</td>
+             <td>{{ row.column1 }}</td>
+             <td>{{ row.column2 }}</td>
+             <td>{{ row.column3 }}</td>
             </tr>
           </tbody>
         </table>

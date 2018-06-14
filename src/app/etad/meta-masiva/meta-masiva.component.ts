@@ -46,6 +46,10 @@ export class MetaMasivaComponent implements OnInit {
   public frecuanciasDisponibles: Array<any> = [];
   public frecuencias: Array<any> = [];
 
+  public rowsHeader:Array<any>=[];
+  public rows:Array<any>=[];
+
+
 
   public formCargaMasiva: FormGroup;
   public anioSeleccionado: any;
@@ -224,9 +228,18 @@ export class MetaMasivaComponent implements OnInit {
       this.disabled = true;
       this.textoBtn = "CARGANDO ...";
       this.bVistaPre = false;
-      this.service.uploadMetasCSV(this.auth.getIdUsuario(), this.archivoCsv, this.idPeriodo, this.idEtad).subscribe(result => {
-        if (result.response.sucessfull) {
+      this.rowsHeader = [];
 
+      this.service.preview(
+        this.auth.getIdUsuario(),this.archivoCsv, this.idPeriodo, 
+          this.idEtad, this.tipoMeta, this.frecuencia, this.anioSeleccionado).subscribe(result => {
+        
+            console.log('result preview', result)
+        if (result.response.sucessfull) {
+          this.rows = result.data.listData || [];
+          this.rowsHeader.push(this.rows.shift());
+        
+          
           this.textoBtn = " VISTA PREVIA ";
           this.height = $(document).height();
           this.bVistaPre = true;
