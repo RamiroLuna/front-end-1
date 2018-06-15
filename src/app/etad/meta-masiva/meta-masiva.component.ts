@@ -55,7 +55,7 @@ export class MetaMasivaComponent implements OnInit {
   public anioSeleccionado: any;
   public idEtad: number;
   public idPeriodo: any;
-  public tipoMeta: number;
+  public tipoMeta: any;
   public frecuencia: string;
   public archivoCsv: any;
   public bVistaPre: boolean;
@@ -75,6 +75,7 @@ export class MetaMasivaComponent implements OnInit {
     private auth: AuthService) { }
 
   ngOnInit() {
+    this.loading = true;
     // frecuencia: 2 significa que tiene anual y mensual 
     // frecuencia: 0 solo anual
     // frecuencia: 1 solo mensual
@@ -90,11 +91,10 @@ export class MetaMasivaComponent implements OnInit {
     ];
 
     this.frecuencias = [];
-
     this.bVistaPre = false;
     this.submitted = false;
-    this.loading = true;
     this.disabled = false;
+    this.tipoMeta = '';
 
     this.status = "inactive";
     this.textoBtn = " VISTA PREVIA ";
@@ -184,7 +184,7 @@ export class MetaMasivaComponent implements OnInit {
     this.status = "inactive";
 
     if (tipoCombo == 'tipoMeta') {
-
+    
       let el = this.tiposMeta.filter((el) => el.id == this.tipoMeta);
       this.frecuencias = [];
       this.formCargaMasiva.controls.idPeriodo.disable();
@@ -347,6 +347,32 @@ export class MetaMasivaComponent implements OnInit {
       return "Linea no identificada"
     }
   }
+
+  downloadTemplate():void{
+    this.service.downloadTemplate(this.auth.getIdUsuario(), this.tipoMeta).subscribe(result => {
+      console.log('get template', result)
+      if (result.response.sucessfull) {
+
+        let linkFile = document.createElement('a');
+        let data_type = 'data:text/csv;charset=utf-8;base64,';
+        let file_base64 = result.response.message;
+       
+        linkFile.href = data_type + file_base64;
+        linkFile.download = 'template';
+    
+        linkFile.click();
+        linkFile.remove();
+        
+      } else {
+        Materialize.toast(result.response.message, 4000, 'red');
+      }
+    }, eror => {
+      Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+    });
+
+  }
+
+  
 
 }
 

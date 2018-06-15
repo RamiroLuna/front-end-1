@@ -47,4 +47,12 @@ export class MetaMasivaService {
     return this.http.post<any>(this.URL,body);
   }
 
+  downloadTemplate(id_usuario:number, idTipoMeta:number): Observable<any>{
+    const body = new HttpParams()
+    .set('action', 'downloadTempleate')
+    .set('tipo_meta', ""+idTipoMeta)
+    .set('id_usuario', ""+id_usuario)
+    return this.http.post<any>(this.URL,body);
+  }
+
 }

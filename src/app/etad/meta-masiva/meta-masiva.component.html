@@ -106,7 +106,11 @@
         </div>
       </div>
       <div class="row">
-        <div class="col s12 m12 l12 xl12 center-align">
+        <div class="col s6 m6 l6 xl6 center-align">
+          <button type="button" class="waves-effect waves-light btn indigo darken-1" (click)="downloadTemplate()" [disabled]="tipoMeta == ''">
+            <i class="material-icons left">vertical_align_bottom</i>TEMPLATE</button>
+        </div>
+        <div class="col s6 m6 l6 xl6 center-align">
           <button type='submit' class="waves-effect waves-light btn light-green darken-1" [disabled]="disabled">
             {{ textoBtn }}</button>
         </div>
@@ -127,16 +131,16 @@
               <th>{{ header.column0 }}</th>
               <th>{{ header.column1 }}</th>
               <th>{{ header.column2 }}</th>
-              <th>{{ header.column3 }}</th>           
+              <th>{{ header.column3 }}</th>
             </tr>
           </thead>
 
           <tbody>
             <tr *ngFor="let row of rows">
-             <td>{{ row.column0 }}</td>
-             <td>{{ row.column1 }}</td>
-             <td>{{ row.column2 }}</td>
-             <td>{{ row.column3 }}</td>
+              <td>{{ row.column0 }}</td>
+              <td>{{ row.column1 }}</td>
+              <td>{{ row.column2 }}</td>
+              <td>{{ row.column3 }}</td>
             </tr>
           </tbody>
         </table>
