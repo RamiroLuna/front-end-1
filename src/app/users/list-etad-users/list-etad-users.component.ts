@@ -42,7 +42,7 @@ export class ListEtadUsersComponent implements OnInit {
         this.loading = false;
         setTimeout(() => { this.ngAfterViewHttp() }, 200)
       } else {
-        Materialize.toast('Ocurrió  un error al consultar usuarios ETAD!', 4000, 'red');
+        Materialize.toast(result.response.message, 4000, 'red');
         this.loading = false;
       }
     }, error => {

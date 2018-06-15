@@ -67,9 +67,6 @@ export class MetaMasivaComponent implements OnInit {
   public height: number;
 
 
-
-
-
   constructor(private service: MetaMasivaService,
     private fb: FormBuilder,
     private auth: AuthService) { }
@@ -117,7 +114,7 @@ export class MetaMasivaComponent implements OnInit {
         this.loadFormulario();
         setTimeout(() => { this.ngAfterViewInitHttp() }, 200)
       } else {
-        Materialize.toast('Ocurrió  un error al consultar catalogos!', 4000, 'red');
+        Materialize.toast(result.response.message, 4000, 'red');
         this.loading = false;
       }
     }, error => {
@@ -234,7 +231,6 @@ export class MetaMasivaComponent implements OnInit {
         this.auth.getIdUsuario(),this.archivoCsv, this.idPeriodo, 
           this.idEtad, this.tipoMeta, this.frecuencia, this.anioSeleccionado).subscribe(result => {
         
-            console.log('result preview', result)
         if (result.response.sucessfull) {
           this.rows = result.data.listData || [];
           this.rowsHeader.push(this.rows.shift());
@@ -349,16 +345,16 @@ export class MetaMasivaComponent implements OnInit {
   }
 
   downloadTemplate():void{
-    this.service.downloadTemplate(this.auth.getIdUsuario(), this.tipoMeta).subscribe(result => {
-      console.log('get template', result)
+    this.service.downloadTemplate(this.auth.getIdUsuario(), this.tipoMeta, this.frecuencia).subscribe(result => {
+
       if (result.response.sucessfull) {
 
         let linkFile = document.createElement('a');
-        let data_type = 'data:text/csv;charset=utf-8;base64,';
+        let data_type = 'data:text/csv;base64,';
         let file_base64 = result.response.message;
-       
+
         linkFile.href = data_type + file_base64;
-        linkFile.download = 'template';
+        linkFile.download = 'template.csv';
     
         linkFile.click();
         linkFile.remove();

@@ -98,7 +98,7 @@ export class FormularioPeriodoComponent implements OnInit {
         this.loading = false;
         setTimeout(() => { this.ngAfterViewInitHttp() }, 200)
       } else {
-        Materialize.toast('Ocurrió  un error al cargar formulario!', 4000, 'red');
+        Materialize.toast(result.response.message, 4000, 'red');
         this.loading = false;
       }
     }, error => {
@@ -135,7 +135,7 @@ export class FormularioPeriodoComponent implements OnInit {
         this.loading = false;
         setTimeout(() => { this.ngAfterViewInitHttp() }, 200)
       } else {
-        Materialize.toast('Ocurrió  un error al cargar formulario!', 4000, 'red');
+        Materialize.toast(result.response.message, 4000, 'red');
         this.loading = false;
       }
     }, error => {

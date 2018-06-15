@@ -136,7 +136,7 @@ export class ListaProduccionComponent implements OnInit {
         this.loadFormulario();
         setTimeout(() => { this.ngAfterViewHttp() }, 200)
       } else {
-        Materialize.toast('Ocurrió  un error al consultar catalogos!', 4000, 'red');
+        Materialize.toast(result.response.message, 4000, 'red');
         this.loading = false;
       }
     }, error => {
@@ -236,7 +236,7 @@ export class ListaProduccionComponent implements OnInit {
             DataTableProduccion('#tabla');
           }, 400)
         } else {
-          Materialize.toast('Ocurrió  un error al consultar la producción!', 4000, 'red');
+          Materialize.toast(result.response.message, 4000, 'red');
         }
       }, error => {
         Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');

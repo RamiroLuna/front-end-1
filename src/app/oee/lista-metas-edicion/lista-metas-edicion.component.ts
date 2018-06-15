@@ -106,7 +106,7 @@ export class ListaMetasEdicionComponent implements OnInit {
         this.loadFormulario();
         setTimeout(() => { this.ngAfterViewInitHttp() }, 200)
       } else {
-        Materialize.toast('Ocurrió  un error al consultar catalogos!', 4000, 'red');
+        Materialize.toast(result.response.message, 4000, 'red');
         this.loading = false;
       }
     }, error => {
@@ -150,7 +150,7 @@ export class ListaMetasEdicionComponent implements OnInit {
         values.tmpGrupo = this.idItemCombo(this.grupos, values.grupo);
 
         this.service.updateMeta(this.auth.getIdUsuario(), values).subscribe(result => {
-          debugger
+
           if (result.response.sucessfull) {
             Materialize.toast('Actualización completa', 4000, 'green');
             this.metas.filter(el=>{
@@ -306,7 +306,7 @@ export class ListaMetasEdicionComponent implements OnInit {
 
 
         } else {
-          Materialize.toast('Ocurrió  un error al consultar las metas!', 4000, 'red');
+          Materialize.toast(result.response.message, 4000, 'red');
         }
       }, error => {
         Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');

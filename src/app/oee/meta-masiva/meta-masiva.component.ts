@@ -89,7 +89,7 @@ export class MetaMasivaComponent implements OnInit {
         this.loadFormulario();
         setTimeout(() => { this.ngAfterViewInitHttp() }, 200)
       } else {
-        Materialize.toast('Ocurrió  un error al consultar catalogos!', 4000, 'red');
+        Materialize.toast(result.response.message, 4000, 'red');
         this.loading = false;
       }
     }, error => {

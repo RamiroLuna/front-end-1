@@ -23,6 +23,7 @@ export class OptionsComponent implements AfterViewInit {
     this.loading = true;
   
     this.permission.cargaMasiva = findRol(28, this.auth.getRolesEtad());   
+    this.permission.edicionMeta = findRol(28, this.auth.getRolesEtad());   
 
     this.loading = false;
     setTimeout(() => {
