@@ -12,7 +12,7 @@ declare var Materialize: any;
 @Component({
   selector: 'app-rpt-detallado-fallas',
   templateUrl: './rpt-detallado-fallas.component.html',
-  styleUrls: [ './rpt-detallado-fallas.component.css' ], 
+  styleUrls: ['./rpt-detallado-fallas.component.css'],
   providers: [RptDetalladoFallasService]
 })
 export class RptDetalladoFallasComponent implements OnInit {
@@ -28,7 +28,7 @@ export class RptDetalladoFallasComponent implements OnInit {
   public anios: Array<any>;
   public meses: Array<any>;
   public periodos: Array<Periodo>;
-  public texto_busqueda:string = "";
+  public texto_busqueda: string = "";
 
   constructor(
     private service: RptDetalladoFallasService,
@@ -122,7 +122,7 @@ export class RptDetalladoFallasComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.reporteFallas(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-        
+
         if (result.response.sucessfull) {
           this.fallas = result.data.listFallas || [];
           this.viewReport = true;
@@ -159,16 +159,22 @@ export class RptDetalladoFallasComponent implements OnInit {
 
     let linkFile = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel;';
-    document.body.appendChild(linkFile);  
 
+    if (linkFile.download != undefined) {
+      document.body.appendChild(linkFile);
+      let tabla = getTablaUtf8('tblReporte');
 
-    let tabla = getTablaUtf8('tblReporte');
+      linkFile.href = data_type + ', ' + tabla;
+      linkFile.download = 'ReporteDetalladoFallas';
 
-    linkFile.href = data_type + ', ' + tabla;
-    linkFile.download = 'ReporteDetalladoFallas';
+      linkFile.click();
+      linkFile.remove();
+    } else {
 
-    linkFile.click();
-    linkFile.remove();
+      let elem = $("#tblReporte")[0].outerHTML;
+      let blobObject = new Blob(["\ufeff", elem], { type: 'application/vnd.ms-excel' });
+      window.navigator.msSaveBlob(blobObject, 'ReporteDetalladoFallas.xls');
+    }
 
 
   }
@@ -183,8 +189,8 @@ export class RptDetalladoFallasComponent implements OnInit {
     }
   }
 
-  limpiarInput(){
-    this.texto_busqueda="";
+  limpiarInput() {
+    this.texto_busqueda = "";
   }
 
 }

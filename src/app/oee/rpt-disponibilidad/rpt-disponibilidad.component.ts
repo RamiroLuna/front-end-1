@@ -10,6 +10,7 @@ import { configChart } from './rpt.config.export';
 
 declare var $: any;
 declare var Materialize: any;
+declare function unescape(s: string): string;
 @Component({
   selector: 'app-rpt-disponibilidad',
   templateUrl: './rpt-disponibilidad.component.html',
@@ -35,7 +36,7 @@ export class RptDisponibilidadComponent implements OnInit {
   public meses: Array<any>;
   public periodos: Array<Periodo>;
 
- 
+
   constructor(
     private service: RptDisponibilidadService,
     private auth: AuthService,
@@ -171,12 +172,12 @@ export class RptDisponibilidadComponent implements OnInit {
 
         if (result.response.sucessfull) {
           this.tituloGrafica = "Disponibilidad de " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea);
-         
+
           this.rows = result.data.reporteDisponibilidad || [];
           this.rowsProduccion = result.data.datosProduccion || [];
           let labels = this.rows.filter((el) => el.padre == 0).map((el) => el.titulo);
           let horas = this.rows.filter((el) => el.padre == 0).map((el) => el.hrs);
-          this.rows.filter((el) => el.padre == 2).map((el) =>{ 
+          this.rows.filter((el) => el.padre == 2).map((el) => {
             horas.push(el.hrs);
             labels.push(el.titulo);
           });
@@ -184,12 +185,12 @@ export class RptDisponibilidadComponent implements OnInit {
           configChart.series = [];
           configChart.title.text = this.tituloGrafica;
           configChart.subtitle.text = 'Periodo: ' + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
-          configChart.xAxis.categories = labels ;
-          configChart.series.push({ name: ' Horas ' , data :  horas });
+          configChart.xAxis.categories = labels;
+          configChart.series.push({ name: ' Horas ', data: horas });
 
 
-       
-          
+
+
 
           this.viewReport = true;
           setTimeout(() => { this.ngAfterViewHttpRpt(); }, 200);
@@ -231,18 +232,31 @@ export class RptDisponibilidadComponent implements OnInit {
   }
 
   exportarExcel(): void {
+
     let linkFile = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel;';
 
-    let tablas = getTablaUtf8('tblReporte') + getTablaUtf8('tblReporteProduccion');
+    if (linkFile.download != undefined) {
+      let tablas = getTablaUtf8('tblReporte') + getTablaUtf8('tblReporteProduccion');
 
-    linkFile.href = data_type + ', ' + tablas;
-    linkFile.download = 'ReporteDisponibilidad';
+      document.body.appendChild(linkFile);
+      linkFile.href = data_type + ', ' + tablas;
+      linkFile.download = 'ReporteDisponibilidad';
 
-    linkFile.click();
-    linkFile.remove();
+      linkFile.click();
+      linkFile.remove();
+    } else {
+
+      let elem = $("#tblReporte")[0].outerHTML + $("#tblReporteProduccion")[0].outerHTML;
+
+      let blobObject = new Blob(["\ufeff", elem], { type: 'application/vnd.ms-excel' });
+      window.navigator.msSaveBlob(blobObject, 'ReporteDisponibilidad.xls');
+    }
+
 
   }
+
+
 
 
 }

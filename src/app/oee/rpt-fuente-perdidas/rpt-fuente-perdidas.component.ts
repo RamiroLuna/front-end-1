@@ -155,8 +155,8 @@ export class RptFuentePerdidasComponent implements OnInit {
           configChart.series = [];
           configChart.title.text = this.tituloGrafica;
           configChart.subtitle.text = 'Periodo: ' + this.getPeriodo(this.periodos, parametrosBusqueda.idPeriodo);
-          configChart.xAxis.categories = labels ;
-          configChart.series.push({ name: 'Horas Muertas' , data :  horas });
+          configChart.xAxis.categories = labels;
+          configChart.series.push({ name: 'Horas Muertas', data: horas });
 
           this.viewReport = true;
           setTimeout(() => { this.ngAfterViewHttpRpt(); }, 200);
@@ -192,13 +192,22 @@ export class RptFuentePerdidasComponent implements OnInit {
     let linkFile = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel;';
 
-    let tabla= getTablaUtf8('tblReporte');
-   
-    linkFile.href = data_type + ', ' + tabla;
-    linkFile.download = 'ReporteDeFallas';
+    if (linkFile.download != undefined) {
+      document.body.appendChild(linkFile);
+      let tabla = getTablaUtf8('tblReporte');
 
-    linkFile.click();
-    linkFile.remove();
+      linkFile.href = data_type + ', ' + tabla;
+      linkFile.download = 'ReporteDeFallas';
+
+      linkFile.click();
+      linkFile.remove();
+    } else {
+
+      let elem = $("#tblReporte")[0].outerHTML;
+
+      let blobObject = new Blob(["\ufeff", elem], { type: 'application/vnd.ms-excel' });
+      window.navigator.msSaveBlob(blobObject, 'ReporteDeFallas.xls');
+    }
 
   }
 

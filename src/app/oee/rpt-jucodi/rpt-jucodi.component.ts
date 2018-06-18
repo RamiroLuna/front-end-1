@@ -4,7 +4,7 @@ import { RptJucodiService } from "./rpt-jucodi.service";
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { Catalogo } from '../../models/catalogo';
-import { getTablaUtf8, clone, getFechaActual , calculaDiaPorMes } from '../../utils';
+import { getTablaUtf8, clone, getFechaActual, calculaDiaPorMes } from '../../utils';
 import { configChart } from './rpt.config.export';
 import swal from 'sweetalert2';
 
@@ -33,7 +33,7 @@ export class RptJucodiComponent implements OnInit {
   public datosConfiguracion: Array<any>;
   public rows: Array<any>;
   public rowsTmp: Array<any>;
-  public verJuntaDiaria:boolean;
+  public verJuntaDiaria: boolean;
 
 
   constructor(
@@ -172,13 +172,13 @@ export class RptJucodiComponent implements OnInit {
             confTmp.series.push({ name: ' B ', data: dataGrupoB, color: '#66bb6a' });
             confTmp.series.push({ name: ' C ', data: dataGrupoC, color: '#d4e157' });
             confTmp.series.push({ name: ' D ', data: dataGrupoD, color: '#42a5f5' });
-            confTmp.series.push({ name: ' Meta 1ro ', data: dataMeta1, type: 'line', color: '#ffcc80',  dashStyle: 'Dash' });
-            confTmp.series.push({ name: ' Meta 2do ', data: dataMeta2, type: 'line', color: '#ff9800',  dashStyle: 'Dash' });
-            confTmp.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#e65100',  dashStyle: 'Dash' });
+            confTmp.series.push({ name: ' Meta 1ro ', data: dataMeta1, type: 'line', color: '#ffcc80', dashStyle: 'Dash' });
+            confTmp.series.push({ name: ' Meta 2do ', data: dataMeta2, type: 'line', color: '#ff9800', dashStyle: 'Dash' });
+            confTmp.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#e65100', dashStyle: 'Dash' });
             this.datosConfiguracion.push(confTmp);
           }
-          
-      
+
+
           this.viewReport = true;
           setTimeout(() => {
             this.rptAfterViewGenerate();
@@ -202,14 +202,14 @@ export class RptJucodiComponent implements OnInit {
 
   }
 
-  reporteJUCODI(parametrosBusqueda:any): void {
+  reporteJUCODI(parametrosBusqueda: any): void {
     this.verJuntaDiaria = false;
     this.service.reporteJUCODI(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
 
       if (result.response.sucessfull) {
         this.verJuntaDiaria = true;
-        this.rows = result.data.reporteDesempeno || [];        
-        this.rowsTmp = result.data.reporteMap || [];        
+        this.rows = result.data.reporteDesempeno || [];
+        this.rowsTmp = result.data.reporteMap || [];
       } else {
         Materialize.toast(result.response.message, 4000, 'red');
       }
@@ -225,14 +225,20 @@ export class RptJucodiComponent implements OnInit {
   exportarExcel(): void {
     let linkFile = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel;';
+    if (linkFile.download != undefined) {
+      document.body.appendChild(linkFile);
+      let tablas = getTablaUtf8('tblReporte') + getTablaUtf8('tblReporteTmp');
+      linkFile.href = data_type + ', ' + tablas;
+      linkFile.download = 'ReporteJucodi';
+      linkFile.click();
+      linkFile.remove();
+    } else {
 
-    let tablas = getTablaUtf8('tblReporte') + getTablaUtf8('tblReporteTmp');
+      let elem = $("#tblReporte")[0].outerHTML + $("#tblReporteTmp")[0].outerHTML;
 
-    linkFile.href = data_type + ', ' + tablas;
-    linkFile.download = 'ReporteJucodi';
-
-    linkFile.click();
-    linkFile.remove();
+      let blobObject = new Blob(["\ufeff", elem], { type: 'application/vnd.ms-excel' });
+      window.navigator.msSaveBlob(blobObject, 'ReporteJucodi.xls');
+    }
 
   }
 
@@ -246,18 +252,18 @@ export class RptJucodiComponent implements OnInit {
     }
   }
 
-  changeDia():void{
+  changeDia(): void {
     let mes: number = this.obtenerMesDelPeriodo(this.periodos, this.parametrosBusqueda.idPeriodo);
     let totalDias = calculaDiaPorMes(this.parametrosBusqueda.anio, mes);
     let argDias = {};
 
     for (let i = 1; i <= totalDias; i++) {
-      let dia =  i <= 9 ? '0' + i : i;
-      argDias[i]= dia;
+      let dia = i <= 9 ? '0' + i : i;
+      argDias[i] = dia;
     }
 
     swal({
-      title: 'Seleccione un día del periodo ' + this.getPeriodo(this.periodos,this.parametrosBusqueda.idPeriodo),
+      title: 'Seleccione un día del periodo ' + this.getPeriodo(this.periodos, this.parametrosBusqueda.idPeriodo),
       input: 'select',
       cancelButtonText: 'Cancelar',
       confirmButtonText: 'OK',
@@ -267,13 +273,13 @@ export class RptJucodiComponent implements OnInit {
       inputValidator: (value) => {
 
         return new Promise((resolve) => {
-        
+
           if (value != '') {
             resolve();
             let fecha = (value <= 9 ? '0' + value : value) + '/' + (mes <= 9 ? '0' + mes : mes) + '/' + this.parametrosBusqueda.anio;
             this.parametrosBusqueda.dia = fecha;
-            this.reporteJUCODI( this.parametrosBusqueda);
-          
+            this.reporteJUCODI(this.parametrosBusqueda);
+
           } else {
             resolve('Seleccione un dia')
           }
@@ -281,7 +287,7 @@ export class RptJucodiComponent implements OnInit {
       }
     })
 
-  
+
   }
 
   obtenerMesDelPeriodo(arg: Array<Periodo>, idPeriodo: number): number {

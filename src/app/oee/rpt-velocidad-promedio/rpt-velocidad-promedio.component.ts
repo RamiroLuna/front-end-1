@@ -44,7 +44,7 @@ export class RptVelocidadPromedioComponent implements OnInit {
     this.viewReport = false;
     this.ver_tabla = false;
     this.rows = [];
-    
+
     this.rowsGrafica = [];
     this.tituloGrafica = "";
     this.texto_link = "Ver datos en tabla";
@@ -132,7 +132,7 @@ export class RptVelocidadPromedioComponent implements OnInit {
 
         if (result.response.sucessfull) {
           let titulo = 'Velocidad promedio por grupo ' + this.getLinea(this.lineas, this.paramsBusqueda.idLinea);
-          
+
           this.rows = result.data.reporteMap || [];
           this.rowsGrafica = result.data.graficaMap || [];
 
@@ -195,13 +195,20 @@ export class RptVelocidadPromedioComponent implements OnInit {
     let linkFile = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel;';
 
-    let tabla = getTablaUtf8('tblReporte');
+    if (linkFile.download != undefined) {
+      document.body.appendChild(linkFile);
+      let tabla = getTablaUtf8('tblReporte');
+      linkFile.href = data_type + ', ' + tabla;
+      linkFile.download = 'ReporteVelocidadPromedio';
+      linkFile.click();
+      linkFile.remove();
+    } else {
 
-    linkFile.href = data_type + ', ' + tabla;
-    linkFile.download = 'ReporteVelocidadPromedio';
+      let elem = $("#tblReporte")[0].outerHTML;
 
-    linkFile.click();
-    linkFile.remove();
+      let blobObject = new Blob(["\ufeff", elem], { type: 'application/vnd.ms-excel' });
+      window.navigator.msSaveBlob(blobObject, 'ReporteVelocidadPromedio.xls');
+    }
 
   }
 

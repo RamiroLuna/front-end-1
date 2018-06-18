@@ -262,7 +262,7 @@ export class MetaMasivaComponent implements OnInit {
 
   procesarFile(): void {
 
-    this.service.procesarFile(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad).subscribe(result => {
+    this.service.loadData(this.auth.getIdUsuario(),this.idEtad, this.anioSeleccionado, this.idPeriodo, this.frecuencia, this.tipoMeta).subscribe(result => {
       if (result.response.sucessfull) {
         Materialize.toast('Metas cargadas correctamente', 4000, 'green');
         this.bVistaPre = true;
@@ -313,10 +313,10 @@ export class MetaMasivaComponent implements OnInit {
             Materialize.toast('Se modificarón las metas correctamente', 4000, 'green');
             this.bVistaPre = true;
             this.status = "inactive";
-            $('.file-path').val('')
             this.formCargaMasiva.reset();
+            $('.file-path').val('');
             this.submitted = false;
-
+            
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
           }

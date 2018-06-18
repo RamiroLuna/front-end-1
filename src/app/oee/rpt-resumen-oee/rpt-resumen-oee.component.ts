@@ -306,25 +306,45 @@ export class RptResumenOeeComponent implements OnInit {
   }
 
   exportarExcel(): void {
+
     let linkFile = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel;';
 
-    if (this.seccion == 0) {
-      let tabla = getTablaUtf8('tblReporte');
-      linkFile.href = data_type + ', ' + tabla;
-      linkFile.download = 'ReporteOEE';
-    } else if (this.seccion == 1) {
-      let tablas = getTablaUtf8('tblReporteDisponibilidad') + getTablaUtf8('tblReporteProduccion');
-      linkFile.href = data_type + ', ' + tablas;
-      linkFile.download = 'ReporteDisponibilidad';
-    } else if (this.seccion == 2) {
-      let tabla = getTablaUtf8('tblReportePerdidas');
-      linkFile.href = data_type + ', ' + tabla;
-      linkFile.download = 'ReporteDeFallas';
-    }
+    if (linkFile.download != undefined) {
+      document.body.appendChild(linkFile);
+      if (this.seccion == 0) {
+        let tabla = getTablaUtf8('tblReporte');
+        linkFile.href = data_type + ', ' + tabla;
+        linkFile.download = 'ReporteOEE';
+      } else if (this.seccion == 1) {
+        let tablas = getTablaUtf8('tblReporteDisponibilidad') + getTablaUtf8('tblReporteProduccion');
+        linkFile.href = data_type + ', ' + tablas;
+        linkFile.download = 'ReporteDisponibilidad';
+      } else if (this.seccion == 2) {
+        let tabla = getTablaUtf8('tblReportePerdidas');
+        linkFile.href = data_type + ', ' + tabla;
+        linkFile.download = 'ReporteDeFallas';
+      }
 
-    linkFile.click();
-    linkFile.remove();
+      linkFile.click();
+      linkFile.remove();
+    } else {
+      let elem;
+      let name = '';
+      if (this.seccion == 0) {
+        elem = $("#tblReporte")[0].outerHTML;
+        name = 'ReporteOEE';
+      } else if (this.seccion == 1) {
+        elem = $("#tblReporteDisponibilidad")[0].outerHTML + $("#tblReporteProduccion")[0].outerHTML;
+        name = 'ReporteDisponibilidad';
+      } else if (this.seccion == 2) {
+        elem = $("#tblReportePerdidas")[0];
+        name = 'ReporteDeFallas';
+      }
+
+      let blobObject = new Blob(["\ufeff", elem], { type: 'application/vnd.ms-excel' });
+      window.navigator.msSaveBlob(blobObject, name + '.xls');
+    }
 
   }
 
@@ -342,15 +362,26 @@ export class RptResumenOeeComponent implements OnInit {
 
     let linkFile = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel;';
-    let tablas = getTablaUtf8('tblReporte') +
-      getTablaUtf8('tblReporteDisponibilidad') +
-      getTablaUtf8('tblReporteProduccion') +
-      getTablaUtf8('tblReportePerdidas');
 
-    linkFile.href = data_type + ', ' + tablas;
-    linkFile.download = 'RptGlobalEficiencia';
-    linkFile.click();
-    linkFile.remove();
+    if (linkFile.download != undefined) {
+        document.body.appendChild(linkFile);
+        let tablas = getTablaUtf8('tblReporte') +
+          getTablaUtf8('tblReporteDisponibilidad') +
+          getTablaUtf8('tblReporteProduccion') +
+          getTablaUtf8('tblReportePerdidas');
+
+        linkFile.href = data_type + ', ' + tablas;
+        linkFile.download = 'RptGlobalEficiencia';
+        linkFile.click();
+        linkFile.remove();
+
+      } else {
+
+        let elem = $("#tblReporte")[0].outerHTML + $("#tblReporteDisponibilidad")[0].outerHTML + 
+                   $("#tblReporteProduccion")[0].outerHTML + $("#tblReportePerdidas")[0].outerHTML;
+        let blobObject = new Blob(["\ufeff", elem], { type: 'application/vnd.ms-excel' });
+        window.navigator.msSaveBlob(blobObject, 'RptGlobalEficiencia.xls');
+      }
 
   }
 
@@ -395,7 +426,6 @@ export class RptResumenOeeComponent implements OnInit {
 
 
   printRptPDF(): void {
-
 
     let docDefinition = {
       header: (currentPage, pageCount) => {

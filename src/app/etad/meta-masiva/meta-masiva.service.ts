@@ -29,11 +29,14 @@ export class MetaMasivaService {
   }
 
 
-  procesarFile(id_usuario:number, idPeriodo:number, IdLinea:number): Observable<any>{
+  loadData(id_usuario:number, idEtad:number, anio:any, idPeriodo:number ,frecuencia:string, tipo_meta:number): Observable<any>{
     const body = new HttpParams()
-    .set('action', 'procesarFile')
+    .set('action', 'loadData')
+    .set('id_etad', ""+idEtad)
+    .set('anio', ""+anio)
     .set('id_periodo', ""+idPeriodo)
-    .set('id_linea', ""+IdLinea)
+    .set('frecuencia', ""+frecuencia)
+    .set('tipo_meta', ""+tipo_meta)
     .set('id_usuario', ""+id_usuario)
     return this.http.post<any>(this.URL,body);
   }

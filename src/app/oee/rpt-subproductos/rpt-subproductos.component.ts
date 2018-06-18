@@ -11,7 +11,7 @@ declare var Materialize: any;
 @Component({
   selector: 'app-rpt-subproductos',
   templateUrl: './rpt-subproductos.component.html',
-  styleUrls: [ './rpt-subproductos.component.css' ],
+  styleUrls: ['./rpt-subproductos.component.css'],
   providers: [RptSubproductosService]
 })
 export class RptSubproductosComponent implements OnInit {
@@ -37,7 +37,7 @@ export class RptSubproductosComponent implements OnInit {
 
     this.loading = true;
     this.submitted = false;
-    this.viewReport = false;   
+    this.viewReport = false;
     this.rows = [];
     this.tituloGrafica = "";
     this.paramsBusqueda = {};
@@ -120,11 +120,11 @@ export class RptSubproductosComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.reporteSubproductos(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-       
-        if (result.response.sucessfull) { 
-          this.rows =  result.data.reporteMap || [];
+
+        if (result.response.sucessfull) {
+          this.rows = result.data.reporteMap || [];
           this.viewReport = true;
-         
+
         } else {
 
           this.viewReport = false;
@@ -156,13 +156,20 @@ export class RptSubproductosComponent implements OnInit {
     let linkFile = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel;';
 
-    let tabla= getTablaUtf8('tblReporte');
-   
-    linkFile.href = data_type + ', ' + tabla;
-    linkFile.download = 'ReporteSubproductos';
+    if (linkFile.download != undefined) {
+      document.body.appendChild(linkFile);
+      let tabla = getTablaUtf8('tblReporte');
+      linkFile.href = data_type + ', ' + tabla;
+      linkFile.download = 'ReporteSubproductos';
+      linkFile.click();
+      linkFile.remove();
+    } else {
 
-    linkFile.click();
-    linkFile.remove();
+      let elem = $("#tblReporte")[0].outerHTML;
+
+      let blobObject = new Blob(["\ufeff", elem], { type: 'application/vnd.ms-excel' });
+      window.navigator.msSaveBlob(blobObject, 'ReporteSubproductos.xls');
+    }
 
   }
 

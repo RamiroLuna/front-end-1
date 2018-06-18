@@ -197,12 +197,23 @@ export class RptOeeComponent implements OnInit {
     let linkFile = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel;';
 
-    let tabla = getTablaUtf8('tblReporte');
-    linkFile.href = data_type + ', ' + tabla;
-    linkFile.download = 'ReporteDeOEE';
+    if (linkFile.download != undefined) {
+      document.body.appendChild(linkFile);
+      let tabla = getTablaUtf8('tblReporte');
+      linkFile.href = data_type + ', ' + tabla;
+      linkFile.download = 'ReporteDeOEE';
+      linkFile.click();
+      linkFile.remove();
 
-    linkFile.click();
-    linkFile.remove();
+    } else {
+
+      let elem = $("#tblReporte")[0].outerHTML;
+
+      let blobObject = new Blob(["\ufeff", elem], { type: 'application/vnd.ms-excel' });
+      window.navigator.msSaveBlob(blobObject, 'ReporteDeOEE.xls');
+    }
+
+
 
   }
 

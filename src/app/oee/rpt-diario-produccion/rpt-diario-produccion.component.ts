@@ -12,7 +12,7 @@ declare var Materialize: any;
 @Component({
   selector: 'app-rpt-diario-produccion',
   templateUrl: './rpt-diario-produccion.component.html',
-  styleUrls: [ './rpt-diario-produccion.component.css' ],
+  styleUrls: ['./rpt-diario-produccion.component.css'],
   providers: [RptDiarioProduccionService]
 })
 export class RptDiarioProduccionComponent implements OnInit {
@@ -114,8 +114,8 @@ export class RptDiarioProduccionComponent implements OnInit {
         if (result.response.sucessfull) {
           this.rows = result.data.reporteDiario || [];
           this.viewReport = true;
-          setTimeout(() => {  
-           
+          setTimeout(() => {
+
           }, 1000);
 
         } else {
@@ -138,18 +138,28 @@ export class RptDiarioProduccionComponent implements OnInit {
     $('.tooltipped').tooltip('hide');
   }
 
-  
+
   exportarExcel(): void {
     let linkFile = document.createElement('a');
     let data_type = 'data:application/vnd.ms-excel;';
 
-    let tablas = getTablaUtf8('tblReporte');
-   
-    linkFile.href = data_type + ', ' + tablas;
-    linkFile.download = 'ReporteDisponibilidad';
+    if (linkFile.download != undefined) {
+      document.body.appendChild(linkFile);
 
-    linkFile.click();
-    linkFile.remove();
+      let tablas = getTablaUtf8('tblReporte');
+
+      linkFile.href = data_type + ', ' + tablas;
+      linkFile.download = 'ReporteDiarioProduccion';
+
+      linkFile.click();
+      linkFile.remove();
+    } else {
+
+      let elem = $("#tblReporte")[0].outerHTML;
+
+      let blobObject = new Blob(["\ufeff", elem], { type: 'application/vnd.ms-excel' });
+      window.navigator.msSaveBlob(blobObject, 'ReporteDiarioProduccion.xls');
+    }
 
   }
 
