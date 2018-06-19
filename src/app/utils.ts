@@ -209,6 +209,43 @@ function DataTable(el): void {
     $('select').material_select();
 }
 
+/**
+ * @function DataTable
+ * @param  {string} el - Elemento DOM. Tabla a la que se le cargará el plugin
+ */
+function DataTableLiberadas(el): void {
+    $(el).DataTable({
+        "dom": '<lf<t>ip>',
+        "ordering": false,
+        "bPaginate": true,
+        "scrollX": true,
+        "autoWidth": "*",
+        "scrollCollapse": true,
+        "bLengthChange": true,
+        "lengthChange": true,
+        "aLengthMenu": [[10, 25, 50, 75, -1], [10, 25, 50, 75, "Todos"]],
+        "iDisplayLength": 10,
+        "language": {
+            "zeroRecords": "No se encontrarón registros",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            "infoEmpty": "Mostrando 0 a 0 de 0 registros",
+            "infoFiltered": "(filtrado de _MAX_ total registros)",
+            "lengthMenu": "Mostrar _MENU_ regitros",
+            "search": "Filtrar:",
+            "paginate": {
+                "first": "Inicio",
+                "last": "Fin",
+                "next": "Sig.",
+                "previous": "Anterior"
+            }
+        }
+    });
+
+    $('tabla > select').val('10'); //seleccionar valor por defecto del select
+    $('tabla > select').addClass("browser-default"); //agregar una clase de materializecss de esta forma ya no se pierde el select de numero de registros.
+    $('tabla > select').material_select();
+}
+
 
 /**
  * @function DataTableReporte
@@ -481,6 +518,7 @@ export {
     clone,
     getTodayMilisegundos,
     DataTableProduccion,
+    DataTableLiberadas,
     hmToMs,
     getBrowser
 }

@@ -17,7 +17,8 @@ export class OptionsComponent implements AfterViewInit {
     produccion: false,
     fallas: false,
     validacion: false,
-    catalogos: false
+    catalogos: false,
+    quitarValidacionProduccion: false
   }
   public loading: boolean;
 
@@ -36,6 +37,7 @@ export class OptionsComponent implements AfterViewInit {
     this.permission.produccion = findRol(18, this.auth.getRolesOee());
     this.permission.validacion = findRol(20, this.auth.getRolesOee());
     this.permission.catalogos = findRol(22, this.auth.getRolesOee());
+    this.permission.quitarValidacionProduccion = findRol(29, this.auth.getRolesOee());
     this.loading = false;
     setTimeout(() => {
      

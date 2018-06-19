@@ -73,7 +73,7 @@ export class LoginComponent implements OnInit {
       });
 
     } else {
-      Materialize.toast('Se encontrarón errores!', 4000, 'red');
+      Materialize.toast('Verifique los datos capturados!', 4000, 'red');
     }
 
   }

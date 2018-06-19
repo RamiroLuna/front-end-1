@@ -29,6 +29,8 @@ export class ValidaProduccionComponent implements OnInit {
   public turnos: Array<Catalogo>;
   public formulario: FormGroup;
   public height:number;
+  public rutaPagina:string;
+  public estatusPeriodo:boolean;
   public meta: any = {
     id_meta: 0,
     id_linea: 0,
@@ -53,13 +55,17 @@ export class ValidaProduccionComponent implements OnInit {
     this.lineas = [];
     this.grupos = [];
     this.turnos = [];
+    let tmp = this.router.url.split('/');
+    this.rutaPagina = tmp[tmp.length - 2 ]
 
     this.route.paramMap.subscribe(params => {
 
       let id_meta = parseInt(params.get('id'));
 
       this.service.init(this.auth.getIdUsuario(), id_meta).subscribe(result => {
+
         if (result.response.sucessfull) {
+          this.estatusPeriodo = result.data.estatusPeriodo;
           this.grupos = result.data.listGrupos || [];
           this.lineas = result.data.listLineas || [];
           this.turnos = result.data.listTurnos || [];
@@ -108,15 +114,32 @@ export class ValidaProduccionComponent implements OnInit {
 
   }
 
-  validar(): void{
+  validar(opcion:string): void{
+    let titulo =  '';
+    let status = -1;
+    let mensaje= '';
+    let html = '';
+
+    if(opcion == 'quitar'){
+      status = 0;
+      titulo = '¿ Está seguro de quitar la validación de esta producción ?';
+                html = 'La producción se verá nuevamente en la sección "Producción pendientes por validar" para su posterior modificación';
+      mensaje = ' Quito la validación exitosamente';
+    }else if(opcion == 'liberar'){
+      status = 1;
+      titulo = '¿ Está seguro de validar la producción ? ';
+      mensaje = 'Validación exitosa!'
+    }
+   
     swal({
-      title: '<span style="color: #303f9f "> ¿ Está seguro de validar la producción ? </span>',
+      title: '<span style="color: #303f9f ">'+ titulo +'</span>',
       type: 'question',
+      html: '<p style="color: #303f9f ">'+ html +'</b></p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
       cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Si, validar',
+      confirmButtonText: 'Si',
       allowOutsideClick: false,
       allowEnterKey: false
     }).then((result) => {
@@ -125,11 +148,11 @@ export class ValidaProduccionComponent implements OnInit {
        */
       if (result.value) {
 
-        this.service.liberarDatos(this.auth.getIdUsuario(), this.meta.id_meta).subscribe(result => {
+        this.service.liberarDatos(this.auth.getIdUsuario(), this.meta.id_meta, status).subscribe(result => {
 
           if (result.response.sucessfull) {
             this.mostrarBtnValidar = false;
-            Materialize.toast('Validación exitosa!', 4000, 'green');
+            Materialize.toast(mensaje, 4000, 'green');
 
           } else {
             Materialize.toast(result.response.message, 4000, 'red');

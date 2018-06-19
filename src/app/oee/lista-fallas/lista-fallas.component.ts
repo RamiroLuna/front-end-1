@@ -108,6 +108,7 @@ export class ListaFallasComponent implements OnInit {
         this.turnos = result.data.listTurnos || [];
         this.periodos = result.data.listPeriodos || []; 
         this.gruposLineas = result.data.listGposLineas || [];
+        this.grupos = this.grupos.filter(el=>el.id != 6);
         
         let tmpAnios = this.periodos.map(el => el.anio);
         this.periodos.filter((el, index) => {
@@ -143,10 +144,10 @@ export class ListaFallasComponent implements OnInit {
   loadFormulario(): void {
     this.formBusqueda = this.fb.group({
       anio: new FormControl({ value: this.paramsBusqueda.anio, disabled: false }, [Validators.required]),
-      idGpoLinea: new FormControl({ value: this.paramsBusqueda.idGpoLinea, disabled: (this.auth.permissionEdit(2) || this.auth.permissionEdit(3)) }, [Validators.required]),
+      idGpoLinea: new FormControl({ value: this.paramsBusqueda.idGpoLinea, disabled: !(!this.auth.permissionEdit(1) || !this.auth.permissionEdit(2) || !this.auth.permissionEdit(3)) }, [Validators.required]),
       idPeriodo: new FormControl({ value: this.paramsBusqueda.idPeriodo, disabled: false }, [Validators.required]),
-      id_linea: new FormControl({ value: this.paramsBusqueda.id_linea, disabled: (this.auth.permissionEdit(2) || this.auth.permissionEdit(3)) }, [Validators.required]),
-      id_grupo: new FormControl({ value: this.paramsBusqueda.id_grupo, disabled: (this.auth.permissionEdit(2) || this.auth.permissionEdit(3)) }, [Validators.required]),
+      id_linea: new FormControl({ value: this.paramsBusqueda.id_linea, disabled: !(!this.auth.permissionEdit(1) || !this.auth.permissionEdit(2) || !this.auth.permissionEdit(3)) }, [Validators.required]),
+      id_grupo: new FormControl({ value: this.paramsBusqueda.id_grupo, disabled: !(!this.auth.permissionEdit(1) || !this.auth.permissionEdit(2) || !this.auth.permissionEdit(3)) }, [Validators.required]),
       id_turno: new FormControl({ value: this.paramsBusqueda.id_turno, disabled: false }, [Validators.required])
     });
 

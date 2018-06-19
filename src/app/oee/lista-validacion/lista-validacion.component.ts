@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { UserSonarh } from '../../models/user-sonarh';
 import { ListaValidacionService } from './lista-validacion.service';
 import { AuthService } from '../../auth/auth.service';
 import { DataTable, findRol } from '../../utils';
@@ -52,13 +51,9 @@ export class ListaValidacionComponent implements OnInit {
  * Carga plugins despues de cargar y mostrar objetos en el DOM
  */
   ngAfterViewHttp(): void {
-
-    
-
     DataTable('#tabla');
     $('.tooltipped').tooltip({ delay: 50 });
 
-   
   }
 
 

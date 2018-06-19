@@ -30,11 +30,11 @@ export class ValidaProduccionService {
     /*
    * Bloque de codigo para peticiones insert produccion
    */
-  liberarDatos(id_usuario: number, id_meta:number): Observable<any> {
+  liberarDatos(id_usuario: number, id_meta:number, status:number): Observable<any> {
     const body = new HttpParams()
       .set('action', 'liberarDatos')
       .set('id_meta', ''+id_meta)
-      .set('estatus', '1')
+      .set('estatus', ''+status)
       .set('id_usuario', '' + id_usuario);
     return this.http.post(this.URL, body);
   }

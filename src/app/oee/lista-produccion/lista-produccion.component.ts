@@ -93,10 +93,12 @@ export class ListaProduccionComponent implements OnInit {
     this.estatusPeriodo = true;
     this.anioSeleccionado = getAnioActual();
     this.permission.agregarProduccion = findRol(17, this.auth.getRolesOee());
-    this.permission.consultaByLine = this.auth.permissionEdit(1) || this.auth.permissionEdit(2) || this.auth.permissionEdit(3);
+
+    this.permission.consultaByLine = !this.auth.permissionEdit(1) || !this.auth.permissionEdit(2) || !this.auth.permissionEdit(3);
+
     this.idGpoLinea = this.auth.getId_GpoLinea();
     this.verGrupo = this.auth.permissionEdit(4);
-    if (this.permission.consultaByLine) this.idLinea = this.auth.getId_Linea();
+    if (!this.permission.consultaByLine) this.idLinea = this.auth.getId_Linea();
     this.init();
 
   }
@@ -147,8 +149,8 @@ export class ListaProduccionComponent implements OnInit {
 
   loadFormulario(): void {
     this.formConsultaPeriodo = this.fb.group({
-      idLinea: new FormControl({ value: this.idLinea, disabled: this.permission.consultaByLine }, [Validators.required]),
-      idGpoLinea: new FormControl({ value: this.idGpoLinea, disabled: this.permission.consultaByLine }, [Validators.required]),
+      idLinea: new FormControl({ value: this.idLinea, disabled: !this.permission.consultaByLine }, [Validators.required]),
+      idGpoLinea: new FormControl({ value: this.idGpoLinea, disabled: !this.permission.consultaByLine }, [Validators.required]),
       idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required])
     });
   }
@@ -243,7 +245,7 @@ export class ListaProduccionComponent implements OnInit {
 
       });
     } else {
-      Materialize.toast('Se encontrarón errores!', 4000, 'red');
+      Materialize.toast('Verifique los datos capturados!', 4000, 'red');
     }
 
   }

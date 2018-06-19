@@ -54,8 +54,10 @@ export class AuthService {
  * si dentro de los perfiles viene el que tiene permiso para editar
  */
   public permissionEdit(idPerfil:number):boolean{
+
     let perfiles:string = jwt_decode(this.getToken()).perfiles || "-1";
     let idPerfiles = perfiles.split(",").map(el=>parseInt(el));
+   
     return (idPerfiles.indexOf(idPerfil) == -1);
   }
 

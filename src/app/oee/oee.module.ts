@@ -34,6 +34,8 @@ import { RptVelocidadPromedioComponent } from './rpt-velocidad-promedio/rpt-velo
 import { RptSubproductosComponent } from './rpt-subproductos/rpt-subproductos.component';
 import { RptProduccionRealPlanComponent } from './rpt-produccion-real-plan/rpt-produccion-real-plan.component';
 import { RptDetalladoFallasComponent } from './rpt-detallado-fallas/rpt-detallado-fallas.component';
+import { ListaProduccionValidadaComponent } from './lista-produccion-validada/lista-produccion-validada.component';
+
 
 
 
@@ -115,7 +117,7 @@ const routes: Routes = [
   { path: 'opciones/lista-reportes/subproductos', component: RptSubproductosComponent },
   { path: 'opciones/lista-reportes/produccion-real-plan', component: RptProduccionRealPlanComponent },
   { path: 'opciones/lista-reportes/detalles-fallas', component: RptDetalladoFallasComponent },
-  
+
   /* Registro de produccion */
   {
     path: 'opciones/produccion', component: ListaProduccionComponent, canActivate: [AuthGuardOee],
@@ -140,6 +142,18 @@ const routes: Routes = [
     path: 'opciones/validaciones/:id', component: ValidaProduccionComponent, canActivate: [AuthGuardOee],
     data: {
       expectedRole: 20
+    }
+  },
+  {
+    path: 'opciones/producciones-validadas', component: ListaProduccionValidadaComponent, canActivate: [AuthGuardOee],
+    data: {
+      expectedRole: 29
+    }
+  },
+  {
+    path: 'opciones/producciones-validadas/:id', component: ValidaProduccionComponent, canActivate: [AuthGuardOee],
+    data: {
+      expectedRole: 29
     }
   }
 ];
@@ -182,7 +196,8 @@ const routes: Routes = [
     RptVelocidadPromedioComponent,
     RptSubproductosComponent,
     RptProduccionRealPlanComponent,
-    RptDetalladoFallasComponent
+    RptDetalladoFallasComponent,
+    ListaProduccionValidadaComponent
   ],
   providers: [
     AuthGuardOee

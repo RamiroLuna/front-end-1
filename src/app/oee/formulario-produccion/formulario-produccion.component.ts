@@ -122,6 +122,11 @@ export class FormularioProduccionComponent implements OnInit {
           this.meta.id_grupo = result.data.meta.id_grupo;
           this.estatusValidacion = result.data.meta.estatus;
 
+          /* ParseFloat 3 decimales a datos de producción */
+          this.productos.forEach(el=>{
+            el.valor = parseFloat(el.valor).toFixed(3);
+          });
+
           this.loading = false;
           this.loadFormulario();
           setTimeout(() => this.ngAfterViewInit(), 20);

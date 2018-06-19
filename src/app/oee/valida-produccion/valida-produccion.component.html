@@ -5,7 +5,7 @@
     <!-- Solo para dispositivos moviles -->
 
     <div class="hide-on-large-only right-align">
-      <a routerLink="../../validaciones" class="tooltipped" data-position="top" data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+      <a [routerLink]="'../../'+rutaPagina" class="tooltipped" data-position="top" data-delay="50" data-tooltip="Regresar" (click)="regresar()">
         Regresar
       </a>
     </div>
@@ -74,7 +74,7 @@
                   <b>{{ '(' + producto.valor_producto + ')' }}&nbsp;&nbsp;</b>{{ producto.descripcion_producto }}</p>
               </div>
               <div class="col s4">
-                <input type="text" placeholder="Escribe aquí" [value]="producto.valor | toneladas" disabled>
+                <input type="text" placeholder="Escribe aquí" [value]="producto.valor |  formatDecimal: 3 | toneladas" disabled>
               </div>
             </div>
           </li>
@@ -140,15 +140,19 @@
   <!-- solo para pantallas -->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-      <a routerLink="../../validaciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      <a [routerLink]="'../../'+rutaPagina" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
         data-delay="50" data-tooltip="Regresar" (click)="regresar()">
         <i class="material-icons">
           <i class="material-icons">arrow_back</i>
         </i>
       </a>
-      <button class="btn-floating btn-large light-green darken-1  waves-effect waves-light tooltipped" data-position="top" data-delay="50"
-        data-tooltip="Validar" (click)="validar()" [disabled]="!mostrarBtnValidar">
+      <button *ngIf="rutaPagina == 'validaciones'" class="btn-floating btn-large light-green darken-1  waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+        data-tooltip="Validar" (click)="validar('liberar')" [disabled]="!mostrarBtnValidar">
         <i class="material-icons">done</i>
+      </button>
+      <button *ngIf="rutaPagina == 'producciones-validadas' && estatusPeriodo" class="btn-floating btn-large red darken-1  waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+        data-tooltip="Quitar validación" (click)="validar('quitar')" [disabled]="!mostrarBtnValidar">
+        <i class="material-icons">lock_open</i>
       </button>
     </div>
   </div>
@@ -156,9 +160,13 @@
   <!-- Solo para dispositivos moviles -->
 
   <div class="hide-on-large-only center-align">
-    <button class="btn-floating light-green darken-1  waves-effect waves-light tooltipped" data-position="top" data-delay="50"
-      data-tooltip="Validar producción" (click)="validar()" [disabled]="!mostrarBtnValidar">
+    <button *ngIf="rutaPagina == 'validaciones'" class="btn-floating light-green darken-1  waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+      data-tooltip="Validar producción" (click)="validar('liberar')" [disabled]="!mostrarBtnValidar">
       <i class="material-icons">done</i>
+    </button>
+    <button *ngIf="rutaPagina == 'producciones-validadas' && estatusPeriodo" class="btn-floating  red darken-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+      data-tooltip="Quitar validación" (click)="validar('quitar')" [disabled]="!mostrarBtnValidar">
+      <i class="material-icons">lock_open</i>
     </button>
   </div>
   <br>
