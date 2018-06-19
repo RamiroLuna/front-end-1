@@ -27,7 +27,6 @@ export class RptProduccionRealPlanComponent implements OnInit {
   public periodos: Array<Periodo>;
   public lineas: Array<Linea>;
   public vista: Array<any>;
-  public vercombo: boolean;
 
 
 
@@ -42,7 +41,6 @@ export class RptProduccionRealPlanComponent implements OnInit {
     this.loading = true;
     this.submitted = false;
     this.viewReport = false;
-    this.vercombo = true;
     this.parametrosBusqueda = {
       dia: ''
     };
@@ -115,7 +113,13 @@ export class RptProduccionRealPlanComponent implements OnInit {
 
 
     } else if (params == 'tipo') {
-      this.vercombo = this.parametrosBusqueda.report == 'byMonths';
+
+      if (this.parametrosBusqueda.report == 'byDays' || this.parametrosBusqueda.report == 'byWeeks') {
+        this.formConsultaPeriodo.controls.idPeriodo.enable();
+      } else if (this.parametrosBusqueda.report == 'byMonths') {
+        this.parametrosBusqueda.idPeriodo = '';
+        this.formConsultaPeriodo.controls.idPeriodo.disable();
+      }
     }
   }
 
@@ -148,7 +152,7 @@ export class RptProduccionRealPlanComponent implements OnInit {
           configChart.series = [];
           configChart.xAxis.categories = labels;
           configChart.title.text = titulo;
-          
+
 
 
           configChart.series.push({ name: ' Real ', data: dataReal, color: '#dcedc8' });
@@ -176,11 +180,11 @@ export class RptProduccionRealPlanComponent implements OnInit {
           real.push(realTmp.reald);
 
           let categorias = [];
-          categorias.push(legeng.replace(':grupo:','Grupo A').replace(':real:',realTmp.reala).replace(':meta:',realTmp.metaa));
-          categorias.push(legeng.replace(':grupo:','Grupo B').replace(':real:',realTmp.realb).replace(':meta:',realTmp.metab));
-          categorias.push(legeng.replace(':grupo:','Grupo C').replace(':real:',realTmp.realc).replace(':meta:',realTmp.metac));
-          categorias.push(legeng.replace(':grupo:','Grupo D').replace(':real:',realTmp.reald).replace(':meta:',realTmp.metad));
-          
+          categorias.push(legeng.replace(':grupo:', 'Grupo A').replace(':real:', realTmp.reala).replace(':meta:', realTmp.metaa));
+          categorias.push(legeng.replace(':grupo:', 'Grupo B').replace(':real:', realTmp.realb).replace(':meta:', realTmp.metab));
+          categorias.push(legeng.replace(':grupo:', 'Grupo C').replace(':real:', realTmp.realc).replace(':meta:', realTmp.metac));
+          categorias.push(legeng.replace(':grupo:', 'Grupo D').replace(':real:', realTmp.reald).replace(':meta:', realTmp.metad));
+
           configChartSpider.xAxis.categories = categorias;
 
           configChartSpider.series.push({

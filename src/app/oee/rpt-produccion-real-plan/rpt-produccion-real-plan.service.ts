@@ -21,7 +21,7 @@ export class RptProduccionRealPlanService {
    * Consulta reporte 
    */
   reportePerformance(id_usuario: number, params:any): Observable<any> {
-    return this.http.get<any>(this.URL + '?action=reportePerformance&id_usuario=' + id_usuario + '&id_periodo='+params.idPeriodo +'&id_linea='+params.idLinea+'&report='+params.report);
+    return this.http.get<any>(this.URL + '?action=reportePerformance&id_usuario=' + id_usuario + '&id_periodo='+params.idPeriodo +'&id_linea='+params.idLinea+'&report='+params.report+'&anio='+params.anio);
   }
 
 

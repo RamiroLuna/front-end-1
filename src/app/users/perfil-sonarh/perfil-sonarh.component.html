@@ -53,6 +53,7 @@
               <div class="col s12 m12 l12 xl12">
                 <label>Asigna perfil para ETAD</label>
                 <select materialize="material_select" formControlName="id_perfiles" [materializeSelectOptions]="id_perfiles" [(ngModel)]="usuario.id_perfiles" multiple>
+                  <option value="" disabled>SELECCIONE</option>
                   <option *ngFor="let perfil of perfiles" [value]="perfil.id">{{perfil.valor}}</option>
                 </select>
                 <div *ngIf="formPerfilSonarh.controls.id_perfiles.errors?.required && (formPerfilSonarh.controls.id_perfiles?.touched || submitted)"
