@@ -7,10 +7,10 @@ import { ListaMetasService } from './lista-metas.service';
 import { Periodo } from '../../models/periodo';
 import { Linea } from '../../models/linea';
 import { Catalogo } from '../../models/catalogo';
-import { 
-  deleteItemArray, 
-  calculaDiaPorMes, 
-  isNumeroAsignacionValid, 
+import {
+  deleteItemArray,
+  calculaDiaPorMes,
+  isNumeroAsignacionValid,
   findRol,
   getMetasKPI,
   getFrecuenciaMetaKPI
@@ -49,17 +49,18 @@ export class ListaMetasComponent implements OnInit {
   public loading: boolean;
   public datos_tabla: boolean;
   public mensajeModal: string;
-  public estatusPeriodo: boolean;
 
-  public anioSeleccionado: number;
+  public anioSeleccionado: any;
   public frecuencia: string;
   public submitted: boolean;
   public disabled: boolean;
+  public tipoMetaSeleccionada: string;
 
   public tiposMeta: Array<any> = [];
-  public frecuanciasDisponibles: Array<any> = [];
+  public frecuenciasDisponibles: Array<any> = [];
+  public frecuencias: Array<any> = [];
   public periodos: Array<Periodo> = [];
-  public lineas: Array<Linea> = [];
+  public etads: Array<Linea> = [];
   public grupos: Array<Catalogo> = [];
   public turnos: Array<Catalogo> = [];
   public anios: Array<any> = [];
@@ -69,7 +70,8 @@ export class ListaMetasComponent implements OnInit {
   public status: string;
 
   public idEtad: number;
-  public idPeriodo: number;
+  public idPeriodo: any;
+  public metasForSwal: any = {};
 
 
   public permission: any = {
@@ -87,20 +89,22 @@ export class ListaMetasComponent implements OnInit {
     this.datos_tabla = false;
     this.submitted = false;
     this.disabled = false;
-    this.estatusPeriodo = true;
 
     this.permission.editarMeta = findRol(3, this.auth.getRolesOee());
     this.permission.eliminarMeta = findRol(5, this.auth.getRolesOee());
 
     this.tiposMeta = getMetasKPI();
-    this.frecuanciasDisponibles = getFrecuenciaMetaKPI();
+    this.frecuenciasDisponibles = getFrecuenciaMetaKPI();
+
+    this.tipoMetaSeleccionada = 'ESTRATEGICAS';
+    this.getFrecuencia(this.tipoMetaSeleccionada)
 
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-      console.log('init ', result)
+
       if (result.response.sucessfull) {
 
-        this.lineas = result.data.listLineas || [];
+        this.etads = result.data.listLineas || [];
         this.periodos = result.data.listPeriodos || [];
         this.grupos = result.data.listGrupos || [];
         this.grupos = this.grupos.filter((el) => el.id != 6);
@@ -110,8 +114,12 @@ export class ListaMetasComponent implements OnInit {
           return tmpAnios.indexOf(el.anio) === index;
         }).forEach((el) => {
           let tmp = el.anio;
-          this.anios.push({ value: tmp, descripcion: tmp})
+          this.anios.push({ value: tmp, descripcion: tmp })
         });
+
+        this.tiposMeta.map(el => {
+          this.metasForSwal[el.descripcion] = el.descripcion;
+        })
 
         this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
 
@@ -142,41 +150,58 @@ export class ListaMetasComponent implements OnInit {
 
   }
 
-  changeCombo(): void {
-    this.estatusPeriodo = true;
+  changeCombo(tipoCombo: string): void {
     this.datos_tabla = false;
     this.status = "inactive";
+
+    if (tipoCombo == 'frecuencia') {
+      this.idPeriodo = '';
+      this.anioSeleccionado = '';
+      if (this.frecuencia == 'mensual') {
+        this.formConsultaPeriodo.controls.idPeriodo.enable();
+        this.formConsultaPeriodo.controls.anioSeleccionado.enable();
+      } else if (this.frecuencia == 'anual') {
+        this.formConsultaPeriodo.controls.idPeriodo.disable();
+        this.formConsultaPeriodo.controls.anioSeleccionado.enable();
+      } else {
+        this.formConsultaPeriodo.controls.idPeriodo.disable();
+        this.formConsultaPeriodo.controls.anioSeleccionado.disable();
+      }
+
+    } else if (tipoCombo == 'anio') {
+      this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
+    }
+
   }
 
   openModalTipoMeta(event): void {
     event.preventDefault();
-    // swal({
-    //   title: 'Seleccione tipo de meta',
-    //   input: 'select',
-    //   cancelButtonText: 'Cancelar',
-    //   confirmButtonText: 'OK',
-    //   inputOptions: this.anios,
-    //   inputPlaceholder: 'SELECCIONE',
-    //   showCancelButton: true,
-    //   inputValidator: (value) => {
+    swal({
+      title: 'Seleccione tipo de meta',
+      input: 'select',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'OK',
+      inputOptions: this.metasForSwal,
+      inputPlaceholder: 'SELECCIONE',
+      showCancelButton: true,
+      inputValidator: (value) => {
 
-    //     return new Promise((resolve) => {
-    //       this.formConsultaPeriodo.reset();
-    //       this.submitted = false;
-    //       this.status = "inactive";
-    //       this.datos_tabla = false;
+        return new Promise((resolve) => {
+          this.formConsultaPeriodo.reset();
+          this.submitted = false;
+          this.status = "inactive";
+          this.datos_tabla = false;
 
-
-    //       if (value != '') {
-    //         resolve();
-    //         this.anioSeleccionado = value;
-    //         this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
-    //       } else {
-    //         resolve('Seleccione un año')
-    //       }
-    //     })
-    //   }
-    // })
+          if (value != '') {
+            resolve();
+            this.tipoMetaSeleccionada = value;
+            this.getFrecuencia(this.tipoMetaSeleccionada);
+          } else {
+            resolve('Seleccione tipo de meta')
+          }
+        })
+      }
+    })
   }
 
   loadFormulario(): void {
@@ -195,12 +220,11 @@ export class ListaMetasComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
       this.disabled = true;
       this.datos_tabla = false;
-
-      this.service.getAllMetas(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad).subscribe(result => {
-
+      let idTipoMeta = this.tiposMeta.filter((el) => el.descripcion == this.tipoMetaSeleccionada.trim().toUpperCase())[0].id;
+      this.service.getAllMetas(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad, this.anioSeleccionado, this.frecuencia, idTipoMeta).subscribe(result => {
+        
         if (result.response.sucessfull) {
-          this.estatusPeriodo = result.data.estatusPeriodo;
-          this.metas = result.data.listMetas || [];
+          this.metas = result.data.listObjetivosOperativos || [];
           this.datos_tabla = true;
           this.disabled = false;
 
@@ -212,13 +236,15 @@ export class ListaMetasComponent implements OnInit {
 
         } else {
           Materialize.toast(result.response.message, 4000, 'red');
+          this.disabled = false;
         }
       }, error => {
         Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+        this.disabled = false;
       });
 
     } else {
-      Materialize.toast('Se encontrarón errores!', 4000, 'red');
+      Materialize.toast('Verifique los datos capturados!', 4000, 'red');
     }
 
 
@@ -260,5 +286,19 @@ export class ListaMetasComponent implements OnInit {
     }
     return meta;
   }
+
+  getFrecuencia(tipoMeta: string) {
+    let temp = this.tiposMeta.filter((el) => el.descripcion == tipoMeta.trim().toUpperCase());
+
+    if (temp.length > 0) {
+      if (temp[0].frecuencia == 2) {
+        this.frecuencias = this.frecuenciasDisponibles.map(el => el);
+      } else {
+        this.frecuencias = this.frecuenciasDisponibles.filter(element => element.id == temp[0].frecuencia);
+      }
+    }
+  }
+
+
 
 }

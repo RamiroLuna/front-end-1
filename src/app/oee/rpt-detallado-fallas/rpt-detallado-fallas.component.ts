@@ -3,7 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { Linea } from '../../models/linea';
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
-import { getTablaUtf8, getBrowser } from '../../utils';
+import { getTablaUtf8 } from '../../utils';
 import { RptDetalladoFallasService } from './rpt-detallado-fallas.service';
 import { Falla } from '../../models/falla';
 

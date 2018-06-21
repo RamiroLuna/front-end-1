@@ -17,12 +17,15 @@ export class ListaMetasService {
     return this.http.get<any>(this.URL + '?action=loadCombobox&id_usuario='+idUsuario);
   }
 
-  getAllMetas(id_usuario:number, idPeriodo:number, IdLinea:number): Observable<any>{
+  getAllMetas(id_usuario:number, idPeriodo:number, idEtad:number, anio:number, frecuencia:string, tipoMeta:number): Observable<any>{
     const body = new HttpParams()
     .set('action', 'getAllMetas')
-    .set('id_periodo', ""+idPeriodo)
-    .set('id_linea', ""+IdLinea)
-    .set('id_usuario', ""+id_usuario)
+    .set('id_etad',''+idEtad)
+    .set('anio',''+anio)
+    .set('frecuencia',''+frecuencia)
+    .set('tipo_meta',''+tipoMeta)
+    .set('id_periodo',''+idPeriodo)
+    .set('id_usuario', '' + id_usuario)
     return this.http.post<any>(this.URL,body);
   }
 

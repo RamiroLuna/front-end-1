@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormatNumberPipeClass } from './format.number.pipe';
 import { ToneladasPipeClass } from './toneladas.pipe';
 import { SeparatorPipeClass } from './separator.pipe';
+import { LowerCasePipeClass } from './lower.case.pipe';
 
 @NgModule({
   imports: [
@@ -11,12 +12,14 @@ import { SeparatorPipeClass } from './separator.pipe';
   declarations: [
     FormatNumberPipeClass,
     ToneladasPipeClass,
-    SeparatorPipeClass
+    SeparatorPipeClass,
+    LowerCasePipeClass
   ],
   exports: [ 
       FormatNumberPipeClass,
       ToneladasPipeClass,
-      SeparatorPipeClass
+      SeparatorPipeClass,
+      LowerCasePipeClass
 
     ]
 })

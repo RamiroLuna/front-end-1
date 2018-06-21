@@ -499,9 +499,6 @@ function getMetasKPI(): Array<any> {
         { id: 2, descripcion: 'OPERATIVAS', frecuencia: 0 },
         { id: 3, descripcion: 'KPI OPERATIVOS', frecuencia: 0 }
     ];
-
-
-
 };
 
 // Frecuencias de metas disponibles

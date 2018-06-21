@@ -1,12 +1,12 @@
 <div class="container" *ngIf="!loading">
   <div class="section"></div>
   <h4 class="color_titulo center-align">Edición de metas
-    <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar año" (click)="openModalTipoMeta($event)">{{ metaSeleccionada }}</a>
+    <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar año" (click)="openModalTipoMeta($event)">{{ tipoMetaSeleccionada | minuscula }}</a>
   </h4>
   <!-- Solo para dispositivos moviles -->
   <div class="hide-on-large-only right-align">
     <a routerLink="../../opciones" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-      data-delay="50" data-tooltip="Opciones CUA" (click)="regresar()">
+      data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
       <i class="material-icons">
         <i class="material-icons">arrow_back</i>
       </i>
@@ -17,27 +17,27 @@
   <div class="row">
     <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="consultaPeriodo()" autocomplete="off">
       <div class="input-field col s12 m12 l3 xl3">
-        <select class="frecuencias" materialize="material_select" [materializeSelectOptions]="frecuencias" formControlName="frecuencia" [(ngModel)]="frecuencia"
-          (ngModelChange)="changeCombo()">
+        <select class="frecuencias" materialize="material_select" [materializeSelectOptions]="frecuencias" formControlName="frecuencia"
+          [(ngModel)]="frecuencia" (ngModelChange)="changeCombo('frecuencia')">
           <option value="">SELECCIONE</option>
           <option *ngFor="let frecuencia of frecuencias" [value]="frecuencia.value">{{frecuencia.descripcion}}</option>
         </select>
         <label for="frecuencias">Frecuencia</label>
         <div *ngIf="formConsultaPeriodo.controls.frecuencia.errors?.required && (formConsultaPeriodo.controls.frecuencia?.touched || submitted)"
           class="error">
-          Seleccione una opcion
+          Seleccione
         </div>
       </div>
       <div class="input-field col s12 m12 l2 xl2">
-        <select class="anios" materialize="material_select" [materializeSelectOptions]="anios" formControlName="anioSeleccionado" [(ngModel)]="anioSeleccionado"
-          (ngModelChange)="changeCombo()">
+        <select class="anios" materialize="material_select" [materializeSelectOptions]="anios" formControlName="anioSeleccionado"
+          [(ngModel)]="anioSeleccionado" (ngModelChange)="changeCombo('anio')">
           <option value="">SELECCIONE</option>
           <option *ngFor="let anio of anios" [value]="anio.value">{{anio.descripcion}}</option>
         </select>
         <label for="anios">Año</label>
         <div *ngIf="formConsultaPeriodo.controls.anioSeleccionado.errors?.required && (formConsultaPeriodo.controls.anioSeleccionado?.touched || submitted)"
           class="error">
-          Seleccione una opcion
+          Seleccione
         </div>
       </div>
       <div class="input-field col s12 m12 l3 xl3">
@@ -49,19 +49,18 @@
         <label for="mes">mes</label>
         <div *ngIf="formConsultaPeriodo.controls.idPeriodo.errors?.required && (formConsultaPeriodo.controls.idPeriodo?.touched || submitted)"
           class="error">
-          Seleccione una opcion
+          Seleccione
         </div>
       </div>
       <div class="input-field col s12 m12 l3 xl3">
-        <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="idEtad"
-          (ngModelChange)="changeCombo()">
+        <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="idEtad" (ngModelChange)="changeCombo()">
           <option value="">SELECCIONE</option>
           <option *ngFor="let linea of etads" [value]="linea.id_linea">{{linea.descripcion}}</option>
         </select>
         <label for="etad">Etad</label>
         <div *ngIf="formConsultaPeriodo.controls.idEtad.errors?.required && (formConsultaPeriodo.controls.idEtad?.touched || submitted)"
           class="error">
-          Seleccione una opcion
+          Seleccione
         </div>
       </div>
       <div class="input-field col s12 m12 l1 xl1">
@@ -72,57 +71,47 @@
       </div>
     </form>
   </div>
-  <div class="row" *ngIf="!estatusPeriodo">
-    <div class="color_titulo center-align">
-      <span class="waves-effect">
-        <i class="material-icons left">lock</i>Periodo cerrado</span>
-    </div>
-  </div>
   <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
-    <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
-      <thead>
-        <tr>
-          <th style="display:none"></th>
-          <th style="display:none"></th>
-          <th style="display:none"></th>
-          <th class="center-align">Día</th>
-          <th class="center-align">Turno</th>
-          <th class="center-align">Grupo</th>
-          <th class="center-align">Meta</th>
-          <th class="center-align">TMP</th>
-          <th class="center-align">Vel</th>
-          <th class="center-align" *ngIf="permission.editarMeta && estatusPeriodo">Editar</th>
-          <th class="center-align" *ngIf="permission.eliminarMeta && estatusPeriodo">Eliminar</th>
-        </tr>
-      </thead>
+    <ng-template [ngIf]="tipoMetaSeleccionada == 'ESTRATEGICAS'">
+      <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
+        <thead>
+          <tr>
+            <th class="center-align">Día</th>
+            <th class="center-align">Turno</th>
+            <th class="center-align">Grupo</th>
+            <th class="center-align">Meta</th>
+            <th class="center-align">TMP</th>
+            <th class="center-align">Vel</th>
+            <th class="center-align" *ngIf="permission.editarMeta && estatusPeriodo">Editar</th>
+            <th class="center-align" *ngIf="permission.eliminarMeta && estatusPeriodo">Eliminar</th>
+          </tr>
+        </thead>
 
-      <tbody>
-        <tr *ngIf="metas.length == 0 ">
-          <th colspan="11" class="center">No hay registros</th>
-        </tr>
-        <tr *ngFor="let meta of metas;let i = index">
-          <td style="display:none" data-field="index">{{ i }}</td>
-          <td style="display:none" data-field="id_meta">{{ meta.id_meta }}</td>
-          <td style="display:none" data-field="estatus">{{ meta.estatus }}</td>
-          <td class="center-align" data-field="dia" [id]="i" [scope]="'3,'+i">{{meta.dia_string}}</td>
-          <td class="center-align" data-field="turno" [scope]="'4,'+i">{{meta.id_turno}}</td>
-          <td class="center-align" data-field="grupo" [scope]="'5,'+i">{{meta.nombre_grupo}}</td>
-          <td class="center-align" data-field="meta" [scope]="'6,'+i">{{ meta.meta |formatDecimal : 3 }}</td>
-          <td class="center-align" data-field="tmp" [scope]="'7,'+i">{{ meta.tmp | formatDecimal : 2 }}</td>
-          <td class="center-align" data-field="velocidad" [scope]="'8,'+i">{{ meta.velocidad | formatDecimal: 3 }}</td>
-          <td class="center-align" *ngIf="permission.editarMeta && estatusPeriodo">
-            <a class="btn-floating light-green lighten-1 edit" (click)="changeIcono($event)" [id]="'btn'+i">
-              <i class="material-icons">edit</i>
-            </a>
-          </td>
-          <td class="center-align" *ngIf="permission.eliminarMeta && estatusPeriodo">
-            <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(meta,'eliminar')">
-              <i class="material-icons">delete</i>
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+        <tbody>
+          <tr *ngIf="metas.length == 0 ">
+            <th colspan="8" class="center">No hay registros</th>
+          </tr>
+          <tr *ngFor="let meta of metas;let i = index">
+            <td class="center-align" [id]="i">{{meta.dia_string}}</td>
+            <td class="center-align">{{meta.id_turno}}</td>
+            <td class="center-align">{{meta.nombre_grupo}}</td>
+            <td class="center-align">{{ meta.meta |formatDecimal : 3 }}</td>
+            <td class="center-align">{{ meta.tmp | formatDecimal : 2 }}</td>
+            <td class="center-align">{{ meta.velocidad | formatDecimal: 3 }}</td>
+            <td class="center-align" *ngIf="permission.editarMeta && estatusPeriodo">
+              <a class="btn-floating light-green lighten-1 edit" (click)="changeIcono($event)" [id]="'btn'+i">
+                <i class="material-icons">edit</i>
+              </a>
+            </td>
+            <td class="center-align" *ngIf="permission.eliminarMeta && estatusPeriodo">
+              <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(meta,'eliminar')">
+                <i class="material-icons">delete</i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-template>
   </div>
   <!-- Inicio solo para pantallas-->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">

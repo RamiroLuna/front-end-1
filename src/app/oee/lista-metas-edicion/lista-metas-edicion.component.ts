@@ -306,14 +306,16 @@ export class ListaMetasEdicionComponent implements OnInit {
 
 
         } else {
+          this.disabled = false;
           Materialize.toast(result.response.message, 4000, 'red');
         }
       }, error => {
+        this.disabled = false;
         Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
       });
 
     } else {
-      Materialize.toast('Se encontrarón errores!', 4000, 'red');
+      Materialize.toast('Verifique los datos capturados!', 4000, 'red');
     }
 
 

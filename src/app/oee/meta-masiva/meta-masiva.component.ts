@@ -163,11 +163,12 @@ export class MetaMasivaComponent implements OnInit {
       this.disabled = true;
       this.textoBtn = "CARGANDO ...";
       this.bVistaPre = false;
+      this.height = $( document  ).height();
       this.service.uploadMetasCSV(this.auth.getIdUsuario(), this.archivoCsv, this.idPeriodo, this.idLinea).subscribe(result => {
         if (result.response.sucessfull) {
           this.metas = result.data.listMetas || [];
           this.textoBtn = " VISTA PREVIA ";
-          this.height = $( document  ).height();
+      
           this.bVistaPre = true;
           setTimeout(() => { 
             this.status = 'active';             
