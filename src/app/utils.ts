@@ -492,10 +492,28 @@ function hmToMs(hora: string): number {
 
 
 
-// Detection function to tell what kind of browser is used
-function getBrowser(){
+// Tipo de metas disponibles
+function getMetasKPI(): Array<any> {
+    return [
+        { id: 1, descripcion: 'ESTRATEGICAS', frecuencia: 2 },
+        { id: 2, descripcion: 'OPERATIVAS', frecuencia: 0 },
+        { id: 3, descripcion: 'KPI OPERATIVOS', frecuencia: 0 }
+    ];
+
+
 
 };
+
+// Frecuencias de metas disponibles
+// frecuencia: 2 significa que tiene anual y mensual 
+// frecuencia: 0 solo anual
+// frecuencia: 1 solo mensual
+function getFrecuenciaMetaKPI(): Array<any> {
+    return [
+        { id: 0, value: 'anual', descripcion: 'ANUAL' },
+        { id: 1, value: 'mensual', descripcion: 'MENSUAL' }
+    ];
+}
 
 
 export {
@@ -520,5 +538,6 @@ export {
     DataTableProduccion,
     DataTableLiberadas,
     hmToMs,
-    getBrowser
+    getMetasKPI,
+    getFrecuenciaMetaKPI
 }

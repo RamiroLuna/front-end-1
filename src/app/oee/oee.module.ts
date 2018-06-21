@@ -19,9 +19,6 @@ import { FormularioProduccionComponent } from './formulario-produccion/formulari
 import { ListaProduccionComponent } from './lista-produccion/lista-produccion.component';
 import { AuthGuardOee } from '../auth/auth.guard.oee';
 import { ValidaProduccionComponent } from './valida-produccion/valida-produccion.component';
-import { FormatNumberPipeClass } from '../pipes/format.number.pipe';
-import { ToneladasPipeClass } from '../pipes/toneladas.pipe';
-import { SeparatorPipeClass } from '../pipes/separator.pipe';
 import { ListaValidacionComponent } from './lista-validacion/lista-validacion.component';
 import { RptDisponibilidadComponent } from './rpt-disponibilidad/rpt-disponibilidad.component';
 import { RptOeeComponent } from './rpt-oee/rpt-oee.component';
@@ -35,7 +32,7 @@ import { RptSubproductosComponent } from './rpt-subproductos/rpt-subproductos.co
 import { RptProduccionRealPlanComponent } from './rpt-produccion-real-plan/rpt-produccion-real-plan.component';
 import { RptDetalladoFallasComponent } from './rpt-detallado-fallas/rpt-detallado-fallas.component';
 import { ListaProduccionValidadaComponent } from './lista-produccion-validada/lista-produccion-validada.component';
-
+import { PipesCustomModule } from '../pipes/pipes.custom.module';
 
 
 
@@ -165,6 +162,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     FormsModule,
     NgPipesModule,
+    PipesCustomModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
@@ -186,13 +184,10 @@ const routes: Routes = [
     RptDisponibilidadComponent,
     RptOeeComponent,
     RptResumenOeeComponent,
-    FormularioPeriodoComponent,
+    FormularioPeriodoComponent, 
     ListaPeriodosComponent,
     RptDiarioProduccionComponent,
     RptJucodiComponent,
-    FormatNumberPipeClass,
-    SeparatorPipeClass,
-    ToneladasPipeClass,
     RptVelocidadPromedioComponent,
     RptSubproductosComponent,
     RptProduccionRealPlanComponent,

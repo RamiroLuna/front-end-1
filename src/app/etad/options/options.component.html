@@ -1,181 +1,199 @@
 <div class="container" *ngIf="!loading">
-    <div class="section"></div>
-    <div cclass="row">
-      <h4 class="color_titulo center-align">Bienvenido al modulo ETAD</h4>
-      <h5 class="color_titulo center-align">Indicador Clave de Desempeño KPIs</h5>
-    </div>
-  
-    <div>
-      <ul class="collapsible collection with-header" data-collapsible="accordion">
-        <li>
-          <div class="collapsible-header">
-            <i class="material-icons">flag</i>Metas</div>
-          <div class="collapsible-body light-green lighten-5">
-            <div class="row">
-              <div class="col s12 m12 l12 xl12">
-                <!-- Vista solo para moviles  -->
-                <div class="hide-on-large-only">
-                  <a *ngIf="permission.cargaMetaManual" routerLink="metas-carga-manual/nuevo" class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1"
+  <div class="section"></div>
+  <div cclass="row">
+    <h4 class="color_titulo center-align">Bienvenido al modulo ETAD</h4>
+    <h5 class="color_titulo center-align">Indicador Clave de Desempeño KPIs</h5>
+  </div>
+
+  <div>
+    <ul class="collapsible collection with-header" data-collapsible="accordion">
+      <li>
+        <div class="collapsible-header">
+          <i class="material-icons">flag</i>Metas</div>
+        <div class="collapsible-body light-green lighten-5">
+          <div class="row">
+            <div class="col s12 m12 l12 xl12">
+              <!-- Vista solo para moviles  -->
+              <div class="hide-on-large-only">
+                <div class="row">
+                  <a *ngIf="permission.cargaMetaManual" routerLink="metas-carga-manual/nuevo" class=" col s12 m12 l3 xl3  waves-effect waves-light btn light-green darken-1"
                     (click)="ocultarTooltip()">
                     <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                       MANUAL
                     </i>
                   </a>
-                  <a disabled *ngIf="!permission.cargaMetaManual" class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1"
+                  <a disabled *ngIf="!permission.cargaMetaManual" class=" col s12 m12 l3 xl3  waves-effect waves-light btn light-green darken-1"
                     (click)="ocultarTooltip()">
                     <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                       MANUAL
                     </i>
                   </a>
-                  <div class="col s1 m1 l1 xl1"></div>
-                  <a *ngIf="permission.cargaMasiva" routerLink="metas-carga-masiva" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                </div>
+                <div class="row">
+                  <a *ngIf="permission.cargaMasiva" routerLink="metas-carga-masiva" class="col s12 m12 l3 xl3 waves-effect waves-light btn light-green darken-1"
                     (click)="ocultarTooltip()">
                     <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                       MASIVA
                     </i>
                   </a>
-                  <a disabled *ngIf="!permission.cargaMasiva" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                  <a disabled *ngIf="!permission.cargaMasiva" class="col s12 m12 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                    (click)="ocultarTooltip()">
                     <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                       MASIVA
                     </i>
                   </a>
-                  <div class="col s1 m1 l1 xl1"></div>
-                  <a *ngIf="permission.edicionMeta" routerLink="lista-metas" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                </div>
+                <div class="row">
+                  <a *ngIf="permission.edicionMeta" routerLink="lista-metas" class="col s12 m12 l3 xl3 waves-effect waves-light btn light-green darken-1"
                     (click)="ocultarTooltip()">
                     <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                       EDICIÓN
                     </i>
                   </a>
-                  <a disabled *ngIf="!permission.edicionMeta" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                  <a disabled *ngIf="!permission.edicionMeta" class="col s12 m12 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                    (click)="ocultarTooltip()">
                     <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                       EDICIÓN
                     </i>
                   </a>
                 </div>
-                <!-- Fin solo para moviles -->
-                <!-- Inicio solo para pantallas-->
-                <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
-                  <div class="col s1 m1 l1 xl1"></div>
-                  <a *ngIf="permission.cargaMetaManual" routerLink="metas-carga-manual/nuevo" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
-                    CARGA MANUAL
-                  </a>
-                  <a disabled *ngIf="!permission.cargaMetaManual" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
-                    CARGA MANUAL
-                  </a>
-                  <div class="col s2 m2 l2 xl2"></div>
-                  <a *ngIf="permission.cargaMasiva" routerLink="metas-carga-masiva" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
-                    CARGA MASIVA
-                  </a>
-                  <a disabled *ngIf="!permission.cargaMasiva" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
-                    CARGA MASIVA
-                  </a>
-                  <div class="col s2 m2 l2 xl2"></div>
-                  <a *ngIf="permission.edicionMeta" routerLink="lista-metas" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
-                    EDICION
-                  </a>
-                  <a disabled *ngIf="!permission.edicionMeta" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
-                    EDICION
-                  </a>
-                </div>
+              </div>
+              <!-- Fin solo para moviles -->
+              <!-- Inicio solo para pantallas-->
+              <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+                <div class="col s1 m1 l1 xl1"></div>
+                <a *ngIf="permission.cargaMetaManual" routerLink="metas-carga-manual/nuevo" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  CARGA MANUAL
+                </a>
+                <a disabled *ngIf="!permission.cargaMetaManual" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  CARGA MANUAL
+                </a>
+                <div class="col s2 m2 l2 xl2"></div>
+                <a *ngIf="permission.cargaMasiva" routerLink="metas-carga-masiva" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  CARGA MASIVA
+                </a>
+                <a disabled *ngIf="!permission.cargaMasiva" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  CARGA MASIVA
+                </a>
+                <div class="col s2 m2 l2 xl2"></div>
+                <a *ngIf="permission.edicionMeta" routerLink="lista-metas" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  EDICION
+                </a>
+                <a disabled *ngIf="!permission.edicionMeta" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  EDICION
+                </a>
               </div>
             </div>
           </div>
-        </li>
-        <li>
-          <div class="collapsible-header">
-            <i class="material-icons">multiline_chart</i>Registro de indicadores</div>
-          <div class="collapsible-body light-green lighten-5">
-            <div class="row">
-              <div class="col s12 m12 l12 xl12">
-                <!-- Vista solo para moviles  -->
-                <div class="hide-on-large-only">
-                  <a *ngIf="permission.produccion" routerLink="produccion" class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1"
-                    (click)="ocultarTooltip()">
-                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                      PRODUCCION
-                    </i>
-                  </a>
-                  <a disabled *ngIf="!permission.produccion" class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
-                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                      PRODUCCION
-                    </i>
-                  </a>
-                  <div class="col s1 m1 l1 xl1"></div>
-                  <a *ngIf="permission.fallas" routerLink="fallas" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
-                    (click)="ocultarTooltip()">
-                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                      FALLAS
-                    </i>
-                  </a>
-                  <a disabled *ngIf="!permission.fallas" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
-                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                      FALLAS
-                    </i>
-                  </a>
-                  <div class="col s1 m1 l1 xl1"></div>
-                  <a *ngIf="permission.validacion" routerLink="validaciones" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
-                    (click)="ocultarTooltip()">
-                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                      VALIDACIÓN
-                    </i>
-                  </a>
-                  <a disabled *ngIf="!permission.validacion" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
-                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                      VALIDACIÓN
-                    </i>
-                  </a>
-                </div>
-                <!-- Fin solo para moviles -->
-  
-                <!-- Inicio solo para pantallas-->
-                <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
-                  <div class="col s1 m1 l1 xl1"></div>
-                  <a *ngIf="permission.produccion" routerLink="produccion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+        </div>
+      </li>
+      <li>
+        <div class="collapsible-header">
+          <i class="material-icons">multiline_chart</i>Registro de indicadores</div>
+        <div class="collapsible-body light-green lighten-5">
+          <div class="row">
+            <div class="col s12 m12 l12 xl12">
+              <!-- Vista solo para moviles  -->
+              <div class="hide-on-large-only">
+                <a *ngIf="permission.produccion" routerLink="produccion" class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1"
+                  (click)="ocultarTooltip()">
+                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     PRODUCCION
-                  </a>
-                  <a disabled *ngIf="!permission.produccion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  </i>
+                </a>
+                <a disabled *ngIf="!permission.produccion" class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     PRODUCCION
-                  </a>
-                  <div class="col s2 m2 l2 xl2"></div>
-                  <a *ngIf="permission.fallas" routerLink="fallas" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  </i>
+                </a>
+                <div class="col s1 m1 l1 xl1"></div>
+                <a *ngIf="permission.fallas" routerLink="fallas" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                  (click)="ocultarTooltip()">
+                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     FALLAS
-                  </a>
-  
-                  <a disabled *ngIf="!permission.fallas" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  </i>
+                </a>
+                <a disabled *ngIf="!permission.fallas" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     FALLAS
-                  </a>
-  
-                  <div class="col s2 m2 l2 xl2"></div>
-                  <a *ngIf="permission.validacion" routerLink="validaciones" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
-                    VALIDACION
-                  </a>
-                  <a disabled *ngIf="!permission.validacion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
-                    VALIDACION
-                  </a>
-                </div>
+                  </i>
+                </a>
+                <div class="col s1 m1 l1 xl1"></div>
+                <a *ngIf="permission.validacion" routerLink="validaciones" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                  (click)="ocultarTooltip()">
+                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                    VALIDACIÓN
+                  </i>
+                </a>
+                <a disabled *ngIf="!permission.validacion" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                    VALIDACIÓN
+                  </i>
+                </a>
+              </div>
+              <!-- Fin solo para moviles -->
+
+              <!-- Inicio solo para pantallas-->
+              <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+                <div class="col s1 m1 l1 xl1"></div>
+                <a *ngIf="permission.produccion" routerLink="produccion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  PRODUCCION
+                </a>
+                <a disabled *ngIf="!permission.produccion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  PRODUCCION
+                </a>
+                <div class="col s2 m2 l2 xl2"></div>
+                <a *ngIf="permission.fallas" routerLink="fallas" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  FALLAS
+                </a>
+
+                <a disabled *ngIf="!permission.fallas" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  FALLAS
+                </a>
+
+                <div class="col s2 m2 l2 xl2"></div>
+                <a *ngIf="permission.validacion" routerLink="validaciones" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  VALIDACION
+                </a>
+                <a disabled *ngIf="!permission.validacion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  VALIDACION
+                </a>
               </div>
             </div>
           </div>
-        </li>
-        <li>
-          <div class="collapsible-header" routerLink="lista-reportes">
-            <i class="material-icons">insert_chart</i>Reportes y gráficas
-          </div>
-        </li>
-        <li>
-          <div *ngIf="permission.catalogos" class="collapsible-header" routerLink="catalogos">
-            <i class="material-icons">library_books</i>Catalogos
-          </div>
-          <div *ngIf="!permission.catalogos" class="collapsible-header grey lighten-4" style="cursor: default">
-            <i class="material-icons" style="color:#e0e0e0">library_books</i>
-            <span style="color:#bdbdbd">Catalogos</span>
-          </div>
-        </li>
-      </ul>
-    </div>
-  
-    <!-- Solo para dispositivos moviles -->
-    <div class="hide-on-large-only center-align">
+        </div>
+      </li>
+      <li>
+        <div class="collapsible-header" routerLink="lista-reportes">
+          <i class="material-icons">insert_chart</i>Reportes y gráficas
+        </div>
+      </li>
+      <li>
+        <div *ngIf="permission.catalogos" class="collapsible-header" routerLink="catalogos">
+          <i class="material-icons">library_books</i>Catalogos
+        </div>
+        <div *ngIf="!permission.catalogos" class="collapsible-header grey lighten-4" style="cursor: default">
+          <i class="material-icons" style="color:#e0e0e0">library_books</i>
+          <span style="color:#bdbdbd">Catalogos</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only center-align">
+    <a routerLink="/home" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      data-delay="50" data-tooltip="Ir a home" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">home</i>
+      </i>
+    </a>
+  </div>
+  <!-- Fin solo para dispositivos moviles -->
+
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
       <a routerLink="/home" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
         data-delay="50" data-tooltip="Ir a home" (click)="regresar()">
         <i class="material-icons">
@@ -183,27 +201,15 @@
         </i>
       </a>
     </div>
-    <!-- Fin solo para dispositivos moviles -->
-  
-    <!-- Inicio solo para pantallas-->
-    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
-      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-        <a routerLink="/home" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-          data-delay="50" data-tooltip="Ir a home" (click)="regresar()">
-          <i class="material-icons">
-            <i class="material-icons">home</i>
-          </i>
-        </a>
-      </div>
-    </div>
-    <!-- Fin solo para pantallas-->
-  
   </div>
-  
-  <div class="container" *ngIf="loading">
-    <div id="loader-wrapper">
-      <div id="loader"></div>
-      <div class="loader-section section-left"></div>
-      <div class="loader-section section-right"></div>
-    </div>
+  <!-- Fin solo para pantallas-->
+
+</div>
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
   </div>
+</div>

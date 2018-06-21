@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { MetaMasivaService } from './meta-masiva.service';
-import { getAnioActual } from '../../utils';
+import { getAnioActual, getMetasKPI , getFrecuenciaMetaKPI } from '../../utils';
 import { AuthService } from '../../auth/auth.service';
 import { Linea } from '../../models/linea';
 import { Periodo } from '../../models/periodo';
@@ -73,19 +73,10 @@ export class MetaMasivaComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-    // frecuencia: 2 significa que tiene anual y mensual 
-    // frecuencia: 0 solo anual
-    // frecuencia: 1 solo mensual
-    this.tiposMeta = [
-      { id: 1, descripcion: 'ESTRATEGICAS', frecuencia: 2 },
-      { id: 2, descripcion: 'OPERATIVAS', frecuencia: 0 },
-      { id: 3, descripcion: 'KPI OPERATIVOS', frecuencia: 0 }
-    ];
 
-    this.frecuanciasDisponibles = [
-      { id: 0, value: 'anual', descripcion: 'ANUAL' },
-      { id: 1, value: 'mensual', descripcion: 'MENSUAL' }
-    ];
+    this.tiposMeta = getMetasKPI();
+
+    this.frecuanciasDisponibles = getFrecuenciaMetaKPI();
 
     this.frecuencias = [];
     this.bVistaPre = false;
