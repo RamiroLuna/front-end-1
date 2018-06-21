@@ -133,7 +133,7 @@ export class ListaProduccionComponent implements OnInit {
             this.showBtnRegistrar = true;
           }
         }
-
+   
         this.loading = false;
         this.loadFormulario();
         setTimeout(() => { this.ngAfterViewHttp() }, 200)
@@ -197,7 +197,11 @@ export class ListaProduccionComponent implements OnInit {
       inputValidator: (value) => {
 
         return new Promise((resolve) => {
-          this.formConsultaPeriodo.reset();
+        
+
+          this.formConsultaPeriodo.controls.idPeriodo.reset();
+          if( this.permission.consultaByLine)this.formConsultaPeriodo.controls.idLinea.reset();
+
           this.submitted = false;
           this.status = "inactive";
           this.datos_tabla = false;
@@ -207,6 +211,7 @@ export class ListaProduccionComponent implements OnInit {
             resolve();
             this.anioSeleccionado = value;
             this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
+
           } else {
             resolve('Seleccione un año')
           }
@@ -259,9 +264,9 @@ export class ListaProduccionComponent implements OnInit {
       html: ' Para agregar la producción haga clic en el boton <i class="material-icons"><i class="material-icons">add</i></i> <br>' + 
               'El boton estará disponible de acuerdo al siguiente horario:</br>'+
               '<ul>'+
-                '<li>00:00 a 7:59 turno 1</li>'+
-                '<li>08:00 a 15:59 turno 2</li>'+
-                '<li>16:00 a 23:59 turno 3</li>'+
+                '<li>01:00 a 08:59 Turno 1</li>'+
+                '<li>09:00 a 16:59 Turno 2</li>'+
+                '<li>17:00 a 00:59 Turno 3</li>'+
               '</ul>',
       showCloseButton: false,
       showCancelButton: false,
