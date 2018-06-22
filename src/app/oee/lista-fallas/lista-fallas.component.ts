@@ -61,6 +61,7 @@ export class ListaFallasComponent implements OnInit {
   public periodos: Array<Periodo> = [];
   public anios: any = [];
   public meses: Array<any> = [];
+  public height: number;
 
   public permission: any = {
     consultFails: false,
@@ -169,6 +170,8 @@ export class ListaFallasComponent implements OnInit {
       }
     });
 
+    this.height = $( document  ).height();
+
   }
 
   agregar() {
@@ -193,6 +196,8 @@ export class ListaFallasComponent implements OnInit {
     this.bVistaPre = false;
     this.submitted = true;
     this.estatusPeriodo = true;
+    $(document).height(this.height+'px');
+
 
     if (this.formBusqueda.valid) {
       this.service.getAllFallasByDays(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
@@ -263,7 +268,11 @@ export class ListaFallasComponent implements OnInit {
             this.service.delete(this.auth.getIdUsuario(), falla.id_falla).subscribe(result => {
               if (result.response.sucessfull) {
                 deleteItemArray(this.fallas,  falla.id_falla, 'id_falla');
-                $('#tabla').DataTable().row('.'+falla.id_falla).remove().draw( false );
+                if(this.fallas.length > 0){
+                  $('#tabla').DataTable().row('.'+falla.id_falla).remove().draw( false );
+                }else if(this.fallas.length == 0){
+                  $('#tabla').DataTable().destroy();
+                }
                 Materialize.toast('Se eliminó correctamente ', 4000, 'green');
               } else {
                 Materialize.toast(result.response.message, 4000, 'red');
@@ -294,8 +303,10 @@ export class ListaFallasComponent implements OnInit {
   }
 
   modoInicial(){
+  
     this.noVerBtnFallas = false;
     this.bVistaPre = false;
+
   }
 
   refreshDataTable(event):void{
