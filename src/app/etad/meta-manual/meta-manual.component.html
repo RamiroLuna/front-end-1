@@ -1,0 +1,139 @@
+<div class="container" *ngIf="!loading">
+    <div class="row">
+      <div class="col offset-l2 offset-xl1 s12 m12 l10 xl10">
+        <div class="card-panel">
+          <h4 class="color_titulo center-align">{{ seccion == 'add'? ' Carga manual de meta' : ' Edición de meta '}}</h4>
+          <div class="row">
+            <!-- Solo para dispositivos moviles -->
+            <div class="hide-on-large-only right-align">
+              <a routerLink="../../../opciones" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+                data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
+                <i class="material-icons">
+                  <i class="material-icons">arrow_back</i>
+                </i>
+              </a>
+            </div>
+            <!-- Fin Solo para dispositivos moviles -->
+            <form class="col s12 m12 l12 xl12" [formGroup]="formCargaManual" (ngSubmit)="openModalConfirmacion(rowForecast, seccion)">
+              <div class="row">
+                <div class="col s12 m12 l12 xl12">
+                  <label>Linea</label>
+                  <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="id_linea" [(ngModel)]="rowForecast.id_linea">
+                    <option value="">Seleccione</option>
+                    <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{ linea.valor }}</option>
+                  </select>
+                  <div *ngIf="formCargaManual.controls.id_linea.errors?.required && (formCargaManual.controls.id_linea?.touched || submitted)"
+                    class="error">
+                    La linea es requerida
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l12 xl12">
+                  <label>Turno</label>
+                  <select materialize="material_select" formControlName="id_turno" [materializeSelectOptions]="turnos" [(ngModel)]="rowForecast.id_turno">
+                    <option value="">Seleccione</option>
+                    <option *ngFor="let turno of turnos" [value]="turno.id">{{ turno.valor }}</option>
+                  </select>
+                  <div *ngIf="formCargaManual.controls.id_turno.errors?.required && (formCargaManual.controls.id_turno?.touched || submitted)"
+                    class="error">
+                    El turno es requerido
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 m12 l12 xl12">
+                  <label>Grupo</label>
+                  <select materialize="material_select" formControlName="id_grupo" [materializeSelectOptions]="grupos" [(ngModel)]="rowForecast.id_grupo">
+                    <option value="">Seleccione</option>
+                    <option *ngFor="let grupo of grupos" [value]="grupo.id">{{ grupo.valor }}</option>
+                  </select>
+                  <div *ngIf="formCargaManual.controls.id_grupo.errors?.required && (formCargaManual.controls.id_grupo?.touched || submitted)"
+                    class="error">
+                    El grupo es requerido
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12 m12 l12 xl12">
+                  <input id="dia" type="text" class="datepicker" formControlName="dia" [(ngModel)]="rowForecast.dia">
+                  <label for="dia">Día</label>
+                  <div *ngIf="formCargaManual.controls.dia.errors?.required && (formCargaManual.controls.dia?.touched || submitted)" class="error">
+                    El dia es requerido
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12 m12 l12 xl12">
+                  <input id="meta" type="text" [(ngModel)]="rowForecast.meta" formControlName="meta">
+                  <label for="meta">Meta de producción (kilogramos) </label>
+                  <div *ngIf="formCargaManual.controls.meta.errors?.required && (formCargaManual.controls.meta?.touched || submitted)" class="error">
+                    La meta es requerido
+                  </div>
+                  <div *ngIf="formCargaManual.controls.meta.errors?.pattern && (formCargaManual.controls.meta?.pattern || submitted)" class="error">
+                    Valor no valido
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12 m12 l12 xl12">
+                  <input id="meta" type="text" [(ngModel)]="rowForecast.tmp" formControlName="tmp">
+                  <label for="meta">Meta Tiempo muerto planeado (Hrs)</label>
+                  <div *ngIf="formCargaManual.controls.tmp.errors?.required && (formCargaManual.controls.tmp?.touched || submitted)" class="error">
+                    Se requiere tiempo muerto planeado
+                  </div>
+                  <div *ngIf="formCargaManual.controls.tmp.errors?.pattern && (formCargaManual.controls.tmp?.pattern || submitted)" class="error">
+                    Valor no valido
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12 m12 l12 xl12">
+                  <input id="velocidad" type="text" [(ngModel)]="rowForecast.velocidad" formControlName="vel">
+                  <label for="velocidad">Meta Velocidad (T / Hrs)</label>
+                  <div *ngIf="formCargaManual.controls.vel.errors?.required && (formCargaManual.controls.vel?.touched || submitted)" class="error">
+                    Se requiere la velocidad
+                  </div>
+                  <div *ngIf="formCargaManual.controls.vel.errors?.pattern && (formCargaManual.controls.vel?.pattern || submitted)" class="error">
+                    Valor no valido
+                  </div>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="input-field col offset-s1 offset-m3 offset-l2 offset-xl3">
+                  <a routerLink="../../../opciones" class="col btn grey lighten-1  waves-effect waves-light" type="submit" name="cancelar">{{ texto_btn }}
+                  </a>
+                </div>
+  
+                <div class="input-field col offset-m1 offset-l1 offset-xl2">
+                  <button class="col btn light-green darken-1 waves-effect waves-light" type="submit" name="asignar">{{ seccion == 'add' ? 'Cargar' : 'Guardar'}}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Inicio solo para pantallas-->
+    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a routerLink="../../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
+    </div>
+    <!-- Fin solo para pantallas-->
+  </div>
+  <div class="container" *ngIf="loading">
+    <div id="loader-wrapper">
+      <div id="loader"></div>
+      <div class="loader-section section-left"></div>
+      <div class="loader-section section-right"></div>
+    </div>
+  </div>

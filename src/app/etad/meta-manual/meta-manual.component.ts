@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { MetamanualService } from './metamanual.service';
+import { MetaManualService } from './meta-manual.service';
 import { AuthService } from '../../auth/auth.service';
 import { Catalogo } from '../../models/catalogo';
 import { Linea } from '../../models/linea';
@@ -10,15 +10,15 @@ import swal from 'sweetalert2';
 
 declare var $: any;
 declare var Materialize: any;
+
 @Component({
   selector: 'app-meta-manual',
   templateUrl: './meta-manual.component.html',
-  providers: [MetamanualService]
+  providers: [ MetaManualService ]
 })
 export class MetaManualComponent implements OnInit {
 
-
-  /*
+   /*
    * Listas requeridas para el formulario de metas
    */
   public turnos: Array<Catalogo>;
@@ -43,7 +43,7 @@ export class MetaManualComponent implements OnInit {
   public seccion: string;
   public id: any; //Id seleccionado
 
-  constructor(private service: MetamanualService,
+  constructor(private service: MetaManualService,
     private auth: AuthService,
     private fb: FormBuilder
   ) { }
@@ -150,7 +150,7 @@ export class MetaManualComponent implements OnInit {
          */
         if (result.value) {        
             this.service.agregar(this.auth.getIdUsuario(), rowforecast).subscribe(result => { 
-                     
+              console.log('result insert', result)             
               if (result.response.sucessfull) {
                 Materialize.toast('Se agregó correctamente', 4000, 'green');
                 this.formCargaManual.reset();
@@ -199,8 +199,6 @@ export class MetaManualComponent implements OnInit {
   regresar() {
     $('.tooltipped').tooltip('hide');
   }
-
-
 
 
 }

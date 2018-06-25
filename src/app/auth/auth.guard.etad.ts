@@ -9,9 +9,9 @@ export class AuthGuardEtad implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot): boolean {
         const expectedRole = route.data.expectedRole;
     
-        let roles_oee = this.auth.getRolesEtad().split(",").map((el)=>parseInt(el));
+        let roles_etad = this.auth.getRolesEtad().split(",").map((el)=>parseInt(el));
     
-        if(roles_oee.indexOf(expectedRole) == -1){
+        if(roles_etad.indexOf(expectedRole) == -1){
             this.router.navigate(['home']);
             return false;
         }
