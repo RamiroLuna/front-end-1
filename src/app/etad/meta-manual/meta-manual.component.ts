@@ -12,6 +12,7 @@ import { getMetasKPI, getFrecuenciaMetaKPI } from '../../utils';
 import swal from 'sweetalert2';
 import { Periodo } from '../../models/periodo';
 
+
 declare var $: any;
 declare var Materialize: any;
 @Component({
@@ -181,6 +182,90 @@ export class MetaManualComponent implements OnInit {
     })
   }
 
+  openModalConfirmacion(meta: MetaKpi, accion: string): void {
+
+    this.submitted = true;
+    this.mensajeModal = '';
+
+
+
+
+    if (this.formCargaManual.valid) {
+
+      switch (accion) {
+        case 'add':
+          this.mensajeModal = '¿Está seguro de agregar ? ';
+          break;
+      }
+      /* 
+       * Configuración del modal de confirmación
+       */
+      swal({
+        title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
+        type: 'question',
+        html: '<p style="color: #303f9f "> Meta para el día : <b> </b> Linea: <b></b> Grupo: <b>' + +'</b> Valor: <b>' + +'</b></p>',
+        showCancelButton: true,
+        confirmButtonColor: '#303f9f',
+        cancelButtonColor: '#9fa8da ',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si!',
+        allowOutsideClick: false,
+        allowEnterKey: false
+      }).then((result) => {
+        /*
+         * Si acepta
+         */
+
+        if (result.value) {
+          /* 
+           * Se forma el modelo a enviar al backend
+           * contenedor.meta Es una variable que se necesita por el backend
+           */
+          let contenedor: any = { meta: {}};
+          let metaTemporal:MetaKpi = JSON.parse( JSON.stringify(meta));
+
+          if (metaTemporal.tipo_meta == 1) {
+              metaTemporal.metaEstrategica.valor = metaTemporal.meta;
+              metaTemporal.metaEstrategica.id_meta_anual_estrategica = metaTemporal.id_option_meta;
+          }else if(metaTemporal.tipo_meta == 2){
+
+          }else if(metaTemporal.tipo_meta == 3){
+
+          }
+
+          delete metaTemporal.meta;
+          delete metaTemporal.mas;
+          delete metaTemporal.menor;
+          delete metaTemporal.id_option_meta;
+          delete metaTemporal.unidad_medida;
+
+          contenedor.meta = metaTemporal;
+
+          this.service.insertMetas(this.auth.getIdUsuario(), contenedor).subscribe(result => {
+            if (result.response.sucessfull) {
+              Materialize.toast('Se agregó correctamente', 4000, 'green');
+              this.formCargaManual.reset();
+              this.submitted = false;
+            } else {
+              Materialize.toast(result.response.message, 4000, 'red');
+            }
+          }, eror => {
+            Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+          });
+
+          /*
+          * Si cancela accion
+          */
+        } else if (result.dismiss === swal.DismissReason.cancel) {
+        }
+      })
+
+    } else {
+      Materialize.toast('Verifique los datos capturados!', 4000, 'red');
+    }
+
+  }
+
   getFrecuencia(tipoMeta: string) {
     let temp = this.tiposMeta.filter((el) => el.descripcion == tipoMeta.trim().toUpperCase());
 
@@ -201,6 +286,8 @@ export class MetaManualComponent implements OnInit {
       return -1;
     }
   }
+
+
 
   getItemCatalogo(tipo: number, id: number): any {
     let element = {};
@@ -258,12 +345,10 @@ export class MetaManualComponent implements OnInit {
 
     } else if (tipoCombo == 'lista') {
       let obj = this.getItemCatalogo(this.meta.tipo_meta, this.meta.id_option_meta);
-      if(this.meta.tipo_meta == 3){
+      if (this.meta.tipo_meta == 3) {
         this.meta.mas = obj.tipo_kpi;
         this.meta.menor = obj.tipo_kpi;
-
-        console.log('mas es: ', this.meta.mas, 'metas menos',this.meta.menor)
-      }else{
+      } else {
         this.meta.mas = -1;
         this.meta.menor = -1;
       }

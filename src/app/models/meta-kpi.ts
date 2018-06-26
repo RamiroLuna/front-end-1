@@ -1,6 +1,7 @@
-import { PetCatKpiOperativo } from "./pet-cat-kpi-operativo";
-import { PetCatMetaEstrategica } from "./pet-cat-meta-estrategica";
-import { PetCatObjetivoOperativo } from "./pet-cat-objetivo-operativo";
+import { PetMetaAnualKpi } from "./pet-meta-anual-kpi";
+import { PetMetaAnualEstrategica } from "./pet-meta-anual-estrategica";
+import { PetMetaAnualObjetivoOperativo } from "./pet-meta-anual-objetivo-operativo";
+
 
 export class MetaKpi {
     id_etad:number;
@@ -16,9 +17,9 @@ export class MetaKpi {
     mas?:number = -1;
     menor?:number = -1;
     
-    kPIOperativo?: PetCatKpiOperativo;
-    metaEstrategica?: PetCatMetaEstrategica;
-    objetivoOperativo?: PetCatObjetivoOperativo;
+    kPIOperativo:PetMetaAnualKpi = new PetMetaAnualKpi();
+    metaEstrategica:PetMetaAnualEstrategica = new PetMetaAnualEstrategica();
+    objetivoOperativo:PetMetaAnualObjetivoOperativo = new PetMetaAnualObjetivoOperativo();
 
     // listKPIOperativo:Array<PetMetaAnualKpi>;
     // ListMetaEstrategica:Array<PetMetaAnualEstrategica>;
