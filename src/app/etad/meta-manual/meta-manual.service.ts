@@ -10,7 +10,7 @@ export class MetaManualService {
    /* 
    * URL del servicio del componente
    */
-  private URL = BASE_URL_SERVICE + '/Metas';
+  private URL = BASE_URL_SERVICE + '/ETADMetas';
 
 
   constructor(private http: HttpClient) { }
@@ -22,18 +22,18 @@ export class MetaManualService {
     return this.http.get<any>(this.URL + '?action=loadCombobox&id_usuario=' + id_usuario);
   }
 
-  agregar(id_usuario: number, forecast: Forecast): Observable<any> {
-    const body = new HttpParams()
-      .set('action', 'insertNewMeta')
-      .set('dia', '' + forecast.dia)
-      .set('meta', '' + forecast.meta)
-      .set('tmp', '' + forecast.tmp)
-      .set('velocidad', '' + forecast.velocidad)
-      .set('id_turno', '' + forecast.id_turno)
-      .set('id_grupo', '' + forecast.id_grupo)
-      .set('id_linea', '' + forecast.id_linea)
-      .set('id_usuario', '' + id_usuario);
-    return this.http.post(this.URL, body);
-  }
+  // agregar(id_usuario: number, forecast: Forecast): Observable<any> {
+  //   const body = new HttpParams()
+  //     .set('action', 'insertNewMeta')
+  //     .set('dia', '' + forecast.dia)
+  //     .set('meta', '' + forecast.meta)
+  //     .set('tmp', '' + forecast.tmp)
+  //     .set('velocidad', '' + forecast.velocidad)
+  //     .set('id_turno', '' + forecast.id_turno)
+  //     .set('id_grupo', '' + forecast.id_grupo)
+  //     .set('id_linea', '' + forecast.id_linea)
+  //     .set('id_usuario', '' + id_usuario);
+  //   return this.http.post(this.URL, body);
+  // }
 
 }

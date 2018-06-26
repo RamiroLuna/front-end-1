@@ -3,45 +3,58 @@ import { MetaManualService } from './meta-manual.service';
 import { AuthService } from '../../auth/auth.service';
 import { Catalogo } from '../../models/catalogo';
 import { Linea } from '../../models/linea';
-import { Forecast } from '../../models/forecast';
+import { PetCatKpiOperativo } from '../../models/pet-cat-kpi-operativo';
+import { PetCatObjetivoOperativo } from '../../models/pet-cat-objetivo-operativo';
+import { PetCatMetaEstrategica } from '../../models/pet-cat-meta-estrategica';
+import { MetaKpi } from '../../models/meta-kpi';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { isValidId } from '../../utils';
+import { getMetasKPI, getFrecuenciaMetaKPI } from '../../utils';
 import swal from 'sweetalert2';
+import { Periodo } from '../../models/periodo';
 
 declare var $: any;
 declare var Materialize: any;
-
 @Component({
   selector: 'app-meta-manual',
+  styleUrls: ['./meta-manual.component.css'],
   templateUrl: './meta-manual.component.html',
-  providers: [ MetaManualService ]
+  providers: [MetaManualService]
 })
 export class MetaManualComponent implements OnInit {
 
-   /*
-   * Listas requeridas para el formulario de metas
+  /*
+  * Listas requeridas para el formulario de metas
+  */
+
+  public etads: Array<Linea>;
+  public metas_estrategicas: Array<PetCatMetaEstrategica>;
+  public metas_operativas: Array<PetCatObjetivoOperativo>;
+  public metas_kpi: Array<PetCatKpiOperativo>;
+  public metasForSwal: any = {};
+  public periodos: Array<Periodo> = [];
+  public anios: Array<any> = [];
+  public meses: Array<any> = [];
+
+  /*
+   * lista_temporal almacena el catalogo en base a la seleccion
    */
-  public turnos: Array<Catalogo>;
-  public lineas: Array<Linea>;
-  public grupos: Array<Catalogo>;
+  public lista_temporal: Array<any>;
 
   /*
    * Fin
    */
-
+  public tipoMetaSeleccionada: string;
   public loading: boolean;
   public formCargaManual: FormGroup;
   public submitted: boolean;
   public mensajeModal: string;
-  public texto_btn: string;
-  public rowForecast: Forecast;
+  public titulo_combo: string;
+  public meta: MetaKpi;
 
+  public tiposMeta: Array<any> = [];
+  public frecuenciasDisponibles: Array<any> = [];
+  public frecuencias: Array<any> = [];
 
-  /*
-   * Esta variable controla la seccion
-   */
-  public seccion: string;
-  public id: any; //Id seleccionado
 
   constructor(private service: MetaManualService,
     private auth: AuthService,
@@ -49,23 +62,49 @@ export class MetaManualComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.seccion = 'add';
     this.loading = true;
     this.submitted = false;
-    this.texto_btn = "Cancelar";
-    this.rowForecast = new Forecast();
+    this.tipoMetaSeleccionada = 'ESTRATEGICAS';
+    this.titulo_combo = 'Metas estrategicas';
+    this.tiposMeta = getMetasKPI();
+    this.frecuenciasDisponibles = getFrecuenciaMetaKPI();
+    this.getFrecuencia(this.tipoMetaSeleccionada);
+    this.meta = new MetaKpi();
+    this.lista_temporal = [];
 
     /*
-        * Consulta el elemento del catalogo
-        */
+     * Consulta el elemento del catalogo
+     */
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-     
+      console.log('carga manual init', result)
       if (result.response.sucessfull) {
-        this.turnos = result.data.listTurnos;
-        this.grupos = result.data.listGrupos;
-        this.lineas = result.data.listLineas;
+        this.etads = result.data.listLineas || [];
+        this.metas_kpi = result.data.listKPIOperativos || [];
+        this.metas_estrategicas = result.data.listMetasEstrategicas || [];
+        this.metas_operativas = result.data.listObjetivosOperativos || [];
 
+        /*
+         * Esto es solo al inicio para desokegar metas en el combo
+         */
+        this.lista_temporal = this.metas_estrategicas;
+        this.meta.tipo_meta = 1;
 
+        /*
+         *
+         */
+
+        this.tiposMeta.map(el => {
+          this.metasForSwal[el.descripcion] = el.descripcion;
+        });
+
+        this.periodos = result.data.listPeriodos || [];
+
+        let tmpAnios = this.periodos.map(el => el.anio);
+        this.anios = this.periodos.filter((el, index) => {
+          return tmpAnios.indexOf(el.anio) === index;
+        });
+
+        this.meses = this.periodos.filter(el => el.anio == this.meta.anio);
 
         this.loading = false;
         this.loadFormulario();
@@ -85,119 +124,153 @@ export class MetaManualComponent implements OnInit {
 
   loadFormulario(): void {
     this.formCargaManual = this.fb.group({
-      id_turno: new FormControl({ value: this.rowForecast.id_turno }, [Validators.required]),
-      id_linea: new FormControl({ value: this.rowForecast.id_linea }, [Validators.required]),
-      id_grupo: new FormControl({ value: this.rowForecast.id_grupo }, [Validators.required]),
-      dia: new FormControl({ value: this.rowForecast.dia }, [Validators.required]),
-      meta: new FormControl(this.rowForecast.meta, [Validators.required, Validators.pattern(/^\d*(\.[0-9]{1,10})*$/)]),
-      tmp: new FormControl(this.rowForecast.tmp, [Validators.required, Validators.pattern(/^\d*(\.[0-9]{1,10})*$/)]),
-      vel: new FormControl(this.rowForecast.velocidad, [Validators.required, Validators.pattern(/^\d*(\.[0-9]{1,10})*$/)]),
+      id_etad: new FormControl({ value: this.meta.id_etad }, [Validators.required]),
+      frecuencia: new FormControl({ value: this.meta.frecuencia }, [Validators.required]),
+      anio: new FormControl({ value: this.meta.anio, disabled: true }, [Validators.required]),
+      id_periodo: new FormControl({ value: this.meta.id_periodo, disabled: true }, [Validators.required]),
+      id_option_meta: new FormControl({ value: this.meta.id_option_meta, disabled: true }, [Validators.required]),
+      menos: new FormControl({ value: this.meta.menor, disabled: true }),
+      mas: new FormControl({ value: this.meta.mas, disabled: true }),
+      meta: new FormControl({ value: this.meta.meta }, [Validators.required, Validators.pattern(/^\d*(\.[0-9]{1,10})*$/)]),
+      unidad_medida: new FormControl({ value: this.meta.unidad_medida, disabled: true })
+
     });
   }
 
   ngAfterViewInitHttp(): void {
-    $('#dia').pickadate({
-      selectMonths: true, // Creates a dropdown to control month
-      selectYears: 15, // Creates a dropdown of 15 years to control year,
-      today: '',
-      clear: 'Limpiar',
-      close: 'OK',
-      monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-      monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-      weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-      weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-      format: 'dd/mm/yyyy',
-      closeOnSelect: false, // Close upon selecting a date,
-      onClose: () => {
-        this.rowForecast.dia = $('#dia').val();
-      }
-    });
+    $('.tooltipped').tooltip({ delay: 50 });
   }
 
+  openModalTipoMeta(event): void {
+    event.preventDefault();
+    swal({
+      title: 'Seleccione tipo de meta',
+      input: 'select',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'OK',
+      inputOptions: this.metasForSwal,
+      inputPlaceholder: 'SELECCIONE',
+      showCancelButton: true,
+      inputValidator: (value) => {
 
-  openModalConfirmacion(rowforecast: Forecast, accion: string, type: string): void {
-    this.rowForecast.dia = $('#dia').val();
-    this.submitted = true;
-    this.mensajeModal = '';
+        return new Promise((resolve) => {
 
-    let descriptivoGrupo = this.obtenerDescriptivo(this.grupos,rowforecast.id_grupo);
-    let descriptivoLinea = this.obtenerDescriptivoLinea(this.lineas,rowforecast.id_linea);
+          this.submitted = false;
 
-    if (this.formCargaManual.valid) {
-
-      switch (accion) {
-        case 'add':
-          this.mensajeModal = '¿Está seguro de agregar ? ';
-          break;
+          if (value != '') {
+            resolve();
+            this.meta = new MetaKpi();
+            this.formCargaManual.controls.anio.reset();
+            this.formCargaManual.controls.id_periodo.reset();
+            this.formCargaManual.controls.id_option_meta.reset();
+            this.tipoMetaSeleccionada = value;
+            this.meta.tipo_meta = this.getIdTipoMeta(this.tipoMetaSeleccionada);
+            if (this.meta.tipo_meta == 1) {
+              this.titulo_combo = 'Metas estrategicas';
+            } else if (this.meta.tipo_meta == 2) {
+              this.titulo_combo = 'Objetivo operativo';
+            } else if (this.meta.tipo_meta == 3) {
+              this.titulo_combo = 'KPI operativo';
+            }
+            this.getFrecuencia(this.tipoMetaSeleccionada);
+          } else {
+            resolve('Seleccione tipo de meta')
+          }
+        })
       }
-      /* 
-       * Configuración del modal de confirmación
-       */
-      swal({
-        title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
-        type: 'question',
-        html: '<p style="color: #303f9f "> Meta para el día : <b> ' + rowforecast.dia + ' </b> Linea: <b>'+ descriptivoLinea +'</b> Grupo: <b>'+ descriptivoGrupo +'</b> Valor: <b>'+ rowforecast.meta+'</b></p>',
-        showCancelButton: true,
-        confirmButtonColor: '#303f9f',
-        cancelButtonColor: '#9fa8da ',
-        cancelButtonText: 'Cancelar',
-        confirmButtonText: 'Si!',
-        allowOutsideClick: false,
-        allowEnterKey: false
-      }).then((result) => {
-        /*
-         * Si acepta
-         */
-        if (result.value) {        
-            this.service.agregar(this.auth.getIdUsuario(), rowforecast).subscribe(result => { 
-              console.log('result insert', result)             
-              if (result.response.sucessfull) {
-                Materialize.toast('Se agregó correctamente', 4000, 'green');
-                this.formCargaManual.reset();
-                this.submitted = false;
-              } else {
-                Materialize.toast(result.response.message, 4000, 'red');
-              }
-            }, eror => {
-              Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-            });
+    })
+  }
 
-          /*
-          * Si cancela accion
-          */
-        } else if (result.dismiss === swal.DismissReason.cancel) {
-        }
-      })
+  getFrecuencia(tipoMeta: string) {
+    let temp = this.tiposMeta.filter((el) => el.descripcion == tipoMeta.trim().toUpperCase());
 
+    if (temp.length > 0) {
+      if (temp[0].frecuencia == 2) {
+        this.frecuencias = this.frecuenciasDisponibles.map(el => el);
+      } else {
+        this.frecuencias = this.frecuenciasDisponibles.filter(element => element.id == temp[0].frecuencia);
+      }
+    }
+  }
+
+  getIdTipoMeta(tipoMeta: string): number {
+    let temp = this.tiposMeta.filter((el) => el.descripcion == tipoMeta.trim().toUpperCase());
+    if (temp.length > 0) {
+      return temp[0].id;
     } else {
-      Materialize.toast('Verifique los datos capturados!', 4000, 'red');
+      return -1;
     }
-
   }
 
-  obtenerDescriptivo(array:Array<Catalogo>, id:number):string{
-    let el = array.filter((el)=>el.id == id);
-
-    if(el.length > 0){
-      return el[0].descripcion;
-    }else{
-      return "No especificado";
+  getItemCatalogo(tipo: number, id: number): any {
+    let element = {};
+    let e;
+    switch (tipo) {
+      case 1:
+        e = this.metas_estrategicas.filter(el => el.id == id);
+        if (e.length > 0) element = e[0];
+        break;
+      case 2:
+        e = this.metas_operativas.filter(el => el.id == id);
+        if (e.length > 0) element = e[0];
+        break;
+      case 3:
+        e = this.metas_kpi.filter(el => el.id == id);
+        if (e.length > 0) element = e[0];
+        break;
     }
-     
-  }
-  obtenerDescriptivoLinea(array:Array<Linea>, id:number):string{
-    let el = array.filter((el)=>el.id_linea == id);
 
-    if(el.length > 0){
-      return el[0].descripcion;
-    }else{
-      return "No especificado";
-    }
-     
+    return element;
   }
 
   regresar() {
     $('.tooltipped').tooltip('hide');
+  }
+
+  changeCombo(tipoCombo: string): void {
+
+    if (tipoCombo == 'frecuencia') {
+
+      if (this.meta.frecuencia == 'mensual') {
+        if (this.meta.tipo_meta == 1) {
+          this.lista_temporal = this.metas_estrategicas.filter(el => el.mensual == 1)
+        }
+        this.formCargaManual.controls.id_periodo.enable();
+        this.formCargaManual.controls.anio.enable();
+        this.formCargaManual.controls.id_option_meta.enable();
+      } else if (this.meta.frecuencia == 'anual') {
+        if (this.meta.tipo_meta == 1) {
+          this.lista_temporal = this.metas_estrategicas.filter(el => el.anual == 1)
+        } else if (this.meta.tipo_meta == 2) {
+          this.lista_temporal = this.metas_operativas;
+        } else if (this.meta.tipo_meta == 3) {
+          this.lista_temporal = this.metas_kpi;
+        }
+        this.formCargaManual.controls.id_periodo.disable();
+        this.formCargaManual.controls.anio.enable();
+        this.formCargaManual.controls.id_option_meta.enable();
+      } else {
+        this.formCargaManual.controls.id_option_meta.disable();
+        this.formCargaManual.controls.id_periodo.disable();
+        this.formCargaManual.controls.anio.disable();
+        this.lista_temporal = [];
+      }
+
+    } else if (tipoCombo == 'lista') {
+      let obj = this.getItemCatalogo(this.meta.tipo_meta, this.meta.id_option_meta);
+      if(this.meta.tipo_meta == 3){
+        this.meta.mas = obj.tipo_kpi;
+        this.meta.menor = obj.tipo_kpi;
+
+        console.log('mas es: ', this.meta.mas, 'metas menos',this.meta.menor)
+      }else{
+        this.meta.mas = -1;
+        this.meta.menor = -1;
+      }
+
+      this.meta.unidad_medida = obj.unidad_medida || 'N/A';
+    }
+
   }
 
 

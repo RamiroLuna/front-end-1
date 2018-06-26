@@ -1,0 +1,5 @@
+fieldset {
+    border: 1px solid rgb(31,73,125,.5);
+    border-radius: 5px;
+    padding: 5px;
+}
