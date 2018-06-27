@@ -22,6 +22,6 @@ export class MetaKpi {
     objetivoOperativo:PetMetaAnualObjetivoOperativo = new PetMetaAnualObjetivoOperativo();
 
     listKPIOperativo?:Array<PetMetaAnualKpi>;
-    listMetaEstrategica:Array<PetMetaAnualEstrategica>;
-    listObjetivoOperativo:Array<PetMetaAnualObjetivoOperativo>;
+    listMetaEstrategica?:Array<PetMetaAnualEstrategica>;
+    listObjetivoOperativo?:Array<PetMetaAnualObjetivoOperativo>;
 }
