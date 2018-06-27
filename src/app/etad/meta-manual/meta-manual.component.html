@@ -22,7 +22,7 @@
           <div class="row">
             <div class="col s12 m12 l6 xl6">
               <label>Etad</label>
-              <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="id_etad" [(ngModel)]="meta.id_etad">
+              <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="id_etad" [(ngModel)]="meta.id_etad"  (ngModelChange)="changeCombo('etad')">
                 <option value="">SELECCIONE</option>
                 <option *ngFor="let etad of etads" [value]="etad.id_linea">{{ etad.valor }}</option>
               </select>

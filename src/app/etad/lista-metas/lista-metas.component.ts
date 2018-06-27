@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
-import { Meta } from '../../models/meta';
 import swal from 'sweetalert2';
 import { ListaMetasService } from './lista-metas.service';
 import { Periodo } from '../../models/periodo';
@@ -22,6 +21,7 @@ import {
   animate,
   transition
 } from '@angular/animations';
+import { MetaKpi } from '../../models/meta-kpi';
 
 
 declare var $: any;
@@ -65,7 +65,7 @@ export class ListaMetasComponent implements OnInit {
   public turnos: Array<Catalogo> = [];
   public anios: Array<any> = [];
   public meses: Array<any> = [];
-  public metas: Array<Meta> = [];
+  public metas: Array<MetaKpi> = [];
   public formConsultaPeriodo: FormGroup;
   public status: string;
 
@@ -75,8 +75,8 @@ export class ListaMetasComponent implements OnInit {
 
 
   public permission: any = {
-    editarMeta: false,
-    eliminarMeta: false
+    editarMeta: true,
+    eliminarMeta: true
   }
 
   constructor(private auth: AuthService,
@@ -146,7 +146,25 @@ export class ListaMetasComponent implements OnInit {
 
   changeIcono(event): void {
     let icono = $(event.target).html();
-    $(event.target).html(icono == 'edit' ? 'save' : 'edit');
+    let id = $(event.target).attr('id');
+
+    if (icono == 'edit') {
+
+      $(event.target).html(icono == 'edit' ? 'save' : 'edit');
+      $('#text' + id).attr('disabled', false);
+
+    } else if (icono == 'save') {
+      let caja = $('#text' + id);
+     
+      if (isNumeroAsignacionValid(caja.val())) {
+
+        $(event.target).html(icono == 'edit' ? 'save' : 'edit');
+        caja.attr('disabled', true);
+
+      } else {
+        Materialize.toast('Valor de meta no valido', 4000, 'red');
+      }
+    }
 
   }
 
@@ -222,9 +240,17 @@ export class ListaMetasComponent implements OnInit {
       this.datos_tabla = false;
       let idTipoMeta = this.tiposMeta.filter((el) => el.descripcion == this.tipoMetaSeleccionada.trim().toUpperCase())[0].id;
       this.service.getAllMetas(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad, this.anioSeleccionado, this.frecuencia, idTipoMeta).subscribe(result => {
-        
+        console.log('resultado de metas', result)
         if (result.response.sucessfull) {
-          this.metas = result.data.listObjetivosOperativos || [];
+
+          if (result.data.metasEstrategicas) {
+            this.metas = result.data.metasEstrategicas.ListMetaEstrategica || [];
+          } else if (result.data.metasKPIOperativos) {
+            this.metas = result.data.metasKPIOperativos.listKPIOperativo || [];
+          } else if (result.data.metasObjetivosOperativos) {
+            this.metas = result.data.metasObjetivosOperativos.listObjetivoOperativo || [];
+          }
+
           this.datos_tabla = true;
           this.disabled = false;
 
@@ -251,10 +277,6 @@ export class ListaMetasComponent implements OnInit {
 
   }
 
-
-
-
-
   obtenerMesDelPeriodo(arg: Array<Periodo>, idPeriodo: number): number {
     let result = arg.filter((el) => el.id_periodo == idPeriodo);
     if (result.length > 0) {
@@ -278,14 +300,6 @@ export class ListaMetasComponent implements OnInit {
 
   }
 
-  findRowForecast(metas: Array<Meta>, id_meta: number): Meta {
-    let meta: Meta;
-    let el = metas.filter(el => el.id_meta == id_meta);
-    if (el.length > 0) {
-      meta = el[0];
-    }
-    return meta;
-  }
 
   getFrecuencia(tipoMeta: string) {
     let temp = this.tiposMeta.filter((el) => el.descripcion == tipoMeta.trim().toUpperCase());

@@ -8,7 +8,7 @@ import { PetCatObjetivoOperativo } from '../../models/pet-cat-objetivo-operativo
 import { PetCatMetaEstrategica } from '../../models/pet-cat-meta-estrategica';
 import { MetaKpi } from '../../models/meta-kpi';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { getMetasKPI, getFrecuenciaMetaKPI } from '../../utils';
+import { getMetasKPI, getFrecuenciaMetaKPI, clone } from '../../utils';
 import swal from 'sweetalert2';
 import { Periodo } from '../../models/periodo';
 
@@ -77,7 +77,7 @@ export class MetaManualComponent implements OnInit {
      * Consulta el elemento del catalogo
      */
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-      console.log('carga manual init', result)
+      console.log('init', result)
       if (result.response.sucessfull) {
         this.etads = result.data.listLineas || [];
         this.metas_kpi = result.data.listKPIOperativos || [];
@@ -126,7 +126,7 @@ export class MetaManualComponent implements OnInit {
   loadFormulario(): void {
     this.formCargaManual = this.fb.group({
       id_etad: new FormControl({ value: this.meta.id_etad }, [Validators.required]),
-      frecuencia: new FormControl({ value: this.meta.frecuencia }, [Validators.required]),
+      frecuencia: new FormControl({ value: this.meta.frecuencia, disabled: true }, [Validators.required]),
       anio: new FormControl({ value: this.meta.anio, disabled: true }, [Validators.required]),
       id_periodo: new FormControl({ value: this.meta.id_periodo, disabled: true }, [Validators.required]),
       id_option_meta: new FormControl({ value: this.meta.id_option_meta, disabled: true }, [Validators.required]),
@@ -161,6 +161,7 @@ export class MetaManualComponent implements OnInit {
           if (value != '') {
             resolve();
             this.meta = new MetaKpi();
+            this.formCargaManual.controls.frecuencia.reset();
             this.formCargaManual.controls.anio.reset();
             this.formCargaManual.controls.id_periodo.reset();
             this.formCargaManual.controls.id_option_meta.reset();
@@ -194,7 +195,7 @@ export class MetaManualComponent implements OnInit {
 
       switch (accion) {
         case 'add':
-          this.mensajeModal = '¿Está seguro de agregar ? ';
+          this.mensajeModal = '¿ Está seguro de agregar metas '+ this.tipoMetaSeleccionada +' ? ';
           break;
       }
       /* 
@@ -203,7 +204,9 @@ export class MetaManualComponent implements OnInit {
       swal({
         title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
         type: 'question',
-        html: '<p style="color: #303f9f "> Meta para el día : <b> </b> Linea: <b></b> Grupo: <b>' + +'</b> Valor: <b>' + +'</b></p>',
+        html: '<p style="color: #303f9f ">Etad:<b> '+ this.obtenerDescriptivoLinea(this.etads, this.meta.id_etad) +' </b> '+
+                                          'Meta: <b>' + this.meta.meta + ' ' + this.meta.unidad_medida + '</b>'+
+                                          '</p>',
         showCancelButton: true,
         confirmButtonColor: '#303f9f',
         cancelButtonColor: '#9fa8da ',
@@ -221,16 +224,22 @@ export class MetaManualComponent implements OnInit {
            * Se forma el modelo a enviar al backend
            * contenedor.meta Es una variable que se necesita por el backend
            */
-          let contenedor: any = { meta: {}};
-          let metaTemporal:MetaKpi = JSON.parse( JSON.stringify(meta));
+          let contenedor: any = { meta: {} };
+          let metaTemporal: MetaKpi = clone(meta);
 
           if (metaTemporal.tipo_meta == 1) {
-              metaTemporal.metaEstrategica.valor = metaTemporal.meta;
-              metaTemporal.metaEstrategica.id_meta_anual_estrategica = metaTemporal.id_option_meta;
-          }else if(metaTemporal.tipo_meta == 2){
-
-          }else if(metaTemporal.tipo_meta == 3){
-
+            metaTemporal.metaEstrategica.valor = metaTemporal.meta;
+            metaTemporal.metaEstrategica.id_meta_estrategica = metaTemporal.id_option_meta;
+            if(this.meta.frecuencia == 'anual')metaTemporal.id_periodo = -1;
+            
+          } else if (metaTemporal.tipo_meta == 2) {
+            metaTemporal.objetivoOperativo.valor = metaTemporal.meta;
+            metaTemporal.objetivoOperativo.id_objetivo_operativo = metaTemporal.id_option_meta;
+            metaTemporal.id_periodo = -1;
+          } else if (metaTemporal.tipo_meta == 3) {
+            metaTemporal.kPIOperativo.valor = metaTemporal.meta;
+            metaTemporal.kPIOperativo.id_kpi_operativo =  metaTemporal.id_option_meta;
+            metaTemporal.id_periodo = -1;
           }
 
           delete metaTemporal.meta;
@@ -245,6 +254,10 @@ export class MetaManualComponent implements OnInit {
             if (result.response.sucessfull) {
               Materialize.toast('Se agregó correctamente', 4000, 'green');
               this.formCargaManual.reset();
+              this.formCargaManual.controls.frecuencia.disable();
+              this.formCargaManual.controls.anio.disable();
+              this.formCargaManual.controls.id_periodo.disable();
+              this.formCargaManual.controls.id_option_meta.disable();
               this.submitted = false;
             } else {
               Materialize.toast(result.response.message, 4000, 'red');
@@ -315,33 +328,73 @@ export class MetaManualComponent implements OnInit {
   }
 
   changeCombo(tipoCombo: string): void {
+    if (tipoCombo == 'etad') {
 
-    if (tipoCombo == 'frecuencia') {
+      this.formCargaManual.controls.id_periodo.disable();
+      this.formCargaManual.controls.anio.disable();
+      this.formCargaManual.controls.id_option_meta.disable();
+
+      let valueCombo = String(this.meta.id_etad);
+      if (valueCombo == "" || valueCombo == "undefined") {
+        this.formCargaManual.controls.frecuencia.disable();
+      } else {
+        this.formCargaManual.controls.frecuencia.enable();
+      }
+
+      this.meta.id_periodo = '';
+      this.meta.anio = '';
+      this.meta.id_option_meta = '';
+      this.meta.frecuencia = '';
+
+    } else if (tipoCombo == 'frecuencia') {
+
+      this.meta.id_periodo = '';
+      this.meta.anio = '';
+      this.meta.id_option_meta = '';
 
       if (this.meta.frecuencia == 'mensual') {
         if (this.meta.tipo_meta == 1) {
-          this.lista_temporal = this.metas_estrategicas.filter(el => el.mensual == 1)
+          this.lista_temporal = this.metas_estrategicas.filter(el => el.mensual == 1);
         }
         this.formCargaManual.controls.id_periodo.enable();
         this.formCargaManual.controls.anio.enable();
         this.formCargaManual.controls.id_option_meta.enable();
       } else if (this.meta.frecuencia == 'anual') {
+
         if (this.meta.tipo_meta == 1) {
           this.lista_temporal = this.metas_estrategicas.filter(el => el.anual == 1)
         } else if (this.meta.tipo_meta == 2) {
-          this.lista_temporal = this.metas_operativas;
+
+          this.lista_temporal = this.metas_operativas.filter(el => {
+            let temporalLineas = el.lineas.split(",").map(el => parseInt(el));
+            if (temporalLineas.includes(parseInt("" + this.meta.id_etad))) {
+              return el;
+            }
+
+          });
+
         } else if (this.meta.tipo_meta == 3) {
-          this.lista_temporal = this.metas_kpi;
+          this.lista_temporal = this.metas_kpi.filter(el => {
+            let temporalLineas = el.lineas.split(",").map(el => parseInt(el));
+            if (temporalLineas.includes(parseInt("" + this.meta.id_etad))) {
+              return el;
+            }
+          });
         }
         this.formCargaManual.controls.id_periodo.disable();
         this.formCargaManual.controls.anio.enable();
         this.formCargaManual.controls.id_option_meta.enable();
+
       } else {
         this.formCargaManual.controls.id_option_meta.disable();
         this.formCargaManual.controls.id_periodo.disable();
         this.formCargaManual.controls.anio.disable();
         this.lista_temporal = [];
       }
+
+    }else if(tipoCombo == 'anio'){
+      
+      this.meses = this.periodos.filter(el => el.anio == parseInt(this.meta.anio));
 
     } else if (tipoCombo == 'lista') {
       let obj = this.getItemCatalogo(this.meta.tipo_meta, this.meta.id_option_meta);
@@ -356,6 +409,17 @@ export class MetaManualComponent implements OnInit {
       this.meta.unidad_medida = obj.unidad_medida || 'N/A';
     }
 
+  }
+
+  obtenerDescriptivoLinea(array:Array<Linea>, id:number):string{
+    let el = array.filter((el)=>el.id_linea == id);
+
+    if(el.length > 0){
+      return el[0].descripcion;
+    }else{
+      return "No especificado";
+    }
+     
   }
 
 

@@ -76,34 +76,29 @@
       <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
         <thead>
           <tr>
-            <th class="center-align">Día</th>
-            <th class="center-align">Turno</th>
-            <th class="center-align">Grupo</th>
             <th class="center-align">Meta</th>
-            <th class="center-align">TMP</th>
-            <th class="center-align">Vel</th>
-            <th class="center-align" *ngIf="permission.editarMeta && estatusPeriodo">Editar</th>
-            <th class="center-align" *ngIf="permission.eliminarMeta && estatusPeriodo">Eliminar</th>
+            <th class="center-align">Valor</th>
+            <th class="center-align">Unidad Medida</th>
+            <th class="center-align" *ngIf="permission.editarMeta">Editar</th>
+            <th class="center-align" *ngIf="permission.eliminarMeta">Eliminar</th>
           </tr>
         </thead>
 
         <tbody>
           <tr *ngIf="metas.length == 0 ">
-            <th colspan="8" class="center">No hay registros</th>
+            <th colspan="5" class="center">No hay registros</th>
           </tr>
           <tr *ngFor="let meta of metas;let i = index">
-            <td class="center-align" [id]="i">{{meta.dia_string}}</td>
-            <td class="center-align">{{meta.id_turno}}</td>
-            <td class="center-align">{{meta.nombre_grupo}}</td>
-            <td class="center-align">{{ meta.meta |formatDecimal : 3 }}</td>
-            <td class="center-align">{{ meta.tmp | formatDecimal : 2 }}</td>
-            <td class="center-align">{{ meta.velocidad | formatDecimal: 3 }}</td>
-            <td class="center-align" *ngIf="permission.editarMeta && estatusPeriodo">
-              <a class="btn-floating light-green lighten-1 edit" (click)="changeIcono($event)" [id]="'btn'+i">
-                <i class="material-icons">edit</i>
+            <td class="center-align">{{meta.metaEstrategica.valor}}</td>
+            <!-- <td class="center-align">{{meta.valor |formatDecimal : 3}}</td> -->
+            <td class="center-align"><input [id]="'text'+i" type="text" [value]="meta.valor |formatDecimal : 3" size="5" disabled></td>
+            <td class="center-align">{{meta.metaEstrategica.unidad_medida }}</td>
+            <td class="center-align" *ngIf="permission.editarMeta">
+              <a class="btn-floating light-green lighten-1" (click)="changeIcono($event)">
+                <i [id]="i" class="material-icons">edit</i>
               </a>
             </td>
-            <td class="center-align" *ngIf="permission.eliminarMeta && estatusPeriodo">
+            <td class="center-align" *ngIf="permission.eliminarMeta">
               <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(meta,'eliminar')">
                 <i class="material-icons">delete</i>
               </a>

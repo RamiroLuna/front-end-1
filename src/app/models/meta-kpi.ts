@@ -7,11 +7,11 @@ export class MetaKpi {
     id_etad:number;
     tipo_meta:number;
     frecuencia:string;
-    anio:number;
-    id_periodo:number;
+    anio:any;
+    id_periodo:any;
     
     
-    id_option_meta?: number;
+    id_option_meta?: any;
     meta?:number=0;
     unidad_medida?: string = "N/A";
     mas?:number = -1;
@@ -21,7 +21,7 @@ export class MetaKpi {
     metaEstrategica:PetMetaAnualEstrategica = new PetMetaAnualEstrategica();
     objetivoOperativo:PetMetaAnualObjetivoOperativo = new PetMetaAnualObjetivoOperativo();
 
-    // listKPIOperativo:Array<PetMetaAnualKpi>;
-    // ListMetaEstrategica:Array<PetMetaAnualEstrategica>;
-    // listObjetivoOperativo:Array<PetMetaAnualObjetivoOperativo>;
+    listKPIOperativo?:Array<PetMetaAnualKpi>;
+    listMetaEstrategica:Array<PetMetaAnualEstrategica>;
+    listObjetivoOperativo:Array<PetMetaAnualObjetivoOperativo>;
 }
