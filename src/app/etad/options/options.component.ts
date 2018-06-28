@@ -12,7 +12,7 @@ export class OptionsComponent implements AfterViewInit {
     cargaMetaManual: true,
     cargaMasiva: false,
     edicionMeta: false,
-    catalogos: false
+    catalogos: true
   }
   public loading: boolean;
 
