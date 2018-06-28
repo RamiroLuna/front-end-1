@@ -1,0 +1,182 @@
+<div class="container" *ngIf="!loading && isCatalog">
+  <h4 class="color_titulo center-align">Catalogo de {{ nombre_catalogo }}</h4>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <a [routerLink]="['../'+ tipo_catalogo + '/formulario/nuevo']" class="btn-floating btn light-green darken-1 waves-effect waves-light tooltipped"
+      data-position="top" data-delay="50" data-tooltip="Agregar" (click)="agregar()">
+      <i class="material-icons">add</i>
+    </a>
+
+    <a routerLink="../../catalogos" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      data-delay="50" data-tooltip="Catalogos" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">arrow_back</i>
+      </i>
+    </a>
+  </div>
+  <!-- Fin solo para dispositivos moviles -->
+
+  <!-- tabla para catalogos metas-estrategicas -->
+  <table class="display" class="striped" cellspacing="0" id="itemsCatalogos" *ngIf="type_Catalogo == 'metas-estrategicas'">
+    <thead>
+      <tr>
+        <th width="10%">Frecuencia</th>
+        <th width="20%">Meta Estrategica</th>
+        <th width="15%">Unidad de Medida</th>
+        <th width="35%">Descripción</th>
+        <th width="15%">Activo</th>
+        <th width="5%">Actualizar</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>
+          <p *ngIf="item.anual == 1">ANUAL</p>
+          <p *ngIf="item.mensual == 1">MENSUAL</p>
+        </td>
+        <td>{{ item.valor }}</td>
+        <td>{{ item.unidad_medida }}</td>
+        <td>{{ item.descripcion }}</td>
+        <td>
+          <div class="switch">
+            <label>
+              No
+              <input type="checkbox" [checked]="item.activo == 1" (change)="openModalConfirmacion(item, 'activar', 'metas-estrategicas' ,$event )">
+              <span class="lever"></span>
+              Si
+            </label>
+          </div>
+        </td>
+        <td>
+          <a class="btn-floating  light-green lighten-1" [routerLink]="['../'+ tipo_catalogo + '/formulario/' + item.id]">
+            <i class="material-icons">edit</i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Fin tabla para catalogos  metas-estrategicas  -->
+  <!-- tabla para catalogos objetivos operativos -->
+  <table class="display" class="striped" cellspacing="0" id="itemsCatalogos" *ngIf="type_Catalogo == 'objetivos-operativos'">
+    <thead>
+      <tr>
+        <th width="10%">Frecuencia</th>
+        <th width="20%">Objetivo Operativo</th>
+        <th width="15%">Unidad de Medida</th>
+        <th width="35%">Descripción</th>
+        <th width="15%">Activo</th>
+        <th width="5%">Actualizar</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>
+          <p *ngIf="item.anual == 1">ANUAL</p>
+          <p *ngIf="item.mensual == 1">MENSUAL</p>
+        </td>
+        <td>{{ item.valor }}</td>
+        <td>{{ item.unidad_medida }}</td>
+        <td>{{ item.descripcion }}</td>
+        <td>
+          <div class="switch">
+            <label>
+              No
+              <input type="checkbox" [checked]="item.activo == 1" (change)="openModalConfirmacion(item, 'activar', 'objetivos-operativos' ,$event )">
+              <span class="lever"></span>
+              Si
+            </label>
+          </div>
+        </td>
+        <td>
+          <a class="btn-floating  light-green lighten-1" [routerLink]="['../'+ tipo_catalogo + '/formulario/' + item.id]">
+            <i class="material-icons">edit</i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Fin tabla para catalogos  objetivos operativos  -->
+  <!-- tabla para catalogos kpi operativos -->
+  <table class="display" class="striped" cellspacing="0" id="itemsCatalogos" *ngIf="type_Catalogo == 'kpis-operativos'">
+    <thead>
+      <tr>
+        <th width="10%">Frecuencia</th>
+        <th width="40%">KPI Operativo</th>
+        <th width="15%">Tipo</th>
+        <th width="15%" class="center-align">Unidad de Medida</th>
+        <th width="15%">Activo</th>
+        <th width="5%">Actualizar</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>
+          <p *ngIf="item.anual == 1">ANUAL</p>
+          <p *ngIf="item.mensual == 1">MENSUAL</p>
+        </td>
+        <td>{{ item.valor }}</td>
+        <td>
+          <p *ngIf="item.tipo_kpi == 1">
+            MAS ES MEJOR
+          </p>
+          <p *ngIf="item.tipo_kpi == 0">
+            MENOS ES MEJOR
+          </p>
+        </td>
+        <td class="center-align">{{ item.unidad_medida }}</td>
+        <td>
+          <div class="switch">
+            <label>
+              No
+              <input type="checkbox" [checked]="item.activo == 1" (change)="openModalConfirmacion(item, 'activar', 'objetivos-operativos' ,$event )">
+              <span class="lever"></span>
+              Si
+            </label>
+          </div>
+        </td>
+        <td>
+          <a class="btn-floating  light-green lighten-1" [routerLink]="['../'+ tipo_catalogo + '/formulario/' + item.id]">
+            <i class="material-icons">edit</i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Fin tabla para catalogos  kpi operativos  -->
+
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a [routerLink]="['../'+ tipo_catalogo + '/formulario/nuevo']" class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped"
+        data-position="top" data-delay="50" data-tooltip="Agregar" (click)="agregar()">
+        <i class="material-icons">add</i>
+      </a>
+      <a routerLink="../../catalogos" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Catalogos" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas -->
+</div>
+<!-- Muestra si el catalogo no existe-->
+<div class="container" *ngIf="!loading && !isCatalog">
+  <div class="section"></div>
+  <h3 class="color_titulo center-align">No existe el catalogo consultado</h3>
+  <h6 class="center-align">
+    <a routerLink="../../lista">Volver a la lista de catalogos disponibles</a>
+  </h6>
+</div>
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>

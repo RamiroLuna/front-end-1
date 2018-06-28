@@ -11,6 +11,7 @@ import { ListaMetasComponent } from './lista-metas/lista-metas.component';
 import { PipesCustomModule } from '../pipes/pipes.custom.module';
 import { MetaManualComponent } from './meta-manual/meta-manual.component';
 import { ListCatalogsComponent } from './list-catalogs/list-catalogs.component';
+import { ListByCatalogComponent } from './list-by-catalog/list-by-catalog.component';
 
 
 
@@ -33,7 +34,7 @@ const routes: Routes = [
     path: 'opciones/metas-carga-manual/:id', component: MetaManualComponent
     // , canActivate: [AuthGuardEtad]
     // data: {
-    //   expectedRole: 2
+    //   expectedRole: 
     // }
   },
   /* rutas de catalogos */
@@ -41,7 +42,14 @@ const routes: Routes = [
     path: 'opciones/catalogos', component: ListCatalogsComponent
     // , canActivate: [AuthGuardEtad]
     // data: {
-    //   expectedRole: 2
+    //   expectedRole: 
+    // }
+  },
+  {
+    path: 'opciones/catalogos/:name', component: ListByCatalogComponent
+    // , canActivate: [AuthGuardEtad]
+    // data: {
+    //   expectedRole: 
     // }
   }
 
@@ -62,7 +70,8 @@ const routes: Routes = [
     MetaMasivaComponent,
     ListaMetasComponent,
     MetaManualComponent,
-    ListCatalogsComponent
+    ListCatalogsComponent,
+    ListByCatalogComponent
   ],
   providers: [
     AuthGuardEtad
