@@ -7,12 +7,13 @@ import { Periodo } from '../../models/periodo';
 import { Linea } from '../../models/linea';
 import { Catalogo } from '../../models/catalogo';
 import {
-  deleteItemArray,
+  arrayObjectIndexOf,
   calculaDiaPorMes,
   isNumeroAsignacionValid,
   findRol,
   getMetasKPI,
-  getFrecuenciaMetaKPI
+  getFrecuenciaMetaKPI,
+  clone
 } from '../../utils';
 import {
   trigger,
@@ -22,6 +23,9 @@ import {
   transition
 } from '@angular/animations';
 import { MetaKpi } from '../../models/meta-kpi';
+import { PetMetaAnualEstrategica } from '../../models/pet-meta-anual-estrategica';
+import { PetMetaAnualObjetivoOperativo } from '../../models/pet-meta-anual-objetivo-operativo';
+import { PetMetaAnualKpi } from '../../models/pet-meta-anual-kpi';
 
 
 declare var $: any;
@@ -144,7 +148,7 @@ export class ListaMetasComponent implements OnInit {
     $('.tooltipped').tooltip('hide');
   }
 
-  changeIcono(event): void {
+  changeIcono(event, tipo: number): void {
     let icono = $(event.target).html();
     let id = $(event.target).attr('id');
 
@@ -155,11 +159,41 @@ export class ListaMetasComponent implements OnInit {
 
     } else if (icono == 'save') {
       let caja = $('#text' + id);
-     
-      if (isNumeroAsignacionValid(caja.val())) {
 
-        $(event.target).html(icono == 'edit' ? 'save' : 'edit');
-        caja.attr('disabled', true);
+      if (isNumeroAsignacionValid(caja.val())) {
+        let meta: any;
+        /*
+         * Busca meta que se esta editando
+         */
+        meta = clone(this.metas[id]);
+        meta.valor = parseFloat(caja.val().trim()).toFixed(3);
+
+        /* 
+         * Se forma el modelo a enviar al backend
+         * contenedor.meta Es una variable que se necesita por el backend
+         */
+        let contenedor: any = { meta: {} };
+        contenedor.meta = meta;
+
+        this.service.update(this.auth.getIdUsuario(), contenedor, this.frecuencia, tipo).subscribe(result => {
+          if (result.response.sucessfull) {
+            /*
+             * Da el formato de tres decimales
+             */ 
+            caja.val(parseFloat(caja.val().trim()).toFixed(3));
+            /* 
+             *
+             */  
+            $(event.target).html(icono == 'edit' ? 'save' : 'edit');
+            caja.attr('disabled', true);
+
+            Materialize.toast('Se actualizó correctamente ', 4000, 'green');
+          } else {
+            Materialize.toast(result.response.message, 4000, 'red');
+          }
+        }, error => {
+          Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+        });
 
       } else {
         Materialize.toast('Valor de meta no valido', 4000, 'red');
@@ -240,7 +274,7 @@ export class ListaMetasComponent implements OnInit {
       this.datos_tabla = false;
       let idTipoMeta = this.tiposMeta.filter((el) => el.descripcion == this.tipoMetaSeleccionada.trim().toUpperCase())[0].id;
       this.service.getAllMetas(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad, this.anioSeleccionado, this.frecuencia, idTipoMeta).subscribe(result => {
-        console.log('resultado de metas', result)
+
         if (result.response.sucessfull) {
 
           if (result.data.metasEstrategicas) {
@@ -273,8 +307,104 @@ export class ListaMetasComponent implements OnInit {
       Materialize.toast('Verifique los datos capturados!', 4000, 'red');
     }
 
+  }
 
+  openModalConfirmacion(meta: any, accion: string, tipo_meta: string, event?: any): void {
+    this.mensajeModal = '';
+    let html = '<div style="color: #303f9f"> <p> tipo-meta : <b>:meta-descriptivo:</b></p><p>para el Etad: <b>:etad-descriptivo:</b></p></div>';
+    let id_tipo_meta = 0;
+    switch (accion) {
+      case 'eliminar':
+        this.mensajeModal = '¿ Está seguro de eliminar ? ';
+        break;
+    }
 
+    switch (tipo_meta) {
+      case 'estrategica':
+        id_tipo_meta = 1;
+        let meta_tmp = meta as PetMetaAnualEstrategica;
+        html = html.replace(/:meta-descriptivo:/g, meta_tmp.metaEstrategica.valor).replace(/:etad-descriptivo:/g, meta_tmp.linea.valor).replace(/tipo-meta/g, 'Meta estretegica');
+        break;
+      case 'operativas':
+        id_tipo_meta = 2;
+        let meta_tmp2 = meta as PetMetaAnualObjetivoOperativo;
+        html = html.replace(/:meta-descriptivo:/g, meta_tmp2.objetivoOperativo.valor).replace(/:etad-descriptivo:/g, meta_tmp2.linea.valor).replace(/tipo-meta/g, 'Objetivo operativo');;
+        break;
+      case 'kpi':
+        id_tipo_meta = 3;
+        let meta_tmp3 = meta as PetMetaAnualKpi;
+        html = html.replace(/:meta-descriptivo:/g, meta_tmp3.kPIOperativo.valor).replace(/:etad-descriptivo:/g, meta_tmp3.linea.valor).replace(/tipo-meta/g, 'KPI Operativo');;
+        break;
+    }
+
+    /* 
+     * Configuración del modal de confirmación
+     */
+    swal({
+      title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
+      type: 'question',
+      html: html,
+      showCancelButton: true,
+      confirmButtonColor: '#303f9f',
+      cancelButtonColor: '#9fa8da ',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Si!',
+      allowOutsideClick: false,
+      allowEnterKey: false
+    }).then((result) => {
+      /*
+       * Si acepta
+       */
+      if (result.value) {
+        switch (accion) {
+          case 'eliminar':
+            /* 
+             * Se forma el modelo a enviar al backend
+             * contenedor.meta Es una variable que se necesita por el backend
+             */
+            let contenedor: any = { meta: {} };
+            contenedor.meta = meta;
+            this.service.delete(this.auth.getIdUsuario(), contenedor, this.frecuencia, id_tipo_meta).subscribe(result => {
+              if (result.response.sucessfull) {
+                switch (id_tipo_meta) {
+                  case 1:
+                    let meta_tmp = meta as PetMetaAnualEstrategica;
+                    this.deleteItemArray(this.metas, meta_tmp.id_meta_anual_estrategica, 'id_meta_anual_estrategica', 1);
+                    break;
+                  case 2:
+                    let meta_tmp2 = meta as PetMetaAnualObjetivoOperativo;
+                    this.deleteItemArray(this.metas, meta_tmp2.id_meta_anual_objetivo_operativo, 'id_meta_anual_objetivo_operativo', 2);
+                    break;
+                  case 3:
+                    let meta_tmp3 = meta as PetMetaAnualKpi;
+                    this.deleteItemArray(this.metas, meta_tmp3.id_meta_anual_kpi, 'id_meta_anual_kpi', 3);
+                    break;
+                }
+                Materialize.toast('Se eliminó correctamente ', 4000, 'green');
+              } else {
+                Materialize.toast(result.response.message, 4000, 'red');
+              }
+            }, error => {
+              Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+            });
+            break;
+        }
+        /*
+        * Si cancela accion
+        */
+      } else if (result.dismiss === swal.DismissReason.cancel) {
+      }
+    })
+
+  }
+
+  deleteItemArray(arreglo, valor, propiedad, tipo): void {
+    if (arreglo.length > 0) {
+      let exist = arrayObjectIndexOf(arreglo, valor, propiedad);
+      if (exist != -1) {
+        arreglo.splice(exist, 1);
+      }
+    }
   }
 
   obtenerMesDelPeriodo(arg: Array<Periodo>, idPeriodo: number): number {

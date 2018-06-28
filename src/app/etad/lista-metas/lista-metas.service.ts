@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { BASE_URL_SERVICE } from '../../constants';
+import { MetaKpi } from '../../models/meta-kpi';
 
 @Injectable()
 export class ListaMetasService {
@@ -29,27 +30,23 @@ export class ListaMetasService {
     return this.http.post<any>(this.URL,body);
   }
 
-  delete(id_usuario: number, id_meta: number): Observable<any> {
+  delete(id_usuario: number, meta: any, frecuencia:string, tipo_meta:number): Observable<any> {
     const body = new HttpParams()
       .set('action', 'deleteMeta')
-      .set('id_meta', '' + id_meta)
+      .set('meta', '' + JSON.stringify(meta))
+      .set('tipo_meta', '' + tipo_meta)
+      .set('frecuencia', '' + frecuencia)
       .set('id_usuario', '' + id_usuario)
     return this.http.post(this.URL, body);
   }
 
-  updateMeta(id_usuario: number, meta:any): Observable<any> {
+  update(id_usuario: number, meta: any, frecuencia:string, tipo_meta:number): Observable<any> {
     const body = new HttpParams()
       .set('action', 'updateMeta')
-      .set('id_meta', ''+meta.id_meta)
-      .set('dia', ''+meta.tmpDia)
-      .set('meta', ''+meta.meta)
-      .set('tmp', ''+meta.tmp)
-      .set('velocidad', ''+meta.velocidad)
-      .set('id_turno', ''+meta.turno)
-      .set('id_grupo', ''+meta.tmpGrupo)
-      .set('estatus', ''+meta.estatus)
+      .set('meta', '' + JSON.stringify(meta))
+      .set('tipo_meta', '' + tipo_meta)
+      .set('frecuencia', '' + frecuencia)
       .set('id_usuario', '' + id_usuario)
-
     return this.http.post(this.URL, body);
   }
 

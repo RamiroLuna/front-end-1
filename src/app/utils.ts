@@ -514,6 +514,7 @@ function getFrecuenciaMetaKPI(): Array<any> {
 
 
 export {
+    arrayObjectIndexOf,
     deleteItemArray,
     isValidId,
     getAnioActual,

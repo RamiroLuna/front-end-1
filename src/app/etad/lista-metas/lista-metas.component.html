@@ -95,12 +95,12 @@
             </td>
             <td class="center-align">{{meta.metaEstrategica.unidad_medida }}</td>
             <td class="center-align" *ngIf="permission.editarMeta">
-              <a class="btn-floating light-green lighten-1" (click)="changeIcono($event)">
+              <a class="btn-floating light-green lighten-1" (click)="changeIcono($event,1)">
                 <i [id]="i" class="material-icons">edit</i>
               </a>
             </td>
             <td class="center-align" *ngIf="permission.eliminarMeta">
-              <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(meta,'eliminar')">
+              <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(meta,'eliminar','estrategica')">
                 <i class="material-icons">delete</i>
               </a>
             </td>
@@ -131,12 +131,12 @@
             </td>
             <td class="center-align">{{meta.objetivoOperativo.unidad_medida }}</td>
             <td class="center-align" *ngIf="permission.editarMeta">
-              <a class="btn-floating light-green lighten-1" (click)="changeIcono($event)">
+              <a class="btn-floating light-green lighten-1" (click)="changeIcono($event,2)">
                 <i [id]="i" class="material-icons">edit</i>
               </a>
             </td>
             <td class="center-align" *ngIf="permission.eliminarMeta">
-              <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(meta,'eliminar')">
+              <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(meta,'eliminar','operativas')">
                 <i class="material-icons">delete</i>
               </a>
             </td>
@@ -159,18 +159,16 @@
 
         <tbody>
           <tr *ngIf="metas.length == 0 ">
-            <th colspan="5" class="center">No hay registros</th>
+            <th colspan="6" class="center">No hay registros</th>
           </tr>
           <tr *ngFor="let meta of metas;let i = index">
             <td class="center-align">{{meta.kPIOperativo.valor}}</td>
             <td class="center-align">
-              <div *ngIf="meta.kPIOperativo.tipo_kpi == 0">
-                <input type="checkbox" [checked]="meta.kPIOperativo.tipo_kpi == 0" disabled>
-                <label for="menos">Menos es mejor</label>
+              <div *ngIf="meta.kPIOperativo.tipo_kpi == 0">         
+                <label for="menos">MENOS ES MEJOR</label>
               </div>
-              <div *ngIf="meta.kPIOperativo.tipo_kpi == 1">
-                <input type="checkbox" [checked]="meta.kPIOperativo.tipo_kpi == 1" disabled>
-                <label for="mas">Más es mejor</label>
+              <div *ngIf="meta.kPIOperativo.tipo_kpi == 1">              
+                <label for="mas">MÁS ES MEJOR</label>
                 <br>
               </div>
             </td>
@@ -179,12 +177,12 @@
             </td>
             <td class="center-align">{{meta.kPIOperativo.unidad_medida }}</td>
             <td class="center-align" *ngIf="permission.editarMeta">
-              <a class="btn-floating light-green lighten-1" (click)="changeIcono($event)">
+              <a class="btn-floating light-green lighten-1" (click)="changeIcono($event,3)">
                 <i [id]="i" class="material-icons">edit</i>
               </a>
             </td>
             <td class="center-align" *ngIf="permission.eliminarMeta">
-              <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(meta,'eliminar')">
+              <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(meta,'eliminar','kpi')">
                 <i class="material-icons">delete</i>
               </a>
             </td>
