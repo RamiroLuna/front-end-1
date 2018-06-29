@@ -129,7 +129,6 @@ export class ListByCatalogComponent implements OnInit {
 
   openModalConfirmacion(item: any, accion: string, type: string, event?: any): void {
 
-
     this.mensajeModal = '';
 
     switch (accion) {
@@ -141,6 +140,7 @@ export class ListByCatalogComponent implements OnInit {
         this.mensajeModal = '¿Está seguro de eliminar? ';
         break;
     }
+
 
 
     /* 
@@ -167,21 +167,25 @@ export class ListByCatalogComponent implements OnInit {
          */
         switch (type) {
 
-          case 'equipos':
-            // if (accion == 'activar') {
-            //   this.service.updateEquipos(
-            //     this.auth.getIdUsuario(),
-            //     item
-            //   ).subscribe(result => {
-            //     if (result.response.sucessfull) {
-            //       Materialize.toast('Actualización completa', 4000, 'green');
-            //     } else {
-            //       Materialize.toast(result.response.message, 4000, 'red');
-            //     }
-            //   }, error => {
-            //     Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-            //   });
-            // }
+          case 'metas-estrategicas':
+          case 'objetivos-operativos':
+          case 'kpis-operativos':
+            let action = (item.activo == 1)?'unlockRecord':'blockRecord';
+            if (accion == 'activar') {
+              this.service.update(this.auth.getIdUsuario(),item, this.id_tipo_catalogo,action).subscribe(result => {
+                if (result.response.sucessfull) {
+                  Materialize.toast('Se ' + ( (item.activo == 1)?'activó':'desactivó' ) + ' correctamente', 4000, 'green');
+                } else {
+                  item.activo = !item.activo ? 1 : 0;
+                  event.target.checked = !event.target.checked;
+                  Materialize.toast(result.response.message, 4000, 'red');
+                }
+              }, error => {
+                item.activo = !item.activo ? 1 : 0;
+                event.target.checked = !event.target.checked;
+                Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+              });
+            }
             break;
         }
         /*
