@@ -1,0 +1,95 @@
+<div class="container" *ngIf="!loading && isCatalog && seccion!='invalid'">
+  <div class="section"></div>
+  <!-- Seccion de formulario para catalogos metas estrategicas -->
+  <div class="row" *ngIf="type_Catalogo == 'metas-estrategicas'">
+    <div class="col offset-l2 offset-xl2 s12 m12 l8 lx8">
+      <div class="card-panel">
+        <h5 class="color_titulo header2 center-align">{{ seccion == 'add'? ' Agregar a ' : ' Actualizar en'}} {{ nombre_catalogo }}</h5>
+        <div class="section"></div>
+        <div class="row">
+          <form class="col s12" [formGroup]="formCatalogs" (ngSubmit)="openModalConfirmacion(itemCatalogo, seccion, type_Catalogo)"
+            autocomplete="off">
+            <div class="row">
+              <div class="input-field col s12">
+                <input placeholder="Meta estratégica" id="valor" type="text" formControlName='valor' [(ngModel)]='itemCatalogo.valor'>
+                <label for="valor" class="active">Meta estratégica</label>
+                <div *ngIf="formCatalogs.controls.valor.errors?.required && (formCatalogs.controls.valor?.touched || submitted)" class="error">
+                  El campo es requerido
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <input placeholder="Unidad de medida" id="unidad_medida" type="text" formControlName='unidad_medida' [(ngModel)]='itemCatalogo.unidad_medida'>
+                <label for="unidad_medida" class="active">Unidad de medida</label>
+                <div *ngIf="formCatalogs.controls.unidad_medida.errors?.required && (formCatalogs.controls.unidad_medida?.touched || submitted)"
+                  class="error">
+                  El campo es requerido
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <input placeholder="Descripción" id="descripcion" type="text" formControlName='descripcion' [(ngModel)]='itemCatalogo.descripcion'>
+                <label for="descripcion" class="active">Descripción</label>
+                <div *ngIf="formCatalogs.controls.descripcion.errors?.required && (formCatalogs.controls.descripcion?.touched || submitted)"
+                  class="error">
+                  La descripción es requerida
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s6 center-align">
+                <input name="radio" type="radio" id="anual" [checked]="itemCatalogo.anual == 1" (change)="changeFrecuencia(itemCatalogo,'radio-anual')"/>
+                <label for="anual">Frecuencia Anual</label>
+              </div>
+              <div class="col s6">
+                <input name="radio" type="radio" id="mensual" [checked]="itemCatalogo.mensual == 1" (change)="changeFrecuencia(itemCatalogo,'radio-mensual')"/>
+                <label for="mensual">Frecuencia Mensual</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="row">
+                <div class="input-field col  offset-m1 offset-l1 offset-xl1 s6 m4 l4 lx4">
+                  <a [routerLink]="'../../../' + link_back" class="btn grey lighten-1 waves-effect waves-light right" name="action">{{ texto_btn }}
+                  </a>
+                </div>
+                <div class="input-field col offset-m2 offset-l2 offset-xl2 s6 m4 l4 lx4">
+                  <button class="btn light-green lighten-1 waves-effect waves-light right" type="submit" name="action"> {{ seccion == 'add' ? 'Agregar' : 'Guardar cambio'}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fin de seccion de formulario para catalogos metas estrategicas -->
+
+</div>
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>
+
+<div class="container" *ngIf="!loading && !isCatalog && seccion!='invalid'">
+  <div class="section"></div>
+  <h3 class="color_titulo center-align">No existe el catalogo consultado</h3>
+  <h6 class="center-align">
+    <a routerLink="../../../../catalogos">Volver a la lista de catalogos disponibles</a>
+  </h6>
+</div>
+
+<div class="container" *ngIf="!loading && seccion =='invalid'">
+  <h3 class="color_titulo center-align">Elemento no encontrado</h3>
+  <h6 class="center-align">
+    <a [routerLink]="['../../../'+link_back]">Volver a elementos disponibles en {{nombre_catalogo}} </a>
+  </h6>
+</div>

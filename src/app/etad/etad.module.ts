@@ -12,6 +12,7 @@ import { PipesCustomModule } from '../pipes/pipes.custom.module';
 import { MetaManualComponent } from './meta-manual/meta-manual.component';
 import { ListCatalogsComponent } from './list-catalogs/list-catalogs.component';
 import { ListByCatalogComponent } from './list-by-catalog/list-by-catalog.component';
+import { FormularioDetalleComponent } from './list-by-catalog/formulario-detalle/formulario-detalle.component';
 
 
 
@@ -51,6 +52,13 @@ const routes: Routes = [
     // data: {
     //   expectedRole: 
     // }
+  },
+  {
+    path: 'opciones/catalogos/:name/formulario/:id', component: FormularioDetalleComponent
+    // , canActivate: [AuthGuardEtad]
+    // data: {
+    //   expectedRole: 
+    // }
   }
 
 ];
@@ -71,7 +79,8 @@ const routes: Routes = [
     ListaMetasComponent,
     MetaManualComponent,
     ListCatalogsComponent,
-    ListByCatalogComponent
+    ListByCatalogComponent,
+    FormularioDetalleComponent
   ],
   providers: [
     AuthGuardEtad
