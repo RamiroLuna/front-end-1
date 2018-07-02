@@ -28,9 +28,11 @@ export class FormularioDetalleService {
     return this.http.post(this.URL, body);
   }
 
-  updateCatalogo(id_usuario: number, equipo: any): Observable<any> {
+  updateCatalogo(id_usuario: number, tipo_catalogo:number,record: any): Observable<any> {
     const body = new HttpParams()
       .set('action', 'updateCatalogo')
+      .set('tipo_catalogo', ''+tipo_catalogo)
+      .set('record', ''+JSON.stringify(record))
       .set('id_usuario', "" + id_usuario);
     return this.http.post(this.URL, body);
   }

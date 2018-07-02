@@ -89,6 +89,86 @@
       </li>
       <li>
         <div class="collapsible-header">
+          <i class="material-icons">star_half</i>Ponderaciones</div>
+        <div class="collapsible-body light-green lighten-5">
+          <div class="row">
+            <div class="col s12 m12 l12 xl12">
+              <!-- Vista solo para moviles  -->
+              <div class="hide-on-large-only">
+                <div class="row">
+                  <a *ngIf="permission.cargaPonderacionManual" routerLink="ponderacion-carga-manual/nuevo" class=" col s12 m12 l3 xl3  waves-effect waves-light btn light-green darken-1"
+                    (click)="ocultarTooltip()">
+                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                      MANUAL
+                    </i>
+                  </a>
+                  <a disabled *ngIf="!permission.cargaPonderacionManual" class=" col s12 m12 l3 xl3  waves-effect waves-light btn light-green darken-1"
+                    (click)="ocultarTooltip()">
+                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                      MANUAL
+                    </i>
+                  </a>
+                </div>
+                <div class="row">
+                  <a *ngIf="permission.cargaPonderacionMasiva" routerLink="ponderacion-carga-masiva" class="col s12 m12 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                    (click)="ocultarTooltip()">
+                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                      MASIVA
+                    </i>
+                  </a>
+                  <a disabled *ngIf="!permission.cargaPonderacionMasiva" class="col s12 m12 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                    (click)="ocultarTooltip()">
+                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                      MASIVA
+                    </i>
+                  </a>
+                </div>
+                <div class="row">
+                  <a *ngIf="permission.edicionPonderacion" routerLink="lista-ponderaciones" class="col s12 m12 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                    (click)="ocultarTooltip()">
+                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                      EDICIÓN
+                    </i>
+                  </a>
+                  <a disabled *ngIf="!permission.edicionPonderacion" class="col s12 m12 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                    (click)="ocultarTooltip()">
+                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                      EDICIÓN
+                    </i>
+                  </a>
+                </div>
+              </div>
+              <!-- Fin solo para moviles -->
+              <!-- Inicio solo para pantallas-->
+              <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+                <div class="col s1 m1 l1 xl1"></div>
+                <a *ngIf="permission.cargaPonderacionManual" routerLink="ponderacion-carga-manual/nuevo" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  CARGA MANUAL
+                </a>
+                <a disabled *ngIf="!permission.cargaPonderacionManual" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  CARGA MANUAL
+                </a>
+                <div class="col s2 m2 l2 xl2"></div>
+                <a *ngIf="permission.cargaPonderacionMasiva" routerLink="ponderacion-carga-masiva" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  CARGA MASIVA
+                </a>
+                <a disabled *ngIf="!permission.cargaPonderacionMasiva" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  CARGA MASIVA
+                </a>
+                <div class="col s2 m2 l2 xl2"></div>
+                <a *ngIf="permission.edicionPonderacion" routerLink="lista-ponderaciones" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  EDICION
+                </a>
+                <a disabled *ngIf="!permission.edicionPonderacion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  EDICION
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="collapsible-header">
           <i class="material-icons">multiline_chart</i>Registro de indicadores</div>
         <div class="collapsible-body light-green lighten-5">
           <div class="row">

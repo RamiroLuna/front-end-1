@@ -16,7 +16,7 @@ export class ListCatalogsComponent implements AfterViewInit {
    * En este arreglo se deben agregar los nuevos catalogos tanto especificos como genericos
    */
   public catalogos: Array<any> = [
-    { id: 1, name: 'pet_cat_meta_estrategica', descripcion: 'Metas Estratégicas', link: 'metas-estrategicas', activo: true },
+    // { id: 1, name: 'pet_cat_meta_estrategica', descripcion: 'Metas Estratégicas', link: 'metas-estrategicas', activo: true },
     { id: 2, name: 'pet_cat_objetivo_operativo', descripcion: 'Objetivos Operativos', link: 'objetivos-operativos', activo: true },
     { id: 3, name: 'pet_cat_kpi_operativo', descripcion: 'KPI\'s Operativos', link: 'kpis-operativos', activo: true }
   ];

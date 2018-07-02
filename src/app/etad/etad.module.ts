@@ -13,6 +13,9 @@ import { MetaManualComponent } from './meta-manual/meta-manual.component';
 import { ListCatalogsComponent } from './list-catalogs/list-catalogs.component';
 import { ListByCatalogComponent } from './list-by-catalog/list-by-catalog.component';
 import { FormularioDetalleComponent } from './list-by-catalog/formulario-detalle/formulario-detalle.component';
+import { PonderacionManualComponent } from './ponderacion-manual/ponderacion-manual.component';
+import { PonderacionMasivaComponent } from './ponderacion-masiva/ponderacion-masiva.component';
+import { ListaPonderacionComponent } from './lista-ponderacion/lista-ponderacion.component';
 
 
 
@@ -59,6 +62,28 @@ const routes: Routes = [
     // data: {
     //   expectedRole: 
     // }
+  },
+  /* rutas de ponderaciones */
+  {
+    path: 'opciones/ponderacion-carga-masiva', component: PonderacionMasivaComponent
+    // , canActivate: [AuthGuardEtad],
+    // data: {
+    //   expectedRole: 
+    // }
+  },
+  {
+    path: 'opciones/lista-ponderaciones', component: ListaPonderacionComponent
+    // , canActivate: [AuthGuardEtad],
+    // data: {
+    //   expectedRole:
+    // }
+  },
+  {
+    path: 'opciones/ponderacion-carga-manual/:id', component: PonderacionManualComponent
+    // , canActivate: [AuthGuardEtad]
+    // data: {
+    //   expectedRole: 
+    // }
   }
 
 ];
@@ -80,7 +105,10 @@ const routes: Routes = [
     MetaManualComponent,
     ListCatalogsComponent,
     ListByCatalogComponent,
-    FormularioDetalleComponent
+    FormularioDetalleComponent,
+    PonderacionManualComponent,
+    PonderacionMasivaComponent,
+    ListaPonderacionComponent
   ],
   providers: [
     AuthGuardEtad

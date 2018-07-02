@@ -61,21 +61,16 @@
   <table class="display" class="striped" cellspacing="0" id="itemsCatalogos" *ngIf="type_Catalogo == 'objetivos-operativos'">
     <thead>
       <tr>
-        <th width="10%">Frecuencia</th>
-        <th width="20%">Objetivo Operativo</th>
+        <th width="25%">Objetivo Operativo</th>
         <th width="15%">Unidad de Medida</th>
         <th width="35%">Descripción</th>
-        <th width="15%">Activo</th>
+        <th width="20%">Activo</th>
         <th width="5%">Actualizar</th>
       </tr>
     </thead>
 
     <tbody>
       <tr *ngFor="let item of items">
-        <td>
-          <p *ngIf="item.anual == 1">ANUAL</p>
-          <p *ngIf="item.mensual == 1">MENSUAL</p>
-        </td>
         <td>{{ item.valor }}</td>
         <td>{{ item.unidad_medida }}</td>
         <td>{{ item.descripcion }}</td>

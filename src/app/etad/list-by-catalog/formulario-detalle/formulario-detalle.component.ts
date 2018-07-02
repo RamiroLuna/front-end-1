@@ -121,6 +121,11 @@ export class FormularioDetalleComponent implements OnInit {
         });
         break;
       case 'objetivos-operativos':
+        this.formCatalogs = this.fb.group({
+          valor: new FormControl(this.itemCatalogo.valor, [Validators.required]),
+          descripcion: new FormControl(this.itemCatalogo.descripcion, [Validators.required]),
+          unidad_medida: new FormControl(this.itemCatalogo.unidad_medida, [Validators.required])
+        });
         break;
       case 'kpis-operativos':
         break;
@@ -143,6 +148,7 @@ export class FormularioDetalleComponent implements OnInit {
                 this.itemCatalogo = result.data.metaEstrategica || new PetCatMetaEstrategica();
                 break;
               case 2:
+                this.itemCatalogo = result.data.objetivoOperativo || new PetCatObjetivoOperativo();
                 break;
               case 3:
                 break;
@@ -234,14 +240,14 @@ export class FormularioDetalleComponent implements OnInit {
             case 'metas-estrategicas':
             case 'objetivos-operativos':
             case 'kpis-operativos':
+              /* 
+               * Se forma el modelo a enviar al backend
+               * contenedor.meta Es una variable que se necesita por el backend
+               */
+              let contenedor: any = { record: {} };
+              contenedor.record = this.itemCatalogo;
 
               if (this.seccion == 'add') {
-                /* 
-                * Se forma el modelo a enviar al backend
-                * contenedor.meta Es una variable que se necesita por el backend
-                */
-                let contenedor: any = { record: {} };
-                contenedor.record = this.itemCatalogo;
                 this.service.insertCatalogo(this.auth.getIdUsuario(), this.id_tipo_catalogo, contenedor).subscribe(result => {
                   console.log('insert catalogo', result)
                   if (result.response.sucessfull) {
@@ -254,7 +260,7 @@ export class FormularioDetalleComponent implements OnInit {
                   Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
                 });
               } else if (this.seccion == 'edit') {
-                this.service.updateCatalogo(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(
+                this.service.updateCatalogo(this.auth.getIdUsuario(), this.id_tipo_catalogo, contenedor).subscribe(
                   result => {
                     console.log('resultado de actualizacion', result)
                     if (result.response.sucessfull) {
