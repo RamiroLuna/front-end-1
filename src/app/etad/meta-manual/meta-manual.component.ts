@@ -366,11 +366,11 @@ export class MetaManualComponent implements OnInit {
         } else if (this.meta.tipo_meta == 2) {
 
           this.lista_temporal = this.metas_operativas.filter(el => {
-            let temporalLineas = el.lineas.split(",").map(el => parseInt(el));
-            if (temporalLineas.includes(parseInt("" + this.meta.id_etad))) {
-              return el;
-            }
-
+            // let temporalLineas = el.lineas.split(",").map(el => parseInt(el));
+          
+  // if (temporalLineas.includes(parseInt("" + this.meta.id_etad))) {
+            //   return el;
+            // }
           });
 
         } else if (this.meta.tipo_meta == 3) {

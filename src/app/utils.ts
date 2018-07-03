@@ -495,9 +495,8 @@ function hmToMs(hora: string): number {
 // Tipo de metas disponibles
 function getMetasKPI(): Array<any> {
     return [
-        { id: 1, descripcion: 'ESTRATEGICAS', frecuencia: 2 },
-        { id: 2, descripcion: 'OPERATIVAS', frecuencia: 0 },
-        { id: 3, descripcion: 'KPI OPERATIVOS', frecuencia: 0 }
+        { id: 1, descripcion: 'OPERATIVAS', frecuencia: 0 },
+        { id: 2, descripcion: 'KPI OPERATIVOS', frecuencia: 0 }
     ];
 };
 

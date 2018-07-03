@@ -1,3 +1,156 @@
-<p>
-  ponderacion-masiva works!
-</p>
+<div class="container" *ngIf="!loading">
+  <div class="section"></div>
+  <h4 class="color_titulo center-align">Ponderación masiva</h4>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <a routerLink="../../opciones" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">arrow_back</i>
+      </i>
+    </a>
+    <a class="btn-floating light-green darken-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50" data-tooltip="Subir archivo"
+      (click)="procesarFile()" *ngIf="bVistaPre">
+      <i class="material-icons">
+        <i class="material-icons">cloud_upload</i>
+      </i>
+    </a>
+    <br>
+  </div>
+  <!-- Fin Solo para dispositivos moviles -->
+  <!-- Inicio de formulario -->
+  <form class="col s12 m12 l12 xl12" [formGroup]="formCargaMasiva" (ngSubmit)="uploadMetasCSV()" autocomplete="off">
+    <fieldset>
+      <legend class="color_titulo">
+        <b>Ingrese los datos para la carga masiva:</b>
+      </legend>
+      <div class="section"></div>
+      <div class="row">
+        <div class="input-field col s12 m12 l4 xl4">
+          <select materialize="material_select" formControlName="tipoMeta" [materializeSelectOptions]="tiposMeta" [(ngModel)]="tipoMeta"
+            (ngModelChange)="changeCombo('tipoMeta')">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let tipo of tiposMeta" [value]="tipo.id">{{tipo.descripcion}}</option>
+          </select>
+          <label>Tipo de ponderación</label>
+          <div *ngIf="formCargaMasiva.controls.tipoMeta.errors?.required && (formCargaMasiva.controls.tipoMeta?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l4 xl4">
+          <select materialize="material_select" formControlName="anioSeleccionado" [materializeSelectOptions]="anios" [(ngModel)]="anioSeleccionado"
+            (ngModelChange)="changeAnio()">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</option>
+          </select>
+          <label>Año</label>
+          <div *ngIf="formCargaMasiva.controls.anioSeleccionado.errors?.required && (formCargaMasiva.controls.anioSeleccionado?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l4 xl4">
+          <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="idEtad" [(ngModel)]="idEtad" (ngModelChange)="changeCombo()">
+            <option value="" selected>SELECCIONE</option>
+            <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{linea.descripcion}}</option>
+          </select>
+          <label>Etad</label>
+          <div *ngIf="formCargaMasiva.controls.idEtad.errors?.required && (formCargaMasiva.controls.idEtad?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="file-field input-field input-field col s12 m12 l4 xl4">
+          <div class="btn">
+            <span>
+              <i class="material-icons">attach_file</i>
+            </span>
+            <input type="file" accept=".csv" (change)="seleccionaArchivo($event)">
+            <input type='hidden' formControlName='archivoCsv' [(ngModel)]='archivoCsv' />
+            <!-- important -->
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+          <div *ngIf="formCargaMasiva.controls.archivoCsv.errors?.required && (formCargaMasiva.controls.archivoCsv?.touched || submitted)"
+            class="error">
+            Seleccione un archivo
+          </div>
+        </div>
+        <div class="input-field col s6 m6 l4 xl4 center-align">
+          <button type="button" id="template_button" class="waves-effect waves-light btn indigo darken-1" (click)="downloadTemplate()"
+            [disabled]="frecuencia == ''">
+            <i class="material-icons left">vertical_align_bottom</i>TEMPLATE</button>
+        </div>
+        <div class="input-field col s6 m6 l4 xl4 center-align">
+          <button type='submit' class="waves-effect waves-light btn light-green darken-1" [disabled]="disabled">
+            {{ textoBtn }}</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  <div class="section"></div>
+
+  <div class="scroll_ejex_tabla_reporte" *ngIf="bVistaPre">
+    <form class="col s12 m12 l12 xl12" autocomplete="off" [@visibility]="status">
+      <fieldset>
+        <legend class="color_titulo">
+          <b>Vista previa:</b>
+        </legend>
+        <table class="striped">
+          <thead>
+            <tr *ngFor="let header of rowsHeader">
+              <th>{{ header.objetivo }}</th>
+              <th>{{ header.ponderacion }}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let row of rows">
+              <td>{{ row.objetivo }}</td>
+              <td>{{ row.ponderacion }}</td>
+            </tr>
+            <tr>
+              <td>
+                <b>TOTAL</b>
+              </td>
+              <td>
+                <b>100</b>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </fieldset>
+    </form>
+  </div>
+  <!-- Fin del formulario de carga -->
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+        data-tooltip="Subir archivo" (click)="procesarFile()" *ngIf="bVistaPre">
+        <i class="material-icons">
+          <i class="material-icons">cloud_upload</i>
+        </i>
+      </a>
+      <a routerLink="../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas-->
+</div>
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>
