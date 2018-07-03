@@ -33,7 +33,8 @@ export class FormularioDetalleComponent implements OnInit {
   public texto_btn: string;
   public type_Catalogo: string;
   public mensajeModal: string;
-  public lineas: Array<Linea>;
+  public etads: Array<Linea>;
+  public objetivos: Array<PetCatObjetivoOperativo>;
   public id_tipo_catalogo: number;
 
   constructor(
@@ -89,7 +90,9 @@ export class FormularioDetalleComponent implements OnInit {
         if (this.seccion == 'edit') {
           this.loadData(this.type_Catalogo, parseInt(params.get('id')));
         } else if (this.seccion == 'add') {
-          this.itemCatalogo.anual = 1;
+          if (this.id_tipo_catalogo == 3) {
+            this.itemCatalogo.id_frecuencia = 1;
+          }
           this.loadData();
         } else {
           this.loading = false;
@@ -123,11 +126,17 @@ export class FormularioDetalleComponent implements OnInit {
       case 'objetivos-operativos':
         this.formCatalogs = this.fb.group({
           valor: new FormControl(this.itemCatalogo.valor, [Validators.required]),
-          descripcion: new FormControl(this.itemCatalogo.descripcion, [Validators.required]),
-          unidad_medida: new FormControl(this.itemCatalogo.unidad_medida, [Validators.required])
+          descripcion: new FormControl(this.itemCatalogo.descripcion, [Validators.required])
         });
         break;
       case 'kpis-operativos':
+        this.formCatalogs = this.fb.group({
+          valor: new FormControl(this.itemCatalogo.valor, [Validators.required]),
+          descripcion: new FormControl(this.itemCatalogo.descripcion, [Validators.required]),
+          unidad_medida: new FormControl(this.itemCatalogo.unidad_medida, [Validators.required]),
+          objetivo: new FormControl(this.itemCatalogo.id_cat_objetivo_operativo, [Validators.required]),
+          lineas: new FormControl(this.itemCatalogo.lineas, [Validators.required])
+        });
         break;
     }
   }
@@ -141,7 +150,7 @@ export class FormularioDetalleComponent implements OnInit {
          * Consulta el elemento del catalogo
          */
         this.service.getCatalogoById(this.auth.getIdUsuario(), this.id_tipo_catalogo, id).subscribe(result => {
-          console.log('registro by id', result)
+        
           if (result.response.sucessfull) {
             switch (this.id_tipo_catalogo) {
               case 1:
@@ -151,6 +160,9 @@ export class FormularioDetalleComponent implements OnInit {
                 this.itemCatalogo = result.data.objetivoOperativo || new PetCatObjetivoOperativo();
                 break;
               case 3:
+                this.etads = result.data.listEtads || [];
+                this.objetivos = result.data.listObjetivoOperativos || [];
+                this.itemCatalogo = result.data.kpiOperativo || new PetCatKpiOperativo();
                 break;
             }
 
@@ -170,9 +182,13 @@ export class FormularioDetalleComponent implements OnInit {
         * por el formulario
         */
         this.service.init(this.auth.getIdUsuario()).subscribe(result => {
-          console.log('result init add', result)
-          if (result.response.sucessfull) {
 
+          if (result.response.sucessfull) {
+            if (this.id_tipo_catalogo == 3) {
+              this.etads = result.data.listEtads || [];
+              this.objetivos = result.data.listObjetivoOperativos || [];
+              this.itemCatalogo.tipo_kpi =1 ;
+            }
             this.loading = false;
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
@@ -188,18 +204,21 @@ export class FormularioDetalleComponent implements OnInit {
   }
 
   changeFrecuencia(item: any, radio: string): void {
-    if (radio == 'radio-anual') {
-      item.anual = 1;
-      item.mensual = 0;
+    if (radio == 'radio-turno') {
+      item.id_frecuencia = 1;
     } else if (radio == 'radio-mensual') {
-      item.anual = 0;
-      item.mensual = 1;
+      item.id_frecuencia = 2;
     }
+  }
+
+  changeTipo(item: any, valor: number): void {
+    // 0 menos es mejor
+    // 1 mas es mejor
+    item.tipo_kpi = valor;
   }
 
 
   openModalConfirmacion(item: any, accion: string, type: string): void {
-
     this.submitted = true;
     this.mensajeModal = '';
 
@@ -249,7 +268,7 @@ export class FormularioDetalleComponent implements OnInit {
 
               if (this.seccion == 'add') {
                 this.service.insertCatalogo(this.auth.getIdUsuario(), this.id_tipo_catalogo, contenedor).subscribe(result => {
-                  console.log('insert catalogo', result)
+               
                   if (result.response.sucessfull) {
                     Materialize.toast('Se agregó correctamente', 4000, 'green');
                     this.router.navigate(['home/etad/opciones/catalogos', this.link_back]);
@@ -262,7 +281,7 @@ export class FormularioDetalleComponent implements OnInit {
               } else if (this.seccion == 'edit') {
                 this.service.updateCatalogo(this.auth.getIdUsuario(), this.id_tipo_catalogo, contenedor).subscribe(
                   result => {
-                    console.log('resultado de actualizacion', result)
+                  
                     if (result.response.sucessfull) {
                       Materialize.toast('Actualización completa', 4000, 'green');
                       this.texto_btn = 'Cerrar ficha';
@@ -285,6 +304,42 @@ export class FormularioDetalleComponent implements OnInit {
     } else {
       Materialize.toast('Verifique los datos capturados!', 4000, 'red');
     }
+
+  }
+
+  aplicaEnEtad(itemCatalogo: PetCatKpiOperativo, idEtad: number): boolean {
+    let arg = [];
+
+    if (itemCatalogo.lineas.trim() != "") {
+      arg = itemCatalogo.lineas.split(",").map((el) => parseInt(el));
+      return arg.includes(idEtad);
+    } else {
+      return false;
+    }
+
+  }
+
+  clicKEtad(idEtad: number, event: any, itemCatalogo: PetCatKpiOperativo): void {
+    let arg = [];
+    if (itemCatalogo.lineas.trim() != "") {
+      arg = itemCatalogo.lineas.split(",").map((el) => parseInt(el));
+    }
+
+    if (event.target.checked) {
+      arg.push(idEtad);
+      itemCatalogo.lineas = arg.toString();
+    } else {
+
+      let posicion = arg.indexOf(idEtad);
+      if (posicion != -1) {
+        arg.splice(posicion, 1);
+      }
+      itemCatalogo.lineas = arg.toString();
+    }
+
+
+
+
 
   }
 

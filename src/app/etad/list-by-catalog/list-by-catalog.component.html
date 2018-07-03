@@ -61,18 +61,16 @@
   <table class="display" class="striped" cellspacing="0" id="itemsCatalogos" *ngIf="type_Catalogo == 'objetivos-operativos'">
     <thead>
       <tr>
-        <th width="25%">Objetivo Operativo</th>
-        <th width="15%">Unidad de Medida</th>
+        <th width="30%">Objetivo Operativo</th>
         <th width="35%">Descripción</th>
-        <th width="20%">Activo</th>
-        <th width="5%">Actualizar</th>
+        <th width="25%">Activo</th>
+        <th width="10%">Actualizar</th>
       </tr>
     </thead>
 
     <tbody>
       <tr *ngFor="let item of items">
         <td>{{ item.valor }}</td>
-        <td>{{ item.unidad_medida }}</td>
         <td>{{ item.descripcion }}</td>
         <td>
           <div class="switch">
@@ -98,9 +96,10 @@
     <thead>
       <tr>
         <th width="10%">Frecuencia</th>
-        <th width="40%">KPI Operativo</th>
+        <th width="20%">KPI Operativo</th>
         <th width="15%">Tipo</th>
-        <th width="15%" class="center-align">Unidad de Medida</th>
+        <th width="10%" class="center-align">Unidad de Medida</th>
+        <th width="25%">Descripción</th>
         <th width="15%">Activo</th>
         <th width="5%">Actualizar</th>
       </tr>
@@ -109,8 +108,8 @@
     <tbody>
       <tr *ngFor="let item of items">
         <td>
-          <p *ngIf="item.anual == 1">ANUAL</p>
-          <p *ngIf="item.mensual == 1">MENSUAL</p>
+          <p *ngIf="item.id_frecuencia == 1">TURNO</p>
+          <p *ngIf="item.id_frecuencia == 2">MENSUAL</p>
         </td>
         <td>{{ item.valor }}</td>
         <td>
@@ -122,6 +121,7 @@
           </p>
         </td>
         <td class="center-align">{{ item.unidad_medida }}</td>
+        <td>{{ item.descripcion }}</td>
         <td>
           <div class="switch">
             <label>
