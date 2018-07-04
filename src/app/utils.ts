@@ -496,7 +496,7 @@ function hmToMs(hora: string): number {
 function getMetasKPI(): Array<any> {
     return [
         { id: 1, descripcion: 'OPERATIVAS', frecuencia: 0 },
-        { id: 2, descripcion: 'KPI OPERATIVOS', frecuencia: 0 }
+        // { id: 2, descripcion: 'KPI OPERATIVOS', frecuencia: 0 }
     ];
 };
 

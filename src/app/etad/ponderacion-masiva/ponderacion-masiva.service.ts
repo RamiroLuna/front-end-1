@@ -27,21 +27,20 @@ export class PonderacionMasivaService {
   }
 
 
-  loadData(id_usuario:number, idEtad:number, anio:any, tipo_meta:number): Observable<any>{
+  loadData(id_usuario:number, anio:any, tipo_ponderacion:number): Observable<any>{
     const body = new HttpParams()
     .set('action', 'loadData')
-    .set('id_etad', ""+idEtad)
     .set('anio', ""+anio)
-    .set('tipo_meta', ""+tipo_meta)
+    .set('tipo_ponderacion', ""+tipo_ponderacion)
     .set('id_usuario', ""+id_usuario)
     return this.http.post<any>(this.URL,body);
   }
 
-  reWriteFile(id_usuario:number, idPeriodo:number, IdLinea:number): Observable<any>{
+  rewriteData(id_usuario:number, anio:number, tipo_ponderacion:number): Observable<any>{
     const body = new HttpParams()
-    .set('action', 'reWriteFile')
-    .set('id_periodo', ""+idPeriodo)
-    .set('id_linea', ""+IdLinea)
+    .set('action', 'rewriteData')
+    .set('anio', ""+anio)
+    .set('tipo_ponderacion', ""+tipo_ponderacion)
     .set('id_usuario', ""+id_usuario)
     return this.http.post<any>(this.URL,body);
   }

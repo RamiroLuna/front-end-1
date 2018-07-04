@@ -1,6 +1,6 @@
 <div class="container" *ngIf="!loading">
   <div class="section"></div>
-  <h4 class="color_titulo center-align">Ponderación masiva</h4>
+  <h4 class="color_titulo center-align">Carga masiva de ponderaciones</h4>
   <!-- Solo para dispositivos moviles -->
   <div class="hide-on-large-only right-align">
     <a routerLink="../../opciones" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
@@ -55,7 +55,7 @@
             <option value="" selected>SELECCIONE</option>
             <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{linea.descripcion}}</option>
           </select>
-          <label>Etad</label>
+          <label>Area Etad</label>
           <div *ngIf="formCargaMasiva.controls.idEtad.errors?.required && (formCargaMasiva.controls.idEtad?.touched || submitted)"
             class="error">
             Seleccione una opcion

@@ -73,9 +73,6 @@ export class PonderacionMasivaComponent implements OnInit {
 
     this.tiposMeta = getMetasKPI();
 
-
-
-
     this.bVistaPre = false;
     this.submitted = false;
     this.disabled = false;
@@ -85,7 +82,7 @@ export class PonderacionMasivaComponent implements OnInit {
     this.textoBtn = " VISTA PREVIA ";
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-      console.log('init ponderaciones ', result)
+
       if (result.response.sucessfull) {
         this.lineas = result.data.listEtads || [];
         this.lineas = this.lineas.filter(el => el.id_linea != 6);
@@ -217,7 +214,7 @@ export class PonderacionMasivaComponent implements OnInit {
 
   procesarFile(): void {
 
-    this.service.loadData(this.auth.getIdUsuario(), this.idEtad, this.anioSeleccionado, this.tipoMeta).subscribe(result => {
+    this.service.loadData(this.auth.getIdUsuario(), this.anioSeleccionado, this.tipoMeta).subscribe(result => {
       if (result.response.sucessfull) {
         Materialize.toast('Metas cargadas correctamente', 4000, 'green');
         this.bVistaPre = true;
@@ -248,9 +245,9 @@ export class PonderacionMasivaComponent implements OnInit {
      * Configuración del modal de confirmación
      */
     swal({
-      title: '<span style="color: #303f9f ">Ya existen metas cargadas. ¿Desea reemplazarlas?</span>',
+      title: '<span style="color: #303f9f ">Ya existen ponderaciones cargadas. ¿Desea reemplazarlas?</span>',
       type: 'question',
-      html: '<p style="color: #303f9f ">Año: ' + this.anioSeleccionado + '</b></p>',
+      html: '<p style="color: #303f9f ">Reemplazar para el año: ' + this.anioSeleccionado + '</b></p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
@@ -263,7 +260,7 @@ export class PonderacionMasivaComponent implements OnInit {
        * Si acepta
        */
       if (result.value) {
-        this.service.reWriteFile(this.auth.getIdUsuario(), this.anioSeleccionado ,idEtad).subscribe(result => {
+        this.service.rewriteData(this.auth.getIdUsuario(), this.anioSeleccionado ,this.tipoMeta).subscribe(result => {
           if (result.response.sucessfull) {
             Materialize.toast('Se modificarón las ponderaciones correctamente', 4000, 'green');
             this.bVistaPre = true;
