@@ -5,10 +5,10 @@ import { isValidId, clone } from '../../../utils';
 import { AuthService } from '../../../auth/auth.service';
 import { FormularioDetalleService } from './formulario-detalle.service';
 import swal from 'sweetalert2';
-import { Linea } from '../../../models/linea';
 import { PetCatKpiOperativo } from '../../../models/pet-cat-kpi-operativo';
 import { PetCatMetaEstrategica } from '../../../models/pet-cat-meta-estrategica';
 import { PetCatObjetivoOperativo } from '../../../models/pet-cat-objetivo-operativo';
+import { Catalogo } from '../../../models/catalogo';
 
 declare var $: any;
 declare var Materialize: any;
@@ -33,9 +33,10 @@ export class FormularioDetalleComponent implements OnInit {
   public texto_btn: string;
   public type_Catalogo: string;
   public mensajeModal: string;
-  public etads: Array<Linea>;
+  public etads: Array<Catalogo>;
   public objetivos: Array<PetCatObjetivoOperativo>;
   public id_tipo_catalogo: number;
+  public tipos_operaciones:Array<any>;
 
   constructor(
     private fb: FormBuilder,
@@ -135,7 +136,8 @@ export class FormularioDetalleComponent implements OnInit {
           descripcion: new FormControl(this.itemCatalogo.descripcion, [Validators.required]),
           unidad_medida: new FormControl(this.itemCatalogo.unidad_medida, [Validators.required]),
           objetivo: new FormControl(this.itemCatalogo.id_cat_objetivo_operativo, [Validators.required]),
-          lineas: new FormControl(this.itemCatalogo.lineas, [Validators.required])
+          lineas: new FormControl(this.itemCatalogo.lineas, [Validators.required]),
+          tipo_operacion: new FormControl(this.itemCatalogo.tipo_operacion, [Validators.required])
         });
         break;
     }
@@ -150,7 +152,7 @@ export class FormularioDetalleComponent implements OnInit {
          * Consulta el elemento del catalogo
          */
         this.service.getCatalogoById(this.auth.getIdUsuario(), this.id_tipo_catalogo, id).subscribe(result => {
-        
+
           if (result.response.sucessfull) {
             switch (this.id_tipo_catalogo) {
               case 1:
@@ -160,9 +162,15 @@ export class FormularioDetalleComponent implements OnInit {
                 this.itemCatalogo = result.data.objetivoOperativo || new PetCatObjetivoOperativo();
                 break;
               case 3:
+              
                 this.etads = result.data.listEtads || [];
                 this.objetivos = result.data.listObjetivoOperativos || [];
                 this.itemCatalogo = result.data.kpiOperativo || new PetCatKpiOperativo();
+                this.tipos_operaciones = [
+                  {id: 1 , valor: 'SUMA'},
+                  {id: 2 , valor: 'PROMEDIO'},
+                  {id: 3 , valor: 'DIRECTO'}
+                ];
                 break;
             }
 

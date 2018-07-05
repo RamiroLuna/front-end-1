@@ -11,4 +11,5 @@ export class PetCatKpiOperativo extends Catalogo{
     lineas:string = "";
     objetivoOperativo:PetCatObjetivoOperativo;
     frecuencia:PetCatFrecuencia;
+    tipo_operacion:number;
 }

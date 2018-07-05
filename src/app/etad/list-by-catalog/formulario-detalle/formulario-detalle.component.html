@@ -157,7 +157,18 @@
                 </div>
               </div>
             </div>
-
+            <div class="row">
+              <div class="input-field col s12">
+                <select materialize="material_select" formControlName="tipo_operacion" [materializeSelectOptions]="tipos_operaciones" [(ngModel)]="itemCatalogo.tipo_operacion">
+                  <option value="">SELECCIONE</option>
+                  <option *ngFor="let to of tipos_operaciones" [value]="to.id">{{to.valor}}</option>
+                </select>
+                <label>Tipo operacion ( Requerido para reportes )</label>
+                <div *ngIf="formCatalogs.controls.tipo_operacion.errors?.required && (formCatalogs.controls.tipo_operacion?.touched || submitted)" class="error">
+                  Seleccione una opcion
+                </div>
+              </div>
+            </div>
             <div class="row">
               <div class="input-field col s12">
                 <input placeholder="Descripción" id="descripcion" type="text" formControlName='descripcion' [(ngModel)]='itemCatalogo.descripcion'>
@@ -179,10 +190,12 @@
                 <label for="mensual">Frecuencia Mensual</label>
               </div>
               <div class="col s6">
-                <input name="tipo_kpi" type="radio" id="mas" [checked]="itemCatalogo.tipo_kpi == 1" (change)="changeTipo(itemCatalogo, 1)"/>
+                <input name="tipo_kpi" type="radio" id="mas" [checked]="itemCatalogo.tipo_kpi == 1" (change)="changeTipo(itemCatalogo, 1)"
+                />
                 <label for="mas">Mas es mejor</label>
                 <br>
-                <input name="tipo_kpi" type="radio" id="menos" [checked]="itemCatalogo.tipo_kpi == 0"  (change)="changeTipo(itemCatalogo, 0)"/>
+                <input name="tipo_kpi" type="radio" id="menos" [checked]="itemCatalogo.tipo_kpi == 0" (change)="changeTipo(itemCatalogo, 0)"
+                />
                 <label for="menos">Menos es mejor</label>
               </div>
             </div>
@@ -193,7 +206,7 @@
               </div>
 
               <div class="col s12" *ngFor="let etad of etads; let i = index">
-                <input type="checkbox" [id]="'check'+i" (change)="clicKEtad(etad.id_linea,$event,itemCatalogo)" [checked]="aplicaEnEtad(itemCatalogo,etad.id_linea)">
+                <input type="checkbox" [id]="'check'+i" (change)="clicKEtad(etad.id,$event,itemCatalogo)" [checked]="aplicaEnEtad(itemCatalogo,etad.id)">
                 <label [for]="'check'+i">{{ etad.valor }}</label>
               </div>
             </div>
