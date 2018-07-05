@@ -1,3 +1,64 @@
-<p>
-  lista-ponderacion works!
-</p>
+<div class="container" *ngIf="!loading">
+    <div class="section"></div>
+    <h4 class="color_titulo center-align" *ngIf="anios_con_obj_cargados > 0">Objetivos Operativos
+      <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar año" (click)="openModalYear($event)">{{ anioSeleccionado }}</a>
+    </h4>
+    <h4 class="color_titulo center-align" *ngIf="anios_con_obj_cargados == 0">Objetivos Operativos
+      No hay objetivos cargados para ningún año
+    </h4>
+    <!-- Solo para dispositivos moviles -->
+    <div class="hide-on-large-only right-align">
+      <a routerLink="../../opciones" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+    <!-- fin Solo para dispositivos moviles -->
+  
+    <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
+      <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
+        <thead>
+          <tr>        
+            <th>Objetivo Operativo</th>
+            <th>Ponderación</th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          <tr *ngIf="ponderaciones.length == 0 ">
+              <th colspan="2" class="center">No hay registros</th>
+          </tr>
+          <tr *ngFor="let ponderacion of ponderaciones;let i = index">
+            <td>{{ ponderacion.objetivoOperativo.valor }}</td>
+            <td>{{ ponderacion.ponderacion }}</td>
+          </tr>
+          <tr>
+            <td><b>Total</b></td>
+            <td><b>100</b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Inicio solo para pantallas-->
+    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a routerLink="../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
+    </div>
+    <!-- Fin solo para pantallas-->
+  </div>
+  
+  <div class="container" *ngIf="loading">
+    <div id="loader-wrapper">
+      <div id="loader"></div>
+      <div class="loader-section section-left"></div>
+      <div class="loader-section section-right"></div>
+    </div>
+  </div>

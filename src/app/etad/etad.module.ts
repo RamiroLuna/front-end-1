@@ -66,17 +66,24 @@ const routes: Routes = [
   },
   /* rutas de ponderaciones */
   {
-    path: 'opciones/sub-menu', component: SubMenuPonderacionesComponent,
+    path: 'opciones/:seccion/sub-menu', component: SubMenuPonderacionesComponent,
     // , canActivate: [AuthGuardEtad],
     // data: {
     //   expectedRole: 
     // }
   },
   {
-    path: 'opciones/sub-menu/ponderacion-carga-manual/:tipo/:id', component: PonderacionManualComponent
+    path: 'opciones/:seccion/sub-menu/:tipo/:id', component: PonderacionManualComponent
     // , canActivate: [AuthGuardEtad]
     // data: {
     //   expectedRole: 
+    // }
+  },
+  {
+    path: 'opciones/:seccion/sub-menu/:tipo', component: ListaPonderacionComponent
+    // , canActivate: [AuthGuardEtad],
+    // data: {
+    //   expectedRole:
     // }
   },
   {
@@ -84,14 +91,6 @@ const routes: Routes = [
     // , canActivate: [AuthGuardEtad],
     // data: {
     //   expectedRole: 
-    // }
-  },
-
-  {
-    path: 'opciones/lista-ponderaciones', component: ListaPonderacionComponent
-    // , canActivate: [AuthGuardEtad],
-    // data: {
-    //   expectedRole:
     // }
   }
 

@@ -1,31 +1,56 @@
-<div class="container">
+<div class="container" *ngIf="!loading">
   <div class="section"></div>
-  <h4 class="color_titulo center-align">Carga manual de ponderaciones</h4>
-  <div class="row">
-    <ul class="center-align">
-      <li class="col s12 m12 l12 xl12 color_titulo">
-        Haga clic en la opción que desea realizar
-        <hr>
-      </li>
-    </ul>
-  </div>
-  <div class="row">
-    <div class="col s12 m12 l6 xl6 center-align">
-      <div class="section"></div>
-      <a class="waves-effect waves-light btn-large light-green darken-1" routerLink="ponderacion-carga-manual/objetivo-operativo/nuevo">
-        Objetivo Operativo</a>
-    </div>
-    <div class="col s12 m12 l6 xl6 center-align">
-      <div class="section"></div>
-      <a disabled class="waves-effect waves-light btn-large light-green darken-1" routerLink="ponderacion-carga-manual/kpi-operativo/nuevo">
-        KPI Operativo</a>
-    </div>
-  </div>
 
+  <ng-template [ngIf]="seccion == 'carga-manual-ponderaciones'">
+    <h4 class="color_titulo center-align">Carga manual de ponderaciones</h4>
+    <div class="row">
+      <ul class="center-align">
+        <li class="col s12 m12 l12 xl12 color_titulo">
+          Haga clic en la opción que desea realizar
+          <hr>
+        </li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="col s12 m12 l6 xl6 center-align">
+        <div class="section"></div>
+        <a class="waves-effect waves-light btn-large light-green darken-1" routerLink="objetivo-operativo/nuevo">
+          Objetivo Operativo</a>
+      </div>
+      <div class="col s12 m12 l6 xl6 center-align">
+        <div class="section"></div>
+        <a disabled class="waves-effect waves-light btn-large light-green darken-1" routerLink="kpi-operativo/nuevo">
+          KPI Operativo</a>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template [ngIf]="seccion == 'lista-ponderaciones'">
+    <h4 class="color_titulo center-align">Edición de ponderaciones</h4>
+    <div class="row">
+      <ul class="center-align">
+        <li class="col s12 m12 l12 xl12 color_titulo">
+          Haga clic en la opción que desea realizar
+          <hr>
+        </li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="col s12 m12 l6 xl6 center-align">
+        <div class="section"></div>
+        <a class="waves-effect waves-light btn-large light-green darken-1" routerLink="objetivo-operativo">
+          Objetivo Operativo</a>
+      </div>
+      <div class="col s12 m12 l6 xl6 center-align">
+        <div class="section"></div>
+        <a disabled class="waves-effect waves-light btn-large light-green darken-1" routerLink="kpi-operativo">
+          KPI Operativo</a>
+      </div>
+    </div>
+  </ng-template>
   <!-- Solo para dispositivos moviles -->
 
   <div class="hide-on-large-only right-align">
-    <a routerLink="../../opciones" class="btn-floating indigo lighten-1 waves-effect waves-light" data-position="top" data-delay="50"
+    <a routerLink="../../../opciones" class="btn-floating indigo lighten-1 waves-effect waves-light" data-position="top" data-delay="50"
       data-tooltip="Regresar" (click)="regresar()">
       <i class="material-icons">
         <i class="material-icons">arrow_back</i>
@@ -37,7 +62,7 @@
   <!-- Inicio solo para pantallas-->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;" [hidden]="noVerBtnFallas">
-      <a routerLink="../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      <a routerLink="../../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
         data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
         <i class="material-icons">
           <i class="material-icons">arrow_back</i>
@@ -46,4 +71,11 @@
     </div>
   </div>
   <!-- Fin solo para pantallas-->
+</div>
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
 </div>
