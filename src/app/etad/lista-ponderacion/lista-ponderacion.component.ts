@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
 import { Meta } from '../../models/meta';
-import { deleteItemArray, getAnioActual, calculaDiaPorMes, isNumeroAsignacionValid, findRol } from '../../utils';
+import { deleteItemArray, getAnioActual, calculaDiaPorMes, isNumeroAsignacionValid, findRol, clone } from '../../utils';
 import swal from 'sweetalert2';
 import { ListaPonderacionService } from './lista-ponderacion.service';
 import { Periodo } from '../../models/periodo';
 import { Linea } from '../../models/linea';
 import { Catalogo } from '../../models/catalogo';
+import { PetPonderacionObjetivoOperativo } from '../../models/pet-ponderacion-objetivo-operativo';
 import {
   trigger,
   state,
@@ -41,22 +42,17 @@ export class ListaPonderacionComponent implements OnInit {
   public loading: boolean;
   public datos_tabla: boolean;
   public mensajeModal: string;
-
-
   public anioSeleccionado: number;
   public submitted: boolean;
   public disabled: boolean;
-
-  public ponderaciones: Array<any> = [];
-
-
+  public ponderaciones: Array<PetPonderacionObjetivoOperativo> = [];
+  public ponderaciones_tmp: Array<PetPonderacionObjetivoOperativo> = [];
+  public ponderacion_total: number;
   public anios: any = {};
-
-
   public status: string;
   public anios_con_obj_cargados: number;
 
-
+  public disabledInputText: boolean;
 
   public permission: any = {
     editarMeta: false,
@@ -73,6 +69,8 @@ export class ListaPonderacionComponent implements OnInit {
     this.datos_tabla = false;
     this.submitted = false;
     this.disabled = false;
+    this.ponderacion_total = 0;
+    this.disabledInputText = true;
 
 
     // this.permission.editarMeta = findRol(3, this.auth.getRolesOee());
@@ -99,6 +97,7 @@ export class ListaPonderacionComponent implements OnInit {
               this.ponderaciones = result.data.listPonderacionObjetivos || [];
               this.datos_tabla = true;
               this.disabled = false;
+              this.ponderacion_total = 100;
 
               setTimeout(() => {
                 this.ngAfterViewInitHttp();
@@ -179,8 +178,9 @@ export class ListaPonderacionComponent implements OnInit {
           this.submitted = false;
           this.status = "inactive";
           this.datos_tabla = false;
+          this.disabledInputText = true;
 
-          if(value != ""){
+          if (value != "") {
             this.anioSeleccionado = value;
           }
 
@@ -190,6 +190,7 @@ export class ListaPonderacionComponent implements OnInit {
               this.ponderaciones = result.data.listPonderacionObjetivos || [];
               this.datos_tabla = true;
               this.disabled = false;
+              this.ponderacion_total = 100;
 
               setTimeout(() => {
                 this.ngAfterViewInitHttp();
@@ -265,12 +266,12 @@ export class ListaPonderacionComponent implements OnInit {
 
   }
 
-  openModalConfirmacion(rowForecast: Meta, accion: string, event?: any): void {
+  openModalConfirmacion(accion: string, event?: any): void {
     this.mensajeModal = '';
 
     switch (accion) {
-      case 'eliminar':
-        this.mensajeModal = '¿Está seguro de eliminar? ';
+      case 'update':
+        this.mensajeModal = '¿Está seguro de actualizar las ponderaciones? ';
         break;
     }
 
@@ -280,7 +281,7 @@ export class ListaPonderacionComponent implements OnInit {
     swal({
       title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
       type: 'question',
-      html: '<p style="color: #303f9f "> Dia : <b>' + rowForecast.dia_string + ' </b>Turno: <b>' + rowForecast.id_turno + '</b> Grupo: <b>' + rowForecast.nombre_grupo + '</b></p>',
+      html: '<p style="color: #303f9f "> Año : <b>' + this.anioSeleccionado + ' </b> </p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
@@ -294,18 +295,24 @@ export class ListaPonderacionComponent implements OnInit {
        */
       if (result.value) {
         switch (accion) {
-          case 'eliminar':
-            // this.service.delete(this.auth.getIdUsuario(), rowForecast.id_meta).subscribe(result => {
-            //   if (result.response.sucessfull) {
-            //     deleteItemArray(this.metas, rowForecast.id_meta, 'id_meta');
-            //     Materialize.toast('Se eliminó correctamente ', 4000, 'green');
-            //   } else {
+          case 'update':
+            /* 
+                * Se forma el modelo a enviar al backend
+                * contenedor.ponderaciones Es una variable que se necesita por el backend
+                */
+            let contenedor: any = { ponderaciones: {} };
+            contenedor.ponderaciones = this.ponderaciones;
+            this.service.updatePonderacion(this.auth.getIdUsuario(), 1, contenedor).subscribe(result => {
+              if (result.response.sucessfull) {
+                this.disabledInputText = !this.disabledInputText;
+                Materialize.toast('Se actualizarón correctamente ', 4000, 'green');
+              } else {
 
-            //     Materialize.toast(result.response.message, 4000, 'red');
-            //   }
-            // }, error => {
-            //   Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
-            // });
+                Materialize.toast(result.response.message, 4000, 'red');
+              }
+            }, error => {
+              Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+            });
             break;
         }
         /*
@@ -317,36 +324,37 @@ export class ListaPonderacionComponent implements OnInit {
 
   }
 
-  obtenerMesDelPeriodo(arg: Array<Periodo>, idPeriodo: number): number {
-    let result = arg.filter((el) => el.id_periodo == idPeriodo);
-    if (result.length > 0) {
-      return result[0].mes;
-    } else {
-      return -1;
+  onlyNumber(event: any): boolean {
+    let charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode < 48 || charCode > 57) {
+      return false;
     }
   }
 
-  arrayDescriptivo(arg: Array<Catalogo>): Array<string> {
-    return arg.map((el) => el.valor);
+  somethingChanged(ponderacion: any): void {
+    this.ponderacion_total = 0;
+    let valores_ponderacion = this.ponderaciones.map(el => parseInt("" + el.ponderacion));
+
+    this.ponderacion_total = valores_ponderacion.reduce((valor_anterior, valor_actual) => {
+
+      if (Number.isNaN(valor_anterior) || typeof valor_anterior == undefined) valor_anterior = 0;
+      if (Number.isNaN(valor_actual) || typeof valor_actual == undefined) valor_actual = 0;
+      return valor_anterior + valor_actual;
+    });
+
+    // this.disabledBtn = !(this.ponderacion_total == 100);
   }
 
-  idItemCombo(arg: Array<Catalogo>, valor: string): number {
-    let element = arg.filter((el) => el.valor == valor.trim());
-    if (element.length > 0) {
-      return element[0].id;
-    } else {
-      return -1;
+  modificaValores(accion: string): void {
+
+    if (accion == 'editar') {
+      this.ponderaciones_tmp = clone(this.ponderaciones);
+    } else if (accion == 'cancelar') {
+      this.ponderaciones = this.ponderaciones_tmp;
+      this.ponderacion_total = 100;
     }
 
-  }
-
-  findRowForecast(metas: Array<Meta>, id_meta: number): Meta {
-    let meta: Meta;
-    let el = metas.filter(el => el.id_meta == id_meta);
-    if (el.length > 0) {
-      meta = el[0];
-    }
-    return meta;
+    this.disabledInputText = !this.disabledInputText;
   }
 
 }

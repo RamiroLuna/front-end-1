@@ -75,7 +75,7 @@ export class PonderacionManualComponent implements OnInit {
 
           this.catalogo_objetivos.map(el => {
             let item = new PetPonderacionObjetivoOperativo();
-            item.valor = el.valor;
+            item.objetivoOperativo.valor= el.valor;
             item.id_objetivo_operativo = el.id;
             item.ponderacion = 0;
             item.anio = -1;
@@ -190,7 +190,7 @@ export class PonderacionManualComponent implements OnInit {
 
                   this.catalogo_objetivos.map(el => {
                     let item = new PetPonderacionObjetivoOperativo();
-                    item.valor = el.valor;
+                    item.objetivoOperativo.valor = el.valor;
                     item.id_objetivo_operativo = el.id;
                     item.ponderacion = 0;
                     item.anio = -1;

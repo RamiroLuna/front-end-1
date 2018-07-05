@@ -27,28 +27,15 @@ export class ListaPonderacionService {
     return this.http.post<any>(this.URL,body);
   }
 
-  // delete(id_usuario: number, id_meta: number): Observable<any> {
-  //   const body = new HttpParams()
-  //     .set('action', 'deleteMeta')
-  //     .set('id_meta', '' + id_meta)
-  //     .set('id_usuario', '' + id_usuario)
-  //   return this.http.post(this.URL, body);
-  // }
 
-  // updateMeta(id_usuario: number, meta:any): Observable<any> {
-  //   const body = new HttpParams()
-  //     .set('action', 'updateMeta')
-  //     .set('id_meta', ''+meta.id_meta)
-  //     .set('dia', ''+meta.tmpDia)
-  //     .set('meta', ''+meta.meta)
-  //     .set('tmp', ''+meta.tmp)
-  //     .set('velocidad', ''+meta.velocidad)
-  //     .set('id_turno', ''+meta.turno)
-  //     .set('id_grupo', ''+meta.tmpGrupo)
-  //     .set('estatus', ''+meta.estatus)
-  //     .set('id_usuario', '' + id_usuario)
+  updatePonderacion(id_usuario: number, tipo_ponderacion:number, meta:any): Observable<any> {
+    const body = new HttpParams()
+      .set('action', 'updatePonderacion')
+      .set('tipo_ponderacion', ''+tipo_ponderacion)
+      .set('meta', ''+JSON.stringify(meta))   
+      .set('id_usuario', '' + id_usuario)
 
-  //   return this.http.post(this.URL, body);
-  // }
+    return this.http.post(this.URL, body);
+  }
 
 }

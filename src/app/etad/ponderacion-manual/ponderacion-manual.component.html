@@ -45,7 +45,7 @@
 
                   <tbody>
                     <tr *ngFor="let objetivo_ponderacion of row_pond_objetivos">
-                      <td>{{ objetivo_ponderacion.valor }}</td>
+                      <td>{{ objetivo_ponderacion.objetivoOperativo.valor }}</td>
                       <td>
                         <input type="text" [(ngModel)]="objetivo_ponderacion.ponderacion" [ngModelOptions]="{standalone: true}" (keypress)="onlyNumber($event)"
                           (ngModelChange)="somethingChanged(objetivo_ponderacion.ponderacion)">
