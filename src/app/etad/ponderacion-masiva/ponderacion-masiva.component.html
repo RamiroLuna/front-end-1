@@ -40,7 +40,7 @@
         </div>
         <div class="input-field col s12 m12 l4 xl4">
           <select materialize="material_select" formControlName="anioSeleccionado" [materializeSelectOptions]="anios" [(ngModel)]="anioSeleccionado"
-            (ngModelChange)="changeAnio()">
+            (ngModelChange)="changeCombo('anio')">
             <option value="">SELECCIONE</option>
             <option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</option>
           </select>
@@ -51,9 +51,9 @@
           </div>
         </div>
         <div class="input-field col s12 m12 l4 xl4">
-          <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="idEtad" [(ngModel)]="idEtad" (ngModelChange)="changeCombo()">
+          <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="idEtad" [(ngModel)]="idEtad" (ngModelChange)="changeCombo('area_etad')">
             <option value="" selected>SELECCIONE</option>
-            <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{linea.descripcion}}</option>
+            <option *ngFor="let linea of lineas" [value]="linea.id">{{linea.valor}}</option>
           </select>
           <label>Area Etad</label>
           <div *ngIf="formCargaMasiva.controls.idEtad.errors?.required && (formCargaMasiva.controls.idEtad?.touched || submitted)"
@@ -82,7 +82,7 @@
         </div>
         <div class="input-field col s6 m6 l4 xl4 center-align">
           <button type="button" id="template_button" class="waves-effect waves-light btn indigo darken-1" (click)="downloadTemplate()"
-            [disabled]="frecuencia == ''">
+            [disabled]="disabledBtnTemplate">
             <i class="material-icons left">vertical_align_bottom</i>TEMPLATE</button>
         </div>
         <div class="input-field col s6 m6 l4 xl4 center-align">
@@ -100,7 +100,7 @@
         <legend class="color_titulo">
           <b>Vista previa:</b>
         </legend>
-        <table class="striped">
+        <table class="striped" *ngIf="this.tipoMeta == 1">
           <thead>
             <tr *ngFor="let header of rowsHeader">
               <th>{{ header.objetivo }}</th>
@@ -115,6 +115,31 @@
             </tr>
             <tr>
               <td>
+                <b>TOTAL</b>
+              </td>
+              <td>
+                <b>100</b>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="highlight" *ngIf="this.tipoMeta == 2">
+          <thead>
+            <tr *ngFor="let header of rowsHeader">
+              <th>{{ header.tipo }}</th>
+              <th>{{ header.objetivo }}</th>
+              <th>{{ header.ponderacion }}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let row of rows" [ngClass]="{'color_renglon': row.tipo == 'OBJ'}">
+              <td>{{ row.tipo }}</td>
+              <td>{{ row.kpi }}</td>
+              <td>{{ row.ponderacion }}</td>
+            </tr>
+            <tr class="color_total">
+              <td colspan="2">
                 <b>TOTAL</b>
               </td>
               <td>

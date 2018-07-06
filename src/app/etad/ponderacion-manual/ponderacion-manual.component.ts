@@ -12,6 +12,7 @@ import { clone, deleteItemArray } from '../../utils';
 import swal from 'sweetalert2';
 import { Periodo } from '../../models/periodo';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PonderacionKpiOperativos } from '../../models/ponderacion-kpi-operativos';
 
 
 declare var $: any;
@@ -27,7 +28,7 @@ export class PonderacionManualComponent implements OnInit {
   * Listas requeridas para el formulario de metas
   */
 
-  public etads: Array<Linea>;
+  public etads: Array<Catalogo>;
   public anios: Array<any> = [];
   public catalogo_objetivos: Array<PetCatObjetivoOperativo>;
   public ponderacion_total: number;
@@ -41,6 +42,10 @@ export class PonderacionManualComponent implements OnInit {
   public submitted: boolean;
   public mensajeModal: string;
   public disabledBtn: boolean;
+  public bVistaPre: boolean;
+
+  //rows almacena los kpi asignados a las areas
+  public rows: Array<PonderacionKpiOperativos> = [];
 
   //params contiene los datos de busqueda
   public params: any;
@@ -59,6 +64,7 @@ export class PonderacionManualComponent implements OnInit {
     this.params = {};
     this.ponderacion_total = 0;
     this.disabledBtn = true;
+    this.bVistaPre = false;
 
     this.route.paramMap.subscribe(params => {
       this.tipo_meta_manual = params.get('tipo');
@@ -67,21 +73,27 @@ export class PonderacionManualComponent implements OnInit {
    * Consulta el elemento del catalogo
    */
       this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-       
+        console.log('resultttt', result)
         if (result.response.sucessfull) {
-          this.etads = result.data.listLineas || [];
-          this.anios = result.data.listYears || [];
-          this.catalogo_objetivos = result.data.listObjetivosOperativos || [];
 
-          this.catalogo_objetivos.map(el => {
-            let item = new PetPonderacionObjetivoOperativo();
-            item.objetivoOperativo.valor= el.valor;
-            item.id_objetivo_operativo = el.id;
-            item.ponderacion = 0;
-            item.anio = -1;
+          if (this.tipo_meta_manual == 'kpi-operativo') {
+            this.etads = result.data.listEtads || [];
+            this.anios = result.data.yearsForKPI || [];
+          } else if (this.tipo_meta_manual == 'objetivo-operativo') {
+            this.anios = result.data.listYears || [];
+            this.catalogo_objetivos = result.data.listObjetivosOperativos || [];
+            this.catalogo_objetivos.map(el => {
+              let item = new PetPonderacionObjetivoOperativo();
+              item.objetivoOperativo.valor = el.valor;
+              item.id_objetivo_operativo = el.id;
+              item.ponderacion = 0;
+              item.anio = -1;
 
-            this.row_pond_objetivos.push(item);
-          });
+              this.row_pond_objetivos.push(item);
+            });
+          }
+
+
           this.loading = false;
           this.loadFormulario(this.tipo_meta_manual);
           setTimeout(() => { this.ngAfterViewInitHttp() }, 200)
@@ -106,6 +118,11 @@ export class PonderacionManualComponent implements OnInit {
     if (tipo_meta_manual == 'objetivo-operativo') {
       this.formCargaManual = this.fb.group({
         anio: new FormControl({ value: this.params.anio }, [Validators.required])
+      });
+    } else if (this.tipo_meta_manual == 'kpi-operativo') {
+      this.formCargaManual = this.fb.group({
+        anio: new FormControl({ value: this.params.anio }, [Validators.required]),
+        idEtad: new FormControl({ value: this.params.idEtad }, [Validators.required])
       });
     }
   }
@@ -136,7 +153,7 @@ export class PonderacionManualComponent implements OnInit {
   }
 
   openModalConfirmacion(accion: string, tipo_ponderacion: string): void {
-  
+
     this.submitted = true;
     this.mensajeModal = '';
 
@@ -171,11 +188,11 @@ export class PonderacionManualComponent implements OnInit {
 
           switch (tipo_ponderacion) {
             case 'objetivos_operativos':
-            this.row_pond_objetivos.map(el => {
-              if(Number.isNaN(parseInt(""+el.ponderacion))|| el.ponderacion == undefined){
-                el.ponderacion = 0;
-              }
-            });
+              this.row_pond_objetivos.map(el => {
+                if (Number.isNaN(parseInt("" + el.ponderacion)) || el.ponderacion == undefined) {
+                  el.ponderacion = 0;
+                }
+              });
               /* 
                 * Se forma el modelo a enviar al backend
                 * contenedor.ponderaciones Es una variable que se necesita por el backend
@@ -197,17 +214,17 @@ export class PonderacionManualComponent implements OnInit {
                     this.row_pond_objetivos.push(item);
                   });
 
-                   
+
                   deleteItemArray(this.anios, parseInt(this.params.anio), 'result');
 
-     
+
 
                   this.formCargaManual.controls.anio.reset();
 
                   this.ponderacion_total = 0;
                   this.disabledBtn = true;
 
-                  
+
 
                 } else {
                   Materialize.toast(result.response.message, 4000, 'red');
@@ -242,6 +259,33 @@ export class PonderacionManualComponent implements OnInit {
       el.anio = this.params.anio
     });
 
+  }
+
+  changeComboKPI(tipo_combo: string): void {
+    this.bVistaPre = false;
+  }
+
+  consultaKpi(): void {
+    this.submitted = true;
+    this.mensajeModal = '';
+    this.bVistaPre = false;
+
+    if (this.formCargaManual.valid) {
+      this.service.getPonderacion(this.auth.getIdUsuario(), 2 , this.params.anio, this.params.idEtad).subscribe(result => {
+        console.log('????? get kpi', result)
+        if (result.response.sucessfull) {
+          this.bVistaPre = true;
+          this.rows = result.data.listData || [];
+        } else {
+          Materialize.toast(result.response.message, 4000, 'red');
+        }
+      }, eror => {
+        Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+      });
+
+    } else {
+      Materialize.toast('Verifique los datos capturados!', 4000, 'red');
+    }
   }
 
 

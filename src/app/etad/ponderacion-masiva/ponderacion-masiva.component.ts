@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { PonderacionMasivaService } from './ponderacion-masiva.service';
 import { getAnioActual, getMetasKPI } from '../../utils';
 import { AuthService } from '../../auth/auth.service';
-import { Linea } from '../../models/linea';
 import { Periodo } from '../../models/periodo';
 import {
   trigger,
@@ -13,6 +12,7 @@ import {
   transition
 } from '@angular/animations';
 import swal from 'sweetalert2';
+import { Catalogo } from '../../models/catalogo';
 
 
 declare var $: any;
@@ -21,6 +21,7 @@ declare var Materialize: any;
 @Component({
   selector: 'app-ponderacion-masiva',
   templateUrl: './ponderacion-masiva.component.html',
+  styleUrls: [ 'ponderacion-masiva.component.css' ],
   providers: [PonderacionMasivaService],
   animations: [
     trigger('visibility', [
@@ -35,24 +36,18 @@ declare var Materialize: any;
     ])
   ]
 })
-export class PonderacionMasivaComponent implements OnInit {
+export class PonderacionMasivaComponent implements OnInit, AfterViewInit  {
+
 
   public periodos: Array<Periodo> = [];
-  public lineas: Array<Linea> = [];
+  public lineas: Array<Catalogo> = [];
   public anios: Array<any> = [];
-
-
   public tiposMeta: Array<any> = [];
-
-
   public rowsHeader: Array<any> = [];
   public rows: Array<any> = [];
-
-
-
   public formCargaMasiva: FormGroup;
   public anioSeleccionado: any;
-  public idEtad: number;
+  public idEtad: any;
   public tipoMeta: any;
   public archivoCsv: any;
   public bVistaPre: boolean;
@@ -62,6 +57,7 @@ export class PonderacionMasivaComponent implements OnInit {
   public textoBtn: string;
   public status: string;
   public height: number;
+  public disabledBtnTemplate: boolean;
 
 
   constructor(private service: PonderacionMasivaService,
@@ -77,6 +73,7 @@ export class PonderacionMasivaComponent implements OnInit {
     this.submitted = false;
     this.disabled = false;
     this.tipoMeta = '';
+    this.disabledBtnTemplate = true;
 
     this.status = "inactive";
     this.textoBtn = " VISTA PREVIA ";
@@ -85,7 +82,6 @@ export class PonderacionMasivaComponent implements OnInit {
 
       if (result.response.sucessfull) {
         this.lineas = result.data.listEtads || [];
-        this.lineas = this.lineas.filter(el => el.id_linea != 6);
         this.periodos = result.data.listPeriodos || [];
 
         let tmpAnios = this.periodos.map(el => el.anio);
@@ -93,7 +89,7 @@ export class PonderacionMasivaComponent implements OnInit {
           return tmpAnios.indexOf(el.anio) === index;
         });
 
-       
+
         this.loading = false;
         this.loadFormulario();
         setTimeout(() => { this.ngAfterViewInitHttp() }, 200)
@@ -108,11 +104,17 @@ export class PonderacionMasivaComponent implements OnInit {
 
   }
 
+  ngAfterViewInit(): void {
+    this.height = $(document).height();
+  }
+
   /* 
    * Carga de plugins para el componente
    */
   ngAfterViewInitHttp(): void {
     $('.tooltipped').tooltip({ delay: 50 });
+   
+
   }
 
   regresar() {
@@ -123,7 +125,7 @@ export class PonderacionMasivaComponent implements OnInit {
     this.formCargaMasiva = this.fb.group({
       tipoMeta: new FormControl({ value: this.tipoMeta }, [Validators.required]),
       idEtad: new FormControl({ value: this.idEtad, disabled: true }, [Validators.required]),
-      anioSeleccionado: new FormControl({ value: this.anioSeleccionado }, [Validators.required]),
+      anioSeleccionado: new FormControl({ value: this.anioSeleccionado, disabled: true }, [Validators.required]),
       archivoCsv: new FormControl({ value: this.archivoCsv }, [Validators.required])
     });
   }
@@ -153,10 +155,6 @@ export class PonderacionMasivaComponent implements OnInit {
     }
   }
 
-  changeAnio(): void {
-    this.bVistaPre = false;
-  }
-
   changeCombo(tipoCombo: string): void {
     this.bVistaPre = false;
     this.status = "inactive";
@@ -166,7 +164,47 @@ export class PonderacionMasivaComponent implements OnInit {
       let el = this.tiposMeta.filter((el) => el.id == this.tipoMeta);
       this.anioSeleccionado = '';
 
-    } 
+      if (this.tipoMeta == 2) {
+        this.formCargaMasiva.controls.idEtad.enable();
+        this.formCargaMasiva.controls.anioSeleccionado.enable();
+      } else if (this.tipoMeta == 1) {
+        this.formCargaMasiva.controls.idEtad.disable();
+        this.formCargaMasiva.controls.anioSeleccionado.enable();
+      } else {
+        this.formCargaMasiva.controls.idEtad.disable();
+        this.formCargaMasiva.controls.anioSeleccionado.disable();
+      }
+
+      this.formCargaMasiva.controls.anioSeleccionado.reset();
+      this.formCargaMasiva.controls.idEtad.reset();
+
+      this.disabledBtnTemplate = true;
+
+    } else if (tipoCombo == 'anio') {
+
+      if (this.tipoMeta == 1) {
+
+        this.disabledBtnTemplate = (this.anioSeleccionado == null || this.anioSeleccionado == "");
+
+      } else if (this.tipoMeta == 2) {
+        this.disabledBtnTemplate = true;
+        this.idEtad = '';
+        this.formCargaMasiva.controls.idEtad.reset();
+      }
+
+    } else if (tipoCombo == 'area_etad') {
+
+      if (this.tipoMeta == 2) {
+
+        if (this.anioSeleccionado == null || this.anioSeleccionado == "") {
+          this.disabledBtnTemplate = true;
+        } else {
+          this.disabledBtnTemplate = (this.idEtad == null || this.idEtad == "");
+        }
+
+      }
+    }
+
 
   }
 
@@ -180,16 +218,20 @@ export class PonderacionMasivaComponent implements OnInit {
       this.textoBtn = "CARGANDO ...";
       this.bVistaPre = false;
       this.rowsHeader = [];
-
+      this.rows = [];
+     
       this.service.preview(
         this.auth.getIdUsuario(), this.archivoCsv,
         this.idEtad, this.tipoMeta, this.anioSeleccionado).subscribe(result => {
-          console.log('result preview', result)
+         
           if (result.response.sucessfull) {
             this.rows = result.data.listData || [];
-            this.rowsHeader.push({objetivo: ' Objetivo ', ponderacion:' Ponderación '});
+            if (this.tipoMeta == 1) {
+              this.rowsHeader.push({ objetivo: ' Objetivo ', ponderacion: ' Ponderación ' });
+            } else if (this.tipoMeta == 2) {
+              this.rowsHeader.push({ tipo: 'Tipo', objetivo: ' KPI ', ponderacion: ' Ponderación ' });
+            }
             this.textoBtn = " VISTA PREVIA ";
-            this.height = $(document).height();
             this.bVistaPre = true;
             setTimeout(() => {
               this.status = 'active';
@@ -214,7 +256,7 @@ export class PonderacionMasivaComponent implements OnInit {
 
   procesarFile(): void {
 
-    this.service.loadData(this.auth.getIdUsuario(), this.anioSeleccionado, this.tipoMeta).subscribe(result => {
+    this.service.loadData(this.auth.getIdUsuario(), this.anioSeleccionado, this.tipoMeta, this.idEtad).subscribe(result => {
       if (result.response.sucessfull) {
         Materialize.toast('Metas cargadas correctamente', 4000, 'green');
         this.bVistaPre = true;
@@ -223,7 +265,7 @@ export class PonderacionMasivaComponent implements OnInit {
         this.formCargaMasiva.reset();
         this.submitted = false;
         $(document).height(this.height + 'px');
-
+      
       } else {
         // "999" indica que ya hay metas cargadas para el preiodo seleccionado
         if (result.response.message == "999") {
@@ -260,7 +302,7 @@ export class PonderacionMasivaComponent implements OnInit {
        * Si acepta
        */
       if (result.value) {
-        this.service.rewriteData(this.auth.getIdUsuario(), this.anioSeleccionado ,this.tipoMeta).subscribe(result => {
+        this.service.rewriteData(this.auth.getIdUsuario(), this.anioSeleccionado, this.tipoMeta, this.idEtad).subscribe(result => {
           if (result.response.sucessfull) {
             Materialize.toast('Se modificarón las ponderaciones correctamente', 4000, 'green');
             this.bVistaPre = true;
@@ -268,7 +310,7 @@ export class PonderacionMasivaComponent implements OnInit {
             this.formCargaMasiva.reset();
             $('.file-path').val('');
             this.submitted = false;
-
+            $(document).height(this.height + 'px');
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
           }
@@ -289,7 +331,7 @@ export class PonderacionMasivaComponent implements OnInit {
 
 
   downloadTemplate(): void {
-    this.service.downloadTempleate(this.auth.getIdUsuario(), this.tipoMeta).subscribe(result => {
+    this.service.downloadTempleate(this.auth.getIdUsuario(), this.tipoMeta, this.anioSeleccionado, this.idEtad).subscribe(result => {
 
       if (result.response.sucessfull) {
 
@@ -297,11 +339,21 @@ export class PonderacionMasivaComponent implements OnInit {
         let data_type = 'data:text/csv;base64,';
         let file_base64 = result.response.message;
 
-        linkFile.href = data_type + file_base64;
-        linkFile.download = 'template.csv';
+        if (linkFile.download != undefined) {
 
-        linkFile.click();
-        linkFile.remove();
+          document.body.appendChild(linkFile);
+
+          linkFile.href = data_type + file_base64;
+          linkFile.download = 'template.csv';
+
+          linkFile.click();
+          linkFile.remove();
+
+        } else {
+          let byteCharacters = atob(file_base64);
+          let blobObject = new Blob(["\ufeff", byteCharacters], { type: 'application/vnd.ms-excel' });
+          window.navigator.msSaveBlob(blobObject, 'template.xls');
+        }
 
       } else {
         Materialize.toast(result.response.message, 4000, 'red');

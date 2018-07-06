@@ -30,4 +30,8 @@ export class PonderacionManualService {
       .set('id_usuario', '' + id_usuario);
     return this.http.post(this.URL, body);
   }
+
+  getPonderacion(id_usuario: number, tipo_ponderacion:number, anio:number, id_etad:number): Observable<any> {
+    return this.http.get<any>(this.URL + '?action=getPonderacion&id_usuario=' + id_usuario +'&tipo_ponderacion='+tipo_ponderacion+'&anio='+anio + '&id_etad='+id_etad);
+  }
 }
