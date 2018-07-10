@@ -1,72 +1,193 @@
 <div class="container" *ngIf="!loading">
   <div class="section"></div>
   <h4 class="color_titulo center-align">Edición de ponderaciones</h4>
-  <h5 class="color_titulo center-align" *ngIf="anios_con_obj_cargados > 0">Objetivos Operativos
-    <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar año" (click)="openModalYear($event)">{{ anioSeleccionado }}</a>
-  </h5>
-  <h5 class="color_titulo center-align" *ngIf="anios_con_obj_cargados == 0">Objetivos Operativos No hay objetivos cargados para ningún año
-  </h5>
-  <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
-    <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
-      <thead>
-        <tr>
-          <th>Objetivo Operativo</th>
-          <th>Ponderación</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngIf="ponderaciones.length == 0 ">
-          <th colspan="2" class="center">No hay registros</th>
-        </tr>
-        <tr *ngFor="let ponderacion of ponderaciones;let i = index">
-          <td>{{ ponderacion.objetivoOperativo.valor }}</td>
-          <td><input type="text"  [(ngModel)]="ponderacion.ponderacion" [ngModelOptions]="{standalone: true}" (keypress)="onlyNumber($event)"
-            (ngModelChange)="somethingChanged(ponderacion.ponderacion)" [disabled]="disabledInputText"></td>
-        </tr>
-        <tr>
-          <td>
-            <b>Total</b>
-          </td>
-          <td>
-            <b>{{ ponderacion_total }}</b>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2" class="center-align">
-            <ng-template [ngIf]="!disabledInputText">
-                <button type="button" class="waves-effect waves-light btn grey darken-1" (click)="modificaValores('cancelar')">CANCELAR</button>
-                <button type="button" class="waves-effect waves-light btn light-green darken-1"  [disabled]="!(ponderacion_total == 100)" (click)="openModalConfirmacion('update')">MODIFICAR</button>
-            </ng-template>
-            <button type="button" class="waves-effect waves-light btn light-green darken-1" (click)="modificaValores('editar')" *ngIf="disabledInputText">EDITAR</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Solo para dispositivos moviles -->
-  <div class="hide-on-large-only right-align">
-    <a routerLink="../" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
-      data-tooltip="Opciones ETAD" (click)="regresar()">
-      <i class="material-icons">
-        <i class="material-icons">arrow_back</i>
-      </i>
-    </a>
-  </div>
-  <!-- fin Solo para dispositivos moviles -->
-  <!-- Inicio solo para pantallas-->
-  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
-    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-      <a routerLink="../" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-        data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
+  <ng-template [ngIf]="tipo_seccion == 'objetivo-operativo'">
+    <h6 class="color_titulo center-align" *ngIf="anios_con_obj_cargados > 0">OBJETIVOS OPERATIVOS
+      <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar año" (click)="openModalYear($event)">{{ anioSeleccionado }}</a>
+    </h6>
+    <!-- Solo para dispositivos moviles -->
+    <div class="hide-on-large-only right-align">
+      <a routerLink="../" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+        data-tooltip="Opciones ETAD" (click)="regresar()">
         <i class="material-icons">
           <i class="material-icons">arrow_back</i>
         </i>
       </a>
     </div>
-  </div>
-  <!-- Fin solo para pantallas-->
+    <!-- fin Solo para dispositivos moviles -->
+    <h5 class="color_titulo center-align" *ngIf="anios_con_obj_cargados == 0">Objetivos Operativos No hay objetivos cargados para ningún año
+    </h5>
+    <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
+      <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
+        <thead>
+          <tr>
+            <th>Objetivo Operativo</th>
+            <th>Ponderación</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngIf="ponderaciones.length == 0 ">
+            <th colspan="2" class="center">No hay registros</th>
+          </tr>
+          <tr *ngFor="let ponderacion of ponderaciones;let i = index">
+            <td>{{ ponderacion.objetivoOperativo.valor }}</td>
+            <td>
+              <input type="text" [(ngModel)]="ponderacion.ponderacion" [ngModelOptions]="{standalone: true}" (keypress)="onlyNumber($event)"
+                (ngModelChange)="somethingChanged(ponderacion.ponderacion)" [disabled]="disabledInputText">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <b>Total</b>
+            </td>
+            <td>
+              <b>{{ ponderacion_total }}</b>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="center-align">
+              <ng-template [ngIf]="!disabledInputText">
+                <button type="button" class="waves-effect waves-light btn grey darken-1" (click)="modificaValores('cancelar')">CANCELAR</button>
+                <button type="button" class="waves-effect waves-light btn light-green darken-1" [disabled]="!(ponderacion_total == 100)"
+                  (click)="openModalConfirmacion('update')">MODIFICAR</button>
+              </ng-template>
+              <button type="button" class="waves-effect waves-light btn light-green darken-1" (click)="modificaValores('editar')" *ngIf="disabledInputText">EDITAR</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Inicio solo para pantallas-->
+    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a routerLink="../" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
+    </div>
+    <!-- Fin solo para pantallas-->
+  </ng-template>
+  <ng-template [ngIf]="tipo_seccion == 'kpi-operativo'">
+    <h6 class="color_titulo center-align">KPI'S OPERATIVOS</h6>
+    <!-- Solo para dispositivos moviles -->
+    <div class="hide-on-large-only right-align">
+      <a class="btn-floating indigo darken-4  waves-effect waves-light tooltipped" data-position="top" data-delay="50" data-tooltip="Ayuda"
+        (click)="help($event)">
+        <i class="material-icons">help</i>
+      </a>
+      <a routerLink="../" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+    <!-- Fin Solo para dispositivos moviles -->
+    <div class="row">
+      <form class="col s12 m12 l12 xl12" [formGroup]="formConsulta" (ngSubmit)="consultaKpi()" autocomplete="off">
+        <div class="input-field  col s12 m12 l6 xl6">
+          <select materialize="material_select" [materializeSelectOptions]="anios" formControlName="anio" [(ngModel)]="params.anio"
+            (ngModelChange)="changeComboKPI('anio')">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let anio of anios" [value]="anio.result">{{ anio.result }}</option>
+          </select>
+          <label>Año</label>
+          <div *ngIf="formConsulta.controls.anio.errors?.required && (formConsulta.controls.anio?.touched || submitted)" class="error">
+            El año es requerido
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l5 xl5">
+          <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="params.idEtad"
+            (ngModelChange)="changeComboKPI('etad')">
+            <option value="" selected>SELECCIONE</option>
+            <option *ngFor="let etad of etads" [value]="etad.id">{{etad.valor}}</option>
+          </select>
+          <label>Area Etad</label>
+          <div *ngIf="formConsulta.controls.idEtad.errors?.required && (formConsulta.controls.idEtad?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l1 xl1">
+          <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
+            <i class="material-icons">search</i>
+          </button>
+          <label></label>
+        </div>
+      </form>
+    </div>
+
+    <div class="scroll_ejex_tabla_reporte" *ngIf="bVistaPre && rows.length > 0">
+      <div class="row center-align color_warning" *ngIf="agregar">
+        <b>mensajeeee.</b>
+      </div>
+      <form class="col s12 m12 l12 xl12" autocomplete="off">
+        <fieldset>
+          <legend class="color_titulo">
+            <b>KPI´S OPERATIVOS:</b>
+          </legend>
+
+          <table class="highlight">
+            <thead>
+              <tr>
+                <th>CLASIFICACIÓN</th>
+                <th>KPI</th>
+                <th>PONDERACIÓN</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let row of rows" [ngClass]="{'color_renglon': row.padre == 0}">
+                <td>{{ row.padre == 0 ? 'OBJ' : 'KPI' }}</td>
+                <td>{{ row.kpi }}</td>
+                <td *ngIf="row.padre == 1">
+                  <input type="text" [(ngModel)]="row.ponderacion" [ngModelOptions]="{standalone: true}" (keypress)="onlyNumber($event)" [disabled]="agregar"
+                    (ngModelChange)="somethingChangedKPI(row.ponderacion, row.control)">
+                </td>
+                <td *ngIf="row.padre == 0">
+                  {{ row.ponderacion }}
+                </td>
+              </tr>
+              <tr class="color_total">
+                <td colspan="2">
+                  <b>TOTAL</b>
+                </td>
+                <td>
+                  <b>{{ ponderacion_total }}</b>
+                </td>
+              </tr>
+              <tr *ngIf="!agregar">
+                <td colspan="3" class="center-align">
+                  <button class="btn waves-effect waves-light light-green darken-1" type="button" name="action" [disabled]="disabledBtnAgregar"
+                    (click)="openModalConfirmacion('add', 'kpi-operativo')">AGREGAR</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </fieldset>
+      </form>
+    </div>
+    <!-- Inicio solo para pantallas-->
+    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large  indigo darken-4  waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+          data-tooltip="Ayuda" (click)="help($event)">
+          <i class="material-icons">help</i>
+        </a>
+        <a routerLink="../" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
+    </div>
+    <!-- Fin solo para pantallas-->
+  </ng-template>
 </div>
 
 <div class="container" *ngIf="loading">

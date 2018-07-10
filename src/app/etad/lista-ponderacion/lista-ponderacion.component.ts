@@ -5,9 +5,8 @@ import { Meta } from '../../models/meta';
 import { deleteItemArray, getAnioActual, calculaDiaPorMes, isNumeroAsignacionValid, findRol, clone } from '../../utils';
 import swal from 'sweetalert2';
 import { ListaPonderacionService } from './lista-ponderacion.service';
-import { Periodo } from '../../models/periodo';
-import { Linea } from '../../models/linea';
 import { Catalogo } from '../../models/catalogo';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PetPonderacionObjetivoOperativo } from '../../models/pet-ponderacion-objetivo-operativo';
 import {
   trigger,
@@ -54,6 +53,26 @@ export class ListaPonderacionComponent implements OnInit {
 
   public disabledInputText: boolean;
 
+  /*
+   * tipo_seccion controla la seccion que se mostrara en el template html
+   * puede ser objetivo operativo o kpi 
+   */
+  public tipo_seccion: string;
+
+  /*
+   * Variables para seccion de kpi
+   */
+  public etads: Array<Catalogo>;
+  public formConsulta: FormGroup;
+  public bVistaPre: boolean;
+  public disabledBtnEdit: boolean;
+
+  //params contiene los datos de busqueda
+  public params: any;
+  /*
+   * Fin variables
+   */
+
   public permission: any = {
     editarMeta: false,
     eliminarMeta: false
@@ -61,6 +80,8 @@ export class ListaPonderacionComponent implements OnInit {
 
   constructor(private auth: AuthService,
     private service: ListaPonderacionService,
+    private route: ActivatedRoute,
+    private router: Router,
     private fb: FormBuilder
   ) { }
 
@@ -71,61 +92,82 @@ export class ListaPonderacionComponent implements OnInit {
     this.disabled = false;
     this.ponderacion_total = 0;
     this.disabledInputText = true;
-
+    this.etads = [];
+    this.bVistaPre = false;
+    this.disabledBtnEdit = true;
+    this.params = {};
 
     // this.permission.editarMeta = findRol(3, this.auth.getRolesOee());
     // this.permission.eliminarMeta = findRol(5, this.auth.getRolesOee());
 
-    this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-      console.log('init', result)
-      if (result.response.sucessfull) {
-        let anios_temporal = result.data.listYearsOP || [];
-        if (anios_temporal.length > 0) {
-          anios_temporal.map(el => {
-            this.anios[el.result] = el.result;
-          });
-        }
-        this.anios_con_obj_cargados = anios_temporal.length;
-        this.anioSeleccionado = anios_temporal[0].result;
+    //Consulta la url para saber el tipo 
+    this.route.paramMap.subscribe(params => {
+      this.tipo_seccion = params.get('tipo');
+      this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
+        console.log('init', result)
+        if (result.response.sucessfull) {
 
+          //Acciones para objetivos operativos
+          if (this.tipo_seccion == 'objetivo-operativo') {
 
-        if (this.anios_con_obj_cargados > 0) {
+            let anios_temporal = result.data.listYearsOP || [];
 
-          this.service.getPonderacion(this.auth.getIdUsuario(), 1, this.anioSeleccionado).subscribe(result => {
-            console.log('rrrrr', result)
-            if (result.response.sucessfull) {
-              this.ponderaciones = result.data.listPonderacionObjetivos || [];
-              this.datos_tabla = true;
-              this.disabled = false;
-              this.ponderacion_total = 100;
-
-              setTimeout(() => {
-                this.ngAfterViewInitHttp();
-                this.status = 'active';
-              }, 200);
-
-
-            } else {
-              this.disabled = false;
-              Materialize.toast(result.response.message, 4000, 'red');
+            if (anios_temporal.length > 0) {
+              anios_temporal.map(el => {
+                this.anios[el.result] = el.result;
+              });
             }
-          }, error => {
-            this.disabled = false;
-            Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
-          });
+            this.anios_con_obj_cargados = anios_temporal.length;
+            this.anioSeleccionado = anios_temporal[0].result;
+
+
+            if (this.anios_con_obj_cargados > 0) {
+
+              this.service.getPonderacion(this.auth.getIdUsuario(), 1, this.anioSeleccionado).subscribe(result => {
+
+                if (result.response.sucessfull) {
+                  this.ponderaciones = result.data.listPonderacionObjetivos || [];
+                  this.datos_tabla = true;
+                  this.disabled = false;
+                  this.ponderacion_total = 100;
+
+                  setTimeout(() => {
+                    this.ngAfterViewInitHttp();
+                    this.status = 'active';
+                  }, 200);
+
+
+                } else {
+                  this.disabled = false;
+                  Materialize.toast(result.response.message, 4000, 'red');
+                }
+
+              }, error => {
+                this.disabled = false;
+                Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+              });
+            }
+
+            // Acciones para KPI
+          } else if (this.tipo_seccion == 'kpi-operativo') {
+            this.etads = result.data.listEtads || [];
+            this.anios = result.data.yearsForKPI || [];
+          }
+
+          this.loading = false;
+          this.loadFormulario(this.tipo_seccion);
+
+          setTimeout(() => { this.ngAfterViewInitHttp() }, 200);
+
+        } else {
+
+          Materialize.toast(result.response.message, 4000, 'red');
+          this.loading = false;
         }
-
-
+      }, error => {
+        Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
         this.loading = false;
-        this.loadFormulario();
-        setTimeout(() => { this.ngAfterViewInitHttp() }, 200)
-      } else {
-        Materialize.toast(result.response.message, 4000, 'red');
-        this.loading = false;
-      }
-    }, error => {
-      Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
-      this.loading = false;
+      });
     });
   }
 
@@ -219,11 +261,16 @@ export class ListaPonderacionComponent implements OnInit {
     })
   }
 
-  loadFormulario(): void {
-    // this.formConsultaPeriodo = this.fb.group({
-    //   idLinea: new FormControl({ value: this.idLinea }, [Validators.required]),
-    //   idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required])
-    // });
+  loadFormulario(tipo_meta_manual: string): void {
+
+
+    if (this.tipo_seccion == 'kpi-operativo') {
+      this.formConsulta = this.fb.group({
+        anio: new FormControl({ value: this.params.anio }, [Validators.required]),
+        idEtad: new FormControl({ value: this.params.idEtad }, [Validators.required])
+      });
+    }
+
   }
 
 
@@ -356,5 +403,72 @@ export class ListaPonderacionComponent implements OnInit {
 
     this.disabledInputText = !this.disabledInputText;
   }
+
+  changeComboKPI(tipo_combo: string): void {
+    this.bVistaPre = false;
+    this.disabledBtnEdit = true;
+  }
+
+  help(event): void {
+    $('.tooltipped').tooltip('hide');
+    event.preventDefault();
+    swal({
+      title: 'Ayuda',
+      type: 'info',
+      html: ' <b> Para modificar ponderaciones </b> seleccione el año, el area y haga clic en buscar <br>' +
+        ' Recuerde que <b>la suma de todos los KPI\'s debe ser igual a 100 </b> ',
+      showCloseButton: false,
+      showCancelButton: false,
+      focusConfirm: false,
+      confirmButtonText: 'Ok!'
+    })
+  }
+
+  consultaKpi(): void {
+    this.ponderacion_total = 0;
+    this.submitted = true;
+    this.mensajeModal = '';
+    this.bVistaPre = false;
+
+    if (this.formConsulta.valid) {
+      // this.service.getPonderacion(this.auth.getIdUsuario(), 2, this.params.anio, this.params.idEtad).subscribe(result => {
+      
+      //   if (result.response.sucessfull) {
+      //     this.rows = result.data.listData || [];
+
+      //     if (this.rows.length > 0) {
+      //       //objetivo_operativo permite controlar que kpi coresponde al objetivo operativo
+      //       let objetivo_operativo = 0;
+      //       // el siguiente ciclo permite agrupar el objetivo operativo y sus kpi mediante la varible control
+      //       let tmp_ponderaciones = this.rows.filter(el => {
+      //         if (el.padre == 0) objetivo_operativo++;
+      //         el.control = objetivo_operativo;
+      //         el.suma_ok = false;
+      //         return el.padre == 1;
+      //       }).map(el => el.ponderacion);
+
+      //       this.ponderacion_total = tmp_ponderaciones.reduce((anterior, actual) => {
+      //         if (!isNumeroAsignacionValid("" + anterior)) anterior = 0;
+      //         if (!isNumeroAsignacionValid("" + actual)) actual = 0;
+      //         return anterior + actual;
+      //       });
+
+
+      //       this.agregar = (this.ponderacion_total == 100);
+      //     }
+
+      //     this.bVistaPre = true;
+      //   } else {
+      //     Materialize.toast(result.response.message, 4000, 'red');
+      //   }
+      // }, eror => {
+      //   Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+      // });
+
+    } else {
+      Materialize.toast('Verifique los datos capturados!', 4000, 'red');
+    }
+  }
+
 
 }
