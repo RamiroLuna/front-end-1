@@ -22,10 +22,12 @@ export class PonderacionManualService {
     return this.http.get<any>(this.URL + '?action=loadCombobox&id_usuario=' + id_usuario);
   }
 
-  insertPonderacion(id_usuario: number,tipo_ponderacion:number, meta: any): Observable<any> {
+  insertPonderacion(id_usuario: number,tipo_ponderacion:number, meta: any, params:any={}): Observable<any> {
     const body = new HttpParams()
       .set('action', 'insertPonderacion')
       .set('tipo_ponderacion', ''+tipo_ponderacion)
+      .set('anio', ''+params.anio)
+      .set('id_etad', ''+params.idEtad)
       .set('meta', ''+JSON.stringify(meta))
       .set('id_usuario', '' + id_usuario);
     return this.http.post(this.URL, body);

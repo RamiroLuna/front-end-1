@@ -5,7 +5,16 @@
     </h4>
     <h6 class="color_titulo center-align">OBJETIVOS OPERATIVOS
     </h6>
-
+    <!-- Solo para dispositivos moviles -->
+    <div class="hide-on-large-only right-align">
+      <a routerLink="../../../sub-menu" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+    <!-- Fin Solo para dispositivos moviles -->
     <div class="row">
       <div class="col s12 m12 l12 xl12">
         <form class="col s12 m12 l12 xl12" [formGroup]="formCargaManual" (ngSubmit)="openModalConfirmacion('add', 'objetivos_operativos')"
@@ -65,13 +74,8 @@
               </div>
             </div>
             <div class="row">
-              <div class="input-field col offset-s1 offset-m3 offset-l2 offset-xl3">
-                <a routerLink="../../../" class="col btn grey lighten-1  waves-effect waves-light" type="submit" name="cancelar">Cancelar
-                </a>
-              </div>
-
-              <div class="input-field col offset-m1 offset-l1 offset-xl2">
-                <button class="col btn light-green darken-1 waves-effect waves-light" type="submit" name="asignar" [disabled]="disabledBtn">Guardar
+              <div class="input-field center-align">
+                <button class="btn-large light-green darken-1 waves-effect waves-light" type="submit" name="asignar" [disabled]="disabledBtn">Guardar
                 </button>
               </div>
             </div>
@@ -79,17 +83,41 @@
         </form>
       </div>
     </div>
+    <!-- Inicio solo para pantallas-->
+    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a routerLink="../../../sub-menu" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
+    </div>
+    <!-- Fin solo para pantallas-->
   </ng-template>
   <ng-template [ngIf]="tipo_meta_manual == 'kpi-operativo'">
-    <h4 class="color_titulo center-align">Carga manual de KPI Operativos
+    <h4 class="color_titulo center-align">Carga manual de ponderaciones
     </h4>
-    <p class="color_titulo center-align">
-      <b>Instrucciones.</b> Seleccione el año, el area y haga clic en buscar para porder mostrar y asignar las ponderaciones
-    </p>
+    <h6 class="color_titulo center-align">KPI´S OPERATIVOS
+    </h6>
+    <!-- Solo para dispositivos moviles -->
+    <div class="hide-on-large-only right-align">
+      <a class="btn-floating indigo darken-4  waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+        data-tooltip="Ayuda" (click)="help($event)">
+        <i class="material-icons">help</i>
+      </a>
+      <a routerLink="../../../sub-menu" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+    <!-- Fin Solo para dispositivos moviles -->
     <div class="row">
-
       <form class="col s12 m12 l12 xl12" [formGroup]="formCargaManual" (ngSubmit)="consultaKpi()" autocomplete="off">
-        <div class="input-field  col s12 m12 l5 xl5">
+        <div class="input-field  col s12 m12 l6 xl6">
           <select materialize="material_select" [materializeSelectOptions]="anios" formControlName="anio" [(ngModel)]="params.anio"
             (ngModelChange)="changeComboKPI('anio')">
             <option value="">SELECCIONE</option>
@@ -100,9 +128,9 @@
             El año es requerido
           </div>
         </div>
-        <div class="input-field col s12 m12 l6 xl6">
+        <div class="input-field col s12 m12 l5 xl5">
           <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="params.idEtad"
-            (ngModelChange)="changeCombo()">
+            (ngModelChange)="changeComboKPI('etad')">
             <option value="" selected>SELECCIONE</option>
             <option *ngFor="let etad of etads" [value]="etad.id">{{etad.valor}}</option>
           </select>
@@ -123,11 +151,16 @@
 
     <div class="row" *ngIf="bVistaPre && rows.length ==  0">
       <div class="section"></div>
-      <h6 class="error center-align">No se pueden mostrar los KPI operativos porque <b>aún no hay objetivos operativos cargados para el año {{ params.anio
-        }}</b>.
+      <h6 class="error center-align">No se pueden mostrar los KPI operativos.
+        <br> SE DEBEN
+        <b>CARGAR objetivos operativos para el año {{ params.anio }}
+        </b>
       </h6>
     </div>
     <div class="scroll_ejex_tabla_reporte" *ngIf="bVistaPre && rows.length > 0">
+      <div class="row center-align color_warning" *ngIf="agregar">
+        <b>Ponderaciones asignadas para año {{ params.anio }}.</b> Si desea modificar algún valor vaya a la seccion Edición de ponderaciones.
+      </div>
       <form class="col s12 m12 l12 xl12" autocomplete="off">
         <fieldset>
           <legend class="color_titulo">
@@ -144,17 +177,29 @@
             </thead>
 
             <tbody>
-              <tr *ngFor="let row of rows" [ngClass]="{'color_renglon': row.tipo == 'OBJ'}">
-                <td>{{ row.tipo }}</td>
+              <tr *ngFor="let row of rows" [ngClass]="{'color_renglon': row.padre == 0}">
+                <td>{{ row.padre == 0 ? 'OBJ' : 'KPI' }}</td>
                 <td>{{ row.kpi }}</td>
-                <td>{{ row.ponderacion }}</td>
+                <td *ngIf="row.padre == 1">
+                  <input type="text" [(ngModel)]="row.ponderacion" [ngModelOptions]="{standalone: true}" (keypress)="onlyNumber($event)" [disabled]="agregar"
+                    (ngModelChange)="somethingChangedKPI(row.ponderacion, row.control)">
+                </td>
+                <td *ngIf="row.padre == 0">
+                  {{ row.ponderacion }}
+                </td>
               </tr>
               <tr class="color_total">
                 <td colspan="2">
                   <b>TOTAL</b>
                 </td>
                 <td>
-                  <b>100</b>
+                  <b>{{ ponderacion_total }}</b>
+                </td>
+              </tr>
+              <tr *ngIf="!agregar">
+                <td colspan="3" class="center-align">
+                  <button class="btn waves-effect waves-light light-green darken-1" type="button" name="action" [disabled]="disabledBtnAgregar"
+                    (click)="openModalConfirmacion('add', 'kpi-operativo')">AGREGAR</button>
                 </td>
               </tr>
             </tbody>
@@ -162,29 +207,23 @@
         </fieldset>
       </form>
     </div>
-  </ng-template>
-  <!-- Solo para dispositivos moviles -->
-  <div class="hide-on-large-only right-align">
-    <a routerLink="../../../sub-menu" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-      data-delay="50" data-tooltip="Regresar" (click)="regresar()">
-      <i class="material-icons">
-        <i class="material-icons">arrow_back</i>
-      </i>
-    </a>
-  </div>
-  <!-- Fin Solo para dispositivos moviles -->
-  <!-- Inicio solo para pantallas-->
-  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
-    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-      <a routerLink="../../../sub-menu" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-        data-delay="50" data-tooltip="Regresar" (click)="regresar()">
-        <i class="material-icons">
-          <i class="material-icons">arrow_back</i>
-        </i>
-      </a>
+    <!-- Inicio solo para pantallas-->
+    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large  indigo darken-4  waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+          data-tooltip="Ayuda" (click)="help($event)">
+          <i class="material-icons">help</i>
+        </a>
+        <a routerLink="../../../sub-menu" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
     </div>
-  </div>
-  <!-- Fin solo para pantallas-->
+    <!-- Fin solo para pantallas-->
+  </ng-template>
 </div>
 <div class="container" *ngIf="loading">
   <div id="loader-wrapper">
