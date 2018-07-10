@@ -81,7 +81,7 @@ export class ListaPonderacionComponent implements OnInit {
   //editar permite habilitar el boton de edicion
   public editar: boolean;
 
-  public soloconsulta:boolean;
+  public soloconsulta: boolean;
 
   /*
    * Fin variables
@@ -119,7 +119,7 @@ export class ListaPonderacionComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.tipo_seccion = params.get('tipo');
       this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-        console.log('init', result)
+        
         if (result.response.sucessfull) {
 
           //Acciones para objetivos operativos
@@ -324,11 +324,14 @@ export class ListaPonderacionComponent implements OnInit {
   openModalConfirmacion(accion: string, event?: any): void {
     this.mensajeModal = '';
     let detalle = '';
+    let tipo_meta = -1;
 
-    if( this.tipo_seccion == 'objetivo-operativo'){
-      detalle =  ' Año : <b>' + this.anioSeleccionado + ' </b>'; 
-    }else if(this.tipo_seccion == 'kpi-operativo'){
+    if (this.tipo_seccion == 'objetivo-operativo') {
+      detalle = ' Año : <b>' + this.anioSeleccionado + ' </b>';
+      tipo_meta = 1;
+    } else if (this.tipo_seccion == 'kpi-operativo') {
       detalle = ' Año: <b>' + this.params.anio + '</b> Area Etad: <b>' + this.getDescriptivoArea(this.params.idEtad) + '</b>';
+      tipo_meta = 2;
     }
 
     switch (accion) {
@@ -343,7 +346,7 @@ export class ListaPonderacionComponent implements OnInit {
     swal({
       title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
       type: 'question',
-      html: '<p style="color: #303f9f ">'+ detalle +'</p>',
+      html: '<p style="color: #303f9f ">' + detalle + '</p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
@@ -363,18 +366,43 @@ export class ListaPonderacionComponent implements OnInit {
                 * contenedor.ponderaciones Es una variable que se necesita por el backend
                 */
             let contenedor: any = { ponderaciones: {} };
-            contenedor.ponderaciones = this.ponderaciones;
-            this.service.updatePonderacion(this.auth.getIdUsuario(), 1, contenedor).subscribe(result => {
-              if (result.response.sucessfull) {
-                this.disabledInputText = !this.disabledInputText;
-                Materialize.toast('Se actualizarón correctamente ', 4000, 'green');
-              } else {
 
-                Materialize.toast(result.response.message, 4000, 'red');
-              }
-            }, error => {
-              Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
-            });
+            if (tipo_meta == 1) {
+              contenedor.ponderaciones = this.ponderaciones;
+              this.service.updatePonderacion(this.auth.getIdUsuario(), tipo_meta, contenedor).subscribe(result => {
+                if (result.response.sucessfull) {
+                  this.disabledInputText = !this.disabledInputText;
+                  Materialize.toast('Se actualizarón correctamente ', 4000, 'green');
+                } else {
+
+                  Materialize.toast(result.response.message, 4000, 'red');
+                }
+              }, error => {
+                Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+              });
+            } else if (tipo_meta == 2) {
+              //setea un valor vacio o indefinido a 0. Evita error en el backend 
+              this.rows.map(el => {
+                if (Number.isNaN(parseInt("" + el.ponderacion)) || el.ponderacion == undefined) {
+                  el.ponderacion = 0;
+                }
+              });
+              // Solo envia los kpi
+              contenedor.ponderaciones = this.rows.filter(el => el.padre == 1);
+              this.service.updatePonderacion(this.auth.getIdUsuario(), tipo_meta, contenedor).subscribe(result => {
+                if (result.response.sucessfull) {
+                  Materialize.toast('Se actualizarón correctamente', 4000, 'green');
+                  this.disabledInputText = !this.disabledInputText;
+
+                } else {
+                  Materialize.toast(result.response.message, 4000, 'red');
+                }
+              }, eror => {
+                Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+              });
+
+            }
+
             break;
         }
         /*
@@ -433,6 +461,7 @@ export class ListaPonderacionComponent implements OnInit {
     this.bVistaPre = false;
     this.disabledBtnEdit = true;
     this.soloconsulta = true;
+    this.disabledInputText = true;
   }
 
   help(event): void {
@@ -458,7 +487,7 @@ export class ListaPonderacionComponent implements OnInit {
 
     if (this.formConsulta.valid) {
       this.service.getPonderacion(this.auth.getIdUsuario(), 2, this.params.anio, this.params.idEtad).subscribe(result => {
-        console.log('get ponderacion kpi ', result)
+
         if (result.response.sucessfull) {
           this.rows = result.data.listData || [];
           this.ponderacion_total = 100;
@@ -480,13 +509,14 @@ export class ListaPonderacionComponent implements OnInit {
               return anterior + actual;
             });
 
-            if(this.ponderacion_total == 0){
+            if (this.ponderacion_total == 0) {
               this.soloconsulta = false;
             }
 
-            console.log('assadsadasdsadsa111', this.disabledBtnEdit)
             this.disabledBtnEdit = (this.ponderacion_total == 100);
 
+          } else {
+            this.soloconsulta = false;
           }
 
           this.bVistaPre = true;
@@ -532,11 +562,11 @@ export class ListaPonderacionComponent implements OnInit {
 
   }
 
-  getDescriptivoArea(idAreaEtad:number):string{
-    let el = this.etads.filter(el=>el.id == idAreaEtad);
-    if(el.length > 0){
+  getDescriptivoArea(idAreaEtad: number): string {
+    let el = this.etads.filter(el => el.id == idAreaEtad);
+    if (el.length > 0) {
       return el[0].valor;
-    }else{
+    } else {
       return "No identificada";
     }
   }
