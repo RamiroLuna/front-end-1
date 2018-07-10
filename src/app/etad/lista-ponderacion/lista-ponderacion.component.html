@@ -48,11 +48,11 @@
           <tr>
             <td colspan="2" class="center-align">
               <ng-template [ngIf]="!disabledInputText">
-                <button type="button" class="waves-effect waves-light btn grey darken-1" (click)="modificaValores('cancelar')">CANCELAR</button>
+                <button type="button" class="waves-effect waves-light btn grey darken-1" (click)="modificaValores('cancelar','objetivo-operativo')">CANCELAR</button>
                 <button type="button" class="waves-effect waves-light btn light-green darken-1" [disabled]="!(ponderacion_total == 100)"
                   (click)="openModalConfirmacion('update')">MODIFICAR</button>
               </ng-template>
-              <button type="button" class="waves-effect waves-light btn light-green darken-1" (click)="modificaValores('editar')" *ngIf="disabledInputText">EDITAR</button>
+              <button type="button" class="waves-effect waves-light btn light-green darken-1" (click)="modificaValores('editar','objetivo-operativo')" *ngIf="disabledInputText">EDITAR</button>
             </td>
           </tr>
         </tbody>
@@ -79,8 +79,8 @@
         (click)="help($event)">
         <i class="material-icons">help</i>
       </a>
-      <a routerLink="../" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-        data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+      <a routerLink="../" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+        data-tooltip="Regresar" (click)="regresar()">
         <i class="material-icons">
           <i class="material-icons">arrow_back</i>
         </i>
@@ -107,8 +107,7 @@
             <option *ngFor="let etad of etads" [value]="etad.id">{{etad.valor}}</option>
           </select>
           <label>Area Etad</label>
-          <div *ngIf="formConsulta.controls.idEtad.errors?.required && (formConsulta.controls.idEtad?.touched || submitted)"
-            class="error">
+          <div *ngIf="formConsulta.controls.idEtad.errors?.required && (formConsulta.controls.idEtad?.touched || submitted)" class="error">
             Seleccione una opcion
           </div>
         </div>
@@ -120,11 +119,18 @@
         </div>
       </form>
     </div>
+    <div class="row" *ngIf="!soloconsulta">
+      <p class="color_warning center-align">
+          <b>
+            El área y el año seleccionado no cuenta con ponderaciones.
+          </b>
+      </p>
+      <p class="color_warning center-align">
+            Vaya a la seccion de carga manual o masiva para realizar el proceso de asignación   
+      </p>
+    </div>
+    <div class="scroll_ejex_tabla_reporte" *ngIf="soloconsulta && bVistaPre && rows.length > 0">
 
-    <div class="scroll_ejex_tabla_reporte" *ngIf="bVistaPre && rows.length > 0">
-      <div class="row center-align color_warning" *ngIf="agregar">
-        <b>mensajeeee.</b>
-      </div>
       <form class="col s12 m12 l12 xl12" autocomplete="off">
         <fieldset>
           <legend class="color_titulo">
@@ -145,7 +151,7 @@
                 <td>{{ row.padre == 0 ? 'OBJ' : 'KPI' }}</td>
                 <td>{{ row.kpi }}</td>
                 <td *ngIf="row.padre == 1">
-                  <input type="text" [(ngModel)]="row.ponderacion" [ngModelOptions]="{standalone: true}" (keypress)="onlyNumber($event)" [disabled]="agregar"
+                  <input type="text" [(ngModel)]="row.ponderacion" [ngModelOptions]="{standalone: true}" (keypress)="onlyNumber($event)" [disabled]="disabledInputText"
                     (ngModelChange)="somethingChangedKPI(row.ponderacion, row.control)">
                 </td>
                 <td *ngIf="row.padre == 0">
@@ -160,10 +166,14 @@
                   <b>{{ ponderacion_total }}</b>
                 </td>
               </tr>
-              <tr *ngIf="!agregar">
+              <tr>
                 <td colspan="3" class="center-align">
-                  <button class="btn waves-effect waves-light light-green darken-1" type="button" name="action" [disabled]="disabledBtnAgregar"
-                    (click)="openModalConfirmacion('add', 'kpi-operativo')">AGREGAR</button>
+                  <ng-template [ngIf]="!disabledInputText">
+                    <button type="button" class="waves-effect waves-light btn grey darken-1" (click)="modificaValores('cancelar','kpi-operativo')">CANCELAR</button>
+                    <button type="button" class="waves-effect waves-light btn light-green darken-1" [disabled]="!disabledBtnEdit"
+                      (click)="openModalConfirmacion('update')">MODIFICAR</button>
+                  </ng-template>
+                  <button type="button" class="waves-effect waves-light btn light-green darken-1" (click)="modificaValores('editar','kpi-operativo')" *ngIf="disabledInputText">EDITAR</button>
                 </td>
               </tr>
             </tbody>

@@ -18,11 +18,12 @@ export class ListaPonderacionService {
     return this.http.get<any>(this.URL + '?action=loadCombobox&id_usuario='+idUsuario);
   }
 
-  getPonderacion(id_usuario:number, tipo_ponderacion:number, anio:number): Observable<any>{
+  getPonderacion(id_usuario:number, tipo_ponderacion:number, anio:number, id_etad:number = -1): Observable<any>{
     const body = new HttpParams()
     .set('action', 'getPonderacion')
     .set('tipo_ponderacion', ""+tipo_ponderacion)
     .set('anio', ""+anio)
+    .set('id_etad', ""+id_etad)
     .set('id_usuario', ""+id_usuario)
     return this.http.post<any>(this.URL,body);
   }

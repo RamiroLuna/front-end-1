@@ -15,6 +15,7 @@ import {
   animate,
   transition
 } from '@angular/animations';
+import { PonderacionKpiOperativos } from '../../models/ponderacion-kpi-operativos';
 
 
 declare var $: any;
@@ -23,6 +24,7 @@ declare var Materialize: any;
   selector: 'app-lista-ponderacion',
   templateUrl: './lista-ponderacion.component.html',
   providers: [ListaPonderacionService],
+  styleUrls: ['/lista-ponderacion.component.css'],
   animations: [
     trigger('visibility', [
       state('inactive', style({
@@ -69,6 +71,18 @@ export class ListaPonderacionComponent implements OnInit {
 
   //params contiene los datos de busqueda
   public params: any;
+
+  //rows almacena los kpi asignados a las areas
+  public rows: Array<PonderacionKpiOperativos> = [];
+
+  //rows_tmp almacenará una copia de los kpis antes de ser modificados
+  public rows_tmp: Array<PonderacionKpiOperativos> = [];
+
+  //editar permite habilitar el boton de edicion
+  public editar: boolean;
+
+  public soloconsulta:boolean;
+
   /*
    * Fin variables
    */
@@ -96,6 +110,7 @@ export class ListaPonderacionComponent implements OnInit {
     this.bVistaPre = false;
     this.disabledBtnEdit = true;
     this.params = {};
+    this.soloconsulta = true;
 
     // this.permission.editarMeta = findRol(3, this.auth.getRolesOee());
     // this.permission.eliminarMeta = findRol(5, this.auth.getRolesOee());
@@ -227,7 +242,7 @@ export class ListaPonderacionComponent implements OnInit {
           }
 
           this.service.getPonderacion(this.auth.getIdUsuario(), 1, this.anioSeleccionado).subscribe(result => {
-            console.log('rrrrr', result)
+
             if (result.response.sucessfull) {
               this.ponderaciones = result.data.listPonderacionObjetivos || [];
               this.datos_tabla = true;
@@ -278,12 +293,11 @@ export class ListaPonderacionComponent implements OnInit {
     this.submitted = true;
     this.status = "inactive";
 
-    // if (this.formConsultaPeriodo.valid) {
     this.disabled = true;
     this.datos_tabla = false;
 
     this.service.getPonderacion(this.auth.getIdUsuario(), this.anioSeleccionado, 1).subscribe(result => {
-      console.log('result de ponderaciones', result)
+
       if (result.response.sucessfull) {
 
         this.ponderaciones = result.data.listPonderacionObjetivos || [];
@@ -305,16 +319,17 @@ export class ListaPonderacionComponent implements OnInit {
       Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
     });
 
-    // } else {
-    //   Materialize.toast('Verifique los datos capturados!', 4000, 'red');
-    // }
-
-
-
   }
 
   openModalConfirmacion(accion: string, event?: any): void {
     this.mensajeModal = '';
+    let detalle = '';
+
+    if( this.tipo_seccion == 'objetivo-operativo'){
+      detalle =  ' Año : <b>' + this.anioSeleccionado + ' </b>'; 
+    }else if(this.tipo_seccion == 'kpi-operativo'){
+      detalle = ' Año: <b>' + this.params.anio + '</b> Area Etad: <b>' + this.getDescriptivoArea(this.params.idEtad) + '</b>';
+    }
 
     switch (accion) {
       case 'update':
@@ -328,7 +343,7 @@ export class ListaPonderacionComponent implements OnInit {
     swal({
       title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
       type: 'question',
-      html: '<p style="color: #303f9f "> Año : <b>' + this.anioSeleccionado + ' </b> </p>',
+      html: '<p style="color: #303f9f ">'+ detalle +'</p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
@@ -392,13 +407,23 @@ export class ListaPonderacionComponent implements OnInit {
     // this.disabledBtn = !(this.ponderacion_total == 100);
   }
 
-  modificaValores(accion: string): void {
+  modificaValores(accion: string, tipo: string): void {
 
-    if (accion == 'editar') {
-      this.ponderaciones_tmp = clone(this.ponderaciones);
-    } else if (accion == 'cancelar') {
-      this.ponderaciones = this.ponderaciones_tmp;
-      this.ponderacion_total = 100;
+    if (tipo == 'objetivo-operativo') {
+      if (accion == 'editar') {
+        this.ponderaciones_tmp = clone(this.ponderaciones);
+      } else if (accion == 'cancelar') {
+        this.ponderaciones = this.ponderaciones_tmp;
+        this.ponderacion_total = 100;
+      }
+    } else if (tipo == 'kpi-operativo') {
+
+      if (accion == 'editar') {
+        this.rows_tmp = clone(this.rows);
+      } else if (accion == 'cancelar') {
+        this.rows = this.rows_tmp;
+        this.ponderacion_total = 100;
+      }
     }
 
     this.disabledInputText = !this.disabledInputText;
@@ -407,6 +432,7 @@ export class ListaPonderacionComponent implements OnInit {
   changeComboKPI(tipo_combo: string): void {
     this.bVistaPre = false;
     this.disabledBtnEdit = true;
+    this.soloconsulta = true;
   }
 
   help(event): void {
@@ -431,44 +457,88 @@ export class ListaPonderacionComponent implements OnInit {
     this.bVistaPre = false;
 
     if (this.formConsulta.valid) {
-      // this.service.getPonderacion(this.auth.getIdUsuario(), 2, this.params.anio, this.params.idEtad).subscribe(result => {
-      
-      //   if (result.response.sucessfull) {
-      //     this.rows = result.data.listData || [];
+      this.service.getPonderacion(this.auth.getIdUsuario(), 2, this.params.anio, this.params.idEtad).subscribe(result => {
+        console.log('get ponderacion kpi ', result)
+        if (result.response.sucessfull) {
+          this.rows = result.data.listData || [];
+          this.ponderacion_total = 100;
 
-      //     if (this.rows.length > 0) {
-      //       //objetivo_operativo permite controlar que kpi coresponde al objetivo operativo
-      //       let objetivo_operativo = 0;
-      //       // el siguiente ciclo permite agrupar el objetivo operativo y sus kpi mediante la varible control
-      //       let tmp_ponderaciones = this.rows.filter(el => {
-      //         if (el.padre == 0) objetivo_operativo++;
-      //         el.control = objetivo_operativo;
-      //         el.suma_ok = false;
-      //         return el.padre == 1;
-      //       }).map(el => el.ponderacion);
+          if (this.rows.length > 0) {
+            //objetivo_operativo permite controlar que kpi coresponde al objetivo operativo
+            let objetivo_operativo = 0;
+            // el siguiente ciclo permite agrupar el objetivo operativo y sus kpi mediante la varible control
+            let tmp_ponderaciones = this.rows.filter(el => {
+              if (el.padre == 0) objetivo_operativo++;
+              el.control = objetivo_operativo;
+              el.suma_ok = true;
+              return el.padre == 1;
+            }).map(el => el.ponderacion);
 
-      //       this.ponderacion_total = tmp_ponderaciones.reduce((anterior, actual) => {
-      //         if (!isNumeroAsignacionValid("" + anterior)) anterior = 0;
-      //         if (!isNumeroAsignacionValid("" + actual)) actual = 0;
-      //         return anterior + actual;
-      //       });
+            this.ponderacion_total = tmp_ponderaciones.reduce((anterior, actual) => {
+              if (!isNumeroAsignacionValid("" + anterior)) anterior = 0;
+              if (!isNumeroAsignacionValid("" + actual)) actual = 0;
+              return anterior + actual;
+            });
 
+            if(this.ponderacion_total == 0){
+              this.soloconsulta = false;
+            }
 
-      //       this.agregar = (this.ponderacion_total == 100);
-      //     }
+            console.log('assadsadasdsadsa111', this.disabledBtnEdit)
+            this.disabledBtnEdit = (this.ponderacion_total == 100);
 
-      //     this.bVistaPre = true;
-      //   } else {
-      //     Materialize.toast(result.response.message, 4000, 'red');
-      //   }
-      // }, eror => {
-      //   Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-      // });
+          }
+
+          this.bVistaPre = true;
+        } else {
+          Materialize.toast(result.response.message, 4000, 'red');
+        }
+      }, eror => {
+        Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+      });
 
     } else {
       Materialize.toast('Verifique los datos capturados!', 4000, 'red');
     }
   }
 
+  somethingChangedKPI(ponderacion: any, control: number): void {
+    let kpis_por_objetivo = this.rows.filter(el => el.control == control);
+
+    let ponderacion_por_kpi = kpis_por_objetivo.filter(el => el.padre == 1).map(el => parseInt("" + el.ponderacion));
+
+    this.ponderacion_total = 0;
+    this.ponderacion_total = this.rows.filter(el => el.padre == 1).map(el => parseInt("" + el.ponderacion)).reduce((valor_anterior, valor_actual) => {
+      if (Number.isNaN(valor_anterior) || typeof valor_anterior == undefined) valor_anterior = 0;
+      if (Number.isNaN(valor_actual) || typeof valor_actual == undefined) valor_actual = 0;
+      return valor_anterior + valor_actual;
+    });
+
+    let total_kpi = ponderacion_por_kpi.reduce((valor_anterior, valor_actual) => {
+
+      if (Number.isNaN(valor_anterior) || typeof valor_anterior == undefined) valor_anterior = 0;
+      if (Number.isNaN(valor_actual) || typeof valor_actual == undefined) valor_actual = 0;
+      return valor_anterior + valor_actual;
+
+    });
+
+    let el = this.rows.filter(el => el.padre == 0 && el.control == control)[0];
+
+    el.suma_ok = (total_kpi == el.ponderacion);
+
+    this.disabledBtnEdit = (this.rows.filter(el => el.padre == 0).map(el => el.suma_ok).reduce((anterior, actual) => {
+      return anterior && actual;
+    }));
+
+  }
+
+  getDescriptivoArea(idAreaEtad:number):string{
+    let el = this.etads.filter(el=>el.id == idAreaEtad);
+    if(el.length > 0){
+      return el[0].valor;
+    }else{
+      return "No identificada";
+    }
+  }
 
 }
