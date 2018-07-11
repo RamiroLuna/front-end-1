@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
-import swal from 'sweetalert2';
-import { ListaMetasService } from './lista-metas.service';
-import { Periodo } from '../../models/periodo';
-import { Linea } from '../../models/linea';
-import { Catalogo } from '../../models/catalogo';
 import {
-  arrayObjectIndexOf,
+  deleteItemArray,
+  getAnioActual,
   calculaDiaPorMes,
   isNumeroAsignacionValid,
   findRol,
-  getMetasKPI,
-  getFrecuenciaMetaKPI,
   clone
 } from '../../utils';
+import swal from 'sweetalert2';
+import { ListaMetasService } from './lista-metas.service';
+import { Periodo } from '../../models/periodo';
+import { PetMetaKpi } from '../../models/pet-meta-kpi';
+import { Catalogo } from '../../models/catalogo';
 import {
   trigger,
   state,
@@ -22,10 +21,6 @@ import {
   animate,
   transition
 } from '@angular/animations';
-import { MetaKpi } from '../../models/meta-kpi';
-import { PetMetaAnualEstrategica } from '../../models/pet-meta-anual-estrategica';
-import { PetMetaAnualObjetivoOperativo } from '../../models/pet-meta-anual-objetivo-operativo';
-import { PetMetaAnualKpi } from '../../models/pet-meta-anual-kpi';
 
 
 declare var $: any;
@@ -34,6 +29,7 @@ declare var Materialize: any;
 @Component({
   selector: 'app-lista-metas',
   templateUrl: './lista-metas.component.html',
+  styleUrls: ['lista-metas.component.css'],
   providers: [ListaMetasService],
   animations: [
     trigger('visibility', [
@@ -53,35 +49,28 @@ export class ListaMetasComponent implements OnInit {
   public loading: boolean;
   public datos_tabla: boolean;
   public mensajeModal: string;
+  // // public estatusPeriodo: boolean;
 
-  public anioSeleccionado: any;
-  public frecuencia: string;
+  public anioSeleccionado: number;
   public submitted: boolean;
   public disabled: boolean;
-  public tipoMetaSeleccionada: string;
 
-  public tiposMeta: Array<any> = [];
-  public frecuenciasDisponibles: Array<any> = [];
-  public frecuencias: Array<any> = [];
   public periodos: Array<Periodo> = [];
-  public etads: Array<Linea> = [];
-  public grupos: Array<Catalogo> = [];
-  public turnos: Array<Catalogo> = [];
-  public anios: Array<any> = [];
+  public etads: Array<Catalogo> = [];
+
+  public anios: any = {};
   public meses: Array<any> = [];
-  public metas: Array<MetaKpi> = [];
+  public kpis: Array<PetMetaKpi>;
+  public kpis_tmp: Array<PetMetaKpi>;
   public formConsultaPeriodo: FormGroup;
   public status: string;
 
   public idEtad: number;
-  public idPeriodo: any;
-  public metasForSwal: any = {};
+  public idPeriodo: number;
 
-
-  public permission: any = {
-    editarMeta: true,
-    eliminarMeta: true
-  }
+  //bandera para permitir solo editar metas
+  public bandera: boolean;
+  public disabledInputText: boolean;
 
   constructor(private auth: AuthService,
     private service: ListaMetasService,
@@ -93,43 +82,30 @@ export class ListaMetasComponent implements OnInit {
     this.datos_tabla = false;
     this.submitted = false;
     this.disabled = false;
-
-    this.permission.editarMeta = findRol(3, this.auth.getRolesOee());
-    this.permission.eliminarMeta = findRol(5, this.auth.getRolesOee());
-
-    this.tiposMeta = getMetasKPI();
-    this.frecuenciasDisponibles = getFrecuenciaMetaKPI();
-
-    this.tipoMetaSeleccionada = 'ESTRATEGICAS';
-    this.getFrecuencia(this.tipoMetaSeleccionada)
-
+    this.bandera = false;
+    this.disabledInputText = true;
+    // // this.estatusPeriodo = true;
+    this.anioSeleccionado = getAnioActual();
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
       if (result.response.sucessfull) {
 
-        this.etads = result.data.listLineas || [];
+        this.etads = result.data.listEtads || [];
         this.periodos = result.data.listPeriodos || [];
-        this.grupos = result.data.listGrupos || [];
-        this.grupos = this.grupos.filter((el) => el.id != 6);
-        this.turnos = result.data.listTurnos || [];
         let tmpAnios = this.periodos.map(el => el.anio);
         this.periodos.filter((el, index) => {
           return tmpAnios.indexOf(el.anio) === index;
         }).forEach((el) => {
           let tmp = el.anio;
-          this.anios.push({ value: tmp, descripcion: tmp })
+          this.anios[tmp] = tmp;
         });
-
-        this.tiposMeta.map(el => {
-          this.metasForSwal[el.descripcion] = el.descripcion;
-        })
 
         this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
 
         this.loading = false;
         this.loadFormulario();
-        // setTimeout(() => { this.ngAfterViewInitHttp() }, 200)
+        setTimeout(() => { this.ngAfterViewInitHttp() }, 200)
       } else {
         Materialize.toast(result.response.message, 4000, 'red');
         this.loading = false;
@@ -140,6 +116,15 @@ export class ListaMetasComponent implements OnInit {
     });
   }
 
+
+
+  /*
+   * Carga plugins despues de cargar y mostrar objetos en el DOM
+   */
+  ngAfterViewInitHttp(): void {
+    $('.tooltipped').tooltip({ delay: 50 });
+  }
+
   agregar() {
     $('.tooltipped').tooltip('hide');
   }
@@ -148,92 +133,22 @@ export class ListaMetasComponent implements OnInit {
     $('.tooltipped').tooltip('hide');
   }
 
-  changeIcono(event, tipo: number): void {
-    let icono = $(event.target).html();
-    let id = $(event.target).attr('id');
 
-    if (icono == 'edit') {
 
-      $(event.target).html(icono == 'edit' ? 'save' : 'edit');
-      $('#text' + id).attr('disabled', false);
-
-    } else if (icono == 'save') {
-      let caja = $('#text' + id);
-
-      if (isNumeroAsignacionValid(caja.val())) {
-        let meta: any;
-        /*
-         * Busca meta que se esta editando
-         */
-        meta = clone(this.metas[id]);
-        meta.valor = parseFloat(caja.val().trim()).toFixed(3);
-
-        /* 
-         * Se forma el modelo a enviar al backend
-         * contenedor.meta Es una variable que se necesita por el backend
-         */
-        let contenedor: any = { meta: {} };
-        contenedor.meta = meta;
-
-        this.service.update(this.auth.getIdUsuario(), contenedor, this.frecuencia, tipo).subscribe(result => {
-          if (result.response.sucessfull) {
-            /*
-             * Da el formato de tres decimales
-             */ 
-            caja.val(parseFloat(caja.val().trim()).toFixed(3));
-            /* 
-             *
-             */  
-            $(event.target).html(icono == 'edit' ? 'save' : 'edit');
-            caja.attr('disabled', true);
-
-            Materialize.toast('Se actualizó correctamente ', 4000, 'green');
-          } else {
-            Materialize.toast(result.response.message, 4000, 'red');
-          }
-        }, error => {
-          Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
-        });
-
-      } else {
-        Materialize.toast('Valor de meta no valido', 4000, 'red');
-      }
-    }
-
-  }
-
-  changeCombo(tipoCombo: string): void {
+  changeCombo(): void {
+    // this.estatusPeriodo = true;
     this.datos_tabla = false;
     this.status = "inactive";
-
-    if (tipoCombo == 'frecuencia') {
-      this.idPeriodo = '';
-      this.anioSeleccionado = '';
-      if (this.frecuencia == 'mensual') {
-        this.formConsultaPeriodo.controls.idPeriodo.enable();
-        this.formConsultaPeriodo.controls.anioSeleccionado.enable();
-      } else if (this.frecuencia == 'anual') {
-        this.formConsultaPeriodo.controls.idPeriodo.disable();
-        this.formConsultaPeriodo.controls.anioSeleccionado.enable();
-      } else {
-        this.formConsultaPeriodo.controls.idPeriodo.disable();
-        this.formConsultaPeriodo.controls.anioSeleccionado.disable();
-      }
-
-    } else if (tipoCombo == 'anio') {
-      this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
-    }
-
   }
 
-  openModalTipoMeta(event): void {
+  openModalYear(event): void {
     event.preventDefault();
     swal({
-      title: 'Seleccione tipo de meta',
+      title: 'Seleccione el año',
       input: 'select',
       cancelButtonText: 'Cancelar',
       confirmButtonText: 'OK',
-      inputOptions: this.metasForSwal,
+      inputOptions: this.anios,
       inputPlaceholder: 'SELECCIONE',
       showCancelButton: true,
       inputValidator: (value) => {
@@ -244,12 +159,13 @@ export class ListaMetasComponent implements OnInit {
           this.status = "inactive";
           this.datos_tabla = false;
 
+
           if (value != '') {
             resolve();
-            this.tipoMetaSeleccionada = value;
-            this.getFrecuencia(this.tipoMetaSeleccionada);
+            this.anioSeleccionado = value;
+            this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
           } else {
-            resolve('Seleccione tipo de meta')
+            resolve('Seleccione un año')
           }
         })
       }
@@ -258,49 +174,52 @@ export class ListaMetasComponent implements OnInit {
 
   loadFormulario(): void {
     this.formConsultaPeriodo = this.fb.group({
-      frecuencia: new FormControl({ value: this.frecuencia }, [Validators.required]),
-      anioSeleccionado: new FormControl({ value: this.anioSeleccionado }, [Validators.required]),
       idEtad: new FormControl({ value: this.idEtad }, [Validators.required]),
       idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required])
     });
   }
 
+
   consultaPeriodo(): void {
     this.submitted = true;
     this.status = "inactive";
+    this.bandera = false;
+    this.disabledInputText = true;
 
     if (this.formConsultaPeriodo.valid) {
       this.disabled = true;
       this.datos_tabla = false;
-      let idTipoMeta = this.tiposMeta.filter((el) => el.descripcion == this.tipoMetaSeleccionada.trim().toUpperCase())[0].id;
-      this.service.getAllMetas(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad, this.anioSeleccionado, this.frecuencia, idTipoMeta).subscribe(result => {
+
+      this.service.getAllMetas(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad).subscribe(result => {
 
         if (result.response.sucessfull) {
+          // // this.estatusPeriodo = result.data.estatusPeriodo;
+          this.kpis = result.data.listMetasKpiOperativos as Array<PetMetaKpi> || [];
 
-          if (result.data.metasEstrategicas) {
-            this.metas = result.data.metasEstrategicas.ListMetaEstrategica || [];
-          } else if (result.data.metasKPIOperativos) {
-            this.metas = result.data.metasKPIOperativos.listKPIOperativo || [];
-          } else if (result.data.metasObjetivosOperativos) {
-            this.metas = result.data.metasObjetivosOperativos.listObjetivoOperativo || [];
-          }
+
+          this.kpis.filter(el => {
+            if (el.id_meta_kpi == 0) {
+              this.bandera = true;
+            }
+            el.class_input = '';
+          });
 
           this.datos_tabla = true;
           this.disabled = false;
 
           setTimeout(() => {
-            // this.ngAfterViewInitHttp();
+            this.ngAfterViewInitHttp();
             this.status = 'active';
           }, 200);
 
 
         } else {
-          Materialize.toast(result.response.message, 4000, 'red');
           this.disabled = false;
+          Materialize.toast(result.response.message, 4000, 'red');
         }
       }, error => {
-        Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
         this.disabled = false;
+        Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
       });
 
     } else {
@@ -309,138 +228,121 @@ export class ListaMetasComponent implements OnInit {
 
   }
 
-  openModalConfirmacion(meta: any, accion: string, tipo_meta: string, event?: any): void {
+  openModalConfirmacion(accion: string, event?: any): void {
     this.mensajeModal = '';
-    let html = '<div style="color: #303f9f"> <p> tipo-meta : <b>:meta-descriptivo:</b></p><p>para el Etad: <b>:etad-descriptivo:</b></p></div>';
-    let id_tipo_meta = 0;
+
     switch (accion) {
-      case 'eliminar':
-        this.mensajeModal = '¿ Está seguro de eliminar ? ';
+      case 'update':
+        this.mensajeModal = '¿Está seguro de agregar metas? ';
         break;
     }
 
-    switch (tipo_meta) {
-      case 'estrategica':
-        id_tipo_meta = 1;
-        let meta_tmp = meta as PetMetaAnualEstrategica;
-        html = html.replace(/:meta-descriptivo:/g, meta_tmp.metaEstrategica.valor).replace(/:etad-descriptivo:/g, meta_tmp.linea.valor).replace(/tipo-meta/g, 'Meta estretegica');
-        break;
-      case 'operativas':
-        id_tipo_meta = 2;
-        let meta_tmp2 = meta as PetMetaAnualObjetivoOperativo;
-        html = html.replace(/:meta-descriptivo:/g, meta_tmp2.objetivoOperativo.valor).replace(/:etad-descriptivo:/g, meta_tmp2.linea.valor).replace(/tipo-meta/g, 'Objetivo operativo');;
-        break;
-      case 'kpi':
-        id_tipo_meta = 3;
-        let meta_tmp3 = meta as PetMetaAnualKpi;
-        html = html.replace(/:meta-descriptivo:/g, meta_tmp3.kPIOperativo.valor).replace(/:etad-descriptivo:/g, meta_tmp3.linea.valor).replace(/tipo-meta/g, 'KPI Operativo');;
-        break;
-    }
+    if (this.isValidMetas(this.kpis) == 0) {
 
-    /* 
-     * Configuración del modal de confirmación
-     */
-    swal({
-      title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
-      type: 'question',
-      html: html,
-      showCancelButton: true,
-      confirmButtonColor: '#303f9f',
-      cancelButtonColor: '#9fa8da ',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Si!',
-      allowOutsideClick: false,
-      allowEnterKey: false
-    }).then((result) => {
-      /*
-       * Si acepta
+      /* 
+       * Configuración del modal de confirmación
        */
-      if (result.value) {
-        switch (accion) {
-          case 'eliminar':
-            /* 
-             * Se forma el modelo a enviar al backend
-             * contenedor.meta Es una variable que se necesita por el backend
-             */
-            let contenedor: any = { meta: {} };
-            contenedor.meta = meta;
-            this.service.delete(this.auth.getIdUsuario(), contenedor, this.frecuencia, id_tipo_meta).subscribe(result => {
-              if (result.response.sucessfull) {
-                switch (id_tipo_meta) {
-                  case 1:
-                    let meta_tmp = meta as PetMetaAnualEstrategica;
-                    this.deleteItemArray(this.metas, meta_tmp.id_meta_anual_estrategica, 'id_meta_anual_estrategica', 1);
-                    break;
-                  case 2:
-                    let meta_tmp2 = meta as PetMetaAnualObjetivoOperativo;
-                    this.deleteItemArray(this.metas, meta_tmp2.id_meta_anual_objetivo_operativo, 'id_meta_anual_objetivo_operativo', 2);
-                    break;
-                  case 3:
-                    let meta_tmp3 = meta as PetMetaAnualKpi;
-                    this.deleteItemArray(this.metas, meta_tmp3.id_meta_anual_kpi, 'id_meta_anual_kpi', 3);
-                    break;
-                }
-                Materialize.toast('Se eliminó correctamente ', 4000, 'green');
-              } else {
-                Materialize.toast(result.response.message, 4000, 'red');
-              }
-            }, error => {
-              Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
-            });
-            break;
-        }
+      swal({
+        title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
+        type: 'question',
+        html: '<p style="color: #303f9f "> Area Etad : <b>' + this.getDescriptivoArea(this.idEtad) + ' </b> Año: <b>' + this.anioSeleccionado + '</b></p>',
+        showCancelButton: true,
+        confirmButtonColor: '#303f9f',
+        cancelButtonColor: '#9fa8da ',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si!',
+        allowOutsideClick: false,
+        allowEnterKey: false
+      }).then((result) => {
         /*
-        * Si cancela accion
-        */
-      } else if (result.dismiss === swal.DismissReason.cancel) {
-      }
-    })
+         * Si acepta
+         */
+        if (result.value) {
+          switch (accion) {
+            case 'update':
+              /* 
+              * Se forma el modelo a enviar al backend
+              * contenedor.ponderaciones Es una variable que se necesita por el backend
+              */
+              let contenedor: any = { metas: {} };
+              this.kpis.map(el => {
+                if (Number.isNaN(parseInt("" + el.valor)) || el.valor == undefined) {
+                  el.valor = 0;
+                }
+              });
+              contenedor.metas = this.kpis;
 
-  }
+              this.service.updateMeta(this.auth.getIdUsuario(), contenedor).subscribe(result => {
 
-  deleteItemArray(arreglo, valor, propiedad, tipo): void {
-    if (arreglo.length > 0) {
-      let exist = arrayObjectIndexOf(arreglo, valor, propiedad);
-      if (exist != -1) {
-        arreglo.splice(exist, 1);
-      }
-    }
-  }
+                if (result.response.sucessfull) {
 
-  obtenerMesDelPeriodo(arg: Array<Periodo>, idPeriodo: number): number {
-    let result = arg.filter((el) => el.id_periodo == idPeriodo);
-    if (result.length > 0) {
-      return result[0].mes;
+                  this.bandera = false;
+                  this.disabledInputText = true;
+
+                  Materialize.toast('Metas modificadas correctamente ', 4000, 'green');
+                } else {
+
+                  Materialize.toast(result.response.message, 4000, 'red');
+                }
+              }, error => {
+                Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+              });
+              break;
+          }
+          /*
+          * Si cancela accion
+          */
+        } else if (result.dismiss === swal.DismissReason.cancel) {
+        }
+      })
     } else {
-      return -1;
+
+      Materialize.toast('Verifique los datos marcados en rojo!', 4000, 'red');
+
     }
+
   }
 
-  arrayDescriptivo(arg: Array<Catalogo>): Array<string> {
-    return arg.map((el) => el.valor);
-  }
+  getDescriptivoArea(idEtad): string {
 
-  idItemCombo(arg: Array<Catalogo>, valor: string): number {
-    let element = arg.filter((el) => el.valor == valor.trim());
-    if (element.length > 0) {
-      return element[0].id;
+    let el = this.etads.filter(el => el.id == idEtad);
+
+    if (el.length > 0) {
+      return el[0].valor;
     } else {
-      return -1;
+      return "No identificado";
     }
 
   }
 
+  isValidMetas(metas_kpis: Array<PetMetaKpi>): number {
+    let numero_error = 0;
 
-  getFrecuencia(tipoMeta: string) {
-    let temp = this.tiposMeta.filter((el) => el.descripcion == tipoMeta.trim().toUpperCase());
-
-    if (temp.length > 0) {
-      if (temp[0].frecuencia == 2) {
-        this.frecuencias = this.frecuenciasDisponibles.map(el => el);
+    metas_kpis.map(el => {
+      if (!isNumeroAsignacionValid("" + el.valor)) {
+        numero_error++;
+        el.class_input = 'error';
       } else {
-        this.frecuencias = this.frecuenciasDisponibles.filter(element => element.id == temp[0].frecuencia);
+        el.class_input = '';
       }
-    }
+    });
+
+    return numero_error;
+
+  }
+
+  modificaValores(accion: string): void {
+
+      if (accion == 'editar') {
+
+        this.kpis_tmp = clone(this.kpis);
+
+      } else if (accion == 'cancelar') {
+        this.kpis = this.kpis_tmp;
+
+      }
+    
+    this.disabledInputText = !this.disabledInputText;
   }
 
 

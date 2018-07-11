@@ -11,7 +11,7 @@ export class OptionsComponent implements AfterViewInit {
   public permission: any = {
     cargaMetaManual: true,
     cargaMasiva: true,
-    edicionMeta: false,
+    edicionMeta: true,
     catalogos: true,
     cargaPonderacionManual: true,
     cargaPonderacionMasiva: true,

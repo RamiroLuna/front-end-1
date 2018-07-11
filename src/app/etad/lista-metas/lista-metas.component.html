@@ -1,12 +1,12 @@
 <div class="container" *ngIf="!loading">
   <div class="section"></div>
-  <h4 class="color_titulo center-align">Edición de metas
-    <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar tipo" (click)="openModalTipoMeta($event)">{{ tipoMetaSeleccionada | minuscula }}</a>
+  <h4 class="color_titulo center-align">Edicion de metas KPI´s
+    <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar año" (click)="openModalYear($event)">{{ anioSeleccionado }}</a>
   </h4>
   <!-- Solo para dispositivos moviles -->
   <div class="hide-on-large-only right-align">
-    <a routerLink="../../opciones" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-      data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
+    <a routerLink="../" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+      data-tooltip="Opciones ETAD" (click)="regresar()">
       <i class="material-icons">
         <i class="material-icons">arrow_back</i>
       </i>
@@ -16,31 +16,7 @@
 
   <div class="row">
     <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="consultaPeriodo()" autocomplete="off">
-      <div class="input-field col s12 m12 l3 xl3">
-        <select class="frecuencias" materialize="material_select" [materializeSelectOptions]="frecuencias" formControlName="frecuencia"
-          [(ngModel)]="frecuencia" (ngModelChange)="changeCombo('frecuencia')">
-          <option value="">SELECCIONE</option>
-          <option *ngFor="let frecuencia of frecuencias" [value]="frecuencia.value">{{frecuencia.descripcion}}</option>
-        </select>
-        <label for="frecuencias">Frecuencia</label>
-        <div *ngIf="formConsultaPeriodo.controls.frecuencia.errors?.required && (formConsultaPeriodo.controls.frecuencia?.touched || submitted)"
-          class="error">
-          Seleccione
-        </div>
-      </div>
-      <div class="input-field col s12 m12 l2 xl2">
-        <select class="anios" materialize="material_select" [materializeSelectOptions]="anios" formControlName="anioSeleccionado"
-          [(ngModel)]="anioSeleccionado" (ngModelChange)="changeCombo('anio')">
-          <option value="">SELECCIONE</option>
-          <option *ngFor="let anio of anios" [value]="anio.value">{{anio.descripcion}}</option>
-        </select>
-        <label for="anios">Año</label>
-        <div *ngIf="formConsultaPeriodo.controls.anioSeleccionado.errors?.required && (formConsultaPeriodo.controls.anioSeleccionado?.touched || submitted)"
-          class="error">
-          Seleccione
-        </div>
-      </div>
-      <div class="input-field col s12 m12 l3 xl3">
+      <div class="input-field col s12 m12 l6 xl6">
         <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="idPeriodo"
           (ngModelChange)="changeCombo()">
           <option value="">SELECCIONE</option>
@@ -49,18 +25,18 @@
         <label for="mes">mes</label>
         <div *ngIf="formConsultaPeriodo.controls.idPeriodo.errors?.required && (formConsultaPeriodo.controls.idPeriodo?.touched || submitted)"
           class="error">
-          Seleccione
+          Seleccione una opcion
         </div>
       </div>
-      <div class="input-field col s12 m12 l3 xl3">
+      <div class="input-field col s12 m12 l5 xl5">
         <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="idEtad" (ngModelChange)="changeCombo()">
           <option value="">SELECCIONE</option>
-          <option *ngFor="let linea of etads" [value]="linea.id_linea">{{linea.descripcion}}</option>
+          <option *ngFor="let etad of etads" [value]="etad.id">{{etad.valor}}</option>
         </select>
-        <label for="etad">Etad</label>
+        <label for="etad">Area Etad</label>
         <div *ngIf="formConsultaPeriodo.controls.idEtad.errors?.required && (formConsultaPeriodo.controls.idEtad?.touched || submitted)"
           class="error">
-          Seleccione
+          Seleccione una opcion
         </div>
       </div>
       <div class="input-field col s12 m12 l1 xl1">
@@ -71,130 +47,63 @@
       </div>
     </form>
   </div>
-  <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
-    <ng-template [ngIf]="tipoMetaSeleccionada == 'ESTRATEGICAS'">
-      <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
-        <thead>
-          <tr>
-            <th class="center-align">Meta Estrategica</th>
-            <th class="center-align">Valor</th>
-            <th class="center-align">Unidad Medida</th>
-            <th class="center-align" *ngIf="permission.editarMeta">Editar</th>
-            <th class="center-align" *ngIf="permission.eliminarMeta">Eliminar</th>
-          </tr>
-        </thead>
+  <!-- <div class="row" *ngIf="!estatusPeriodo">
+      <div class="color_titulo center-align">
+          <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
+      </div>
+    </div> -->
 
-        <tbody>
-          <tr *ngIf="metas.length == 0 ">
-            <th colspan="5" class="center">No hay registros</th>
-          </tr>
-          <tr *ngFor="let meta of metas;let i = index">
-            <td class="center-align">{{meta.metaEstrategica.valor}}</td>
-            <td class="center-align">
-              <input [id]="'text'+i" type="text" [value]="meta.valor |formatDecimal : 3" size="5" disabled>
-            </td>
-            <td class="center-align">{{meta.metaEstrategica.unidad_medida }}</td>
-            <td class="center-align" *ngIf="permission.editarMeta">
-              <a class="btn-floating light-green lighten-1" (click)="changeIcono($event,1)">
-                <i [id]="i" class="material-icons">edit</i>
-              </a>
-            </td>
-            <td class="center-align" *ngIf="permission.eliminarMeta">
-              <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(meta,'eliminar','estrategica')">
-                <i class="material-icons">delete</i>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </ng-template>
-    <ng-template [ngIf]="tipoMetaSeleccionada == 'OPERATIVAS'">
-      <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
-        <thead>
-          <tr>
-            <th class="center-align">Objetivo Operativo</th>
-            <th class="center-align">Valor</th>
-            <th class="center-align">Unidad Medida</th>
-            <th class="center-align" *ngIf="permission.editarMeta">Editar</th>
-            <th class="center-align" *ngIf="permission.eliminarMeta">Eliminar</th>
-          </tr>
-        </thead>
+  <div class="row center-align warning" *ngIf="datos_tabla && bandera">
+    <b>No hay metas de KPI´s para {{ getDescriptivoArea(idEtad) }} en {{ anioSeleccionado }} .</b>
+    <br>si desea agregar metas vaya a la seccion Carga manual o masiva de metas KPI´s.
+  </div>
 
-        <tbody>
-          <tr *ngIf="metas.length == 0 ">
-            <th colspan="5" class="center">No hay registros</th>
-          </tr>
-          <tr *ngFor="let meta of metas;let i = index">
-            <td class="center-align">{{meta.objetivoOperativo.valor}}</td>
-            <td class="center-align">
-              <input [id]="'text'+i" type="text" [value]="meta.valor |formatDecimal : 3" size="5" disabled>
-            </td>
-            <td class="center-align">{{meta.objetivoOperativo.unidad_medida }}</td>
-            <td class="center-align" *ngIf="permission.editarMeta">
-              <a class="btn-floating light-green lighten-1" (click)="changeIcono($event,2)">
-                <i [id]="i" class="material-icons">edit</i>
-              </a>
-            </td>
-            <td class="center-align" *ngIf="permission.eliminarMeta">
-              <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(meta,'eliminar','operativas')">
-                <i class="material-icons">delete</i>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </ng-template>
-    <ng-template [ngIf]="tipoMetaSeleccionada == 'KPI OPERATIVOS'">
-      <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
-        <thead>
-          <tr>
-            <th class="center-align">KPI</th>
-            <th class="center-align">Tipo</th>
-            <th class="center-align">Valor</th>
-            <th class="center-align">Unidad Medida</th>
-            <th class="center-align" *ngIf="permission.editarMeta">Editar</th>
-            <th class="center-align" *ngIf="permission.eliminarMeta">Eliminar</th>
-          </tr>
-        </thead>
+  <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla && !bandera">
+    <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
+      <thead>
+        <tr>
+          <th>KPI</th>
+          <th>Tipo</th>
+          <th>UM</th>
+          <th>Meta</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <tr *ngIf="metas.length == 0 ">
-            <th colspan="6" class="center">No hay registros</th>
-          </tr>
-          <tr *ngFor="let meta of metas;let i = index">
-            <td class="center-align">{{meta.kPIOperativo.valor}}</td>
-            <td class="center-align">
-              <div *ngIf="meta.kPIOperativo.tipo_kpi == 0">         
-                <label for="menos">MENOS ES MEJOR</label>
-              </div>
-              <div *ngIf="meta.kPIOperativo.tipo_kpi == 1">              
-                <label for="mas">MÁS ES MEJOR</label>
-                <br>
-              </div>
-            </td>
-            <td class="center-align">
-              <input [id]="'text'+i" type="text" [value]="meta.valor |formatDecimal : 3" size="5" disabled>
-            </td>
-            <td class="center-align">{{meta.kPIOperativo.unidad_medida }}</td>
-            <td class="center-align" *ngIf="permission.editarMeta">
-              <a class="btn-floating light-green lighten-1" (click)="changeIcono($event,3)">
-                <i [id]="i" class="material-icons">edit</i>
-              </a>
-            </td>
-            <td class="center-align" *ngIf="permission.eliminarMeta">
-              <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(meta,'eliminar','kpi')">
-                <i class="material-icons">delete</i>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </ng-template>
+      <tbody>
+        <tr *ngIf="kpis.length == 0 ">
+          <th colspan="4" class="center">No hay registros</th>
+        </tr>
+        <tr *ngFor="let kpi of kpis;let i = index">
+          <td>
+            {{ kpi.etadKpi.kpiOperativo.valor }}
+          </td>
+          <td>
+            {{ kpi.etadKpi.kpiOperativo.tipo_kpi }}
+          </td>
+          <td>
+            {{ kpi.etadKpi.kpiOperativo.unidad_medida }}
+          </td>
+          <td>
+            <input type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}" [disabled]="disabledInputText" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4" class="center-align">
+            <ng-template [ngIf]="!disabledInputText">
+              <button type="button" class="waves-effect waves-light btn grey darken-1" (click)="modificaValores('cancelar')">CANCELAR</button>
+              <button type="button" class="waves-effect waves-light btn light-green darken-1" (click)="openModalConfirmacion('update')">MODIFICAR</button>
+            </ng-template>
+            <button type="button" class="waves-effect waves-light btn light-green darken-1" (click)="modificaValores('editar')"
+              *ngIf="disabledInputText">EDITAR</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <!-- Inicio solo para pantallas-->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-      <a routerLink="../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      <a routerLink="../" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
         data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
         <i class="material-icons">
           <i class="material-icons">arrow_back</i>
