@@ -30,10 +30,12 @@ export class MetaManualService {
     return this.http.post<any>(this.URL,body);
   }
 
-  delete(id_usuario: number, id_meta: number): Observable<any> {
+  insertMetas(id_usuario: number,id_periodo:number, id_etad: number, meta:any): Observable<any> {
     const body = new HttpParams()
-      .set('action', 'deleteMeta')
-      .set('id_meta', '' + id_meta)
+      .set('action', 'insertMetas')
+      .set('id_etad', '' + id_etad)
+      .set('id_periodo', '' + id_periodo)
+      .set('meta', '' + JSON.stringify(meta))
       .set('id_usuario', '' + id_usuario)
     return this.http.post(this.URL, body);
   }

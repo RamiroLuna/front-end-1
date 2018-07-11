@@ -3,3 +3,8 @@ fieldset {
     border-radius: 5px;
     padding: 5px;
 }
+
+.warning{
+    color: #ef6c00; 
+}
+

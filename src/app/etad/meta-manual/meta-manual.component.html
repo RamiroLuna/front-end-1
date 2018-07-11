@@ -29,8 +29,7 @@
         </div>
       </div>
       <div class="input-field col s12 m12 l5 xl5">
-        <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="idEtad"
-          (ngModelChange)="changeCombo()">
+        <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="idEtad" (ngModelChange)="changeCombo()">
           <option value="">SELECCIONE</option>
           <option *ngFor="let etad of etads" [value]="etad.id">{{etad.valor}}</option>
         </select>
@@ -53,29 +52,45 @@
         <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
     </div>
   </div> -->
+
+  <div class="row center-align warning" *ngIf="datos_tabla && !bandera">
+    <b>Metas asignadas para {{ getDescriptivoArea(idEtad) }} en {{ anioSeleccionado }} .</b>
+    <br>Si desea modificar algún valor vaya a la seccion Edición de metas.
+  </div>
+
   <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
     <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
       <thead>
-        <tr>        
-           <td>KPI</td>
-           <td>Tipo</td>
-           <td>UM</td>
-           <td>Meta</td>
+        <tr>
+          <th>KPI</th>
+          <th>Tipo</th>
+          <th>UM</th>
+          <th>Meta</th>
         </tr>
       </thead>
 
       <tbody>
         <tr *ngIf="kpis.length == 0 ">
-            <th colspan="4" class="center">No hay registros</th>
+          <th colspan="4" class="center">No hay registros</th>
         </tr>
         <tr *ngFor="let kpi of kpis;let i = index">
           <td>
+            {{ kpi.etadKpi.kpiOperativo.valor }}
           </td>
           <td>
+            {{ kpi.etadKpi.kpiOperativo.tipo_kpi }}
           </td>
           <td>
+            {{ kpi.etadKpi.kpiOperativo.unidad_medida }}
           </td>
           <td>
+            <input type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}" [disabled]="!bandera" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
+          </td>
+        </tr>
+        <tr *ngIf="bandera">
+          <td colspan="4" class="center-align">
+            <button class="btn-large light-green darken-1 waves-effect waves-light" type="submit" name="asignar" (click)="openModalConfirmacion('add')">AGREGAR
+            </button>
           </td>
         </tr>
       </tbody>

@@ -1,11 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
-import { Meta } from '../../models/meta';
-import { deleteItemArray, getAnioActual, calculaDiaPorMes, isNumeroAsignacionValid, findRol } from '../../utils';
+import {
+  deleteItemArray,
+  getAnioActual,
+  calculaDiaPorMes,
+  isNumeroAsignacionValid,
+  findRol
+} from '../../utils';
 import swal from 'sweetalert2';
 import { MetaManualService } from './meta-manual.service';
 import { Periodo } from '../../models/periodo';
+import { PetMetaKpi } from '../../models/pet-meta-kpi';
 import { Catalogo } from '../../models/catalogo';
 import {
   trigger,
@@ -22,7 +28,19 @@ declare var Materialize: any;
   selector: 'app-meta-manual',
   styleUrls: ['./meta-manual.component.css'],
   templateUrl: './meta-manual.component.html',
-  providers: [MetaManualService]
+  providers: [MetaManualService],
+  animations: [
+    trigger('visibility', [
+      state('inactive', style({
+        opacity: 0
+      })),
+      state('active', style({
+        opacity: 1
+      })),
+      transition('inactive => active', animate('1s ease-in')),
+      transition('active => inactive', animate('500ms ease-out'))
+    ])
+  ]
 })
 
 export class MetaManualComponent implements OnInit {
@@ -41,15 +59,15 @@ export class MetaManualComponent implements OnInit {
 
   public anios: any = {};
   public meses: Array<any> = [];
-  public metas: Array<Meta> = [];
+  public kpis: Array<PetMetaKpi>;
   public formConsultaPeriodo: FormGroup;
   public status: string;
 
   public idEtad: number;
   public idPeriodo: number;
 
-
-
+  //bandera para permitir solo capturar metas
+  public bandera: boolean;
 
   constructor(private auth: AuthService,
     private service: MetaManualService,
@@ -61,6 +79,7 @@ export class MetaManualComponent implements OnInit {
     this.datos_tabla = false;
     this.submitted = false;
     this.disabled = false;
+    this.bandera = false;
     // // this.estatusPeriodo = true;
     this.anioSeleccionado = getAnioActual();
 
@@ -160,6 +179,7 @@ export class MetaManualComponent implements OnInit {
   consultaPeriodo(): void {
     this.submitted = true;
     this.status = "inactive";
+    this.bandera = false;
 
     if (this.formConsultaPeriodo.valid) {
       this.disabled = true;
@@ -169,7 +189,16 @@ export class MetaManualComponent implements OnInit {
         console.log('result get', result)
         if (result.response.sucessfull) {
           // // this.estatusPeriodo = result.data.estatusPeriodo;
-          this.metas = result.data.listMetas || [];
+          this.kpis = result.data.listMetasKpiOperativos as Array<PetMetaKpi> || [];
+
+
+          this.kpis.filter(el => {
+            if (el.id_meta_kpi == 0) {
+              this.bandera = true;
+            }
+            el.class_input = '';
+          });
+
           this.datos_tabla = true;
           this.disabled = false;
 
@@ -196,55 +225,103 @@ export class MetaManualComponent implements OnInit {
 
   }
 
-  openModalConfirmacion(rowForecast: Meta, accion: string, event?: any): void {
+  openModalConfirmacion(accion: string, event?: any): void {
     this.mensajeModal = '';
 
     switch (accion) {
-      case 'eliminar':
-        this.mensajeModal = '¿Está seguro de eliminar? ';
+      case 'add':
+        this.mensajeModal = '¿Está seguro de agregar metas? ';
         break;
     }
 
-    /* 
-     * Configuración del modal de confirmación
-     */
-    swal({
-      title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
-      type: 'question',
-      html: '<p style="color: #303f9f "> Dia : <b>' + rowForecast.dia_string + ' </b>Turno: <b>' + rowForecast.id_turno + '</b> Grupo: <b>' + rowForecast.nombre_grupo + '</b></p>',
-      showCancelButton: true,
-      confirmButtonColor: '#303f9f',
-      cancelButtonColor: '#9fa8da ',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Si!',
-      allowOutsideClick: false,
-      allowEnterKey: false
-    }).then((result) => {
-      /*
-       * Si acepta
-       */
-      if (result.value) {
-        switch (accion) {
-          case 'eliminar':
-            this.service.delete(this.auth.getIdUsuario(), rowForecast.id_meta).subscribe(result => {
-              if (result.response.sucessfull) {
-                deleteItemArray(this.metas, rowForecast.id_meta, 'id_meta');
-                Materialize.toast('Se eliminó correctamente ', 4000, 'green');
-              } else {
+    if (this.isValidMetas(this.kpis) == 0) {
 
-                Materialize.toast(result.response.message, 4000, 'red');
-              }
-            }, error => {
-              Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
-            });
-            break;
-        }
+      /* 
+       * Configuración del modal de confirmación
+       */
+      swal({
+        title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
+        type: 'question',
+        html: '<p style="color: #303f9f "> Area Etad : <b>' + this.getDescriptivoArea(this.idEtad) + ' </b> Año: <b>' + this.anioSeleccionado + '</b></p>',
+        showCancelButton: true,
+        confirmButtonColor: '#303f9f',
+        cancelButtonColor: '#9fa8da ',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si!',
+        allowOutsideClick: false,
+        allowEnterKey: false
+      }).then((result) => {
         /*
-        * Si cancela accion
-        */
-      } else if (result.dismiss === swal.DismissReason.cancel) {
+         * Si acepta
+         */
+        if (result.value) {
+          switch (accion) {
+            case 'add':
+              /* 
+              * Se forma el modelo a enviar al backend
+              * contenedor.ponderaciones Es una variable que se necesita por el backend
+              */
+              let contenedor: any = { metas: {} };
+              this.kpis.map(el => {
+                if (Number.isNaN(parseInt("" + el.valor)) || el.valor == undefined) {
+                  el.valor = 0;
+                }
+              });
+              contenedor.metas = this.kpis;
+
+              this.service.insertMetas(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad, contenedor).subscribe(result => {
+               
+                if (result.response.sucessfull) {
+                  this.bandera = false;
+                  Materialize.toast('Se agregarón correctamente ', 4000, 'green');
+                } else {
+
+                  Materialize.toast(result.response.message, 4000, 'red');
+                }
+              }, error => {
+                Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+              });
+              break;
+          }
+          /*
+          * Si cancela accion
+          */
+        } else if (result.dismiss === swal.DismissReason.cancel) {
+        }
+      })
+    } else {
+
+      Materialize.toast('Verifique los datos marcados en rojo!', 4000, 'red');
+
+    }
+
+  }
+
+  getDescriptivoArea(idEtad): string {
+
+    let el = this.etads.filter(el => el.id == idEtad);
+
+    if (el.length > 0) {
+      return el[0].valor;
+    } else {
+      return "No identificado";
+    }
+
+  }
+
+  isValidMetas(metas_kpis: Array<PetMetaKpi>): number {
+    let numero_error = 0;
+
+    metas_kpis.map(el => {
+      if (!isNumeroAsignacionValid(""+el.valor)) {
+        numero_error++;
+        el.class_input = 'error';
+      } else {
+        el.class_input = '';
       }
-    })
+    });
+
+    return numero_error;
 
   }
 
