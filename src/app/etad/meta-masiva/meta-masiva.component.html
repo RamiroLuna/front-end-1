@@ -1,6 +1,6 @@
 <div class="container" *ngIf="!loading">
   <div class="section"></div>
-  <h4 class="color_titulo center-align">Carga masiva de metas</h4>
+  <h4 class="color_titulo center-align">Carga masiva de metas KPI's</h4>
   <!-- Solo para dispositivos moviles -->
   <div class="hide-on-large-only right-align">
     <a routerLink="../../opciones" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
@@ -26,31 +26,8 @@
       </legend>
       <div class="section"></div>
       <div class="row">
-        <div class="input-field col s12 m12 l4 xl4">
-          <select materialize="material_select" formControlName="tipoMeta" [materializeSelectOptions]="tiposMeta" [(ngModel)]="tipoMeta"
-            (ngModelChange)="changeCombo('tipoMeta')">
-            <option value="">SELECCIONE</option>
-            <option *ngFor="let tipo of tiposMeta" [value]="tipo.id">{{tipo.descripcion}}</option>
-          </select>
-          <label>Tipo de meta</label>
-          <div *ngIf="formCargaMasiva.controls.tipoMeta.errors?.required && (formCargaMasiva.controls.tipoMeta?.touched || submitted)"
-            class="error">
-            Seleccione una opcion
-          </div>
-        </div>
-        <div class="input-field col s12 m12 l4 xl4">
-          <select materialize="material_select" formControlName="frecuencia" [materializeSelectOptions]="frecuencias" [(ngModel)]="frecuencia"
-            (ngModelChange)="changeCombo('frecuencia')">
-            <option value="">SELECCIONE</option>
-            <option *ngFor="let frecuencia of frecuencias" [value]="frecuencia.value">{{frecuencia.descripcion}}</option>
-          </select>
-          <label>Frecuencia</label>
-          <div *ngIf="formCargaMasiva.controls.frecuencia.errors?.required && (formCargaMasiva.controls.frecuencia?.touched || submitted)"
-            class="error">
-            Seleccione una opcion
-          </div>
-        </div>
-        <div class="input-field col s12 m12 l4 xl4">
+        <div class="col s12 m12 l1 xl1"></div>
+        <div class="input-field col s12 m12 l5 xl5">
           <select materialize="material_select" formControlName="anioSeleccionado" [materializeSelectOptions]="anios" [(ngModel)]="anioSeleccionado"
             (ngModelChange)="changeAnio()">
             <option value="">SELECCIONE</option>
@@ -62,9 +39,7 @@
             Seleccione una opcion
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="input-field col s12 m12 l4 xl4">
+        <div class="input-field col s12 m12 l5 xl5">
           <select materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="idPeriodo"
             (ngModelChange)="changeCombo()">
             <option value="" selected>SELECCIONE</option>
@@ -76,18 +51,21 @@
             Seleccione una opcion
           </div>
         </div>
-        <div class="input-field col s12 m12 l4 xl4">
-          <select materialize="material_select" [materializeSelectOptions]="lineas" formControlName="idEtad" [(ngModel)]="idEtad" (ngModelChange)="changeCombo()">
+      </div>
+      <div class="row">
+        <div class="col s12 m12 l1 xl1"></div>
+        <div class="input-field col s12 m12 l5 xl5">
+          <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="idEtad" (ngModelChange)="changeCombo('etad')">
             <option value="" selected>SELECCIONE</option>
-            <option *ngFor="let linea of lineas" [value]="linea.id_linea">{{linea.descripcion}}</option>
+            <option *ngFor="let etad of etads" [value]="etad.id">{{etad.valor}}</option>
           </select>
-          <label>Etad</label>
+          <label>Area Etad</label>
           <div *ngIf="formCargaMasiva.controls.idEtad.errors?.required && (formCargaMasiva.controls.idEtad?.touched || submitted)"
             class="error">
             Seleccione una opcion
           </div>
         </div>
-        <div class="file-field input-field input-field col s12 m12 l4 xl4">
+        <div class="file-field input-field input-field col s12 m12 l5 xl5">
           <div class="btn">
             <span>
               <i class="material-icons">attach_file</i>
@@ -105,12 +83,13 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col s6 m6 l6 xl6 center-align">
-          <button type="button" id="template_button" class="waves-effect waves-light btn indigo darken-1" (click)="downloadTemplate()" [disabled]="frecuencia == ''">
+      <div class="row center-align">
+        <div class="col s6 m6 l6 xl6">
+          <button type="button" id="template_button" class="waves-effect waves-light btn indigo darken-1" (click)="downloadTemplate()"
+            [disabled]="disabledBtnTemplate">
             <i class="material-icons left">vertical_align_bottom</i>TEMPLATE</button>
         </div>
-        <div class="col s6 m6 l6 xl6 center-align">
+        <div class="col s6 m6 l6 xl6">
           <button type='submit' class="waves-effect waves-light btn light-green darken-1" [disabled]="disabled">
             {{ textoBtn }}</button>
         </div>
@@ -127,20 +106,20 @@
         </legend>
         <table class="striped">
           <thead>
-            <tr *ngFor="let header of rowsHeader">
-              <th>{{ header.column0 }}</th>
-              <th>{{ header.column1 }}</th>
-              <th>{{ header.column2 }}</th>
-              <th>{{ header.column3 }}</th>
+            <tr>
+              <th>KPI</th>
+              <th>Tipo</th>
+              <th>U.M.</th>
+              <th>Meta</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr *ngFor="let row of rows">
-              <td>{{ row.column0 }}</td>
-              <td>{{ row.column1 }}</td>
-              <td>{{ row.column2 }}</td>
-              <td>{{ row.column3 }}</td>
+            <tr *ngFor="let meta of metas">
+              <td>{{meta.kpi}}</td>
+              <td>{{meta.tipo}}</td>
+              <td>{{meta.um}}</td>
+              <td>{{meta.meta}}</td>
             </tr>
           </tbody>
         </table>

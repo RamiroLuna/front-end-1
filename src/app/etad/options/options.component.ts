@@ -9,8 +9,8 @@ declare var $: any;
 export class OptionsComponent implements AfterViewInit {
 
   public permission: any = {
-    cargaMetaManual: false,
-    cargaMasiva: false,
+    cargaMetaManual: true,
+    cargaMasiva: true,
     edicionMeta: false,
     catalogos: true,
     cargaPonderacionManual: true,

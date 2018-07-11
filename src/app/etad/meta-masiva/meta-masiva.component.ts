@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { MetaMasivaService } from './meta-masiva.service';
-import { getAnioActual, getMetasKPI , getFrecuenciaMetaKPI } from '../../utils';
+import { getAnioActual, getMetasKPI , getFrecuenciaMetaKPI, isNumeroAsignacionValid } from '../../utils';
 import { AuthService } from '../../auth/auth.service';
-import { Linea } from '../../models/linea';
+import { Catalogo } from '../../models/catalogo';
 import { Periodo } from '../../models/periodo';
 import {
   trigger,
@@ -38,25 +38,15 @@ declare var Materialize: any;
 export class MetaMasivaComponent implements OnInit {
 
   public periodos: Array<Periodo> = [];
-  public lineas: Array<Linea> = [];
+  public etads: Array<Catalogo> = [];
   public anios: Array<any> = [];
   public meses: Array<any> = [];
-
-  public tiposMeta: Array<any> = [];
-  public frecuanciasDisponibles: Array<any> = [];
-  public frecuencias: Array<any> = [];
-
-  public rowsHeader:Array<any>=[];
-  public rows:Array<any>=[];
-
-
+  public metas: Array<any> = [];
 
   public formCargaMasiva: FormGroup;
-  public anioSeleccionado: any;
+  public anioSeleccionado: number;
   public idEtad: number;
-  public idPeriodo: any;
-  public tipoMeta: any;
-  public frecuencia: string;
+  public idPeriodo: number;
   public archivoCsv: any;
   public bVistaPre: boolean;
   public loading: boolean;
@@ -66,32 +56,28 @@ export class MetaMasivaComponent implements OnInit {
   public status: string;
   public height: number;
 
+  public disabledBtnTemplate:boolean;
+
+
 
   constructor(private service: MetaMasivaService,
     private fb: FormBuilder,
     private auth: AuthService) { }
 
   ngOnInit() {
-    this.loading = true;
-
-    this.tiposMeta = getMetasKPI();
-
-    this.frecuanciasDisponibles = getFrecuenciaMetaKPI();
-
-    this.frecuencias = [];
+    this.anioSeleccionado = -1;
     this.bVistaPre = false;
     this.submitted = false;
+    this.loading = true;
     this.disabled = false;
-    this.tipoMeta = '';
-
     this.status = "inactive";
     this.textoBtn = " VISTA PREVIA ";
+    this.disabledBtnTemplate = true;
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-
+      console.log('get init load catalogos', result)
       if (result.response.sucessfull) {
-        this.lineas = result.data.listLineas || [];
-        this.lineas = this.lineas.filter(el => el.id_linea != 6);
+        this.etads = result.data.listEtad || [];
         this.periodos = result.data.listPeriodos || [];
 
         let tmpAnios = this.periodos.map(el => el.anio);
@@ -128,11 +114,9 @@ export class MetaMasivaComponent implements OnInit {
 
   loadFormulario(): void {
     this.formCargaMasiva = this.fb.group({
-      tipoMeta: new FormControl({ value: this.tipoMeta }, [Validators.required]),
-      frecuencia: new FormControl({ value: this.frecuencia }, [Validators.required]),
       idEtad: new FormControl({ value: this.idEtad }, [Validators.required]),
-      anioSeleccionado: new FormControl({ value: this.anioSeleccionado, disabled: true }, [Validators.required]),
-      idPeriodo: new FormControl({ value: this.idPeriodo, disabled: true }, [Validators.required]),
+      anioSeleccionado: new FormControl({ value: this.anioSeleccionado }, [Validators.required]),
+      idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required]),
       archivoCsv: new FormControl({ value: this.archivoCsv }, [Validators.required])
     });
   }
@@ -167,44 +151,13 @@ export class MetaMasivaComponent implements OnInit {
     this.bVistaPre = false;
   }
 
-  changeCombo(tipoCombo: string): void {
+  changeCombo(tipo_combo:string): void {
     this.bVistaPre = false;
     this.status = "inactive";
 
-    if (tipoCombo == 'tipoMeta') {
-    
-      let el = this.tiposMeta.filter((el) => el.id == this.tipoMeta);
-      this.frecuencias = [];
-      this.formCargaMasiva.controls.idPeriodo.disable();
-      this.frecuencia = '';
-      this.anioSeleccionado = '';
-      this.idPeriodo = '';
-
-      if (el.length > 0) {
-        if(el[0].frecuencia == 2){
-          this.frecuencias = this.frecuanciasDisponibles.map(el=>el);
-        }else{
-          this.frecuencias = this.frecuanciasDisponibles.filter(element=> element.id == el[0].frecuencia);
-        }
-      }
-
-    }else if(tipoCombo == 'frecuencia'){
-      this.idPeriodo = '';
-      this.anioSeleccionado = '';
-      if(this.frecuencia == 'mensual'){
-        this.formCargaMasiva.controls.idPeriodo.enable();
-        this.formCargaMasiva.controls.anioSeleccionado.enable();
-      }else if(this.frecuencia == 'anual'){
-        this.formCargaMasiva.controls.idPeriodo.disable();
-        this.formCargaMasiva.controls.anioSeleccionado.enable();
-      }else{
-        this.formCargaMasiva.controls.idPeriodo.disable();
-        this.formCargaMasiva.controls.anioSeleccionado.disable();
-      }
-      
+    if(tipo_combo == 'etad'){
+      this.disabledBtnTemplate =  !isNumeroAsignacionValid(this.idEtad);
     }
-
-    
   }
 
   uploadMetasCSV(): void {
@@ -216,22 +169,16 @@ export class MetaMasivaComponent implements OnInit {
       this.disabled = true;
       this.textoBtn = "CARGANDO ...";
       this.bVistaPre = false;
-      this.rowsHeader = [];
-
-      this.service.preview(
-        this.auth.getIdUsuario(),this.archivoCsv, this.idPeriodo, 
-          this.idEtad, this.tipoMeta, this.frecuencia, this.anioSeleccionado).subscribe(result => {
-        
+      this.height = $( document  ).height();
+      this.service.preview(this.auth.getIdUsuario(), this.archivoCsv, this.idPeriodo, this.idEtad).subscribe(result => {
+        console.log('??????->', result)
         if (result.response.sucessfull) {
-          this.rows = result.data.listData || [];
-          this.rowsHeader.push(this.rows.shift());
-        
-          
+          this.metas = result.data.listData || [];
           this.textoBtn = " VISTA PREVIA ";
-          this.height = $(document).height();
+      
           this.bVistaPre = true;
-          setTimeout(() => {
-            this.status = 'active';
+          setTimeout(() => { 
+            this.status = 'active';             
           }, 20)
 
         } else {
@@ -253,7 +200,7 @@ export class MetaMasivaComponent implements OnInit {
 
   procesarFile(): void {
 
-    this.service.loadData(this.auth.getIdUsuario(),this.idEtad, this.anioSeleccionado, this.idPeriodo, this.frecuencia, this.tipoMeta).subscribe(result => {
+    this.service.loadData(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad).subscribe(result => {
       if (result.response.sucessfull) {
         Materialize.toast('Metas cargadas correctamente', 4000, 'green');
         this.bVistaPre = true;
@@ -261,13 +208,13 @@ export class MetaMasivaComponent implements OnInit {
         $('.file-path').val('')
         this.formCargaMasiva.reset();
         this.submitted = false;
-        $(document).height(this.height + 'px');
+        $(document).height(this.height+'px');
 
       } else {
         // "999" indica que ya hay metas cargadas para el preiodo seleccionado
-        if (result.response.message == "999") {
-          this.alertConfirmaReemplazo(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad);
-        } else {
+        if(result.response.message == "999"){
+          this.alertConfirmaReemplazo(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad );
+        }else{
           Materialize.toast(result.response.message, 4000, 'red');
         }
 
@@ -299,15 +246,15 @@ export class MetaMasivaComponent implements OnInit {
        * Si acepta
        */
       if (result.value) {
-        this.service.reWriteFile(this.auth.getIdUsuario(), idPeriodo, idEtad).subscribe(result => {
+        this.service.rewriteData(this.auth.getIdUsuario(), idPeriodo, idEtad).subscribe(result => {       
           if (result.response.sucessfull) {
             Materialize.toast('Se modificarón las metas correctamente', 4000, 'green');
             this.bVistaPre = true;
             this.status = "inactive";
+            $('.file-path').val('')
             this.formCargaMasiva.reset();
-            $('.file-path').val('');
             this.submitted = false;
-            
+
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
           }
@@ -334,22 +281,34 @@ export class MetaMasivaComponent implements OnInit {
       return "Linea no identificada"
     }
   }
+  downloadTemplate(): void {
 
-  downloadTemplate():void{
-    this.service.downloadTemplate(this.auth.getIdUsuario(), this.tipoMeta, this.frecuencia).subscribe(result => {
+    this.service.downloadTempleate(this.auth.getIdUsuario(), this.idEtad).subscribe(result => {
 
       if (result.response.sucessfull) {
 
         let linkFile = document.createElement('a');
         let data_type = 'data:text/csv;base64,';
         let file_base64 = result.response.message;
+        let nameFile = this.getDescriptivoArea(this.idEtad).replace(/ /g,'_');
 
-        linkFile.href = data_type + file_base64;
-        linkFile.download = 'template.csv';
-    
-        linkFile.click();
-        linkFile.remove();
-        
+        if (linkFile.download != undefined) {
+
+          document.body.appendChild(linkFile);
+
+          linkFile.href = data_type + file_base64;
+          
+          linkFile.download = nameFile+'_metas_kpi.csv';
+
+          linkFile.click();
+          linkFile.remove();
+
+        } else {
+          let byteCharacters = atob(file_base64);
+          let blobObject = new Blob(["\ufeff", byteCharacters], { type: 'application/vnd.ms-excel' });
+          window.navigator.msSaveBlob(blobObject, 'template.xls');
+        }
+
       } else {
         Materialize.toast(result.response.message, 4000, 'red');
       }
@@ -359,6 +318,15 @@ export class MetaMasivaComponent implements OnInit {
 
   }
 
+  
+  getDescriptivoArea(idAreaEtad:number):string{
+    let el = this.etads.filter(el=>el.id == idAreaEtad);
+    if(el.length > 0){
+      return el[0].valor;
+    }else{
+      return "No identificada";
+    }
+  }
   
 
 }

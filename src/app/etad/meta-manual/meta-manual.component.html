@@ -1,131 +1,90 @@
 <div class="container" *ngIf="!loading">
+  <div class="section"></div>
   <h4 class="color_titulo center-align">Carga manual de metas
-    <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar tipo" (click)="openModalTipoMeta($event)">{{ tipoMetaSeleccionada | minuscula }}</a>
+    <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar año" (click)="openModalYear($event)">{{ anioSeleccionado }}</a>
   </h4>
   <!-- Solo para dispositivos moviles -->
   <div class="hide-on-large-only right-align">
-    <a routerLink="../../../opciones" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+    <a routerLink="../../" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
       data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
       <i class="material-icons">
         <i class="material-icons">arrow_back</i>
       </i>
     </a>
   </div>
-  <!-- Fin Solo para dispositivos moviles -->
+  <!-- fin Solo para dispositivos moviles -->
+
   <div class="row">
-    <div class="col s12 m12 l12 xl12">
-      <form class="col s12 m12 l12 xl12" [formGroup]="formCargaManual" (ngSubmit)="openModalConfirmacion(meta, 'add')" autocomplete="off">
-        <fieldset>
-          <legend class="color_titulo">
-            <b>Ingrese los datos:</b>
-          </legend>
-          <div class="row">
-            <div class="col s12 m12 l6 xl6">
-              <label>Etad</label>
-              <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="id_etad" [(ngModel)]="meta.id_etad"  (ngModelChange)="changeCombo('etad')">
-                <option value="">SELECCIONE</option>
-                <option *ngFor="let etad of etads" [value]="etad.id_linea">{{ etad.valor }}</option>
-              </select>
-              <div *ngIf="formCargaManual.controls.id_etad.errors?.required && (formCargaManual.controls.id_etad?.touched || submitted)"
-                class="error">
-                El etad es requerido
-              </div>
-            </div>
-            <div class="col s12 m12 l6 xl6">
-              <label>Frecuencia</label>
-              <select materialize="material_select" formControlName="frecuencia" [materializeSelectOptions]="frecuencias" [(ngModel)]="meta.frecuencia"
-                (ngModelChange)="changeCombo('frecuencia')">
-                <option value="">SELECCIONE</option>
-                <option *ngFor="let frecuencia of frecuencias" [value]="frecuencia.value">{{frecuencia.descripcion}}</option>
-              </select>
-              <div *ngIf="formCargaManual.controls.frecuencia.errors?.required && (formCargaManual.controls.frecuencia?.touched || submitted)"
-                class="error">
-                Seleccione una opcion
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col s12 m12 l3 xl3">
-              <label>Año</label>
-              <select materialize="material_select" formControlName="anio" [materializeSelectOptions]="anios" [(ngModel)]="meta.anio" (ngModelChange)="changeCombo('anio')">
-                <option value="">SELECCIONE</option>
-                <option *ngFor="let anio of anios" [value]="anio.anio">{{anio.anio}}</option>
-              </select>
-              <div *ngIf="formCargaManual.controls.anio.errors?.required && (formCargaManual.controls.anio?.touched || submitted)" class="error">
-                Seleccione
-              </div>
-            </div>
-            <div class="col s12 m12 l3 xl3">
-              <label>Mes</label>
-              <select materialize="material_select" formControlName="id_periodo" [materializeSelectOptions]="meses" [(ngModel)]="meta.id_periodo"
-                (ngModelChange)="changeCombo('periodo')">
-                <option value="">SELECCIONE</option>
-                <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
-              </select>
-              <div *ngIf="formCargaManual.controls.id_periodo.errors?.required && (formCargaManual.controls.id_periodo?.touched || submitted)"
-                class="error">
-                Seleccione
-              </div>
-            </div>
-            <div class="col s12 m12 l6 xl6">
-              <label>{{ titulo_combo }}</label>
-              <select materialize="material_select" formControlName="id_option_meta" [materializeSelectOptions]="lista_temporal" [(ngModel)]="meta.id_option_meta"
-                (ngModelChange)="changeCombo('lista')">
-                <option value="">SELECCIONE</option>
-                <option *ngFor="let item of lista_temporal" [value]="item.id">{{item.valor}}</option>
-              </select>
-              <div *ngIf="formCargaManual.controls.id_option_meta.errors?.required && (formCargaManual.controls.id_option_meta?.touched || submitted)"
-                class="error">
-                Seleccione
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="input-field  col s6 m6 l3 xl3">
-              <input type="checkbox" formControlName="menos"  [checked]="meta.menor == 0">
-              <label for="menos">Menos es mejor</label>
-            </div>
-            <div class="input-field  col s6 m6 l3 xl3">
-              <input type="checkbox" formControlName="mas"  [checked]="meta.mas == 1">
-              <label for="mas">Más es mejor</label>
-              <br>
-            </div>
-            <div class="input-field  col s12 m12 l3 xl3">
-              <label for="meta" class="active">Meta</label>
-              <input id="meta" type="text" [(ngModel)]="meta.meta" formControlName="meta">
-              <div *ngIf="formCargaManual.controls.meta.errors?.required && (formCargaManual.controls.meta?.touched || submitted)" class="error">
-                Requiere meta
-              </div>
-              <div *ngIf="formCargaManual.controls.meta.errors?.pattern && (formCargaManual.controls.meta?.pattern || submitted)" class="error">
-                Valor no valido
-              </div>
-            </div>
-            <div class="input-field  col s12 m12 l3 xl3">
-              <input id="unidad_medida" type="text" [value]="meta.unidad_medida" formControlName="unidad_medida">
-              <label for="unidad_medida" class="active">Unidad Medida</label>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="input-field col offset-s1 offset-m3 offset-l2 offset-xl3">
-              <a routerLink="../../../opciones" class="col btn grey lighten-1  waves-effect waves-light" type="submit" name="cancelar">Cancelar
-              </a>
-            </div>
-
-            <div class="input-field col offset-m1 offset-l1 offset-xl2">
-              <button class="col btn light-green darken-1 waves-effect waves-light" type="submit" name="asignar">Guardar
-              </button>
-            </div>
-          </div>
-        </fieldset>
-      </form>
-    </div>
+    <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="consultaPeriodo()" autocomplete="off">
+      <div class="input-field col s12 m12 l6 xl6">
+        <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="idPeriodo"
+          (ngModelChange)="changeCombo()">
+          <option value="">SELECCIONE</option>
+          <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
+        </select>
+        <label for="mes">mes</label>
+        <div *ngIf="formConsultaPeriodo.controls.idPeriodo.errors?.required && (formConsultaPeriodo.controls.idPeriodo?.touched || submitted)"
+          class="error">
+          Seleccione una opcion
+        </div>
+      </div>
+      <div class="input-field col s12 m12 l5 xl5">
+        <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="idEtad"
+          (ngModelChange)="changeCombo()">
+          <option value="">SELECCIONE</option>
+          <option *ngFor="let etad of etads" [value]="etad.id">{{etad.valor}}</option>
+        </select>
+        <label for="etad">Area Etad</label>
+        <div *ngIf="formConsultaPeriodo.controls.idEtad.errors?.required && (formConsultaPeriodo.controls.idEtad?.touched || submitted)"
+          class="error">
+          Seleccione una opcion
+        </div>
+      </div>
+      <div class="input-field col s12 m12 l1 xl1">
+        <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
+          <i class="material-icons">search</i>
+        </button>
+        <label></label>
+      </div>
+    </form>
   </div>
+  <!-- <div class="row" *ngIf="!estatusPeriodo">
+    <div class="color_titulo center-align">
+        <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
+    </div>
+  </div> -->
+  <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
+    <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
+      <thead>
+        <tr>        
+           <td>KPI</td>
+           <td>Tipo</td>
+           <td>UM</td>
+           <td>Meta</td>
+        </tr>
+      </thead>
 
+      <tbody>
+        <tr *ngIf="kpis.length == 0 ">
+            <th colspan="4" class="center">No hay registros</th>
+        </tr>
+        <tr *ngFor="let kpi of kpis;let i = index">
+          <td>
+          </td>
+          <td>
+          </td>
+          <td>
+          </td>
+          <td>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <!-- Inicio solo para pantallas-->
   <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-      <a routerLink="../../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+      <a routerLink="../../" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
         data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
         <i class="material-icons">
           <i class="material-icons">arrow_back</i>
@@ -135,6 +94,7 @@
   </div>
   <!-- Fin solo para pantallas-->
 </div>
+
 <div class="container" *ngIf="loading">
   <div id="loader-wrapper">
     <div id="loader"></div>
