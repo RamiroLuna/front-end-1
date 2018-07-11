@@ -169,37 +169,39 @@
       </li>
       <li>
         <div class="collapsible-header">
-          <i class="material-icons">multiline_chart</i>Registro de indicadores</div>
+          <i class="material-icons">multiline_chart</i>Indicadores</div>
         <div class="collapsible-body light-green lighten-5">
           <div class="row">
             <div class="col s12 m12 l12 xl12">
               <!-- Vista solo para moviles  -->
               <div class="hide-on-large-only">
-                <a *ngIf="permission.produccion" routerLink="produccion" class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1"
+                <a *ngIf="permission.indicador_diario" routerLink="indicadores-diario/sub-menu-indicadores" class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1"
                   (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                    PRODUCCION
+                    DIARIOS
                   </i>
                 </a>
-                <a disabled *ngIf="!permission.produccion" class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                <a disabled *ngIf="!permission.indicador_diario" class="col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1"
+                  (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                    PRODUCCION
+                    DIARIOS
                   </i>
                 </a>
                 <div class="col s1 m1 l1 xl1"></div>
-                <a *ngIf="permission.fallas" routerLink="fallas" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                <a *ngIf="permission.indicador_mensual" routerLink="fallas" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
                   (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                    FALLAS
+                    MENSUALES
                   </i>
                 </a>
-                <a disabled *ngIf="!permission.fallas" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                <a disabled *ngIf="!permission.indicador_mensual" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                  (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                    FALLAS
+                    MENSUALES
                   </i>
                 </a>
                 <div class="col s1 m1 l1 xl1"></div>
-                <a *ngIf="permission.validacion" routerLink="validaciones" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                <!-- <a *ngIf="permission.validacion" routerLink="validaciones" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
                   (click)="ocultarTooltip()">
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     VALIDACIÓN
@@ -209,35 +211,35 @@
                   <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                     VALIDACIÓN
                   </i>
-                </a>
+                </a> -->
               </div>
               <!-- Fin solo para moviles -->
 
               <!-- Inicio solo para pantallas-->
               <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
                 <div class="col s1 m1 l1 xl1"></div>
-                <a *ngIf="permission.produccion" routerLink="produccion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
-                  PRODUCCION
+                <a *ngIf="permission.indicador_diario" routerLink="indicadores-diario/sub-menu-indicadores" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  DIARIOS
                 </a>
-                <a disabled *ngIf="!permission.produccion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
-                  PRODUCCION
+                <a disabled *ngIf="!permission.indicador_diario" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  DIARIOS
                 </a>
                 <div class="col s2 m2 l2 xl2"></div>
-                <a *ngIf="permission.fallas" routerLink="fallas" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
-                  FALLAS
+                <a *ngIf="permission.indicador_mensual" routerLink="fallas" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  MENSUALES
                 </a>
 
-                <a disabled *ngIf="!permission.fallas" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
-                  FALLAS
+                <a disabled *ngIf="!permission.indicador_mensual" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
+                  MENSUALES
                 </a>
 
-                <div class="col s2 m2 l2 xl2"></div>
+                <!-- <div class="col s2 m2 l2 xl2"></div>
                 <a *ngIf="permission.validacion" routerLink="validaciones" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   VALIDACION
                 </a>
                 <a disabled *ngIf="!permission.validacion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   VALIDACION
-                </a>
+                </a> -->
               </div>
             </div>
           </div>

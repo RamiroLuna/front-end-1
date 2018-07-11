@@ -17,6 +17,7 @@ import { PonderacionManualComponent } from './ponderacion-manual/ponderacion-man
 import { PonderacionMasivaComponent } from './ponderacion-masiva/ponderacion-masiva.component';
 import { ListaPonderacionComponent } from './lista-ponderacion/lista-ponderacion.component';
 import { SubMenuPonderacionesComponent } from './sub-menu-ponderaciones/sub-menu-ponderaciones.component';
+import { SubMenuIndicadoresComponent } from './sub-menu-indicadores/sub-menu-indicadores.component';
 
 
 
@@ -92,7 +93,16 @@ const routes: Routes = [
     // data: {
     //   expectedRole: 
     // }
-  }
+  },
+  /* rutas registro de indicadores */
+   {
+    path: 'opciones/:seccion/sub-menu-indicadores', component: SubMenuIndicadoresComponent,
+    // , canActivate: [AuthGuardEtad],
+    // data: {
+    //   expectedRole: 
+    // }
+  },
+
 
 ];
 
@@ -117,7 +127,8 @@ const routes: Routes = [
     PonderacionManualComponent,
     PonderacionMasivaComponent,
     ListaPonderacionComponent,
-    SubMenuPonderacionesComponent
+    SubMenuPonderacionesComponent,
+    SubMenuIndicadoresComponent
   ],
   providers: [
     AuthGuardEtad

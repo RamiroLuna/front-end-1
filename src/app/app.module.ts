@@ -20,6 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MenuPrincipalComponent } from './menu-principal/menu-principal.component';
 
 
+
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full'},
   { path: 'login', component: LoginComponent, canActivate: [NotAuthGuard] },
