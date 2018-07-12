@@ -110,6 +110,12 @@ const routes: Routes = [
     // data: {
     //   expectedRole: 
     // }
+  },{
+    path: 'opciones/:seccion/sub-menu-indicadores/nuevo', component: FormularioIndicadorDayComponent,
+    // , canActivate: [AuthGuardEtad],
+    // data: {
+    //   expectedRole: 
+    // }
   }
 
 
