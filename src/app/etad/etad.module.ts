@@ -22,6 +22,8 @@ import { FormularioIndicadorDayComponent } from './formulario-indicador-day/form
 import { ListaIndicadorDayComponent } from './lista-indicador-day/lista-indicador-day.component';
 import { FormularioIndicadorMothComponent } from './formulario-indicador-moth/formulario-indicador-moth.component';
 import { ListaIndicadorMothComponent } from './lista-indicador-moth/lista-indicador-moth.component';
+import { ListaReportesComponent } from './lista-reportes/lista-reportes.component';
+import { RptGlobalAreaComponent } from './rpt-global-area/rpt-global-area.component';
 
 
 
@@ -112,7 +114,7 @@ const routes: Routes = [
     // data: {
     //   expectedRole: 
     // }
-  },{
+  }, {
     path: 'opciones/:seccion/sub-menu-indicadores/nuevo', component: FormularioIndicadorDayComponent,
     // , canActivate: [AuthGuardEtad],
     // data: {
@@ -125,13 +127,16 @@ const routes: Routes = [
     // data: {
     //   expectedRole: 
     // }
-  },{
+  }, {
     path: 'opciones/:seccion/sub-menu-indicadores/registro-mensual', component: FormularioIndicadorMothComponent,
     // , canActivate: [AuthGuardEtad],
     // data: {
     //   expectedRole: 
     // }
-  }
+  },
+  /* rutas de reportes */
+  { path: 'opciones/lista-reportes', component: ListaReportesComponent },
+  { path: 'opciones/lista-reportes/reporte-global-area', component: RptGlobalAreaComponent }
 
 
 ];
@@ -162,7 +167,9 @@ const routes: Routes = [
     FormularioIndicadorDayComponent,
     ListaIndicadorDayComponent,
     FormularioIndicadorMothComponent,
-    ListaIndicadorMothComponent
+    ListaIndicadorMothComponent,
+    ListaReportesComponent,
+    RptGlobalAreaComponent
   ],
   providers: [
     AuthGuardEtad
