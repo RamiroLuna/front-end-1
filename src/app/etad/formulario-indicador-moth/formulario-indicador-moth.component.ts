@@ -58,10 +58,17 @@ export class FormularioIndicadorMothComponent implements OnInit {
   public formConsultaPeriodo: FormGroup;
   public status: string;
   public idEtad: number;
-  public idGrupo: number;
-  public dia:string;
-  public kpis:Array<any>;
-  public disabledInputText:boolean;
+
+  public kpis: Array<any>;
+  public disabledInputText: boolean;
+
+  public anioSeleccionado: number;
+  public periodos: Array<Periodo> = [];
+  public anios: any = {};
+  public meses: Array<any> = [];
+  public idPeriodo: number;
+  public idGrupo:number;
+
   constructor(private auth: AuthService,
     private service: FormularioIndicadorMothService,
     private fb: FormBuilder
@@ -73,18 +80,30 @@ export class FormularioIndicadorMothComponent implements OnInit {
     this.submitted = false;
     this.disabled = false;
     this.disabledInputText = false;
-    this.dia = "";
+    this.anioSeleccionado = getAnioActual();
+
     // // this.estatusPeriodo = true;
 
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-
+    
       if (result.response.sucessfull) {
 
         this.etads = result.data.listEtads || [];
+        this.periodos = result.data.listPeriodos || [];
         this.grupos = result.data.listGrupos || [];
-
         this.grupos = this.grupos.filter(el=> el.id != 6 && el.id != 5);
+
+
+        let tmpAnios = this.periodos.map(el => el.anio);
+        this.periodos.filter((el, index) => {
+          return tmpAnios.indexOf(el.anio) === index;
+        }).forEach((el) => {
+          let tmp = el.anio;
+          this.anios[tmp] = tmp;
+        });
+
+        this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
 
         this.loading = false;
         this.loadFormulario();
@@ -105,31 +124,7 @@ export class FormularioIndicadorMothComponent implements OnInit {
    * Carga plugins despues de cargar y mostrar objetos en el DOM
    */
   ngAfterViewInitHttp(): void {
-
     $('.tooltipped').tooltip({ delay: 50 });
-
-    $('#dia').pickadate({
-      selectMonths: true, // Creates a dropdown to control month
-      selectYears: 15, // Creates a dropdown of 15 years to control year,
-      today: '',
-      clear: 'Limpiar',
-      close: 'OK',
-      monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-      monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-      weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-      weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-      format: 'dd/mm/yyyy',
-      closeOnSelect: false, // Close upon selecting a date,
-      onClose: () => {
-        this.dia = $('#dia').val();
-      },
-      onStart: function (){
-        this.set('select',getFechaActual())
-      }
-    });
-   
-    this.dia = getFechaActual();
-    Materialize.updateTextFields();
   }
 
   agregar() {
@@ -153,8 +148,8 @@ export class FormularioIndicadorMothComponent implements OnInit {
   loadFormulario(): void {
     this.formConsultaPeriodo = this.fb.group({
       idEtad: new FormControl({ value: this.idEtad }, [Validators.required]),
-      idGrupo: new FormControl({ value: this.idGrupo }, [Validators.required]),
-      dia: new FormControl({ value: this.dia}, [Validators.required])
+      idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required]),
+      idGrupo: new FormControl({ value: this.idGrupo }, [Validators.required])
     });
   }
 
@@ -163,23 +158,23 @@ export class FormularioIndicadorMothComponent implements OnInit {
     this.disabledInputText = false;
     this.submitted = true;
     this.status = "inactive";
-  
+
 
     if (this.formConsultaPeriodo.valid) {
       this.disabled = true;
       this.datos_tabla = false;
 
-      this.service.viewKpiForSave(this.auth.getIdUsuario(), this.idEtad , this.dia).subscribe(result => {
-     
+      this.service.viewKpiForSave(this.auth.getIdUsuario(), this.idEtad, this.idPeriodo).subscribe(result => {
+    
         if (result.response.sucessfull) {
           // // this.estatusPeriodo = result.data.estatusPeriodo;
-        
-          this.kpis = result.data.listIndicadorDiarios || [];
+
+          this.kpis = result.data.listIndicadorMensuales || [];
           this.datos_tabla = true;
           this.disabled = false;
 
           setTimeout(() => {
-         
+
             this.status = 'active';
           }, 200);
 
@@ -204,7 +199,7 @@ export class FormularioIndicadorMothComponent implements OnInit {
 
     switch (accion) {
       case 'add':
-        this.mensajeModal = '¿Está seguro de cargar indicadores? ';
+        this.mensajeModal = '¿Está seguro de cargar indicadores mensuales? ';
         break;
     }
 
@@ -216,7 +211,7 @@ export class FormularioIndicadorMothComponent implements OnInit {
       swal({
         title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
         type: 'question',
-        html: '<p style="color: #303f9f "> Area Etad : <b>' + this.getDescriptivo(this.etads, this.idEtad) + ' </b> Grupo: <b>'+  this.getDescriptivo(this.grupos, this.idGrupo) +'</b> Dia: <b>' + this.dia + '</b></p>',
+        html: '<p style="color: #303f9f "> Area Etad : <b>' + this.getDescriptivo(this.etads, this.idEtad) + '</b> Periodo: <b> '+ this.getDescriptivoPeriodo(this.idPeriodo) + ' ' + this.anioSeleccionado +'</b></p>',
         showCancelButton: true,
         confirmButtonColor: '#303f9f',
         cancelButtonColor: '#9fa8da ',
@@ -241,12 +236,13 @@ export class FormularioIndicadorMothComponent implements OnInit {
                   el.valor = 0;
                 }
                 el.id_grupo = this.idGrupo;
+                el.id_periodo = this.idPeriodo;
               });
 
               contenedor.indicadores = this.kpis;
 
-              this.service.insertIndicadores(this.auth.getIdUsuario(), this.idEtad ,contenedor, this.dia).subscribe(result => {
-              
+              this.service.insertIndicadores(this.auth.getIdUsuario(), this.idEtad, contenedor).subscribe(result => {
+               
                 if (result.response.sucessfull) {
                   this.disabledInputText = true;
                   Materialize.toast(' Se agregarón correctamente ', 4000, 'green');
@@ -273,7 +269,7 @@ export class FormularioIndicadorMothComponent implements OnInit {
 
   }
 
-  getDescriptivo(catalogo:Array<Catalogo>,id:number): string {
+  getDescriptivo(catalogo: Array<Catalogo>, id: number): string {
 
     let el = catalogo.filter(el => el.id == id);
 
@@ -299,6 +295,48 @@ export class FormularioIndicadorMothComponent implements OnInit {
 
     return numero_error;
 
+  }
+
+  openModalYear(event): void {
+    event.preventDefault();
+    swal({
+      title: 'Seleccione el año',
+      input: 'select',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'OK',
+      inputOptions: this.anios,
+      inputPlaceholder: 'SELECCIONE',
+      showCancelButton: true,
+      inputValidator: (value) => {
+
+        return new Promise((resolve) => {
+          this.formConsultaPeriodo.reset();
+          this.submitted = false;
+          this.status = "inactive";
+          this.datos_tabla = false;
+
+
+          if (value != '') {
+            resolve();
+            this.anioSeleccionado = value;
+            this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
+          } else {
+            resolve('Seleccione un año')
+          }
+        })
+      }
+    })
+  }
+
+  getDescriptivoPeriodo(idPeriodo:number):string{
+    let el = this.periodos.filter(el=>el.id_periodo == idPeriodo);
+
+    if(el.length > 0){
+      return el[0].descripcion_mes;
+    }
+    else{
+      return " Mes no identificado ";
+    }
   }
 
 }

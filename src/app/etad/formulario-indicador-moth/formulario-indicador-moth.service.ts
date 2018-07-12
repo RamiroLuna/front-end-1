@@ -39,8 +39,8 @@ export class FormularioIndicadorMothService {
   /*
    * Consulta  consulta de indicadores por area
    */
-  viewKpiForSave(id_usuario: number, id_etad: number, dia: string): Observable<any> {
-    return this.http.get<any>(this.URL + '?action=viewKpiForSave&id_usuario=' + id_usuario + '&id_etad=' + id_etad + '&frecuencia=diario&dia=' + dia);
+  viewKpiForSave(id_usuario: number, id_etad: number, id_periodo: number): Observable<any> {
+    return this.http.get<any>(this.URL + '?action=viewKpiForSave&id_usuario=' + id_usuario + '&id_etad=' + id_etad + '&frecuencia=mensual&id_periodo=' + id_periodo);
   }
   /*
   * Finconsulta de indicadores por area
@@ -50,13 +50,12 @@ export class FormularioIndicadorMothService {
   /*
  * Bloque de codigo para peticiones CRUD indicador diario
  */
-  insertIndicadores(id_usuario: number, idEtad:number, datos: any , dia:string): Observable<any> {
+  insertIndicadores(id_usuario: number, idEtad:number, datos: any): Observable<any> {
     const body = new HttpParams()
       .set('action', 'insertIndicadores')
       .set('id_etad', ''+idEtad)
-      .set('frecuencia', 'diario')
+      .set('frecuencia', 'mensual')
       .set('datos', ''+JSON.stringify(datos))
-      .set('dia', ''+dia)
       .set('id_usuario', '' + id_usuario);
     return this.http.post(this.URL, body);
   }
