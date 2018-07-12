@@ -13,7 +13,8 @@ export class ListaReportesComponent  implements  AfterViewInit  {
    * En este arreglo se deben agregar los reportes para el modulo de OEE
    */ 
   public reportes: Array<any>=[
-    { id : 1 , nombre_reporte: 'Reporte global por área' , link:'reporte-global-area' , activo: true}
+    { id : 1 , nombre_reporte: 'Reporte global por área' , link:'reporte-global-area' , activo: true},
+    { id : 1 , nombre_reporte: 'Indicadores clave de desempeño' , link:'reporte-indicadores-pki' , activo: true},
   ];
 
   constructor() { }

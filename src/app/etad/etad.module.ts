@@ -24,6 +24,7 @@ import { FormularioIndicadorMothComponent } from './formulario-indicador-moth/fo
 import { ListaIndicadorMothComponent } from './lista-indicador-moth/lista-indicador-moth.component';
 import { ListaReportesComponent } from './lista-reportes/lista-reportes.component';
 import { RptGlobalAreaComponent } from './rpt-global-area/rpt-global-area.component';
+import { RptIndicadoresPkiComponent } from './rpt-indicadores-pki/rpt-indicadores-pki.component';
 
 
 
@@ -136,8 +137,8 @@ const routes: Routes = [
   },
   /* rutas de reportes */
   { path: 'opciones/lista-reportes', component: ListaReportesComponent },
-  { path: 'opciones/lista-reportes/reporte-global-area', component: RptGlobalAreaComponent }
-
+  { path: 'opciones/lista-reportes/reporte-global-area', component: RptGlobalAreaComponent },
+  { path: 'opciones/lista-reportes/reporte-indicadores-pki', component: RptIndicadoresPkiComponent }
 
 ];
 
@@ -169,7 +170,8 @@ const routes: Routes = [
     FormularioIndicadorMothComponent,
     ListaIndicadorMothComponent,
     ListaReportesComponent,
-    RptGlobalAreaComponent
+    RptGlobalAreaComponent,
+    RptIndicadoresPkiComponent
   ],
   providers: [
     AuthGuardEtad
