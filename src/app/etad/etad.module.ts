@@ -18,6 +18,8 @@ import { PonderacionMasivaComponent } from './ponderacion-masiva/ponderacion-mas
 import { ListaPonderacionComponent } from './lista-ponderacion/lista-ponderacion.component';
 import { SubMenuPonderacionesComponent } from './sub-menu-ponderaciones/sub-menu-ponderaciones.component';
 import { SubMenuIndicadoresComponent } from './sub-menu-indicadores/sub-menu-indicadores.component';
+import { FormularioIndicadorDayComponent } from './formulario-indicador-day/formulario-indicador-day.component';
+import { ListaIndicadorDayComponent } from './lista-indicador-day/lista-indicador-day.component';
 
 
 
@@ -95,13 +97,20 @@ const routes: Routes = [
     // }
   },
   /* rutas registro de indicadores */
-   {
+  {
     path: 'opciones/:seccion/sub-menu-indicadores', component: SubMenuIndicadoresComponent,
     // , canActivate: [AuthGuardEtad],
     // data: {
     //   expectedRole: 
     // }
   },
+  {
+    path: 'opciones/:seccion/sub-menu-indicadores/diarios', component: ListaIndicadorDayComponent,
+    // , canActivate: [AuthGuardEtad],
+    // data: {
+    //   expectedRole: 
+    // }
+  }
 
 
 ];
@@ -128,7 +137,9 @@ const routes: Routes = [
     PonderacionMasivaComponent,
     ListaPonderacionComponent,
     SubMenuPonderacionesComponent,
-    SubMenuIndicadoresComponent
+    SubMenuIndicadoresComponent,
+    FormularioIndicadorDayComponent,
+    ListaIndicadorDayComponent
   ],
   providers: [
     AuthGuardEtad
