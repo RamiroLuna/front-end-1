@@ -1,59 +1,59 @@
 <div class="container" *ngIf="!loading">
-    <div class="section"></div>
-    <h4 class="color_titulo center-align">Indicadores mensuales
-      <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar año" (click)="openModalYear($event)">{{ anioSeleccionado }}</a>
-    </h4>
-    <h6 class="color_titulo center-align">CONSULTA Y EDICIÓN</h6>
-    <!-- Solo para dispositivos moviles -->
-    <div class="hide-on-large-only right-align">
-      <a routerLink="../" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
-        data-tooltip="Regresar" (click)="regresar()">
-        <i class="material-icons">
-          <i class="material-icons">arrow_back</i>
-        </i>
-      </a>
-    </div>
-    <!-- fin Solo para dispositivos moviles -->
-  
-    <div class="row">
-      <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="consultaPeriodo()" autocomplete="off">
-        <div class="input-field col s12 m12 l6 xl6">
-          <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="idPeriodo"
-            (ngModelChange)="changeCombo()">
-            <option value="">SELECCIONE</option>
-            <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
-          </select>
-          <label for="mes">mes</label>
-          <div *ngIf="formConsultaPeriodo.controls.idPeriodo.errors?.required && (formConsultaPeriodo.controls.idPeriodo?.touched || submitted)"
-            class="error">
-            Seleccione una opcion
-          </div>
+  <div class="section"></div>
+  <h4 class="color_titulo center-align">Indicadores mensuales
+    <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar año" (click)="openModalYear($event)">{{ anioSeleccionado }}</a>
+  </h4>
+  <h6 class="color_titulo center-align">CONSULTA Y EDICIÓN</h6>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <a routerLink="../" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+      data-tooltip="Regresar" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">arrow_back</i>
+      </i>
+    </a>
+  </div>
+  <!-- fin Solo para dispositivos moviles -->
+
+  <div class="row">
+    <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="consultaPeriodo()" autocomplete="off">
+      <div class="input-field col s12 m12 l6 xl6">
+        <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="idPeriodo"
+          (ngModelChange)="changeCombo()">
+          <option value="">SELECCIONE</option>
+          <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
+        </select>
+        <label for="mes">mes</label>
+        <div *ngIf="formConsultaPeriodo.controls.idPeriodo.errors?.required && (formConsultaPeriodo.controls.idPeriodo?.touched || submitted)"
+          class="error">
+          Seleccione una opcion
         </div>
-        <div class="input-field col s12 m12 l5 xl5">
-          <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="idEtad" (ngModelChange)="changeCombo()">
-            <option value="">SELECCIONE</option>
-            <option *ngFor="let etad of etads" [value]="etad.id">{{etad.valor}}</option>
-          </select>
-          <label for="etad">Area Etad</label>
-          <div *ngIf="formConsultaPeriodo.controls.idEtad.errors?.required && (formConsultaPeriodo.controls.idEtad?.touched || submitted)"
-            class="error">
-            Seleccione una opcion
-          </div>
+      </div>
+      <div class="input-field col s12 m12 l5 xl5">
+        <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="idEtad" (ngModelChange)="changeCombo()">
+          <option value="">SELECCIONE</option>
+          <option *ngFor="let etad of etads" [value]="etad.id">{{etad.valor}}</option>
+        </select>
+        <label for="etad">Area Etad</label>
+        <div *ngIf="formConsultaPeriodo.controls.idEtad.errors?.required && (formConsultaPeriodo.controls.idEtad?.touched || submitted)"
+          class="error">
+          Seleccione una opcion
         </div>
-        <div class="input-field col s12 m12 l1 xl1">
-          <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
-            <i class="material-icons">search</i>
-          </button>
-          <label></label>
-        </div>
-      </form>
-    </div>
-    <!-- <div class="row" *ngIf="!estatusPeriodo">
+      </div>
+      <div class="input-field col s12 m12 l1 xl1">
+        <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
+          <i class="material-icons">search</i>
+        </button>
+        <label></label>
+      </div>
+    </form>
+  </div>
+  <!-- <div class="row" *ngIf="!estatusPeriodo">
           <div class="color_titulo center-align">
               <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
           </div>
     </div> -->
-    <div class="row" *ngIf="datos_tabla">
+  <!-- <div class="row" *ngIf="datos_tabla">
       <nav *ngIf="registros.length > 0">
         <div class="nav-wrapper grey lighten-5">
           <form autocomplete="off">
@@ -68,103 +68,105 @@
           </form>
         </div>
       </nav>
+    </div> -->
+  <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
+    <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
+      <thead>
+        <tr>
+          <th class="center-align">PERIODO</th>
+          <th class="center-align">GRUPO</th>
+          <th class="center-align">VER DETALLE</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngIf="registros.length == 0">
+          <td colspan="3" class="center-align">NO SE ENCONTRARÓN REGISTROS</td>
+        </tr>
+        <tr *ngFor="let registro of registros">
+          <td class="center-align">
+            {{ registro.periodo.descripcion_mes + ' ' + registro.periodo.anio }}
+          </td>
+          <td class="center-align">
+            {{ registro.grupo.valor }}
+          </td>
+          <td class="center-align">
+            <a class="btn-floating green lighten-2" (click)="consultaById(registro.id_grupo,registro.grupo.valor, registro.id_periodo)">
+              <i class="material-icons">list_alt</i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a routerLink="../" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
     </div>
-    <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
-      <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
-        <thead>
-          <tr>
-            <th class="center-align">DIA</th>
-            <th class="center-align">GRUPO</th>
-            <th class="center-align">VER DETALLE</th>
-          </tr>
-        </thead>
-  
-        <tbody>
-          <tr *ngIf="(registros |  filterBy: ['dia_string']: texto_busqueda).length == 0">
-            <td colspan="3" class="center-align">NO SE ENCONTRARÓN REGISTROS</td>
-          </tr>
-          <tr *ngFor="let registro of registros |  filterBy: ['dia_string']: texto_busqueda">
-            <td class="center-align">
-              {{ registro.dia_string }}
-            </td>
-            <td class="center-align">
-              {{ registro.grupo.valor }}
-            </td>
-            <td class="center-align">
-              <a class="btn-floating green lighten-2" (click)="consultaById(registro.dia_string, registro.id_grupo,registro.grupo.valor)">
-                <i class="material-icons">list_alt</i>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <!-- Inicio solo para pantallas-->
-    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
-      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-        <a routerLink="../" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-          data-delay="50" data-tooltip="Regresar" (click)="regresar()">
-          <i class="material-icons">
-            <i class="material-icons">arrow_back</i>
-          </i>
-        </a>
+  </div>
+  <!-- Fin solo para pantallas-->
+</div>
+<div id="modalEdicion" class="modal" style="width: calc(75%)">
+  <div class="modal-content">
+    <div class="row col s12 m12 l12 xl12">
+      <div class="col s4 m4 l4 xl4">
+        Periodo:
+        <b>{{ periodo_consulta }}</b>
+      </div>
+      <div class="col s4 m4 l4 xl4">
+        Área:
+        <b>{{ area_consulta }}</b>
+      </div>
+      <div class="col s4 m4 l4 xl4">
+        Grupo:
+        <b>{{ grupo_consulta }}</b>
       </div>
     </div>
-    <!-- Fin solo para pantallas-->
+    <table id="tabla" class="display striped" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th>KPI</th>
+          <th>UM</th>
+          <th>VALOR</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="kpis.length == 0 ">
+          <th colspan="3" class="center">No hay registros</th>
+        </tr>
+        <tr *ngFor="let kpi of kpis;let i = index">
+          <td>
+            {{ kpi.metaKpi.etadKpi.kpiOperativo.valor }}
+          </td>
+          <td>
+            {{ kpi.metaKpi.etadKpi.kpiOperativo.unidad_medida }}
+          </td>
+          <td>
+            <input type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}" [disabled]="!edicion_detalle" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
+          </td>
+        </tr>
+        <tr *ngIf="edicion_detalle">
+
+          <td colspan="3" class="center-align">
+            <button type="button" class="waves-effect waves-light btn-large light-green darken-1" (click)="openModalConfirmacion('edit')">EDITAR</button>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <div id="modalEdicion" class="modal" style="width: calc(75%)">
-    <div class="modal-content">
-      <div class="row col s12 m12 l12 xl12">
-        <div class="col s4 m4 l4 xl4">
-          Día:
-          <b>{{ dia_consulta }}</b>
-        </div>
-        <div class="col s4 m4 l4 xl4">
-          Área:
-          <b>{{ area_consulta }}</b>
-        </div>
-        <div class="col s4 m4 l4 xl4">
-          Grupo:
-          <b>{{ grupo_consulta }}</b>
-        </div>
-      </div>
-      <table id="tabla" class="display striped" cellspacing="0" width="100%">
-        <thead>
-          <tr>
-            <th>KPI</th>
-            <th>UM</th>
-            <th>VALOR</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngIf="kpis.length == 0 ">
-            <th colspan="3" class="center">No hay registros</th>
-          </tr>
-          <tr *ngFor="let kpi of kpis;let i = index">
-            <td>
-              {{ kpi.metaKpi.etadKpi.kpiOperativo.valor }}
-            </td>
-            <td>
-              {{ kpi.metaKpi.etadKpi.kpiOperativo.unidad_medida }}
-            </td>
-            <td>
-              <input type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}" [disabled]="!edicion_detalle" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
-            </td>
-          </tr>
-          <tr *ngIf="edicion_detalle">
-            <td colspan="3" class="center-align">
-              <button type="button" class="waves-effect waves-light btn-large light-green darken-1" (click)="openModalConfirmacion('edit')">EDITAR</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+</div>
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
   </div>
-  
-  <div class="container" *ngIf="loading">
-    <div id="loader-wrapper">
-      <div id="loader"></div>
-      <div class="loader-section section-left"></div>
-      <div class="loader-section section-right"></div>
-    </div>
-  </div>
+</div>

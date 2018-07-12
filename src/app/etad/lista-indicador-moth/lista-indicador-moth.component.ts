@@ -66,7 +66,7 @@ export class ListaIndicadorMothComponent implements OnInit {
   /*
    * Variables para modal
    */
-  public dia_consulta: string;
+  public periodo_consulta: string;
   public area_consulta: string;
   public grupo_consulta: string;
 
@@ -92,7 +92,7 @@ export class ListaIndicadorMothComponent implements OnInit {
     this.anioSeleccionado = getAnioActual();
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-      console.log('resultttt->', result)
+    
       if (result.response.sucessfull) {
 
         this.etads = result.data.listEtads || [];
@@ -202,10 +202,10 @@ export class ListaIndicadorMothComponent implements OnInit {
       this.datos_tabla = false;
 
       this.service.getAllIndicadores(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad).subscribe(result => {
-        console.log('get all indicadores', result)
+
         if (result.response.sucessfull) {
         
-          this.registros = result.data.listIndicadorDiarios || [];
+          this.registros = result.data.listIndicadorMensuales || [];
           this.datos_tabla = true;
           this.disabled = false;
 
@@ -234,20 +234,20 @@ export class ListaIndicadorMothComponent implements OnInit {
     this.texto_busqueda = "";
   }
 
-  consultaById(dia: string, id_grupo: number, grupo_descripcion:string): void {
+  consultaById(id_grupo: number, grupo_descripcion:string, id_periodo:number): void {
 
-    this.dia_consulta = "";
+    this.periodo_consulta = "";
     this.area_consulta = "";
     this.grupo_consulta = "";
     this.edicion_detalle = true;
     this.kpis = [];
 
-    this.service.getDetailIndicadores(this.auth.getIdUsuario(), id_grupo, this.idEtad, dia).subscribe(result => {
-    
+    this.service.getDetailIndicadores(this.auth.getIdUsuario(), id_grupo, this.idEtad,this.idPeriodo).subscribe(result => {
+   
       if (result.response.sucessfull) {
-        this.kpis = result.data.listIndicadorDiarios || [];
+        this.kpis = result.data.listIndicadorMensuales || [];
         setTimeout(() => {
-          this.dia_consulta = dia;
+          this.periodo_consulta = this.getDescriptivoPeriodo(this.idPeriodo)+ ' '+ this.anioSeleccionado;
           this.area_consulta = this.getDescriptivo(this.etads,this.idEtad);
           this.grupo_consulta =  grupo_descripcion;
           $('#modalEdicion').modal('open');
@@ -292,7 +292,7 @@ export class ListaIndicadorMothComponent implements OnInit {
       swal({
         title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
         type: 'question',
-        html: '<p style="color: #303f9f "> Area Etad : <b>' + this.getDescriptivo(this.etads, this.idEtad) + ' </b> Grupo: <b>'+  this.grupo_consulta +'</b> Dia: <b>' + this.dia_consulta + '</b></p>',
+        html: '<p style="color: #303f9f "> Area Etad : <b>' + this.getDescriptivo(this.etads, this.idEtad) + '</b> Grupo: <b>'+ this.grupo_consulta + '</b> Periodo: <b> '+ this.getDescriptivoPeriodo(this.idPeriodo) + ' ' + this.anioSeleccionado +'</b></p>',
         showCancelButton: true,
         confirmButtonColor: '#303f9f',
         cancelButtonColor: '#9fa8da ',
@@ -321,6 +321,7 @@ export class ListaIndicadorMothComponent implements OnInit {
               contenedor.indicadores = this.kpis;
             
               this.service.updateIndicadores(this.auth.getIdUsuario(), contenedor).subscribe(result => {  
+
                 if (result.response.sucessfull) {
 
                   Materialize.toast(' Se actualizarón correctamente ', 4000, 'green');
@@ -362,6 +363,17 @@ export class ListaIndicadorMothComponent implements OnInit {
 
     return numero_error;
 
+  }
+
+  getDescriptivoPeriodo(idPeriodo:number):string{
+    let el = this.periodos.filter(el=>el.id_periodo == idPeriodo);
+
+    if(el.length > 0){
+      return el[0].descripcion_mes;
+    }
+    else{
+      return " Mes no identificado ";
+    }
   }
 
 }

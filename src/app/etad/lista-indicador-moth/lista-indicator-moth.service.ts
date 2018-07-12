@@ -23,8 +23,8 @@ export class ListaIndicatorMothService {
     return this.http.get<any>(this.URL + '?action=loadCombobox&id_usuario='+idUsuario);
   }
 
-  getDetailIndicadores(idUsuario:number,id_grupo:number,id_etad:number,dia:string): Observable<any> {
-    return this.http.get<any>(this.URL + '?action=getDetailIndicadores&id_usuario='+idUsuario+'&id_grupo='+id_grupo+'&id_etad='+id_etad+'&frecuencia=diario'+'&dia='+dia);
+  getDetailIndicadores(idUsuario:number,id_grupo:number,id_etad:number,id_periodo:number): Observable<any> {
+    return this.http.get<any>(this.URL + '?action=getDetailIndicadores&id_usuario='+idUsuario+'&id_grupo='+id_grupo+'&id_etad='+id_etad+'&frecuencia=mensual'+'&id_periodo='+id_periodo);
   }
 
   getAllIndicadores(id_usuario:number, idPeriodo:number, idEtad:number): Observable<any>{
@@ -43,7 +43,7 @@ export class ListaIndicatorMothService {
 updateIndicadores(id_usuario: number, datos: any ): Observable<any> {
   const body = new HttpParams()
     .set('action', 'updateIndicadores')
-    .set('frecuencia', 'diario')
+    .set('frecuencia', 'mensual')
     .set('datos', ''+JSON.stringify(datos))
     .set('id_usuario', '' + id_usuario);
   return this.http.post(this.URL, body);
