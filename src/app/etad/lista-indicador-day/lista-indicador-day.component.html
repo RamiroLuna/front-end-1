@@ -75,7 +75,7 @@
         <tr>
           <th class="center-align">DIA</th>
           <th class="center-align">GRUPO</th>
-          <th class="center-align">ACCIÓN</th>
+          <th class="center-align">VER DETALLE</th>
         </tr>
       </thead>
 
@@ -91,8 +91,8 @@
             {{ registro.grupo.valor }}
           </td>
           <td class="center-align">
-            <a class="btn-floating green lighten-2" (click)="consultaById(registro.dia_string, registro.id_grupo)">
-              <i class="material-icons">edit</i>
+            <a class="btn-floating green lighten-2" (click)="consultaById(registro.dia_string, registro.id_grupo,registro.grupo.valor)">
+              <i class="material-icons">list_alt</i>
             </a>
           </td>
         </tr>
@@ -111,6 +111,54 @@
     </div>
   </div>
   <!-- Fin solo para pantallas-->
+</div>
+<div id="modalEdicion" class="modal" style="width: calc(75%)">
+  <div class="modal-content">
+    <div class="row col s12 m12 l12 xl12">
+      <div class="col s4 m4 l4 xl4">
+        Día:
+        <b>{{ dia_consulta }}</b>
+      </div>
+      <div class="col s4 m4 l4 xl4">
+        Área:
+        <b>{{ area_consulta }}</b>
+      </div>
+      <div class="col s4 m4 l4 xl4">
+        Grupo:
+        <b>{{ grupo_consulta }}</b>
+      </div>
+    </div>
+    <table id="tabla" class="display striped" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th>KPI</th>
+          <th>UM</th>
+          <th>VALOR</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="kpis.length == 0 ">
+          <th colspan="3" class="center">No hay registros</th>
+        </tr>
+        <tr *ngFor="let kpi of kpis;let i = index">
+          <td>
+            {{ kpi.metaKpi.etadKpi.kpiOperativo.valor }}
+          </td>
+          <td>
+            {{ kpi.metaKpi.etadKpi.kpiOperativo.unidad_medida }}
+          </td>
+          <td>
+            <input type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}" [disabled]="!edicion_detalle" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
+          </td>
+        </tr>
+        <tr *ngIf="edicion_detalle">
+          <td colspan="3" class="center-align">
+            <button type="button" class="waves-effect waves-light btn-large light-green darken-1" (click)="openModalConfirmacion('edit')">EDITAR</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <div class="container" *ngIf="loading">

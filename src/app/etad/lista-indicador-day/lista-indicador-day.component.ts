@@ -20,6 +20,7 @@ import {
   animate,
   transition
 } from '@angular/animations';
+import { PetMetaKpi } from '../../models/pet-meta-kpi';
 
 
 declare var $: any;
@@ -27,7 +28,7 @@ declare var Materialize: any;
 @Component({
   selector: 'app-lista-indicador-day',
   templateUrl: './lista-indicador-day.component.html',
-  styleUrls: [ 'lista-indicador-day.component.css'],
+  styleUrls: ['lista-indicador-day.component.css'],
   providers: [ListaIndicadorDayService],
   animations: [
     trigger('visibility', [
@@ -52,20 +53,27 @@ export class ListaIndicadorDayComponent implements OnInit {
   public anioSeleccionado: number;
   public submitted: boolean;
   public disabled: boolean;
-
   public periodos: Array<Periodo> = [];
   public etads: Array<Catalogo> = [];
-
   public anios: any = {};
   public meses: Array<any> = [];
   public registros: Array<any>;
   public formConsultaPeriodo: FormGroup;
   public status: string;
-
   public idEtad: number;
   public idPeriodo: number;
-
   public texto_busqueda: string = "";
+  public kpis: Array<any>;
+
+  /*
+   * Variables para modal
+   */
+  public dia_consulta: string;
+  public area_consulta: string;
+  public grupo_consulta: string;
+
+  //edicion_detalle variable para editar
+  public edicion_detalle: boolean;
 
   constructor(private auth: AuthService,
     private service: ListaIndicadorDayService,
@@ -73,12 +81,15 @@ export class ListaIndicadorDayComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
     this.loading = true;
     this.datos_tabla = false;
     this.submitted = false;
     this.disabled = false;
+    this.kpis = [];
+    this.edicion_detalle = true;
 
-  
+
     // // this.estatusPeriodo = true;
     this.anioSeleccionado = getAnioActual();
 
@@ -118,7 +129,15 @@ export class ListaIndicadorDayComponent implements OnInit {
    */
   ngAfterViewInitHttp(): void {
     $('.tooltipped').tooltip({ delay: 50 });
+
+    $('#modalEdicion').modal({
+      opacity: 0.6,
+      inDuration: 500,
+      complete: () => { }
+    });
+
   }
+
 
   agregar() {
     $('.tooltipped').tooltip('hide');
@@ -185,9 +204,9 @@ export class ListaIndicadorDayComponent implements OnInit {
       this.datos_tabla = false;
 
       this.service.getAllIndicadores(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad).subscribe(result => {
-        console.log('get indicadores ', result)
+      
         if (result.response.sucessfull) {
-          // // this.estatusPeriodo = result.data.estatusPeriodo;
+        
           this.registros = result.data.listIndicadorDiarios || [];
           this.datos_tabla = true;
           this.disabled = false;
@@ -217,8 +236,134 @@ export class ListaIndicadorDayComponent implements OnInit {
     this.texto_busqueda = "";
   }
 
-  consultaById(dia:string,id_grupo:number):void{
-    console.log('cosas seleccionadas ',dia, id_grupo, this.idEtad)
+  consultaById(dia: string, id_grupo: number, grupo_descripcion:string): void {
+
+    this.dia_consulta = "";
+    this.area_consulta = "";
+    this.grupo_consulta = "";
+    this.edicion_detalle = true;
+    this.kpis = [];
+
+    this.service.getDetailIndicadores(this.auth.getIdUsuario(), id_grupo, this.idEtad, dia).subscribe(result => {
+    
+      if (result.response.sucessfull) {
+        this.kpis = result.data.listIndicadorDiarios || [];
+        setTimeout(() => {
+          this.dia_consulta = dia;
+          this.area_consulta = this.getDescriptivo(this.etads,this.idEtad);
+          this.grupo_consulta =  grupo_descripcion;
+          $('#modalEdicion').modal('open');
+        }, 10);
+      } else {
+
+        Materialize.toast(result.response.message, 4000, 'red');
+      }
+    }, error => {
+
+      Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+    });
+
+  }
+
+  getDescriptivo(catalogo: Array<Catalogo>, id: number): string {
+
+    let el = catalogo.filter(el => el.id == id);
+
+    if (el.length > 0) {
+      return el[0].valor;
+    } else {
+      return "No identificado";
+    }
+
+  }
+
+  openModalConfirmacion(accion: string, event?: any): void {
+    this.mensajeModal = '';
+
+    switch (accion) {
+      case 'edit':
+        this.mensajeModal = '¿Está seguro de actualizar los indicadores? ';
+        break;
+    }
+
+    if (this.isValidMetas(this.kpis) == 0) {
+
+      /* 
+       * Configuración del modal de confirmación
+       */
+      swal({
+        title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
+        type: 'question',
+        html: '<p style="color: #303f9f "> Area Etad : <b>' + this.getDescriptivo(this.etads, this.idEtad) + ' </b> Grupo: <b>'+  this.grupo_consulta +'</b> Dia: <b>' + this.dia_consulta + '</b></p>',
+        showCancelButton: true,
+        confirmButtonColor: '#303f9f',
+        cancelButtonColor: '#9fa8da ',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si!',
+        allowOutsideClick: false,
+        allowEnterKey: false
+      }).then((result) => {
+        /*
+         * Si acepta
+         */
+        if (result.value) {
+          switch (accion) {
+            case 'edit':
+              /* 
+              * Se forma el modelo a enviar al backend
+              * contenedor.ponderaciones Es una variable que se necesita por el backend
+              */
+              let contenedor: any = { indicadores: {} };
+              this.kpis.map(el => {
+                if (Number.isNaN(parseInt("" + el.valor)) || el.valor == undefined) {
+                  el.valor = 0;
+                }
+              });
+
+              contenedor.indicadores = this.kpis;
+            
+              this.service.updateIndicadores(this.auth.getIdUsuario(), contenedor).subscribe(result => {  
+                if (result.response.sucessfull) {
+
+                  Materialize.toast(' Se actualizarón correctamente ', 4000, 'green');
+                } else {
+
+                  Materialize.toast(result.response.message, 4000, 'red');
+                }
+              }, error => {
+                Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+              });
+              break;
+          }
+          /*
+          * Si cancela accion
+          */
+        } else if (result.dismiss === swal.DismissReason.cancel) {
+        }
+      })
+    } else {
+
+      Materialize.toast('Verifique los datos marcados en rojo!', 4000, 'red');
+
+    }
+
+  }
+
+  
+  isValidMetas(metas_kpis: Array<PetMetaKpi>): number {
+    let numero_error = 0;
+
+    metas_kpis.map(el => {
+      if (!isNumeroAsignacionValid("" + el.valor)) {
+        numero_error++;
+        el.class_input = 'error';
+      } else {
+        el.class_input = '';
+      }
+    });
+
+    return numero_error;
+
   }
 
 

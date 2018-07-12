@@ -60,16 +60,4 @@ export class FormularioIndicadorDayService {
     return this.http.post(this.URL, body);
   }
 
-  /*
-   * Bloque de codigo para peticiones CRUD indicador diario
-   */
-  update(id_usuario: number, registro: any): Observable<any> {
-    const body = new HttpParams()
-      .set('action', '')
-
-      .set('id_usuario', '' + id_usuario);
-    return this.http.post(this.URL, body);
-  }
-
-
 }
