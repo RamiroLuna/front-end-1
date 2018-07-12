@@ -1,116 +1,124 @@
 <div class="container" *ngIf="!loading">
-    <div class="section"></div>
-    <h4 class="color_titulo center-align">Indicadores diarios</h4>
-    <h6 class="color_titulo center-align"> REGISTRO </h6>
-    <!-- Solo para dispositivos moviles -->
-    <div class="hide-on-large-only right-align">
-      <a routerLink="../" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
-        data-tooltip="Opciones ETAD" (click)="regresar()">
+  <div class="section"></div>
+  <h4 class="color_titulo center-align">Indicadores diarios</h4>
+  <h6 class="color_titulo center-align"> REGISTRO </h6>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <a routerLink="../" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+      data-tooltip="Opciones ETAD" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">arrow_back</i>
+      </i>
+    </a>
+  </div>
+  <!-- fin Solo para dispositivos moviles -->
+
+  <div class="row">
+    <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="consultaPeriodo($event)" autocomplete="off">
+      <div class="input-field col s12 m12 l3 xl3">
+        <input id="dia" type="text" class="datepicker" formControlName="dia" [(ngModel)]="dia" (ngModelChange)="changeCombo()">
+        <label for="dia" class="active">Día</label>
+        <div *ngIf="formConsultaPeriodo.controls.dia.errors?.required && (formConsultaPeriodo.controls.dia?.touched || submitted)"
+          class="error">
+          El dia es requerido
+        </div>
+      </div>
+      <div class="input-field col s12 m12 l3 xl3">
+        <select class="grupo" materialize="material_select" [materializeSelectOptions]="grupos" formControlName="idGrupo" [(ngModel)]="idGrupo"
+          (ngModelChange)="changeCombo()">
+          <option value="">SELECCIONE</option>
+          <option *ngFor="let grupo of grupos" [value]="grupo.id">{{grupo.valor}}</option>
+        </select>
+        <label for="grupo">Grupo</label>
+        <div *ngIf="formConsultaPeriodo.controls.idGrupo.errors?.required && (formConsultaPeriodo.controls.idGrupo?.touched || submitted)"
+          class="error">
+          Seleccione una opcion
+        </div>
+      </div>
+      <div class="input-field col s12 m12 l3 xl3">
+        <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="idEtad" (ngModelChange)="changeCombo()">
+          <option value="">SELECCIONE</option>
+          <option *ngFor="let etad of etads" [value]="etad.id">{{etad.valor}}</option>
+        </select>
+        <label for="etad">Area Etad</label>
+        <div *ngIf="formConsultaPeriodo.controls.idEtad.errors?.required && (formConsultaPeriodo.controls.idEtad?.touched || submitted)"
+          class="error">
+          Seleccione una opcion
+        </div>
+      </div>
+      <div class="input-field col s12 m12 l2 xl2">
+        <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn light-green lighten-1" [disabled]="disabled">
+          <!-- <i class="material-icons">search</i> -->
+          INDICADORES
+        </button>
+        <label></label>
+      </div>
+    </form>
+  </div>
+  <!-- <div class="row" *ngIf="!estatusPeriodo">
+        <div class="color_titulo center-align">
+            <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
+        </div>
+      </div> -->
+  <div class="row center-align" *ngIf="disabledInputText">
+    <p style="color: #ef6c00">Si desea consultar y modificar un valor vaya a la sección de CONSULTA Y EDICION</p>
+  </div>
+  <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
+    <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
+      <thead>
+        <tr>
+          <th colspan="3" class="center-align color_titulo">
+            LISTA DE INDICADORES PARA {{ this.getDescriptivo(etads,idEtad) }}
+          </th>
+        </tr>
+        <tr>
+          <th>KPI</th>
+          <th>UM</th>
+          <th>VALOR</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngIf="kpis.length == 0 ">
+          <th colspan="3" class="center">No hay registros</th>
+        </tr>
+        <tr *ngFor="let kpi of kpis;let i = index">
+          <td>
+            {{ kpi.metaKpi.etadKpi.kpiOperativo.valor }}
+          </td>
+          <td>
+            {{ kpi.metaKpi.etadKpi.kpiOperativo.unidad_medida }}
+          </td>
+          <td>
+            <input type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}" [disabled]="disabledInputText" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
+          </td>
+        </tr>
+        <tr *ngIf="!disabledInputText">
+          <td colspan="3" class="center-align">
+            <button type="button" class="waves-effect waves-light btn-large light-green darken-1" (click)="openModalConfirmacion('add')">REGISTRAR</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a routerLink="../" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
         <i class="material-icons">
           <i class="material-icons">arrow_back</i>
         </i>
       </a>
     </div>
-    <!-- fin Solo para dispositivos moviles -->
-  
-    <div class="row">
-      <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="consultaPeriodo()" autocomplete="off">
-        <div class="input-field col s12 m12 l6 xl6">
-          <select class="grupo" materialize="material_select" [materializeSelectOptions]="grupos" formControlName="idGrupo" [(ngModel)]="idGrupo"
-            (ngModelChange)="changeCombo()">
-            <option value="">SELECCIONE</option>
-            <option *ngFor="let grupo of grupos" [value]="grupo.id">{{grupo.valor}}</option>
-          </select>
-          <label for="grupo">Grupo</label>
-          <div *ngIf="formConsultaPeriodo.controls.idGrupo.errors?.required && (formConsultaPeriodo.controls.idGrupo?.touched || submitted)"
-            class="error">
-            Seleccione una opcion
-          </div>
-        </div>
-        <div class="input-field col s12 m12 l5 xl5">
-          <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="idEtad" (ngModelChange)="changeCombo()">
-            <option value="">SELECCIONE</option>
-            <option *ngFor="let etad of etads" [value]="etad.id">{{etad.valor}}</option>
-          </select>
-          <label for="etad">Area Etad</label>
-          <div *ngIf="formConsultaPeriodo.controls.idEtad.errors?.required && (formConsultaPeriodo.controls.idEtad?.touched || submitted)"
-            class="error">
-            Seleccione una opcion
-          </div>
-        </div>
-        <div class="input-field col s12 m12 l1 xl1">
-          <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
-            <i class="material-icons">search</i>
-          </button>
-          <label></label>
-        </div>
-      </form>
-    </div>
-    <!-- <div class="row" *ngIf="!estatusPeriodo">
-        <div class="color_titulo center-align">
-            <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
-        </div>
-      </div> -->
-  
-    <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
-      <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
-        <thead>
-          <tr>
-            <th>KPI</th>
-            <th>UM</th>
-            <th>VALOR</th>
-          </tr>
-        </thead>
-  
-        <tbody>
-          <tr *ngIf="kpis.length == 0 ">
-            <th colspan="3" class="center">No hay registros</th>
-          </tr>
-          <tr *ngFor="let kpi of kpis;let i = index">
-            <td>
-              {{ kpi.etadKpi.kpiOperativo.valor }}
-            </td>
-            <td>
-              {{ kpi.etadKpi.kpiOperativo.tipo_kpi }}
-            </td>
-            <td>
-              {{ kpi.etadKpi.kpiOperativo.unidad_medida }}
-            </td>
-            <td>
-              <input type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}" [disabled]="disabledInputText" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
-            </td>
-          </tr>
-          <tr>
-            <!-- <td colspan="4" class="center-align">
-              <ng-template [ngIf]="!disabledInputText">
-                <button type="button" class="waves-effect waves-light btn grey darken-1" (click)="modificaValores('cancelar')">CANCELAR</button>
-                <button type="button" class="waves-effect waves-light btn light-green darken-1" (click)="openModalConfirmacion('update')">MODIFICAR</button>
-              </ng-template>
-              <button type="button" class="waves-effect waves-light btn light-green darken-1" (click)="modificaValores('editar')"
-                *ngIf="disabledInputText">EDITAR</button> 
-            </td>-->
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <!-- Inicio solo para pantallas-->
-    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
-      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-        <a routerLink="../" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-          data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
-          <i class="material-icons">
-            <i class="material-icons">arrow_back</i>
-          </i>
-        </a>
-      </div>
-    </div>
-    <!-- Fin solo para pantallas-->
   </div>
-  
-  <div class="container" *ngIf="loading">
-    <div id="loader-wrapper">
-      <div id="loader"></div>
-      <div class="loader-section section-left"></div>
-      <div class="loader-section section-right"></div>
-    </div>
+  <!-- Fin solo para pantallas-->
+</div>
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
   </div>
+</div>

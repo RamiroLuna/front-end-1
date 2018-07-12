@@ -28,8 +28,8 @@ export class FormularioIndicadorDayService {
   /*
    * Consulta  indicador dia consultada
    */
-  getDetailIndicadores(id_usuario: number, id_grupo: number, id_etad: number, dia:string): Observable<any> {
-    return this.http.get<any>(this.URL + '?action=getDetailIndicadores&id_usuario=' + id_usuario + '&id_grupo=' + id_grupo + '&id_etad=' + id_etad + '&frecuencia=diario&dia='+dia);
+  getDetailIndicadores(id_usuario: number, id_grupo: number, id_etad: number, dia: string): Observable<any> {
+    return this.http.get<any>(this.URL + '?action=getDetailIndicadores&id_usuario=' + id_usuario + '&id_grupo=' + id_grupo + '&id_etad=' + id_etad + '&frecuencia=diario&dia=' + dia);
   }
   /*
   * Fin indicador dia consultada
@@ -38,8 +38,8 @@ export class FormularioIndicadorDayService {
   /*
    * Consulta  consulta de indicadores por area
    */
-  viewKpiForSave(id_usuario: number, id_etad: number, dia:string): Observable<any> {
-    return this.http.get<any>(this.URL + '?action=viewKpiForSave&id_usuario=' + id_usuario + '&id_etad=' + id_etad + '&frecuencia=diario&dia='+dia);
+  viewKpiForSave(id_usuario: number, id_etad: number, dia: string): Observable<any> {
+    return this.http.get<any>(this.URL + '?action=viewKpiForSave&id_usuario=' + id_usuario + '&id_etad=' + id_etad + '&frecuencia=diario&dia=' + dia);
   }
   /*
   * Finconsulta de indicadores por area
@@ -49,9 +49,13 @@ export class FormularioIndicadorDayService {
   /*
  * Bloque de codigo para peticiones CRUD indicador diario
  */
-  agregar(id_usuario: number, registro: any): Observable<any> {
+  insertIndicadores(id_usuario: number, idEtad:number, datos: any , dia:string): Observable<any> {
     const body = new HttpParams()
-      .set('action', '')
+      .set('action', 'insertIndicadores')
+      .set('id_etad', ''+idEtad)
+      .set('frecuencia', 'diario')
+      .set('datos', ''+JSON.stringify(datos))
+      .set('dia', ''+dia)
       .set('id_usuario', '' + id_usuario);
     return this.http.post(this.URL, body);
   }

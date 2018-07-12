@@ -7,7 +7,8 @@ import {
   calculaDiaPorMes,
   isNumeroAsignacionValid,
   findRol,
-  clone
+  clone,
+  getFechaActual
 } from '../../utils';
 import swal from 'sweetalert2';
 import { FormularioIndicadorDayService } from './formulario-indicador-day.service';
@@ -59,7 +60,8 @@ export class FormularioIndicadorDayComponent implements OnInit {
   public idEtad: number;
   public idGrupo: number;
   public dia:string;
-
+  public kpis:Array<any>;
+  public disabledInputText:boolean;
   constructor(private auth: AuthService,
     private service: FormularioIndicadorDayService,
     private fb: FormBuilder
@@ -70,11 +72,13 @@ export class FormularioIndicadorDayComponent implements OnInit {
     this.datos_tabla = false;
     this.submitted = false;
     this.disabled = false;
+    this.disabledInputText = false;
+    this.dia = "";
     // // this.estatusPeriodo = true;
 
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-      console.log('get catalogos ', result)
+
       if (result.response.sucessfull) {
 
         this.etads = result.data.listEtads || [];
@@ -101,7 +105,31 @@ export class FormularioIndicadorDayComponent implements OnInit {
    * Carga plugins despues de cargar y mostrar objetos en el DOM
    */
   ngAfterViewInitHttp(): void {
+
     $('.tooltipped').tooltip({ delay: 50 });
+
+    $('#dia').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 15, // Creates a dropdown of 15 years to control year,
+      today: '',
+      clear: 'Limpiar',
+      close: 'OK',
+      monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+      weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+      weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+      format: 'dd/mm/yyyy',
+      closeOnSelect: false, // Close upon selecting a date,
+      onClose: () => {
+        this.dia = $('#dia').val();
+      },
+      onStart: function (){
+        this.set('select',getFechaActual())
+      }
+    });
+   
+    this.dia = getFechaActual();
+    Materialize.updateTextFields();
   }
 
   agregar() {
@@ -117,6 +145,7 @@ export class FormularioIndicadorDayComponent implements OnInit {
   changeCombo(): void {
     // this.estatusPeriodo = true;
     this.datos_tabla = false;
+    this.disabledInputText = false;
     this.status = "inactive";
   }
 
@@ -125,12 +154,13 @@ export class FormularioIndicadorDayComponent implements OnInit {
     this.formConsultaPeriodo = this.fb.group({
       idEtad: new FormControl({ value: this.idEtad }, [Validators.required]),
       idGrupo: new FormControl({ value: this.idGrupo }, [Validators.required]),
-      dia: new FormControl({ value: this.dia}, [Validators.required]),
+      dia: new FormControl({ value: this.dia}, [Validators.required])
     });
   }
 
 
   consultaPeriodo(): void {
+    this.disabledInputText = false;
     this.submitted = true;
     this.status = "inactive";
   
@@ -139,17 +169,17 @@ export class FormularioIndicadorDayComponent implements OnInit {
       this.disabled = true;
       this.datos_tabla = false;
 
-      this.service.viewKpiForSave(this.auth.getIdUsuario(), this.idEtad , "").subscribe(result => {
-
+      this.service.viewKpiForSave(this.auth.getIdUsuario(), this.idEtad , this.dia).subscribe(result => {
+     
         if (result.response.sucessfull) {
           // // this.estatusPeriodo = result.data.estatusPeriodo;
         
-
+          this.kpis = result.data.listIndicadorDiarios || [];
           this.datos_tabla = true;
           this.disabled = false;
 
           setTimeout(() => {
-            this.ngAfterViewInitHttp();
+         
             this.status = 'active';
           }, 200);
 
@@ -169,84 +199,83 @@ export class FormularioIndicadorDayComponent implements OnInit {
 
   }
 
-  // openModalConfirmacion(accion: string, event?: any): void {
-  //   this.mensajeModal = '';
+  openModalConfirmacion(accion: string, event?: any): void {
+    this.mensajeModal = '';
 
-  //   switch (accion) {
-  //     case 'update':
-  //       this.mensajeModal = '¿Está seguro de agregar metas? ';
-  //       break;
-  //   }
+    switch (accion) {
+      case 'add':
+        this.mensajeModal = '¿Está seguro de cargar indicadores? ';
+        break;
+    }
 
-  //   if (this.isValidMetas(this.kpis) == 0) {
+    if (this.isValidMetas(this.kpis) == 0) {
 
-  //     /* 
-  //      * Configuración del modal de confirmación
-  //      */
-  //     swal({
-  //       title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
-  //       type: 'question',
-  //       // html: '<p style="color: #303f9f "> Area Etad : <b>' + this.getDescriptivoArea(this.idEtad) + ' </b> Año: <b>' + this.anioSeleccionado + '</b></p>',
-  //       showCancelButton: true,
-  //       confirmButtonColor: '#303f9f',
-  //       cancelButtonColor: '#9fa8da ',
-  //       cancelButtonText: 'Cancelar',
-  //       confirmButtonText: 'Si!',
-  //       allowOutsideClick: false,
-  //       allowEnterKey: false
-  //     }).then((result) => {
-  //       /*
-  //        * Si acepta
-  //        */
-  //       if (result.value) {
-  //         switch (accion) {
-  //           case 'update':
-  //             /* 
-  //             * Se forma el modelo a enviar al backend
-  //             * contenedor.ponderaciones Es una variable que se necesita por el backend
-  //             */
-  //             let contenedor: any = { metas: {} };
-  //             this.kpis.map(el => {
-  //               if (Number.isNaN(parseInt("" + el.valor)) || el.valor == undefined) {
-  //                 el.valor = 0;
-  //               }
-  //             });
-  //             contenedor.metas = this.kpis;
+      /* 
+       * Configuración del modal de confirmación
+       */
+      swal({
+        title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
+        type: 'question',
+        html: '<p style="color: #303f9f "> Area Etad : <b>' + this.getDescriptivo(this.etads, this.idEtad) + ' </b> Grupo: <b>'+  this.getDescriptivo(this.grupos, this.idGrupo) +'</b> Dia: <b>' + this.dia + '</b></p>',
+        showCancelButton: true,
+        confirmButtonColor: '#303f9f',
+        cancelButtonColor: '#9fa8da ',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si!',
+        allowOutsideClick: false,
+        allowEnterKey: false
+      }).then((result) => {
+        /*
+         * Si acepta
+         */
+        if (result.value) {
+          switch (accion) {
+            case 'add':
+              /* 
+              * Se forma el modelo a enviar al backend
+              * contenedor.ponderaciones Es una variable que se necesita por el backend
+              */
+              let contenedor: any = { indicadores: {} };
+              this.kpis.map(el => {
+                if (Number.isNaN(parseInt("" + el.valor)) || el.valor == undefined) {
+                  el.valor = 0;
+                }
+                el.id_grupo = this.idGrupo;
+              });
 
-  //             // this.service.updateMeta(this.auth.getIdUsuario(), contenedor).subscribe(result => {
+              contenedor.indicadores = this.kpis;
 
-  //             //   if (result.response.sucessfull) {
+              this.service.insertIndicadores(this.auth.getIdUsuario(), this.idEtad ,contenedor, this.dia).subscribe(result => {
+              
+                if (result.response.sucessfull) {
+                  this.disabledInputText = true;
+                  Materialize.toast(' Se agregarón correctamente ', 4000, 'green');
+                } else {
 
-  //             //     this.bandera = false;
-  //             //     this.disabledInputText = true;
+                  Materialize.toast(result.response.message, 4000, 'red');
+                }
+              }, error => {
+                Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+              });
+              break;
+          }
+          /*
+          * Si cancela accion
+          */
+        } else if (result.dismiss === swal.DismissReason.cancel) {
+        }
+      })
+    } else {
 
-  //             //     Materialize.toast('Metas modificadas correctamente ', 4000, 'green');
-  //             //   } else {
+      Materialize.toast('Verifique los datos marcados en rojo!', 4000, 'red');
 
-  //             //     Materialize.toast(result.response.message, 4000, 'red');
-  //             //   }
-  //             // }, error => {
-  //             //   Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
-  //             // });
-  //             break;
-  //         }
-  //         /*
-  //         * Si cancela accion
-  //         */
-  //       } else if (result.dismiss === swal.DismissReason.cancel) {
-  //       }
-  //     })
-  //   } else {
+    }
 
-  //     Materialize.toast('Verifique los datos marcados en rojo!', 4000, 'red');
+  }
 
-  //   }
+  getDescriptivo(catalogo:Array<Catalogo>,id:number): string {
 
-  // }
-
-  getDescriptivoArea(idEtad): string {
-
-    let el = this.etads.filter(el => el.id == idEtad);
+    let el = catalogo.filter(el => el.id == id);
 
     if (el.length > 0) {
       return el[0].valor;
