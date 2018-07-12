@@ -20,6 +20,8 @@ import { SubMenuPonderacionesComponent } from './sub-menu-ponderaciones/sub-menu
 import { SubMenuIndicadoresComponent } from './sub-menu-indicadores/sub-menu-indicadores.component';
 import { FormularioIndicadorDayComponent } from './formulario-indicador-day/formulario-indicador-day.component';
 import { ListaIndicadorDayComponent } from './lista-indicador-day/lista-indicador-day.component';
+import { FormularioIndicadorMothComponent } from './formulario-indicador-moth/formulario-indicador-moth.component';
+import { ListaIndicadorMothComponent } from './lista-indicador-moth/lista-indicador-moth.component';
 
 
 
@@ -116,6 +118,19 @@ const routes: Routes = [
     // data: {
     //   expectedRole: 
     // }
+  },
+  {
+    path: 'opciones/:seccion/sub-menu-indicadores/mensuales', component: ListaIndicadorMothComponent,
+    // , canActivate: [AuthGuardEtad],
+    // data: {
+    //   expectedRole: 
+    // }
+  },{
+    path: 'opciones/:seccion/sub-menu-indicadores/registro-mensual', component: FormularioIndicadorMothComponent,
+    // , canActivate: [AuthGuardEtad],
+    // data: {
+    //   expectedRole: 
+    // }
   }
 
 
@@ -145,7 +160,9 @@ const routes: Routes = [
     SubMenuPonderacionesComponent,
     SubMenuIndicadoresComponent,
     FormularioIndicadorDayComponent,
-    ListaIndicadorDayComponent
+    ListaIndicadorDayComponent,
+    FormularioIndicadorMothComponent,
+    ListaIndicadorMothComponent
   ],
   providers: [
     AuthGuardEtad
