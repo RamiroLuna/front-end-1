@@ -301,19 +301,4 @@ export class FormularioIndicadorDayComponent implements OnInit {
 
   }
 
-  // modificaValores(accion: string): void {
-
-  //     if (accion == 'editar') {
-
-  //       this.kpis_tmp = clone(this.kpis);
-
-  //     } else if (accion == 'cancelar') {
-  //       this.kpis = this.kpis_tmp;
-
-  //     }
-    
-  //   this.disabledInputText = !this.disabledInputText;
-  // }
-
-
 }
