@@ -25,6 +25,7 @@ import { ListaIndicadorMothComponent } from './lista-indicador-moth/lista-indica
 import { ListaReportesComponent } from './lista-reportes/lista-reportes.component';
 import { RptGlobalAreaComponent } from './rpt-global-area/rpt-global-area.component';
 import { RptIndicadoresPkiComponent } from './rpt-indicadores-pki/rpt-indicadores-pki.component';
+import { RptGraficasKpiComponent } from './rpt-graficas-kpi/rpt-graficas-kpi.component';
 
 
 
@@ -138,7 +139,8 @@ const routes: Routes = [
   /* rutas de reportes */
   { path: 'opciones/lista-reportes', component: ListaReportesComponent },
   { path: 'opciones/lista-reportes/reporte-global-area', component: RptGlobalAreaComponent },
-  { path: 'opciones/lista-reportes/reporte-indicadores-pki', component: RptIndicadoresPkiComponent }
+  { path: 'opciones/lista-reportes/reporte-indicadores-kpi', component: RptIndicadoresPkiComponent },
+  { path: 'opciones/lista-reportes/reporte-indicadores-graficas', component: RptGraficasKpiComponent }
 
 ];
 
@@ -171,7 +173,8 @@ const routes: Routes = [
     ListaIndicadorMothComponent,
     ListaReportesComponent,
     RptGlobalAreaComponent,
-    RptIndicadoresPkiComponent
+    RptIndicadoresPkiComponent,
+    RptGraficasKpiComponent
   ],
   providers: [
     AuthGuardEtad

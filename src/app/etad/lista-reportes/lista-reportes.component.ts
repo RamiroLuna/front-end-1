@@ -14,7 +14,8 @@ export class ListaReportesComponent  implements  AfterViewInit  {
    */ 
   public reportes: Array<any>=[
     { id : 1 , nombre_reporte: 'Reporte global por área' , link:'reporte-global-area' , activo: true},
-    { id : 1 , nombre_reporte: 'Indicadores clave de desempeño' , link:'reporte-indicadores-pki' , activo: true},
+    { id : 2 , nombre_reporte: 'Indicadores clave de desempeño ( Reportes )' , link:'reporte-indicadores-kpi' , activo: true},
+    { id : 3 , nombre_reporte: 'Indicadores clave de desempeño ( Graficas )', link:'reporte-indicadores-graficas' ,  activo: true}
   ];
 
   constructor() { }

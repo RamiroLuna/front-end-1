@@ -12,11 +12,11 @@
       </div>
       <!-- Fin solo para dispositivos moviles -->
       <h4 class="color_titulo center-align">Indicadores clave de desempeño</h4>
-      <h6 class="color_titulo center-align">REPORTE</h6>
+      <h6 class="color_titulo center-align">GRAFICAS</h6>
       <div class="section"></div>
       <div class="row">
         <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="busqueda(paramsBusqueda)" autocomplete="off">
-          <div class="input-field col s12 m12 l2 xl2">
+          <div class="input-field col s12 m12 l3 xl3">
             <select class="anio" materialize="material_select" [materializeSelectOptions]="anios" formControlName="anio" [(ngModel)]="paramsBusqueda.anio"
               (ngModelChange)="changeCombo('anio')">
               <option value="">SELECCIONE</option>
@@ -28,7 +28,7 @@
               Seleccione
             </div>
           </div>
-          <div class="input-field col s12 m12 l3 xl3">
+          <div class="input-field col s12 m12 l4 xl4">
             <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="paramsBusqueda.idPeriodo"
               (ngModelChange)="changeCombo()">
               <option value="">SELECCIONE</option>
@@ -40,7 +40,7 @@
               Seleccione una opcion
             </div>
           </div>
-          <div class="input-field col s12 m12 l3 xl3">
+          <div class="input-field col s12 m12 l4 xl4">
             <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="paramsBusqueda.idEtad"
               (ngModelChange)="changeCombo()">
               <option value="">SELECCIONE</option>
@@ -48,18 +48,6 @@
             </select>
             <label for="etad">Area Etad</label>
             <div *ngIf="formConsultaPeriodo.controls.idEtad.errors?.required && (formConsultaPeriodo.controls.idEtad?.touched || submitted)"
-              class="error">
-              Seleccione una opcion
-            </div>
-          </div>
-          <div class="input-field col s12 m12 l3 xl3">
-            <select materialize="material_select" [materializeSelectOptions]="grupos" formControlName="idGrupo" [(ngModel)]="paramsBusqueda.idGrupo"
-              (ngModelChange)="changeCombo()">
-              <option value="">SELECCIONE</option>
-              <option *ngFor="let grupo of grupos" [value]="grupo.id">{{grupo.valor}}</option>
-            </select>
-            <label for="etad">Grupo</label>
-            <div *ngIf="formConsultaPeriodo.controls.idGrupo.errors?.required && (formConsultaPeriodo.controls.idGrupo?.touched || submitted)"
               class="error">
               Seleccione una opcion
             </div>
@@ -87,55 +75,9 @@
     </div>
     <div class="section"></div>
     <div *ngIf="viewReport">
-      <div class="container center">
-        <div class="row scroll_ejex_tabla_reporte">
-          <div class="col s12 m12 l12 xl12">
-            <table id="tblReporte" class="display striped" cellspacing="0" width="100%">
-              <thead class="total texto header">
-                <tr>
-                  <th colspan="7" class="center-align">
-                      INDICADORES CLAVE DE DESEMPEÑO (KPI)  {{ this.getTextoLinea(this.etads, paramsBusqueda.idEtad) }}		
-                  </th>
-                </tr>
-                <tr>
-                  <th class="center-align">Objetivo Operativo</th>
-                  <th class="center-align">KPI ETAD</th>
-                  <th class="center-align">META</th>
-                  <th class="center-align">UM</th>
-                  <th class="center-align">PONDERACIÓN</th>
-                  <th class="center-align">TOTAL MES</th>
-                  <th class="center-align">EVALUACIÓN</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td colspan="7" *ngIf="registros.length == 0" class="center-align">
-                    NO HAY REGISTROS
-                  </td>
-                </tr>
-                <tr *ngFor="let registro of registros">
-                   <td class="center-align">{{ registro.objetivo }}</td>
-                   <td class="center-align">{{ registro.kpi }}</td>
-                   <td class="center-align">{{ registro.meta }}</td>
-                   <td class="center-align">{{ registro.um }}</td>
-                   <td class="center-align">{{ registro.ponderacion }}</td>
-                   <td class="center-align">{{ registro.total }}</td>
-                   <td class="center-align">{{ registro.evaluacion }}</td>
-                </tr>
-                <tr  *ngIf="registros.length > 0">
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td class="center-align">100</td>
-                  <td></td>
-                  <td class="center-align">{{ suma_temporal }}</td>
-                </tr>
-              </tbody>
-            </table>
-            <br>
-          </div>
-          <a class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
+      <div class="row  indigo darken-1">
+        <div class="col s12 m12 l12 xl12">
+         
         </div>
       </div>
     </div>
