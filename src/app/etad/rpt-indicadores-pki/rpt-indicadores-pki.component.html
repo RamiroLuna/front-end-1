@@ -92,9 +92,9 @@
             <table id="tblReporte" class="display striped" cellspacing="0" width="100%">
               <thead class="total texto header">
                 <tr>
-                  <th colspan="6"></th>
-                  <th colspan="4" class="center-align">Resultados KPI</th>
-                  <th colspan="4" class="center-align">Resultados Bono </th>
+                  <th colspan="7" class="center-align">
+                      INDICADORES CLAVE DE DESEMPEÑO (KPI)  {{ this.getTextoLinea(this.etads, paramsBusqueda.idEtad) }}		
+                  </th>
                 </tr>
                 <tr>
                   <th class="center-align">Objetivo Operativo</th>
@@ -102,21 +102,33 @@
                   <th class="center-align">META</th>
                   <th class="center-align">UM</th>
                   <th class="center-align">PONDERACIÓN</th>
-                  <th class="center-align">FRECUENCIA</th>
-                  <th class="center-align">GRUPO A</th>
-                  <th class="center-align">GRUPO B</th>
-                  <th class="center-align">GRUPO C</th>
-                  <th class="center-align">GRUPO D</th>
-                  <th class="center-align">GRUPO A</th>
-                  <th class="center-align">GRUPO B</th>
-                  <th class="center-align">GRUPO C</th>
-                  <th class="center-align">GRUPO D</th>
+                  <th class="center-align">TOTAL MES</th>
+                  <th class="center-align">EVALUACIÓN</th>
                 </tr>
               </thead>
-  
               <tbody>
                 <tr>
-                   
+                  <td colspan="7" *ngIf="registros.length == 0" class="center-align">
+                    NO HAY REGISTROS
+                  </td>
+                </tr>
+                <tr *ngFor="let registro of registros">
+                   <td class="center-align">{{ registro.objetivo }}</td>
+                   <td class="center-align">{{ registro.kpi }}</td>
+                   <td class="center-align">{{ registro.meta }}</td>
+                   <td class="center-align">{{ registro.um }}</td>
+                   <td class="center-align">{{ registro.ponderacion }}</td>
+                   <td class="center-align">{{ registro.total }}</td>
+                   <td class="center-align">{{ registro.evaluacion }}</td>
+                </tr>
+                <tr  *ngIf="registros.length > 0">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td class="center-align">100</td>
+                  <td></td>
+                  <td class="center-align">{{ suma_temporal }}</td>
                 </tr>
               </tbody>
             </table>

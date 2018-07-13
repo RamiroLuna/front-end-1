@@ -30,6 +30,7 @@ export class RptIndicadoresPkiComponent implements OnInit {
   public periodos: Array<Periodo>;
   public registros:Array<any>;
   public grupos:Array<Catalogo>;
+  public suma_temporal:number;
 
 
   constructor(
@@ -50,6 +51,7 @@ export class RptIndicadoresPkiComponent implements OnInit {
     this.meses = [];
     this.periodos = [];
     this.grupos = [];
+    this.suma_temporal = 0;
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
@@ -124,13 +126,20 @@ export class RptIndicadoresPkiComponent implements OnInit {
     this.viewReport = false;
     this.submitted = true;
     this.registros = [];
+    this.suma_temporal = 0;
 
     if (this.formConsultaPeriodo.valid) {
 
-      this.service.reporteFallas(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-
+      this.service.getIndicadorClaveDesempenoByGrupo(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
+      
         if (result.response.sucessfull) {
-          this.registros = result.data || [];
+          
+          this.registros = result.data.indicadorDesempeno || [];
+
+          this.suma_temporal = this.registros.map(el=>el.evaluacion).reduce((anterior,actual)=>{
+            return anterior + actual;
+          });
+
           this.viewReport = true;
 
         } else {

@@ -20,8 +20,8 @@ export class RptIndicadoresKpiService {
   /*
    * Consulta reporte
    */
-  reporteFallas(id_usuario: number, params: any): Observable<any> {
-    return this.http.get<any>(this.URL + '?action=reporteFallas&id_usuario=' + id_usuario + '&id_periodo=' + params.idPeriodo + '&id_linea=' + params.idLinea);
+  getIndicadorClaveDesempenoByGrupo(id_usuario: number, params: any): Observable<any> {
+    return this.http.get<any>(this.URL + '?action=getIndicadorClaveDesempenoByGrupo&id_usuario=' + id_usuario + '&id_periodo=' + params.idPeriodo + '&id_etad=' + params.idEtad+'&id_grupo='+params.idGrupo);
   }
 
 }
