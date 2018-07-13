@@ -1,97 +1,94 @@
-let configChartSpider = {
-
+let configChart = {
     chart: {
-        polar: true,
-        type: 'line',
+        type: 'column',
         backgroundColor: {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
-                [0, 'rgb(66,165,245)'],
-                [1, 'rgb(21,101,192)']
+                [0, 'rgb(124,179,66)'],
+                [1, 'rgb(51,105,30)']
             ]
-        }
-    },
-
-    title: {
-        text: '',
-        style: {
-            color: '#ffffff'
-        }
-    },
-    subtitle: {
-        text: '',
-        style: {
-            color: '#ffffff'
         }
     },
     credits: {
         enabled: false
     },
-    pane: {
-        size: '95%'
+    title: {
+        text: '',
+        style: {
+            fontSize: '14px',
+            color: '#fff'
+        }
     },
-
+    subtitle: {
+        text: '',
+        style: {
+            color: '#fff'
+        }
+    },
     xAxis: {
-        categories: ['GRUPO A', 'GRUPO B', 'GRUPO C', 'GRUPO D'],
-        tickmarkPlacement: 'on',
-        lineWidth: 0,
+        categories: [],
         labels: {
             style: {
-                color: '#ffffff'
+                color: '#fff'
             }
         }
     },
-
     yAxis: {
-        gridLineInterpolation: 'polygon',
-        lineWidth: 0,
-        min: 0,
+        title: {
+            text: '',
+            style: {
+                color: '#FFFFFF'
+            },
+            enabled: false
+        },
         labels: {
             style: {
-                color: '#000000',
+                color: '#fff',
             },
             formatter: function () {
-                return this.value + ' T/Hr';
+                return this.value + 'T';
             }
+        },
+        gridLineWidth: 0.1,
+        gridLineColor: '#e0f2f1',
+        gridLineDashStyle: 'longdash'
+    },
+    legend: {
+        itemStyle: {
+            color: '#FFFFFF'
         }
     },
-
-    tooltip: {
-        shared: true,
-        pointFormat: '<span>{series.name}: <b>{point.y}</b><br/>'
-    },
-
-    legend: {
-        // align: 'right',
-        // verticalAlign: 'top',
-        // y: 70,
-        // layout: 'vertical'
-    },
-
     plotOptions: {
         series: {
-            dataLabels: {
-                enabled: true,
-                color: '#FFFFFF',
-                inside: false,
-                y: 10,
-                distance: -10
-            },
             events: {
                 legendItemClick: function () {
                     return false;
                 }
             }
+        },
+        column: {
+            dataLabels: {
+                enabled: true,
+                color: '#000000',
+                inside: true,
+                rotation: 0
+            }
+        },
+        line: {
+            marker: {
+                enabled: false
+            }
         }
     },
-
-    series: []
-
+    tooltip: {
+        headerFormat: ''
+    },
+    series: [],
 };
 
 
 
 export {
 
-    configChartSpider
+    configChart
 }

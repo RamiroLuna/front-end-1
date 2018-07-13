@@ -83,6 +83,11 @@ export class FormularioDetalleComponent implements OnInit {
             this.type_Catalogo = 'kpis-operativos';
             this.itemCatalogo = new PetCatKpiOperativo();
             this.id_tipo_catalogo = 3;
+            this.tipos_operaciones = [
+              {id: 1 , valor: 'SUMA'},
+              {id: 2 , valor: 'PROMEDIO'},
+              {id: 3 , valor: 'DIRECTO'}
+            ];
             break;
           default:
             this.isCatalog = false;

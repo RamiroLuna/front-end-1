@@ -3,9 +3,9 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { Catalogo } from '../../models/Catalogo';
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
-import { getTablaUtf8 } from '../../utils';
+import { clone } from '../../utils';
 import { RptGraficasKpiService } from './rpt-graficas-kpi.service';
-
+import { configChart } from './rpt.config.export';
 
 declare var $: any;
 declare var Materialize: any;
@@ -31,6 +31,7 @@ export class RptGraficasKpiComponent implements OnInit {
   public registros:Array<any>;
   public grupos:Array<Catalogo>;
   public suma_temporal:number;
+  public graficas = [];
 
 
   constructor(
@@ -51,6 +52,7 @@ export class RptGraficasKpiComponent implements OnInit {
     this.meses = [];
     this.periodos = [];
     this.grupos = [];
+    this.graficas = [];
 
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
@@ -125,6 +127,7 @@ export class RptGraficasKpiComponent implements OnInit {
     this.viewReport = false;
     this.submitted = true;
     this.registros = [];
+    this.graficas = [];  
 
 
     if (this.formConsultaPeriodo.valid) {
@@ -132,9 +135,29 @@ export class RptGraficasKpiComponent implements OnInit {
       this.service.getGraficasByEtad(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
         console.log('resultado tablas', result)
         if (result.response.sucessfull) {
-          
+        
+          let total_graficas = result.data.graficas || [];
 
+          total_graficas.map((el)=>{
+            let config_grafica = clone(configChart);
+            let dataReal = [el.metaA,el.metaB,el.metaC,el.metaD];
+            let dataEsperada = [el.resultadoA,el.resultadoB,el.resultadoC,el.resultadoD];
+
+            config_grafica.series = [];
+            config_grafica.xAxis.categories = ['A','B','C','D'];
+            config_grafica.title.text = el.kpi;
+
+            config_grafica.series.push({ name: ' Logro ', data: dataReal, color: '#dcedc8' });
+            config_grafica.series.push({ name: ' Meta ', data: dataEsperada, type: 'line', color: '#1a237e' });
+
+            this.graficas.push(config_grafica);
+          });
+          
           this.viewReport = true;
+
+          setTimeout(() => {
+            this.rptAfterViewGenerate();
+          }, 900);
 
         } else {
 
@@ -150,6 +173,12 @@ export class RptGraficasKpiComponent implements OnInit {
       this.viewReport = false;
       Materialize.toast('Ingrese todos los datos para mostrar reporte!', 4000, 'red');
     }
+  }
+
+  rptAfterViewGenerate(): void {
+    this.graficas.forEach((configuracionGrafica, index)=>{
+        $('#grafica'+index).highcharts(configuracionGrafica);
+    });
   }
 
   getTextoLinea(lineas: Array<Catalogo>, id_etad: number): string {
