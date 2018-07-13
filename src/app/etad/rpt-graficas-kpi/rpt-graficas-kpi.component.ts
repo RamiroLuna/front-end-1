@@ -133,7 +133,7 @@ export class RptGraficasKpiComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.getGraficasByEtad(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-        console.log('resultado tablas', result)
+     
         if (result.response.sucessfull) {
         
           let total_graficas = result.data.graficas || [];
