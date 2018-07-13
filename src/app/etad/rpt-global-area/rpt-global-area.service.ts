@@ -7,7 +7,7 @@ import { BASE_URL_SERVICE } from '../../constants';
 @Injectable()
 export class RptGlobalAreaService {
 
-  private URL = BASE_URL_SERVICE + '/Reportes';
+  private URL = BASE_URL_SERVICE + '/EtadReportes';
 
   constructor(private http: HttpClient) { }
 
@@ -21,8 +21,8 @@ export class RptGlobalAreaService {
   /*
    * Consulta reporte
    */
-  reporteFallas(id_usuario: number, params:any): Observable<any> {
-    return this.http.get<any>(this.URL + '?action=reporteFallas&id_usuario=' + id_usuario + '&id_periodo='+params.idPeriodo +'&id_linea='+params.idLinea);
+  getIndicadorClaveDesempenoGlobal(id_usuario: number, params:any): Observable<any> {
+    return this.http.get<any>(this.URL + '?action=getIndicadorClaveDesempenoGlobal&id_usuario=' + id_usuario + '&id_periodo='+params.idPeriodo +'&id_etad='+params.idEtad);
   }
 
 }

@@ -28,6 +28,7 @@ export class RptGlobalAreaComponent implements OnInit {
   public meses: Array<any>;
   public periodos: Array<Periodo>;
   public registros:Array<any>;
+  public total_bono:any;
 
 
   constructor(
@@ -51,8 +52,7 @@ export class RptGlobalAreaComponent implements OnInit {
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
       if (result.response.sucessfull) {
-        this.etads = result.data || [];
-
+        this.etads = result.data.listEtads || [];
         this.periodos = result.data.listPeriodos || [];
         let tmpAnios = this.periodos.map(el => el.anio);
         this.periodos.filter((el, index) => {
@@ -117,14 +117,19 @@ export class RptGlobalAreaComponent implements OnInit {
     this.viewReport = false;
     this.submitted = true;
     this.registros = [];
+    this.total_bono = {};
 
     if (this.formConsultaPeriodo.valid) {
 
-      this.service.reporteFallas(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-
+      this.service.getIndicadorClaveDesempenoGlobal(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
+     
         if (result.response.sucessfull) {
-          this.registros = result.data || [];
+          this.registros = result.data.indicadorDesempeno || [];
+          this.total_bono = this.registros.filter(el=>el.total == 1)[0];
+          this.registros = this.registros.filter(el=>el.total==0);
           this.viewReport = true;
+
+         
 
         } else {
 
