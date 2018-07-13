@@ -15,7 +15,7 @@
       <div class="section"></div>
       <div class="row">
         <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="busqueda(paramsBusqueda)" autocomplete="off">
-          <div class="input-field col s12 m12 l3 xl3">
+          <div class="input-field col s12 m12 l2 xl2">
             <select class="anio" materialize="material_select" [materializeSelectOptions]="anios" formControlName="anio" [(ngModel)]="paramsBusqueda.anio"
               (ngModelChange)="changeCombo('anio')">
               <option value="">SELECCIONE</option>
@@ -24,7 +24,7 @@
             <label for="anio">año</label>
             <div *ngIf="formConsultaPeriodo.controls.anio.errors?.required && (formConsultaPeriodo.controls.anio?.touched || submitted)"
               class="error">
-              Seleccione una opcion
+              Seleccione
             </div>
           </div>
           <div class="input-field col s12 m12 l3 xl3">
@@ -39,7 +39,7 @@
               Seleccione una opcion
             </div>
           </div>
-          <div class="input-field col s12 m12 l5 xl5">
+          <div class="input-field col s12 m12 l3 xl3">
             <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="paramsBusqueda.idEtad"
               (ngModelChange)="changeCombo()">
               <option value="">SELECCIONE</option>
@@ -47,6 +47,18 @@
             </select>
             <label for="etad">Area Etad</label>
             <div *ngIf="formConsultaPeriodo.controls.idEtad.errors?.required && (formConsultaPeriodo.controls.idEtad?.touched || submitted)"
+              class="error">
+              Seleccione una opcion
+            </div>
+          </div>
+          <div class="input-field col s12 m12 l3 xl3">
+            <select materialize="material_select" [materializeSelectOptions]="grupos" formControlName="idGrupo" [(ngModel)]="paramsBusqueda.idGrupo"
+              (ngModelChange)="changeCombo()">
+              <option value="">SELECCIONE</option>
+              <option *ngFor="let grupo of grupos" [value]="grupo.id">{{grupo.valor}}</option>
+            </select>
+            <label for="etad">Grupo</label>
+            <div *ngIf="formConsultaPeriodo.controls.idGrupo.errors?.required && (formConsultaPeriodo.controls.idGrupo?.touched || submitted)"
               class="error">
               Seleccione una opcion
             </div>

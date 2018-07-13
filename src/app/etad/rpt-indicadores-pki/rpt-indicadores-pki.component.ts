@@ -29,6 +29,7 @@ export class RptIndicadoresPkiComponent implements OnInit {
   public meses: Array<any>;
   public periodos: Array<Periodo>;
   public registros:Array<any>;
+  public grupos:Array<Catalogo>;
 
 
   constructor(
@@ -48,11 +49,15 @@ export class RptIndicadoresPkiComponent implements OnInit {
     this.anios = [];
     this.meses = [];
     this.periodos = [];
+    this.grupos = [];
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
       if (result.response.sucessfull) {
-        this.etads = result.data || [];
+        this.etads = result.data.listEtads || [];
+        this.grupos = result.data.listGrupos || [];
+
+        this.grupos = this.grupos.filter(el=>el.id != 6 && el.id !=5);
 
         this.periodos = result.data.listPeriodos || [];
         let tmpAnios = this.periodos.map(el => el.anio);
@@ -84,7 +89,8 @@ export class RptIndicadoresPkiComponent implements OnInit {
     this.formConsultaPeriodo = this.fb.group({
       idEtad: new FormControl({ value: this.paramsBusqueda.idEtad }, [Validators.required]),
       anio: new FormControl({ value: this.paramsBusqueda.anio }, [Validators.required]),
-      idPeriodo: new FormControl({ value: this.paramsBusqueda.idPeriodo }, [Validators.required])
+      idPeriodo: new FormControl({ value: this.paramsBusqueda.idPeriodo }, [Validators.required]),
+      idGrupo: new FormControl({ value: this.paramsBusqueda.idGrupo }, [Validators.required])
     });
 
   }

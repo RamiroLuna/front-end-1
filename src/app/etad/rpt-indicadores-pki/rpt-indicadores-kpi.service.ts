@@ -6,7 +6,7 @@ import { BASE_URL_SERVICE } from '../../constants';
 @Injectable()
 export class RptIndicadoresKpiService {
 
-  private URL = BASE_URL_SERVICE + '/Reportes';
+  private URL = BASE_URL_SERVICE + '/EtadReportes';
 
   constructor(private http: HttpClient) { }
 
