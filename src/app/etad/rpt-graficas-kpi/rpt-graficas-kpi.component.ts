@@ -133,7 +133,7 @@ export class RptGraficasKpiComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.getGraficasByEtad(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-     
+
         if (result.response.sucessfull) {
         
           let total_graficas = result.data.graficas || [];
@@ -147,8 +147,8 @@ export class RptGraficasKpiComponent implements OnInit {
             config_grafica.xAxis.categories = ['A','B','C','D'];
             config_grafica.title.text = el.kpi;
 
-            config_grafica.series.push({ name: ' Logro ', data: dataReal, color: '#dcedc8' });
-            config_grafica.series.push({ name: ' Meta ', data: dataEsperada, type: 'line', color: '#1a237e' });
+            config_grafica.series.push({ name: ' Logro ', data: dataEsperada, color: '#dcedc8' });
+            config_grafica.series.push({ name: ' Meta ', data: dataReal , type: 'line', color: '#1a237e' });
 
             this.graficas.push(config_grafica);
           });

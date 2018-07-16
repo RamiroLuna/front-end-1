@@ -191,18 +191,22 @@ export class PonderacionManualComponent implements OnInit {
   }
 
   openModalConfirmacion(accion: string, tipo_ponderacion: string): void {
-
+    debugger
     this.submitted = true;
     this.mensajeModal = '';
+    let detalle = '';
 
     if (this.formCargaManual.valid) {
 
       switch (tipo_ponderacion) {
         case 'objetivos_operativos':
           this.mensajeModal = '¿Está seguro de agregar ponderación a los objetivos operativos?';
+          detalle = '<p style="color: #303f9f ">Año:<b>' + this.params.anio + '</b>';
           break;
         case 'kpi-operativo':
           this.mensajeModal = '¿Está seguro de agregar ponderación a los KPI\'s operativos?';
+          detalle = '<p style="color: #303f9f ">Año:<b>' + this.params.anio + '</b>  Area Etad: <b>' + this.getDescriptivoArea(this.params.idEtad) +
+          '</b></p>';
           break;
       }
       /* 
@@ -211,8 +215,7 @@ export class PonderacionManualComponent implements OnInit {
       swal({
         title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
         type: 'question',
-        html: '<p style="color: #303f9f ">Año:<b>' + this.params.anio + '</b>  Area Etad: <b>' + this.getDescriptivoArea(this.params.idEtad) +
-          '</b></p>',
+        html: detalle,
         showCancelButton: true,
         confirmButtonColor: '#303f9f',
         cancelButtonColor: '#9fa8da ',
@@ -233,6 +236,7 @@ export class PonderacionManualComponent implements OnInit {
           let contenedor: any = { ponderaciones: {} };
 
           switch (tipo_ponderacion) {
+
             case 'objetivos_operativos':
               this.row_pond_objetivos.map(el => {
                 if (Number.isNaN(parseInt("" + el.ponderacion)) || el.ponderacion == undefined) {
