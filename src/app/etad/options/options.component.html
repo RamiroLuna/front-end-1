@@ -259,6 +259,15 @@
           <span style="color:#bdbdbd">Catalogos</span>
         </div>
       </li>
+      <li>
+        <div *ngIf="permission.configuracion_reporte" class="collapsible-header" routerLink="configuraciones-reportes">
+          <i class="material-icons">build</i>Configuraciones de reportes
+        </div>
+        <div *ngIf="!permission.configuracion_reporte" class="collapsible-header grey lighten-4" style="cursor: default">
+          <i class="material-icons" style="color:#e0e0e0">build</i>
+          <span style="color:#bdbdbd">Configuraciones de reportes</span>
+        </div>
+      </li>
     </ul>
   </div>
 

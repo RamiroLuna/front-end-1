@@ -26,6 +26,9 @@ import { ListaReportesComponent } from './lista-reportes/lista-reportes.componen
 import { RptGlobalAreaComponent } from './rpt-global-area/rpt-global-area.component';
 import { RptIndicadoresPkiComponent } from './rpt-indicadores-pki/rpt-indicadores-pki.component';
 import { RptGraficasKpiComponent } from './rpt-graficas-kpi/rpt-graficas-kpi.component';
+import { RptEnlaceObjKpiComponent } from './rpt-enlace-obj-kpi/rpt-enlace-obj-kpi.component';
+import { ListaConfiguracionReporteComponent } from './lista-configuracion-reporte/lista-configuracion-reporte.component';
+import { ConfRptEnlaceObjKpiComponent } from './conf-rpt-enlace-obj-kpi/conf-rpt-enlace-obj-kpi.component';
 
 
 
@@ -140,7 +143,12 @@ const routes: Routes = [
   { path: 'opciones/lista-reportes', component: ListaReportesComponent },
   { path: 'opciones/lista-reportes/reporte-global-area', component: RptGlobalAreaComponent },
   { path: 'opciones/lista-reportes/reporte-indicadores-kpi', component: RptIndicadoresPkiComponent },
-  { path: 'opciones/lista-reportes/reporte-indicadores-graficas', component: RptGraficasKpiComponent }
+  { path: 'opciones/lista-reportes/reporte-indicadores-graficas', component: RptGraficasKpiComponent },
+  { path: 'opciones/lista-reportes/reporte-enlace-obj-kpi', component: RptEnlaceObjKpiComponent },
+
+  /* rutas configuracion reportes */
+  { path: 'opciones/configuraciones-reportes', component: ListaConfiguracionReporteComponent },
+  { path: 'opciones/configuraciones-reportes/conf-rpt-obj-kpi', component: ConfRptEnlaceObjKpiComponent }
 
 ];
 
@@ -174,7 +182,10 @@ const routes: Routes = [
     ListaReportesComponent,
     RptGlobalAreaComponent,
     RptIndicadoresPkiComponent,
-    RptGraficasKpiComponent
+    RptGraficasKpiComponent,
+    RptEnlaceObjKpiComponent,
+    ListaConfiguracionReporteComponent,
+    ConfRptEnlaceObjKpiComponent
   ],
   providers: [
     AuthGuardEtad

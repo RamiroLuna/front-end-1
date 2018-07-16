@@ -1,0 +1,62 @@
+<div class="container">
+    <h4 class="color_titulo center-align">Configuraciones de reportes</h4>
+    <!-- Solo para dispositivos moviles -->
+    <div class="hide-on-large-only right-align">
+      <a routerLink="../../opciones" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+    <br>
+    <p class="color_titulo center-align">Haga clic sobre el nombre del reporte</p>
+    <!-- Fin solo para dispositivos moviles -->
+    <nav *ngIf="reportes.length > 0">
+      <div class="nav-wrapper grey lighten-5">
+        <form autocomplete="off">
+          <div class="input-field">
+            <input id="search" type="search" placeholder="Escribe para buscar" [(ngModel)]="texto_busqueda" [ngModelOptions]="{standalone: true}"
+              required>
+            <i class="material-icons" (click)="limpiarInput()">close</i>
+            <label class="label-icon busqueda" for="search">
+              <i class="material-icons" style="color:black">search</i>
+            </label>
+          </div>
+        </form>
+      </div>
+    </nav>
+  
+    <div>
+      <ul class="collection with-header">
+        <li class="collection-item" *ngFor="let reporte of reportes | filterBy: ['nombre_reporte']: texto_busqueda">
+          <div [routerLink]="reporte.link">
+            Reporte:
+            <b>{{ ' ' + reporte.nombre_reporte }}</b>
+            <div class="secondary-content">
+              <i class="material-icons color_txt">send</i>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div *ngIf="(reportes | filterBy: ['nombre_reporte']: texto_busqueda).length == 0">
+        <h5 class="center-align" style="color:#9e9e9e">No se encontrarón coincidencias</h5>
+      </div>
+      <div *ngIf="reportes.length == 0">
+        <h5 class="center-align" style="color:#9e9e9e">No hay reportes registrados</h5>
+      </div>
+    </div>
+  
+    <!-- Inicio solo para pantallas-->
+    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a routerLink="../../opciones" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+          data-delay="50" data-tooltip="Opciones ETAD" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
+    </div>
+    <!-- Fin solo para pantallas-->
+  </div>

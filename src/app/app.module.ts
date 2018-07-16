@@ -41,7 +41,7 @@ const routes: Routes = [
     LoginComponent,
     HomeComponent,
     MenuComponent,
-    MenuPrincipalComponent
+    MenuPrincipalComponent,
   ],
   imports: [
     BrowserModule,

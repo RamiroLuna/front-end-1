@@ -17,7 +17,8 @@ export class OptionsComponent implements AfterViewInit {
     indicador_mensual: true,
     cargaPonderacionManual: true,
     cargaPonderacionMasiva: true,
-    edicionPonderacion: true
+    edicionPonderacion: true,
+    configuracion_reporte: true
   }
   public loading: boolean;
 
