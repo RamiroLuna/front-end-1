@@ -1,0 +1,111 @@
+<div *ngIf="!loading">
+  <div class="container">
+    <!-- Solo para dispositivos moviles -->
+    <br>
+    <div class="hide-on-large-only right-align">
+      <a routerLink="../../lista-reportes" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+    <!-- Fin solo para dispositivos moviles -->
+    <h4 class="color_titulo center-align">Reporte de bonos</h4>
+    <div class="section"></div>
+    <div class="row">
+      <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="busqueda(paramsBusqueda)" autocomplete="off">
+        <div class="input-field col s12 m12 l5 xl5">
+          <select class="anio" materialize="material_select" [materializeSelectOptions]="anios" formControlName="anio" [(ngModel)]="paramsBusqueda.anio"
+            (ngModelChange)="changeCombo('anio')">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let anio of anios" [value]="anio.valor">{{anio.valor}}</option>
+          </select>
+          <label for="anio">año</label>
+          <div *ngIf="formConsultaPeriodo.controls.anio.errors?.required && (formConsultaPeriodo.controls.anio?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l6 xl6">
+          <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="paramsBusqueda.idPeriodo"
+            (ngModelChange)="changeCombo()">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
+          </select>
+          <label for="mes">mes</label>
+          <div *ngIf="formConsultaPeriodo.controls.idPeriodo.errors?.required && (formConsultaPeriodo.controls.idPeriodo?.touched || submitted)"
+            class="error">
+            Seleccione una opcion
+          </div>
+        </div>
+        <div class="input-field col s12 m12 l1 xl1">
+          <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
+            <i class="material-icons">search</i>
+          </button>
+          <label></label>
+        </div>
+      </form>
+    </div>
+    <!-- Inicio solo para pantallas-->
+    <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a routerLink="../../lista-reportes" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped"
+          data-position="top" data-delay="50" data-tooltip="Reportes" (click)="regresar()">
+          <i class="material-icons">
+            <i class="material-icons">arrow_back</i>
+          </i>
+        </a>
+      </div>
+    </div>
+    <!-- Fin solo para pantallas-->
+  </div>
+  <div class="section"></div>
+  <div *ngIf="viewReport">
+    <div class="container center">
+      <div class="row scroll_ejex_tabla_reporte">
+        <div class="col s12 m12 l12 xl12">
+          <table id="tblReporte" class="display striped" cellspacing="0" width="100%">
+            <thead class="total texto header">
+              <tr>
+                <th colspan="5" class="center-align color_titulo">
+                  {{ titulo_tabla }}
+                </th>
+              </tr>
+              <tr>
+                <th>Área</th>
+                <th>A</th>
+                <th>B</th>
+                <th>C</th>
+                <th>D</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="5" *ngIf="registros.length == 0" class="center-align">
+                  NO HAY REGISTROS
+                </td>
+              </tr>
+              <tr *ngFor="let registro of registros">
+                <td>{{ registro.area }}</td>
+                <td>{{ registro.grupoA }}</td>
+                <td>{{ registro.grupoB }}</td>
+                <td>{{ registro.grupoC }}</td>
+                <td>{{ registro.grupoD }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <br>
+        </div>
+      </div>
+      <a *ngIf="registros.length > 0" class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
+    </div>
+  </div>
+</div>
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>

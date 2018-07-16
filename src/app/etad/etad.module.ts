@@ -29,6 +29,7 @@ import { RptGraficasKpiComponent } from './rpt-graficas-kpi/rpt-graficas-kpi.com
 import { RptEnlaceObjKpiComponent } from './rpt-enlace-obj-kpi/rpt-enlace-obj-kpi.component';
 import { ListaConfiguracionReporteComponent } from './lista-configuracion-reporte/lista-configuracion-reporte.component';
 import { ConfRptEnlaceObjKpiComponent } from './conf-rpt-enlace-obj-kpi/conf-rpt-enlace-obj-kpi.component';
+import { RptBonosComponent } from './rpt-bonos/rpt-bonos.component';
 
 
 
@@ -145,6 +146,7 @@ const routes: Routes = [
   { path: 'opciones/lista-reportes/reporte-indicadores-kpi', component: RptIndicadoresPkiComponent },
   { path: 'opciones/lista-reportes/reporte-indicadores-graficas', component: RptGraficasKpiComponent },
   { path: 'opciones/lista-reportes/reporte-enlace-obj-kpi', component: RptEnlaceObjKpiComponent },
+  { path: 'opciones/lista-reportes/reporte-bonos', component: RptBonosComponent },
 
   /* rutas configuracion reportes */
   { path: 'opciones/configuraciones-reportes', component: ListaConfiguracionReporteComponent },
@@ -185,7 +187,8 @@ const routes: Routes = [
     RptGraficasKpiComponent,
     RptEnlaceObjKpiComponent,
     ListaConfiguracionReporteComponent,
-    ConfRptEnlaceObjKpiComponent
+    ConfRptEnlaceObjKpiComponent,
+    RptBonosComponent
   ],
   providers: [
     AuthGuardEtad

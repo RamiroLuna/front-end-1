@@ -1,3 +1,10 @@
-<p>
-  conf-rpt-enlace-obj-kpi works!
-</p>
+<div class="container" *ngIf="!loading">
+  
+</div>
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>
