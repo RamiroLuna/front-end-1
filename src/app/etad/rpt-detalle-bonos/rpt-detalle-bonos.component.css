@@ -1,0 +1,7 @@
+/*
+ * Estilo para la barra de busqueda
+ */
+ .nav-wrapper .input-field label{
+    top: -10px;
+    margin-left: 10px;
+}

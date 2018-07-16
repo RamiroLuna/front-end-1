@@ -93,7 +93,7 @@
             <table id="tblReporte" class="display striped" cellspacing="0" width="100%">
               <thead class="total texto header">
                 <tr>
-                  <th colspan="7" class="center-align">
+                  <th colspan="7" class="center-align color_titulo">
                       INDICADORES CLAVE DE DESEMPEÑO (KPI)  {{ this.getTextoLinea(this.etads, paramsBusqueda.idEtad) }}		
                   </th>
                 </tr>
@@ -136,7 +136,7 @@
             <br>
           </div>
         </div>
-        <a class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
+        <a *ngIf="registros.length > 0" class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
       </div>
     </div>
   </div>

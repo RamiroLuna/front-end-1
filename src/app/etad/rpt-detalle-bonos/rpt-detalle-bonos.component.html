@@ -11,11 +11,11 @@
       </a>
     </div>
     <!-- Fin solo para dispositivos moviles -->
-    <h4 class="color_titulo center-align">Reporte global por área</h4>
+    <h4 class="color_titulo center-align">Reporte detallado de bonos</h4>
     <div class="section"></div>
     <div class="row">
       <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="busqueda(paramsBusqueda)" autocomplete="off">
-        <div class="input-field col s12 m12 l3 xl3">
+        <div class="input-field col s12 m12 l5 xl5">
           <select class="anio" materialize="material_select" [materializeSelectOptions]="anios" formControlName="anio" [(ngModel)]="paramsBusqueda.anio"
             (ngModelChange)="changeCombo('anio')">
             <option value="">SELECCIONE</option>
@@ -27,7 +27,7 @@
             Seleccione una opcion
           </div>
         </div>
-        <div class="input-field col s12 m12 l3 xl3">
+        <div class="input-field col s12 m12 l6 xl6">
           <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="paramsBusqueda.idPeriodo"
             (ngModelChange)="changeCombo()">
             <option value="">SELECCIONE</option>
@@ -35,18 +35,6 @@
           </select>
           <label for="mes">mes</label>
           <div *ngIf="formConsultaPeriodo.controls.idPeriodo.errors?.required && (formConsultaPeriodo.controls.idPeriodo?.touched || submitted)"
-            class="error">
-            Seleccione una opcion
-          </div>
-        </div>
-        <div class="input-field col s12 m12 l5 xl5">
-          <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="paramsBusqueda.idEtad"
-            (ngModelChange)="changeCombo()">
-            <option value="">SELECCIONE</option>
-            <option *ngFor="let etad of etads" [value]="etad.id">{{etad.valor}}</option>
-          </select>
-          <label for="etad">etad</label>
-          <div *ngIf="formConsultaPeriodo.controls.idEtad.errors?.required && (formConsultaPeriodo.controls.idEtad?.touched || submitted)"
             class="error">
             Seleccione una opcion
           </div>
@@ -75,61 +63,54 @@
   <div class="section"></div>
   <div *ngIf="viewReport">
     <div class="container center">
+      <nav *ngIf="registros.length > 0">
+        <div class="nav-wrapper grey lighten-5">
+          <form autocomplete="off">
+            <div class="input-field">
+              <input id="search" type="search" placeholder="Escribe para buscar" [(ngModel)]="texto_busqueda" [ngModelOptions]="{standalone: true}"
+                required>
+              <i class="material-icons" (click)="limpiarInput()">close</i>
+              <label class="label-icon busqueda" for="search">
+                <i class="material-icons" style="color:black">search</i>
+              </label>
+            </div>
+          </form>
+        </div>
+      </nav>
       <div class="row scroll_ejex_tabla_reporte">
         <div class="col s12 m12 l12 xl12">
           <table id="tblReporte" class="display striped" cellspacing="0" width="100%">
             <thead class="total texto header">
               <tr>
-                <th colspan="6"></th>
-                <th colspan="4" class="center-align">Resultados KPI</th>
-                <th colspan="4" class="center-align">Resultados Bono </th>
+                <th colspan="5" class="center-align color_titulo">
+                  {{ titulo_tabla }}
+                </th>
               </tr>
               <tr>
-                <th class="center-align">Objetivo Operativo</th>
-                <th class="center-align">KPI ETAD</th>
-                <th class="center-align">META</th>
-                <th class="center-align">UM</th>
-                <th class="center-align">PONDERACIÓN</th>
-                <th class="center-align">FRECUENCIA</th>
-                <th class="center-align">GRUPO A</th>
-                <th class="center-align">GRUPO B</th>
-                <th class="center-align">GRUPO C</th>
-                <th class="center-align">GRUPO D</th>
-                <th class="center-align">GRUPO A</th>
-                <th class="center-align">GRUPO B</th>
-                <th class="center-align">GRUPO C</th>
-                <th class="center-align">GRUPO D</th>
+                <th>Área</th>
+                <th>Grupo</th>
+                <th>Número empleado</th>
+                <th>Empleado</th>
+                <th>Bono</th>
               </tr>
             </thead>
-
             <tbody>
-              <tr>
-                <td colspan="14" *ngIf="registros.length == 0" class="center-align">
+              <tr *ngIf="registros.length == 0">
+                <td colspan="5" class="center-align">
                   NO HAY REGISTROS
                 </td>
               </tr>
-              <tr *ngFor="let registro of registros">
-                <td class="center-align">{{ registro.objetivo }}</td>
-                <td class="center-align">{{ registro.kpi }}</td>
-                <td class="center-align">{{ registro.meta }}</td>
-                <td class="center-align">{{ registro.um }}</td>
-                <td class="center-align">{{ registro.ponderacion }}</td>
-                <td class="center-align">{{ registro.frecuencia }}</td>
-                <td class="center-align">{{ registro.resKpiA }}</td>
-                <td class="center-align">{{ registro.resKpiB }}</td>
-                <td class="center-align">{{ registro.resKpiC }}</td>
-                <td class="center-align">{{ registro.resKpiD }}</td>
-                <td class="center-align">{{ registro.resBonoA }}</td>
-                <td class="center-align">{{ registro.resBonoB }}</td>
-                <td class="center-align">{{ registro.resBonoC }}</td>
-                <td class="center-align">{{ registro.resBonoD }}</td>
+              <tr *ngIf="(registros | filterBy: ['area','no','empleado']: texto_busqueda).length == 0">
+                <td colspan="5" class="center-align">
+                  NO HAY REGISTROS
+                </td>
               </tr>
-              <tr *ngIf="registros.length > 0">
-                <td colspan="10"></td>
-                <td class="center-align">{{ total_bono.resBonoA }}</td>
-                <td class="center-align">{{ total_bono.resBonoB }}</td>
-                <td class="center-align">{{ total_bono.resBonoC }}</td>
-                <td class="center-align">{{ total_bono.resBonoD }}</td>
+              <tr *ngFor="let registro of registros | filterBy: ['area','no','empleado']: texto_busqueda">
+                <td>{{ registro.area }}</td>
+                <td>{{ registro.grupo }}</td>
+                <td>{{ registro.no }}</td>
+                <td>{{ registro.empleado }}</td>
+                <td>{{ registro.bono + ' % ' }}</td>
               </tr>
             </tbody>
           </table>
