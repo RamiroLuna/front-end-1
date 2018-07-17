@@ -9,6 +9,9 @@ let configChart = {
             ]
         }
     },
+    exporting: {
+        enabled: false
+    },
     credits: {
         enabled: false
     },

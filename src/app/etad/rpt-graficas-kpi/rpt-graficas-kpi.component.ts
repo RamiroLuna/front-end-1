@@ -28,10 +28,11 @@ export class RptGraficasKpiComponent implements OnInit {
   public anios: Array<any>;
   public meses: Array<any>;
   public periodos: Array<Periodo>;
-  public registros:Array<any>;
-  public grupos:Array<Catalogo>;
-  public suma_temporal:number;
+  public grupos: Array<Catalogo>;
+  public suma_temporal: number;
   public graficas = [];
+  public graficos_ok:boolean;
+
 
 
   constructor(
@@ -44,7 +45,6 @@ export class RptGraficasKpiComponent implements OnInit {
     this.loading = true;
     this.submitted = false;
     this.viewReport = false;
-    this.registros = [];
     this.tituloGrafica = "";
     this.paramsBusqueda = {};
 
@@ -53,6 +53,7 @@ export class RptGraficasKpiComponent implements OnInit {
     this.periodos = [];
     this.grupos = [];
     this.graficas = [];
+    this.graficos_ok = false;
 
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
@@ -61,7 +62,7 @@ export class RptGraficasKpiComponent implements OnInit {
         this.etads = result.data.listEtads || [];
         this.grupos = result.data.listGrupos || [];
 
-        this.grupos = this.grupos.filter(el=>el.id != 6 && el.id !=5);
+        this.grupos = this.grupos.filter(el => el.id != 6 && el.id != 5);
 
         this.periodos = result.data.listPeriodos || [];
         let tmpAnios = this.periodos.map(el => el.anio);
@@ -117,6 +118,8 @@ export class RptGraficasKpiComponent implements OnInit {
 
   changeCombo(params: string): void {
     this.viewReport = false;
+    this.graficos_ok = false;
+
     if (params == 'anio') {
       this.meses = this.periodos.filter(el => el.anio == this.paramsBusqueda.anio)
     }
@@ -126,8 +129,9 @@ export class RptGraficasKpiComponent implements OnInit {
 
     this.viewReport = false;
     this.submitted = true;
-    this.registros = [];
-    this.graficas = [];  
+    this.graficas = [];
+    this.graficos_ok = false;
+
 
 
     if (this.formConsultaPeriodo.valid) {
@@ -135,24 +139,37 @@ export class RptGraficasKpiComponent implements OnInit {
       this.service.getGraficasByEtad(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
 
         if (result.response.sucessfull) {
-        
-          let total_graficas = result.data.graficas || [];
 
-          total_graficas.map((el)=>{
+          let total_graficas = result.data.graficas || [];
+          let contador = 0;
+          let arg_tmp = [];
+          total_graficas.map((el, index, arg) => {
+
             let config_grafica = clone(configChart);
-            let dataReal = [el.metaA,el.metaB,el.metaC,el.metaD];
-            let dataEsperada = [el.resultadoA,el.resultadoB,el.resultadoC,el.resultadoD];
+            let dataReal = [el.metaA, el.metaB, el.metaC, el.metaD];
+            let dataEsperada = [el.resultadoA, el.resultadoB, el.resultadoC, el.resultadoD];
 
             config_grafica.series = [];
-            config_grafica.xAxis.categories = ['A','B','C','D'];
+            config_grafica.xAxis.categories = ['A', 'B', 'C', 'D'];
             config_grafica.title.text = el.kpi;
 
             config_grafica.series.push({ name: ' Logro ', data: dataEsperada, color: '#dcedc8' });
-            config_grafica.series.push({ name: ' Meta ', data: dataReal , type: 'line', color: '#1a237e' });
+            config_grafica.series.push({ name: ' Meta ', data: dataReal, type: 'line', color: '#1a237e' });
 
-            this.graficas.push(config_grafica);
+            arg_tmp.push(config_grafica);
+
+            if (contador == 2) {
+              this.graficas.push(arg_tmp);
+              arg_tmp = [];
+              contador = 0;
+            } else {
+              contador++;
+              if (index == (arg.length - 1)) this.graficas.push(arg_tmp);
+            }
+
           });
-          
+
+
           this.viewReport = true;
 
           setTimeout(() => {
@@ -176,9 +193,13 @@ export class RptGraficasKpiComponent implements OnInit {
   }
 
   rptAfterViewGenerate(): void {
-    this.graficas.forEach((configuracionGrafica, index)=>{
-        $('#grafica'+index).highcharts(configuracionGrafica);
+    this.graficas.forEach((renglon, index) => {
+      renglon.forEach((grafica, i) => {
+        $('#grafica' + index+i).highcharts(grafica);
+      });
     });
+
+    this.graficos_ok = true;
   }
 
   getTextoLinea(lineas: Array<Catalogo>, id_etad: number): string {

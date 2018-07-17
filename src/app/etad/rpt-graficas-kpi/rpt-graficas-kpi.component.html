@@ -75,16 +75,26 @@
   </div>
   <div class="section"></div>
   <div *ngIf="viewReport">
-    <ng-container *ngFor="let grafica of graficas; let i = index">
-      <div class="row">
+    <div class="row container" [hidden]="graficos_ok">
+      <div class="col s12 m12 l12 xl12  center-align">
+        <div class="progress">
+          <div class="indeterminate"></div>
+        </div>
+        <p class="center-align">Generando gráficas ...</p>
+      </div>
+    </div>
+    <ng-container *ngFor="let renglon of graficas; let i = index">
+      <div class="row" [hidden]="!graficos_ok">
         <div class="col s12 m12 l12 xl12  center-align">
-          <div class="col s12 m12 l4 xl4">
-            <div class="card">
-              <div class="card-content grey lighten-5">
-                <div [id]="'grafica'+i" style="width:100%; height:200px;"></div>
+          <ng-container *ngFor="let columna of renglon; let j = index">
+            <div class="col s12 m12 l4 xl4">
+              <div class="card">
+                <div class="card-content grey lighten-5">
+                  <div [id]="'grafica'+i+j" style="width:100%; height:200px;"></div>
+                </div>
               </div>
             </div>
-          </div>
+          </ng-container>
         </div>
       </div>
     </ng-container>
