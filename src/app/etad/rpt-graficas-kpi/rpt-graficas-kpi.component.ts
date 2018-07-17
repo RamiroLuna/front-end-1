@@ -14,7 +14,8 @@ declare var Materialize: any;
 @Component({
   selector: 'app-rpt-graficas-kpi',
   templateUrl: './rpt-graficas-kpi.component.html',
-  providers: [RptGraficasKpiService]
+  providers: [RptGraficasKpiService],
+  styleUrls: ['/rpt-graficas-kpi.component.css']
 })
 export class RptGraficasKpiComponent implements OnInit {
 
@@ -198,6 +199,7 @@ export class RptGraficasKpiComponent implements OnInit {
         $('#grafica' + index+i).highcharts(grafica);
       });
     });
+ 
 
     this.graficos_ok = true;
   }
