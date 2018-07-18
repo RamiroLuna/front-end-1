@@ -31,6 +31,7 @@ import { ListaConfiguracionReporteComponent } from './lista-configuracion-report
 import { ConfRptEnlaceObjKpiComponent } from './conf-rpt-enlace-obj-kpi/conf-rpt-enlace-obj-kpi.component';
 import { RptBonosComponent } from './rpt-bonos/rpt-bonos.component';
 import { RptDetalleBonosComponent } from './rpt-detalle-bonos/rpt-detalle-bonos.component';
+import { RptPosicionTrimestralComponent } from './rpt-posicion-trimestral/rpt-posicion-trimestral.component';
 
 
 
@@ -149,10 +150,11 @@ const routes: Routes = [
   { path: 'opciones/lista-reportes/reporte-enlace-obj-kpi', component: RptEnlaceObjKpiComponent },
   { path: 'opciones/lista-reportes/reporte-bonos', component: RptBonosComponent },
   { path: 'opciones/lista-reportes/reporte-detalle-bonos', component: RptDetalleBonosComponent },
+  { path: 'opciones/lista-reportes/reporte-posicion-trimestral', component: RptPosicionTrimestralComponent },
 
   /* rutas configuracion reportes */
   { path: 'opciones/configuraciones-reportes', component: ListaConfiguracionReporteComponent },
-  { path: 'opciones/configuraciones-reportes/conf-rpt-obj-kpi', component: ConfRptEnlaceObjKpiComponent }
+  { path: 'opciones/configuraciones-reportes/conf-rpt-obj-kpi', component: ConfRptEnlaceObjKpiComponent },
 
 ];
 
@@ -191,7 +193,8 @@ const routes: Routes = [
     ListaConfiguracionReporteComponent,
     ConfRptEnlaceObjKpiComponent,
     RptBonosComponent,
-    RptDetalleBonosComponent
+    RptDetalleBonosComponent,
+    RptPosicionTrimestralComponent
   ],
   providers: [
     AuthGuardEtad

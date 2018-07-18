@@ -15,10 +15,11 @@ export class ListaReportesComponent  implements  AfterViewInit  {
   public reportes: Array<any>=[
     { id : 1 , nombre_reporte: 'Reporte global por área' , link:'reporte-global-area' , activo: true},
     { id : 2 , nombre_reporte: 'Indicadores clave de desempeño ( Reportes )' , link:'reporte-indicadores-kpi' , activo: true},
-    { id : 3 , nombre_reporte: 'Indicadores clave de desempeño ( Graficas )', link:'reporte-indicadores-graficas' ,  activo: true},
+    { id : 3 , nombre_reporte: 'Indicadores clave de desempeño ( Gráfica )', link:'reporte-indicadores-graficas' ,  activo: true},
     { id : 4 , nombre_reporte: 'Enlace objetivos estratégicos y KIP´s operativos', link:'reporte-enlace-obj-kpi' ,  activo: true},
     { id : 5 , nombre_reporte: 'Reporte de bonos', link:'reporte-bonos' ,  activo: true},
-    { id : 6 , nombre_reporte: 'Reporte detallado de bonos', link:'reporte-detalle-bonos' ,  activo: true}
+    { id : 6 , nombre_reporte: 'Reporte detallado de bonos', link:'reporte-detalle-bonos' ,  activo: true},
+    { id : 7 , nombre_reporte: 'Posición Trimestral', link:'reporte-posicion-trimestral' ,  activo: true}
   ];
 
   constructor() { }
