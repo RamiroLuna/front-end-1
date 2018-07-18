@@ -62,8 +62,16 @@
   </div>
   <div class="section"></div>
   <div *ngIf="viewReport">
+    <div class="row container" [hidden]="graficos_ok">
+      <div class="col s12 m12 l12 xl12  center-align">
+        <div class="progress">
+          <div class="indeterminate"></div>
+        </div>
+        <p class="center-align">Generando gráficas ...</p>
+      </div>
+    </div>
     <ng-container *ngFor="let grafica of graficas; let j = index">
-      <div class="row">
+      <div class="row" [hidden]="!graficos_ok">
         <div class="col s12 m12 l12 xl12  center-align">
           <div [id]="'grafica'+j" style="width:100%; height:400px;"></div>
         </div>

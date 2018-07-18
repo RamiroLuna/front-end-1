@@ -19,7 +19,8 @@ export class ListaReportesComponent  implements  AfterViewInit  {
     { id : 4 , nombre_reporte: 'Enlace objetivos estratégicos y KIP´s operativos', link:'reporte-enlace-obj-kpi' ,  activo: true},
     { id : 5 , nombre_reporte: 'Reporte de bonos', link:'reporte-bonos' ,  activo: true},
     { id : 6 , nombre_reporte: 'Reporte detallado de bonos', link:'reporte-detalle-bonos' ,  activo: true},
-    { id : 7 , nombre_reporte: 'Posición Trimestral', link:'reporte-posicion-trimestral' ,  activo: true}
+    { id : 7 , nombre_reporte: 'Posición Trimestral', link:'reporte-posicion-trimestral' ,  activo: true},
+    { id : 7 , nombre_reporte: 'Posición Anual', link:'reporte-posicion-anual' ,  activo: true}
   ];
 
   constructor() { }

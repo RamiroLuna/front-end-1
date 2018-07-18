@@ -32,6 +32,7 @@ import { ConfRptEnlaceObjKpiComponent } from './conf-rpt-enlace-obj-kpi/conf-rpt
 import { RptBonosComponent } from './rpt-bonos/rpt-bonos.component';
 import { RptDetalleBonosComponent } from './rpt-detalle-bonos/rpt-detalle-bonos.component';
 import { RptPosicionTrimestralComponent } from './rpt-posicion-trimestral/rpt-posicion-trimestral.component';
+import { RptPosicionAnualComponent } from './rpt-posicion-anual/rpt-posicion-anual.component';
 
 
 
@@ -151,6 +152,7 @@ const routes: Routes = [
   { path: 'opciones/lista-reportes/reporte-bonos', component: RptBonosComponent },
   { path: 'opciones/lista-reportes/reporte-detalle-bonos', component: RptDetalleBonosComponent },
   { path: 'opciones/lista-reportes/reporte-posicion-trimestral', component: RptPosicionTrimestralComponent },
+  { path: 'opciones/lista-reportes/reporte-posicion-anual', component: RptPosicionAnualComponent },
 
   /* rutas configuracion reportes */
   { path: 'opciones/configuraciones-reportes', component: ListaConfiguracionReporteComponent },
@@ -194,7 +196,8 @@ const routes: Routes = [
     ConfRptEnlaceObjKpiComponent,
     RptBonosComponent,
     RptDetalleBonosComponent,
-    RptPosicionTrimestralComponent
+    RptPosicionTrimestralComponent,
+    RptPosicionAnualComponent
   ],
   providers: [
     AuthGuardEtad
