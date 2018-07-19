@@ -33,6 +33,7 @@ import { RptBonosComponent } from './rpt-bonos/rpt-bonos.component';
 import { RptDetalleBonosComponent } from './rpt-detalle-bonos/rpt-detalle-bonos.component';
 import { RptPosicionTrimestralComponent } from './rpt-posicion-trimestral/rpt-posicion-trimestral.component';
 import { RptPosicionAnualComponent } from './rpt-posicion-anual/rpt-posicion-anual.component';
+import { FormatoEnlaceComponent } from './formato-enlace/formato-enlace.component';
 
 
 
@@ -197,7 +198,8 @@ const routes: Routes = [
     RptBonosComponent,
     RptDetalleBonosComponent,
     RptPosicionTrimestralComponent,
-    RptPosicionAnualComponent
+    RptPosicionAnualComponent,
+    FormatoEnlaceComponent
   ],
   providers: [
     AuthGuardEtad
