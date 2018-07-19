@@ -3,6 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { ConfRptEnlaceObjKpiService } from './conf-rpt-enlace-obj-kpi.service';
+import { PetReporteEnlace } from '../../models/pet-reporte-enlace';
 
 declare var $: any;
 declare var Materialize: any;
@@ -21,6 +22,8 @@ export class ConfRptEnlaceObjKpiComponent implements OnInit {
   public anios: Array<any>;
   public meses: Array<any>;
   public periodos: Array<Periodo>;
+
+  public datos_formato:PetReporteEnlace;
  
   constructor(
     private service: ConfRptEnlaceObjKpiService,
@@ -110,11 +113,10 @@ export class ConfRptEnlaceObjKpiComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.getConfiguracion(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-        console.log('get reporte config', result)
-        if (result.response.sucessfull) {
-     
-          this.viewReport = true;
 
+        if (result.response.sucessfull) {
+          this.datos_formato = result.data.reporteEnlace || {};
+          this.viewReport = true;
         } else {
 
           this.viewReport = false;

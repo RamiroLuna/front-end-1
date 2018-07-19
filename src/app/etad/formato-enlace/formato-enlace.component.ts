@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { PetReporteEnlace } from '../../models/pet-reporte-enlace';
 
 @Component({
   selector: 'app-formato-enlace',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FormatoEnlaceComponent implements OnInit {
 
+  @Input() datos: PetReporteEnlace;
+
   constructor() { }
 
   ngOnInit() {
+    console.log('imprimiendp datos desde el compoente con tabla', this.datos)
   }
 
 }
