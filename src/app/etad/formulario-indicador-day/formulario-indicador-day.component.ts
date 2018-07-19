@@ -6,6 +6,7 @@ import {
   getAnioActual,
   calculaDiaPorMes,
   isNumeroAsignacionValid,
+  isValidId,
   findRol,
   clone,
   getFechaActual
@@ -59,9 +60,20 @@ export class FormularioIndicadorDayComponent implements OnInit {
   public status: string;
   public idEtad: number;
   public idGrupo: number;
-  public dia:string;
-  public kpis:Array<any>;
-  public disabledInputText:boolean;
+  public dia: string;
+  public kpis: Array<any>;
+  public disabledInputText: boolean;
+
+  /*
+   * Variables para el calculo de ausentismo
+   */
+  public plantilla: any;
+  public faltas: any;
+  public porcentaje: any;
+  public id_meta_kpi_tmp: any;
+  /*
+   * Fin variables para calculo de ausentismo
+   */
   constructor(private auth: AuthService,
     private service: FormularioIndicadorDayService,
     private fb: FormBuilder
@@ -74,8 +86,11 @@ export class FormularioIndicadorDayComponent implements OnInit {
     this.disabled = false;
     this.disabledInputText = false;
     this.dia = "";
+    this.plantilla = 0;
+    this.faltas = 0;
+    this.porcentaje = 0;
+    this.id_meta_kpi_tmp = -1;
     // // this.estatusPeriodo = true;
-
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
@@ -84,7 +99,7 @@ export class FormularioIndicadorDayComponent implements OnInit {
         this.etads = result.data.listEtads || [];
         this.grupos = result.data.listGrupos || [];
 
-        this.grupos = this.grupos.filter(el=> el.id != 6 && el.id != 5);
+        this.grupos = this.grupos.filter(el => el.id != 6 && el.id != 5);
 
         this.loading = false;
         this.loadFormulario();
@@ -123,13 +138,20 @@ export class FormularioIndicadorDayComponent implements OnInit {
       onClose: () => {
         this.dia = $('#dia').val();
       },
-      onStart: function (){
-        this.set('select',getFechaActual())
+      onStart: function () {
+        this.set('select', getFechaActual())
       }
     });
-   
+
     this.dia = getFechaActual();
     Materialize.updateTextFields();
+
+    $('#modalEdicion').modal({
+      opacity: 0.6,
+      inDuration: 500,
+      dismissible: false,
+      complete: () => { }
+    });
   }
 
   agregar() {
@@ -154,7 +176,7 @@ export class FormularioIndicadorDayComponent implements OnInit {
     this.formConsultaPeriodo = this.fb.group({
       idEtad: new FormControl({ value: this.idEtad }, [Validators.required]),
       idGrupo: new FormControl({ value: this.idGrupo }, [Validators.required]),
-      dia: new FormControl({ value: this.dia}, [Validators.required])
+      dia: new FormControl({ value: this.dia }, [Validators.required])
     });
   }
 
@@ -163,23 +185,23 @@ export class FormularioIndicadorDayComponent implements OnInit {
     this.disabledInputText = false;
     this.submitted = true;
     this.status = "inactive";
-  
+
 
     if (this.formConsultaPeriodo.valid) {
       this.disabled = true;
       this.datos_tabla = false;
 
-      this.service.viewKpiForSave(this.auth.getIdUsuario(), this.idEtad , this.dia).subscribe(result => {
-     
+      this.service.viewKpiForSave(this.auth.getIdUsuario(), this.idEtad, this.dia).subscribe(result => {
+
         if (result.response.sucessfull) {
           // // this.estatusPeriodo = result.data.estatusPeriodo;
-        
+
           this.kpis = result.data.listIndicadorDiarios || [];
           this.datos_tabla = true;
           this.disabled = false;
 
           setTimeout(() => {
-         
+
             this.status = 'active';
           }, 200);
 
@@ -216,7 +238,7 @@ export class FormularioIndicadorDayComponent implements OnInit {
       swal({
         title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
         type: 'question',
-        html: '<p style="color: #303f9f "> Area Etad : <b>' + this.getDescriptivo(this.etads, this.idEtad) + ' </b> Grupo: <b>'+  this.getDescriptivo(this.grupos, this.idGrupo) +'</b> Dia: <b>' + this.dia + '</b></p>',
+        html: '<p style="color: #303f9f "> Area Etad : <b>' + this.getDescriptivo(this.etads, this.idEtad) + ' </b> Grupo: <b>' + this.getDescriptivo(this.grupos, this.idGrupo) + '</b> Dia: <b>' + this.dia + '</b></p>',
         showCancelButton: true,
         confirmButtonColor: '#303f9f',
         cancelButtonColor: '#9fa8da ',
@@ -245,8 +267,8 @@ export class FormularioIndicadorDayComponent implements OnInit {
 
               contenedor.indicadores = this.kpis;
 
-              this.service.insertIndicadores(this.auth.getIdUsuario(), this.idEtad ,contenedor, this.dia).subscribe(result => {
-              
+              this.service.insertIndicadores(this.auth.getIdUsuario(), this.idEtad, contenedor, this.dia).subscribe(result => {
+
                 if (result.response.sucessfull) {
                   this.disabledInputText = true;
                   Materialize.toast(' Se agregarón correctamente ', 4000, 'green');
@@ -273,7 +295,7 @@ export class FormularioIndicadorDayComponent implements OnInit {
 
   }
 
-  getDescriptivo(catalogo:Array<Catalogo>,id:number): string {
+  getDescriptivo(catalogo: Array<Catalogo>, id: number): string {
 
     let el = catalogo.filter(el => el.id == id);
 
@@ -298,6 +320,51 @@ export class FormularioIndicadorDayComponent implements OnInit {
     });
 
     return numero_error;
+
+  }
+
+  calcularAusentismo(id_meta_kpi: number, name_kpi: string) {
+    this.plantilla = 0;
+    this.faltas = 0;
+    this.porcentaje = "";
+    this.id_meta_kpi_tmp = id_meta_kpi;
+    let modal = $('#modalEdicion');
+    modal.find('#titulo').html(name_kpi);
+    modal.modal('open');
+  }
+
+  asignarPorcentaje(): void {
+    this.kpis.filter(el => el.id_meta_kpi == this.id_meta_kpi_tmp)[0].valor = this.porcentaje;
+    $('#modalEdicion').modal('close');
+  }
+
+  onlyNumber(event: any): boolean {
+    let charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode < 48 || charCode > 57) {
+      return false;
+    }
+
+  }
+
+  calcular(): void {
+    if (Number.isNaN(parseInt("" + this.faltas)) || this.faltas == undefined) {
+      this.faltas = 0;
+    }
+
+    if (Number.isNaN(parseInt("" + this.plantilla)) || this.plantilla == undefined) {
+      this.plantilla = 0;
+    }
+
+    this.plantilla = parseInt(this.plantilla);
+    this.faltas = parseInt(this.faltas);
+
+    if (this.plantilla == 0 && this.faltas == 0) {
+      this.porcentaje = "";
+    } else if (this.faltas > this.plantilla) {
+      this.porcentaje = ""
+    } else {
+      this.porcentaje = (this.faltas / this.plantilla).toFixed(3);
+    }
 
   }
 

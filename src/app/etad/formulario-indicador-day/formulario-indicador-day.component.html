@@ -90,7 +90,11 @@
             {{ kpi.metaKpi.etadKpi.kpiOperativo.unidad_medida }}
           </td>
           <td>
-            <input type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}" [disabled]="disabledInputText" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
+            <input *ngIf="kpi.metaKpi.etadKpi.kpiOperativo.id != 11" type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}"
+              [disabled]="disabledInputText" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
+            <input id="por_ausentismo" *ngIf="kpi.metaKpi.etadKpi.kpiOperativo.id == 11" type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}"
+              [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }" (focus)="calcularAusentismo(kpi.id_meta_kpi, kpi.metaKpi.etadKpi.kpiOperativo.valor)"
+              readonly>
           </td>
         </tr>
         <tr *ngIf="!disabledInputText">
@@ -114,7 +118,30 @@
   </div>
   <!-- Fin solo para pantallas-->
 </div>
-
+<div id="modalEdicion" class="modal" style="width: calc(40%)">
+  <div class="modal-content">
+    <div class="row col s12 m12 l12 xl12">
+      <div class="col s12 m12 l12 xl12">
+        <p class="color_titulo center-align" id="titulo"></p>
+      </div>
+      <div class="input-field col s12 m12 l12 xl12">
+        <input id="plantilla" type="text" (keypress)="onlyNumber($event)"  (keyup)="calcular()" [(ngModel)]="plantilla" [ngModelOptions]="{standalone: true}">
+        <label for="plantilla">No plantilla</label>
+      </div>
+      <div class="input-field col s12 m12 l12 xl12">
+        <input id="faltas" type="text" (keypress)="onlyNumber($event)"  (keyup)="calcular()" [(ngModel)]="faltas" [ngModelOptions]="{standalone: true}">
+        <label for="faltas">Faltas</label>
+      </div>
+      <div class="input-field col s12 m12 l12 xl12">
+        <label for="porcentaje" class="active">Porcentaje inasistencia</label>
+        <input id="porcentaje" type="text" [value]="porcentaje" disabled>
+      </div>
+      <div class="center-align">
+          <button class="waves-effect waves-light btn" (click)="asignarPorcentaje()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="container" *ngIf="loading">
   <div id="loader-wrapper">
     <div id="loader"></div>

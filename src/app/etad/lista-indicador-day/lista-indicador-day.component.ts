@@ -75,6 +75,19 @@ export class ListaIndicadorDayComponent implements OnInit {
   //edicion_detalle variable para editar
   public edicion_detalle: boolean;
 
+
+
+  /*
+   * Variables para el calculo de ausentismo
+   */
+  public plantilla: any;
+  public faltas: any;
+  public porcentaje: any;
+  public id_meta_kpi_tmp: any;
+  /*
+   * Fin variables para calculo de ausentismo
+   */
+
   constructor(private auth: AuthService,
     private service: ListaIndicadorDayService,
     private fb: FormBuilder
@@ -89,6 +102,10 @@ export class ListaIndicadorDayComponent implements OnInit {
     this.kpis = [];
     this.edicion_detalle = true;
 
+    this.plantilla = 0;
+    this.faltas = 0;
+    this.porcentaje = 0;
+    this.id_meta_kpi_tmp = -1;
 
     // // this.estatusPeriodo = true;
     this.anioSeleccionado = getAnioActual();
@@ -135,6 +152,15 @@ export class ListaIndicadorDayComponent implements OnInit {
       inDuration: 500,
       complete: () => { }
     });
+
+    $('#modalPorcentaje').modal({
+      opacity: 0.6,
+      inDuration: 500,
+      dismissible: false,
+      complete: () => { }
+    });
+
+
 
   }
 
@@ -204,9 +230,9 @@ export class ListaIndicadorDayComponent implements OnInit {
       this.datos_tabla = false;
 
       this.service.getAllIndicadores(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad).subscribe(result => {
-      
+
         if (result.response.sucessfull) {
-        
+
           this.registros = result.data.listIndicadorDiarios || [];
           this.datos_tabla = true;
           this.disabled = false;
@@ -236,7 +262,7 @@ export class ListaIndicadorDayComponent implements OnInit {
     this.texto_busqueda = "";
   }
 
-  consultaById(dia: string, id_grupo: number, grupo_descripcion:string): void {
+  consultaById(dia: string, id_grupo: number, grupo_descripcion: string): void {
 
     this.dia_consulta = "";
     this.area_consulta = "";
@@ -245,13 +271,13 @@ export class ListaIndicadorDayComponent implements OnInit {
     this.kpis = [];
 
     this.service.getDetailIndicadores(this.auth.getIdUsuario(), id_grupo, this.idEtad, dia).subscribe(result => {
-    
+
       if (result.response.sucessfull) {
         this.kpis = result.data.listIndicadorDiarios || [];
         setTimeout(() => {
           this.dia_consulta = dia;
-          this.area_consulta = this.getDescriptivo(this.etads,this.idEtad);
-          this.grupo_consulta =  grupo_descripcion;
+          this.area_consulta = this.getDescriptivo(this.etads, this.idEtad);
+          this.grupo_consulta = grupo_descripcion;
           $('#modalEdicion').modal('open');
         }, 10);
       } else {
@@ -294,7 +320,7 @@ export class ListaIndicadorDayComponent implements OnInit {
       swal({
         title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
         type: 'question',
-        html: '<p style="color: #303f9f "> Area Etad : <b>' + this.getDescriptivo(this.etads, this.idEtad) + ' </b> Grupo: <b>'+  this.grupo_consulta +'</b> Dia: <b>' + this.dia_consulta + '</b></p>',
+        html: '<p style="color: #303f9f "> Area Etad : <b>' + this.getDescriptivo(this.etads, this.idEtad) + ' </b> Grupo: <b>' + this.grupo_consulta + '</b> Dia: <b>' + this.dia_consulta + '</b></p>',
         showCancelButton: true,
         confirmButtonColor: '#303f9f',
         cancelButtonColor: '#9fa8da ',
@@ -321,8 +347,8 @@ export class ListaIndicadorDayComponent implements OnInit {
               });
 
               contenedor.indicadores = this.kpis;
-            
-              this.service.updateIndicadores(this.auth.getIdUsuario(), contenedor).subscribe(result => {  
+
+              this.service.updateIndicadores(this.auth.getIdUsuario(), contenedor).subscribe(result => {
                 if (result.response.sucessfull) {
 
                   Materialize.toast(' Se actualizarón correctamente ', 4000, 'green');
@@ -349,7 +375,7 @@ export class ListaIndicadorDayComponent implements OnInit {
 
   }
 
-  
+
   isValidMetas(metas_kpis: Array<PetMetaKpi>): number {
     let numero_error = 0;
 
@@ -363,6 +389,55 @@ export class ListaIndicadorDayComponent implements OnInit {
     });
 
     return numero_error;
+
+  }
+
+  calcularAusentismo(id_meta_kpi: number, name_kpi: string) {
+    this.plantilla = 0;
+    this.faltas = 0;
+    this.porcentaje = "";
+    this.id_meta_kpi_tmp = id_meta_kpi;
+    let modal = $('#modalPorcentaje');
+    modal.find('#titulo').html(name_kpi);
+    modal.modal('open');
+  }
+
+  asignarPorcentaje(): void {
+    this.kpis.filter(el => el.id_meta_kpi == this.id_meta_kpi_tmp)[0].valor = this.porcentaje;
+    $('#modalPorcentaje').modal('close');
+  }
+
+  cancelar(): void {
+    $('#modalPorcentaje').modal('close');
+  }
+
+  onlyNumber(event: any): boolean {
+    let charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode < 48 || charCode > 57) {
+      return false;
+    }
+
+  }
+
+  calcular(): void {
+    if (Number.isNaN(parseInt("" + this.faltas)) || this.faltas == undefined) {
+      this.faltas = 0;
+    }
+
+    if (Number.isNaN(parseInt("" + this.plantilla)) || this.plantilla == undefined) {
+      this.plantilla = 0;
+    }
+
+    this.plantilla = parseInt(this.plantilla);
+    this.faltas = parseInt(this.faltas);
+
+    if (this.plantilla == 0 && this.faltas == 0) {
+      this.porcentaje = "";
+    } else if (this.faltas > this.plantilla) {
+      this.porcentaje = ""
+    } else {
+      this.porcentaje = (this.faltas / this.plantilla).toFixed(3);
+    }
 
   }
 
