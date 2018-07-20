@@ -1,3 +1,8 @@
+<div class="row" *ngIf="!consulta">
+    <div class="col s12 m12 l12 xl12">
+      <p class="color_titulo"><b>Instrucciones.</b> Ingrese los datos en los recuadros azules y haga clic en guardar o editar según sea el caso. Los datos que ingrese se mostrarán en el reporte para el periodo seleccionado</p>
+    </div>
+</div>
 <table cellspacing="0" border="0">
   <tr>
     <td class="border_rpt" height="25" align="center" valign=bottom bgcolor="#A9D18E">
@@ -61,7 +66,7 @@
       <font face="Arial" size=2>
         <ng-container *ngIf="!consulta">
           <label class="active">Descripción:</label>
-          <textarea class="materialize-textarea" [(ngModel)]="datos.objetivo_estrategico_uno" [ngModelOptions]="{standalone: true}"></textarea>
+          <textarea class="color_input materialize-textarea" [(ngModel)]="datos.objetivo_estrategico_uno" [ngModelOptions]="{standalone: true}"></textarea>
         </ng-container>
 
       </font>
@@ -173,14 +178,14 @@
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.00%">
       <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.eficiencia_entregas_compra_mensual" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.eficiencia_entregas_compra_mensual" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
     <td class="border_rpt" align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.eficiencia_entregas_compra_real" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.eficiencia_entregas_compra_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
@@ -486,15 +491,15 @@
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.00%">
       <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.eficiencia_entregas_compra_mensual" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.eficiencia_entregas_compra_mensual" [ngModelOptions]="{standalone: true}">
         </ng-container>
 
       </font>
     </td>
     <td class="border_rpt" align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.eficiencia_entregas_compra_real" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.eficiencia_entregas_compra_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
@@ -789,15 +794,15 @@
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.00%">
       <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.eficiencia_entregas_compra_mensual" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.eficiencia_entregas_compra_mensual" [ngModelOptions]="{standalone: true}">
         </ng-container>
 
       </font>
     </td>
     <td class="border_rpt" align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.eficiencia_entregas_compra_real" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.eficiencia_entregas_compra_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
@@ -1103,15 +1108,15 @@
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.00%">
       <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.eficiencia_entregas_compra_mensual" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.eficiencia_entregas_compra_mensual" [ngModelOptions]="{standalone: true}">
         </ng-container>
 
       </font>
     </td>
     <td class="border_rpt" align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.eficiencia_entregas_compra_real" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.eficiencia_entregas_compra_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
@@ -1406,15 +1411,15 @@
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.00%">
       <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.eficiencia_entregas_compra_mensual" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.eficiencia_entregas_compra_mensual" [ngModelOptions]="{standalone: true}">
         </ng-container>
 
       </font>
     </td>
     <td class="border_rpt" align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.eficiencia_entregas_compra_real" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.eficiencia_entregas_compra_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
@@ -1622,17 +1627,17 @@
       <font face="Arial" size=2 color="#000000">% Merma</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font face="Arial" size=2 color="#FF0000">
+      <font face="Arial" size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.merma_mensual" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.merma_mensual" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <b>
-        <font face="Arial" size=2 color="#FF0000">
+        <font face="Arial" size=2 color="#000000">
           <ng-container *ngIf="!consulta">
-            <input type="text" [(ngModel)]="datos.merma_real" [ngModelOptions]="{standalone: true}">
+            <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.merma_real" [ngModelOptions]="{standalone: true}">
           </ng-container>
 
         </font>
@@ -1651,9 +1656,9 @@
       <font size=2 color="#00B050">Reporte</font>
     </td>
     <td class="border_rpt" rowspan=2 align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.no_fugas_pet_real" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.no_fugas_pet_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
@@ -1666,17 +1671,17 @@
       <font face="Arial" size=2 color="#000000">% Subproducto </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font face="Arial" size=2 color="#FF0000">
+      <font face="Arial" size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.subproducto_mensual" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.subproducto_mensual" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <b>
-        <font face="Arial" size=2 color="#FF0000">
+        <font face="Arial" size=2 color="#000000">
           <ng-container *ngIf="!consulta">
-            <input type="text" [(ngModel)]="datos.subproducto_real" [ngModelOptions]="{standalone: true}">
+            <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.subproducto_real" [ngModelOptions]="{standalone: true}">
           </ng-container>
         </font>
       </b>
@@ -1746,9 +1751,9 @@
     </td>
     <td class="border_rpt" align="center" valign=middle>
       <b>
-        <font size=2 color="#FF0000">
+        <font size=2 color="#000000">
           <ng-container *ngIf="!consulta">
-            <input type="text" [(ngModel)]="datos.costo_unitario_real" [ngModelOptions]="{standalone: true}">
+            <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.costo_unitario_real" [ngModelOptions]="{standalone: true}">
           </ng-container>
         </font>
       </b>
@@ -1766,9 +1771,9 @@
         <font size=2 color="#00B050">Reporte</font>
     </td>
     <td class="border_rpt" align="center" valign=middle>
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.costo_unitario" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.costo_unitario" [ngModelOptions]="{standalone: true}">
         </ng-container>
 
       </font>
@@ -1839,7 +1844,7 @@
       <font face="Arial" size=2 color="#000000">
         <ng-container *ngIf="!consulta">
           <label class="active">Descripción:</label>
-          <textarea class="materialize-textarea" [(ngModel)]="datos.objetivo_estrategico_dos" [ngModelOptions]="{standalone: true}"></textarea>
+          <textarea class="color_input materialize-textarea" [(ngModel)]="datos.objetivo_estrategico_dos" [ngModelOptions]="{standalone: true}"></textarea>
         </ng-container>
       </font>
     </td>
@@ -1852,17 +1857,17 @@
       </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font face="Arial" size=2 color="#FF0000">
+      <font face="Arial" size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.mdp_mensual" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"  type="text" [(ngModel)]="datos.mdp_mensual" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <b>
-        <font face="Arial" size=2 color="#FF0000">
+        <font face="Arial" size=2 color="#000000">
           <ng-container *ngIf="!consulta">
-            <input type="text" [(ngModel)]="datos.mdp_real" [ngModelOptions]="{standalone: true}">
+            <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.mdp_real" [ngModelOptions]="{standalone: true}">
           </ng-container>
         </font>
       </b>
@@ -1877,14 +1882,14 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
           <font size=2 color="#00B050">Reporte</font>
       </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.ajuste_error_inventario" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.ajuste_error_inventario" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
@@ -1954,7 +1959,7 @@
       <font face="Arial" size=2 color="#000000">
         <ng-container *ngIf="!consulta">
           <label class="active">Descripción:</label>
-          <textarea class="materialize-textarea" [(ngModel)]="datos.objetivo_estrategico_tres" [ngModelOptions]="{standalone: true}"></textarea>
+          <textarea class="color_input materialize-textarea" [(ngModel)]="datos.objetivo_estrategico_tres" [ngModelOptions]="{standalone: true}"></textarea>
         </ng-container>
       </font>
     </td>
@@ -1976,14 +1981,14 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
           <font size=2 color="#00B050">Reporte</font>
       </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.eficiencia_carga_real" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.eficiencia_carga_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
@@ -2005,9 +2010,9 @@
        <font size=2 color="#00B050">Reporte</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.descarga_mp_real" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.descarga_mp_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
@@ -2029,9 +2034,9 @@
        <font size=2 color="#00B050">Reporte</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.liberacion_embarques" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.liberacion_embarques" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
@@ -2053,9 +2058,9 @@
        <font size=2 color="#00B050">Reporte</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.efectividad_entrega_cliente_real" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.efectividad_entrega_cliente_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
@@ -2077,9 +2082,9 @@
        <font size=2 color="#00B050">Reporte</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.control_entradas_salidas_contratistas" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.control_entradas_salidas_contratistas" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
@@ -2101,10 +2106,10 @@
        <font size=2 color="#00B050">Reporte</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
 
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.control_entradas_salidas_transportistas" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.control_entradas_salidas_transportistas" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
@@ -2126,10 +2131,10 @@
        <font size=2 color="#00B050">Reporte</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
 
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.control_entradas_salidas_proveedores" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.control_entradas_salidas_proveedores" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
@@ -2151,9 +2156,9 @@
        <font size=2 color="#00B050">Reporte</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.control_entradas_salidas_visitantes" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.control_entradas_salidas_visitantes" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
@@ -2175,9 +2180,9 @@
        <font size=2 color="#00B050">Reporte</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#FF0000">
+      <font size=2 color="#000000">
         <ng-container *ngIf="!consulta">
-          <input type="text" [(ngModel)]="datos.ot_alimentadas_mp9" [ngModelOptions]="{standalone: true}">
+          <input style=" background-color: #99ddff"   type="text" [(ngModel)]="datos.ot_alimentadas_mp9" [ngModelOptions]="{standalone: true}">
         </ng-container>
       </font>
     </td>
