@@ -65,6 +65,21 @@ let isNumeroAsignacionValid = (numero) => {
 };
 
 /**
+ * @function isNum
+ * @param  {string} numero - Numero ingresado 
+ * @return  boolean
+ */
+let isNum = (numero) => {
+    let string_tmp =  ''+numero;
+    if (string_tmp.trim() == '') {
+        return false;
+    } else {
+        return /^[0-9]*([.][0-9]+)?$/.test(string_tmp.trim())
+    }
+
+};
+
+/**
  * @function getAnioActual
  * @return  {number} 
  * @description Recupera el año actual en la aplicación
@@ -536,5 +551,6 @@ export {
     DataTableLiberadas,
     hmToMs,
     getMetasKPI,
-    getFrecuenciaMetaKPI
+    getFrecuenciaMetaKPI,
+    isNum
 }

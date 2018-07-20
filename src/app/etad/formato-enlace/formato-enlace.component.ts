@@ -3,6 +3,7 @@ import { PetReporteEnlace } from '../../models/pet-reporte-enlace';
 import { FormatoEnlaceService } from './formato-enlace.service';
 import swal from 'sweetalert2';
 import { AuthService } from '../../auth/auth.service';
+import { isNum } from '../../utils';
 
 declare var $: any;
 declare var Materialize: any;
@@ -23,7 +24,7 @@ export class FormatoEnlaceComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-   console.log(this.datos);
+   
   }
 
   openModalConfirmacion(accion: string, event?: any): void {
@@ -37,8 +38,8 @@ export class FormatoEnlaceComponent implements OnInit {
         mensajeModal = '¿Está seguro de agregar parametros al  reporte? ';
         break;
     }
-     let n=1;
-    if (n==1) {
+     
+    if (this.isValidData(this.datos)) {
 
       /* 
        * Configuración del modal de confirmación
@@ -75,8 +76,9 @@ export class FormatoEnlaceComponent implements OnInit {
               break;
             case 'add':
               this.service.insertConfiguracion(this.auth.getIdUsuario(), this.datos).subscribe(result => {
-                console.log(result)
+
                 if (result.response.sucessfull) {
+                  this.datos.id_reporte_enlace = result.response.message || -1;
                   this.datos.nuevo = false;
                   Materialize.toast(' Se agregaron correctamente parametros ', 4000, 'green');
                 } else {
@@ -95,9 +97,33 @@ export class FormatoEnlaceComponent implements OnInit {
       })
     } else {
 
-      Materialize.toast('Verifique los datos marcados en rojo!', 4000, 'red');
+      Materialize.toast('Verifique los datos capturados!', 4000, 'red');
 
     }
+  }
+
+  isValidData(datos:PetReporteEnlace):boolean{
+
+    return isNum(this.datos.eficiencia_entregas_compra_real) &&
+    isNum(this.datos.eficiencia_entregas_compra_mensual) &&
+    isNum(this.datos.no_fugas_pet_real) && 
+    isNum(this.datos.costo_unitario) && 
+    isNum(this.datos.ajuste_error_inventario) && 
+    isNum(this.datos.eficiencia_carga_real) && 
+    isNum(this.datos.descarga_mp_real) && 
+    isNum(this.datos.liberacion_embarques) && 
+    isNum(this.datos.efectividad_entrega_cliente_real) && 
+    isNum(this.datos.control_entradas_salidas_contratistas) && 
+    isNum(this.datos.control_entradas_salidas_transportistas) && 
+    isNum(this.datos.control_entradas_salidas_proveedores) && 
+    isNum(this.datos.control_entradas_salidas_visitantes) && 
+    isNum(this.datos.ot_alimentadas_mp9) && 
+    isNum(this.datos.merma_mensual) && 
+    isNum(this.datos.merma_real) && 
+    isNum(this.datos.subproducto_mensual) && 
+    isNum(this.datos.costo_unitario_real) && 
+    isNum(this.datos.mdp_real) && 
+    isNum(this.datos.mdp_mensual)
 
   }
 }
