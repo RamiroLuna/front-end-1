@@ -1,3 +1,5 @@
+import { Periodo } from "./periodo";
+
 export class PetReporteEnlace {
     id_reporte_enlace:number;
     id_periodo:number;
@@ -30,4 +32,5 @@ export class PetReporteEnlace {
     control_entradas_salidas_visitantes:number;
     ot_alimentadas_mp9:number;
     nuevo:boolean;
+    periodo: Periodo;
 }
