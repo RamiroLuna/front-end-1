@@ -33,6 +33,7 @@ export class RptGraficasKpiComponent implements OnInit {
   public suma_temporal: number;
   public graficas = [];
   public graficos_ok:boolean;
+  public not_data:boolean;
 
 
 
@@ -55,6 +56,7 @@ export class RptGraficasKpiComponent implements OnInit {
     this.grupos = [];
     this.graficas = [];
     this.graficos_ok = false;
+    this.not_data = false;
 
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
@@ -120,6 +122,7 @@ export class RptGraficasKpiComponent implements OnInit {
   changeCombo(params: string): void {
     this.viewReport = false;
     this.graficos_ok = false;
+    this.not_data = false;
 
     if (params == 'anio') {
       this.meses = this.periodos.filter(el => el.anio == this.paramsBusqueda.anio)
@@ -132,18 +135,24 @@ export class RptGraficasKpiComponent implements OnInit {
     this.submitted = true;
     this.graficas = [];
     this.graficos_ok = false;
+    this.not_data = false;
 
 
 
     if (this.formConsultaPeriodo.valid) {
 
       this.service.getGraficasByEtad(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-
+      
         if (result.response.sucessfull) {
 
           let total_graficas = result.data.graficas || [];
           let contador = 0;
           let arg_tmp = [];
+
+          if(total_graficas.length == 0){
+            this.not_data = true;
+          } 
+
           total_graficas.map((el, index, arg) => {
 
             let config_grafica = clone(configChart);

@@ -124,7 +124,7 @@ export class RptPosicionAnualComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.getGraficasPosicionAnual(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-      
+
         if (result.response.sucessfull) {
           let result_grafica = result.data.posicionamientoAnual || [];
 
@@ -140,7 +140,7 @@ export class RptPosicionAnualComponent implements OnInit {
             if (index > 0) {
 
               if (element.valor < arg[index - 1].valor) {
-                lugar++;
+                if (lugar < 4) lugar++;
               }
 
               switch (lugar) {
@@ -186,7 +186,7 @@ export class RptPosicionAnualComponent implements OnInit {
           config_grafica.colors = colores;
           config_grafica.series.push({ name: ' Calificación ', data: data });
 
-          config_grafica.title.text = 'Posición anual ' +parametrosBusqueda.anio;
+          config_grafica.title.text = 'Posición anual ' + parametrosBusqueda.anio;
           this.graficas.push(config_grafica);
 
           this.viewReport = true;

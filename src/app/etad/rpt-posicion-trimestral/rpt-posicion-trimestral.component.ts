@@ -162,7 +162,7 @@ export class RptPosicionTrimestralComponent implements OnInit {
               if (index > 0) {
 
                 if (element.valor < arg[index - 1].valor) {
-                  lugar++;
+                  if(lugar < 4) lugar++;
                 }
 
                 switch (lugar) {

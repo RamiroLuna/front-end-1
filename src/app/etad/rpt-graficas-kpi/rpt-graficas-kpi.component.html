@@ -83,6 +83,13 @@
         <p class="center-align">Generando gráficas ...</p>
       </div>
     </div>
+    <ng-container *ngIf="not_data">
+      <div class="row container" [hidden]="!graficos_ok">
+        <div class="col s12 m12 l12 xl12  center-align">
+          <p class="center-align color_titulo">No hay datos para graficar</p>
+        </div>
+      </div>
+    </ng-container>
     <ng-container *ngFor="let renglon of graficas; let i = index">
       <div class="row" [hidden]="!graficos_ok">
         <div class="col s12 m12 l12 xl12  center-align">
