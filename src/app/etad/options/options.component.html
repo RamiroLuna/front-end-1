@@ -175,43 +175,47 @@
             <div class="col s12 m12 l12 xl12">
               <!-- Vista solo para moviles  -->
               <div class="hide-on-large-only">
-                <a *ngIf="permission.indicador_diario" routerLink="indicadores-diario/sub-menu-indicadores" class=" col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1"
-                  (click)="ocultarTooltip()">
-                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                    DIARIOS
-                  </i>
-                </a>
-                <a disabled *ngIf="!permission.indicador_diario" class="col s3 m3 l3 xl3  waves-effect waves-light btn light-green darken-1"
-                  (click)="ocultarTooltip()">
-                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                    DIARIOS
-                  </i>
-                </a>
-                <div class="col s1 m1 l1 xl1"></div>
-                <a *ngIf="permission.indicador_mensual" routerLink="indicadores-mensuales/sub-menu-indicadores" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
-                  (click)="ocultarTooltip()">
-                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                    MENSUALES
-                  </i>
-                </a>
-                <a disabled *ngIf="!permission.indicador_mensual" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
-                  (click)="ocultarTooltip()">
-                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                    MENSUALES
-                  </i>
-                </a>
-                <div class="col s1 m1 l1 xl1"></div>
-                <!-- <a *ngIf="permission.validacion" routerLink="validaciones" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1"
-                  (click)="ocultarTooltip()">
-                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                    VALIDACIÓN
-                  </i>
-                </a>
-                <a disabled *ngIf="!permission.validacion" class="col s3 m3 l3 xl3 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
-                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
-                    VALIDACIÓN
-                  </i>
-                </a> -->
+                <div class="row">
+                  <a *ngIf="permission.indicador_diario" routerLink="indicadores-diario/sub-menu-indicadores" class=" col s12 m12 l3 xl3  waves-effect waves-light btn light-green darken-1"
+                    (click)="ocultarTooltip()">
+                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                      DIARIOS
+                    </i>
+                  </a>
+                  <a disabled *ngIf="!permission.indicador_diario" class="col s12 m12 l3 xl3  waves-effect waves-light btn light-green darken-1"
+                    (click)="ocultarTooltip()">
+                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                      DIARIOS
+                    </i>
+                  </a>
+                </div>
+                <div class="row">
+                  <a *ngIf="permission.indicador_mensual" routerLink="indicadores-mensuales/sub-menu-indicadores" class="col s12 m12 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                    (click)="ocultarTooltip()">
+                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                      MENSUALES
+                    </i>
+                  </a>
+                  <a disabled *ngIf="!permission.indicador_mensual" class="col s12 m12 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                    (click)="ocultarTooltip()">
+                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                      MENSUALES
+                    </i>
+                  </a>
+                </div>
+                <div class="row">
+                  <a *ngIf="permission.validacion" routerLink="validaciones" class="col s12 m12 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                    (click)="ocultarTooltip()">
+                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                      VALIDACIÓN
+                    </i>
+                  </a>
+                  <a disabled *ngIf="!permission.validacion" class="col s12 m12 l3 xl3 waves-effect waves-light btn light-green darken-1" (click)="ocultarTooltip()">
+                    <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
+                      VALIDACIÓN
+                    </i>
+                  </a>
+                </div>
               </div>
               <!-- Fin solo para moviles -->
 
@@ -232,14 +236,13 @@
                 <a disabled *ngIf="!permission.indicador_mensual" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   MENSUALES
                 </a>
-
-                <!-- <div class="col s2 m2 l2 xl2"></div>
+                <div class="col s2 m2 l2 xl2"></div>
                 <a *ngIf="permission.validacion" routerLink="validaciones" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   VALIDACION
                 </a>
                 <a disabled *ngIf="!permission.validacion" class="col s2 m2 l2 xl2 waves-effect waves-light btn light-green lighten-2">
                   VALIDACION
-                </a> -->
+                </a>
               </div>
             </div>
           </div>

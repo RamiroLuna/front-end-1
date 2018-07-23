@@ -3,7 +3,7 @@
   <h4 class="color_titulo center-align">Indicadores diarios
     <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar año" (click)="openModalYear($event)">{{ anioSeleccionado }}</a>
   </h4>
-  <h6 class="color_titulo center-align">CONSULTA Y EDICIÓN</h6>
+  <h6 class="color_titulo center-align">VALIDACIÓN</h6>
   <!-- Solo para dispositivos moviles -->
   <div class="hide-on-large-only right-align">
     <a routerLink="../" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
@@ -49,10 +49,10 @@
     </form>
   </div>
   <!-- <div class="row" *ngIf="!estatusPeriodo">
-        <div class="color_titulo center-align">
-            <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
-        </div>
-  </div> -->
+          <div class="color_titulo center-align">
+              <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
+          </div>
+    </div> -->
   <div class="row" *ngIf="datos_tabla">
     <nav *ngIf="registros.length > 0">
       <div class="nav-wrapper grey lighten-5">
@@ -76,15 +76,16 @@
           <th class="center-align">DIA</th>
           <th class="center-align">GRUPO</th>
           <th class="center-align">VER DETALLE</th>
-          <th class="center-align">ESTATUS VALIDACIÓN</th>
+          <th class="center-align">VALIDAR</th>
+          <th class="center-align">QUITAR VALIDACION</th>
         </tr>
       </thead>
 
       <tbody>
         <tr *ngIf="(registros |  filterBy: ['dia_string']: texto_busqueda).length == 0">
-          <td colspan="3" class="center-align">NO SE ENCONTRARÓN REGISTROS</td>
+          <td colspan="5" class="center-align">NO SE ENCONTRARÓN REGISTROS</td>
         </tr>
-        <tr *ngFor="let registro of registros |  filterBy: ['dia_string']: texto_busqueda">
+        <tr *ngFor="let registro of registros |  filterBy: ['dia_string']: texto_busqueda; let i = index">
           <td class="center-align">
             {{ registro.dia_string }}
           </td>
@@ -97,12 +98,20 @@
             </a>
           </td>
           <td class="center-align">
-            <i class="material-icons" *ngIf="registro.estatus == 0">
-              hourglass_empty
-            </i>
-            <i class="material-icons" *ngIf="registro.estatus == 1">
-              done
-            </i>
+            <button  *ngIf="registro.estatus == 0" class="btn-floating green darken-4" (click)="openModalConfirmacion('validar',registro.dia_string, registro.id_grupo, registro.grupo.valor, i)">
+              <i class="material-icons">done</i>
+            </button>
+            <button class="btn-floating green darken-4" *ngIf="registro.estatus == 1" disabled>
+              <i class="material-icons">done</i>
+            </button>
+          </td>
+          <td class="center-align">
+            <button *ngIf="registro.estatus == 1" class="btn-floating red darken-4" (click)="openModalConfirmacion('invalidar',registro.dia_string, registro.id_grupo, registro.grupo.valor, i)">
+              <i class="material-icons">cancel</i>
+            </button>
+            <button *ngIf="registro.estatus == 0" class="btn-floating red darken-4" disabled>
+              <i class="material-icons">cancel</i>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -157,45 +166,12 @@
             {{ kpi.metaKpi.etadKpi.kpiOperativo.unidad_medida }}
           </td>
           <td>
-            <input *ngIf="kpi.metaKpi.etadKpi.kpiOperativo.id != 11" type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}"
-              [disabled]="!edicion_detalle" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
-            <input *ngIf="kpi.metaKpi.etadKpi.kpiOperativo.id == 11" type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}"
-              [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }" (focus)="calcularAusentismo(kpi.id_meta_kpi, kpi.metaKpi.etadKpi.kpiOperativo.valor)"
-              readonly [disabled]="!edicion_detalle">
-          </td>
-        </tr>
-        <tr *ngIf="edicion_detalle">
-          <td colspan="3" class="center-align">
-            <button type="button" class="waves-effect waves-light btn-large light-green darken-1" (click)="openModalConfirmacion('edit')">EDITAR</button>
+            <input type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }"
+              disabled>
           </td>
         </tr>
       </tbody>
     </table>
-  </div>
-</div>
-<div id="modalPorcentaje" class="modal" style="width: calc(40%)">
-  <div class="modal-content">
-    <div class="row col s12 m12 l12 xl12">
-      <div class="col s12 m12 l12 xl12">
-        <p class="color_titulo center-align" id="titulo"></p>
-      </div>
-      <div class="input-field col s12 m12 l12 xl12">
-        <input id="plantilla" type="text" (keypress)="onlyNumber($event)" (keyup)="calcular()" [(ngModel)]="plantilla" [ngModelOptions]="{standalone: true}">
-        <label for="plantilla">No plantilla</label>
-      </div>
-      <div class="input-field col s12 m12 l12 xl12">
-        <input id="faltas" type="text" (keypress)="onlyNumber($event)" (keyup)="calcular()" [(ngModel)]="faltas" [ngModelOptions]="{standalone: true}">
-        <label for="faltas">Faltas</label>
-      </div>
-      <div class="input-field col s12 m12 l12 xl12">
-        <label for="porcentaje" class="active">Porcentaje inasistencia</label>
-        <input id="porcentaje" type="text" [value]="porcentaje" disabled>
-      </div>
-      <div class="center-align">
-        <button class="waves-effect waves-light btn  grey lighten-1" (click)="cancelar()">CANCELAR</button>
-        <button class="waves-effect waves-light btn" (click)="asignarPorcentaje()">OK</button>
-      </div>
-    </div>
   </div>
 </div>
 <div class="container" *ngIf="loading">

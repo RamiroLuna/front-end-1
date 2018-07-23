@@ -18,7 +18,8 @@ export class OptionsComponent implements AfterViewInit {
     cargaPonderacionManual: true,
     cargaPonderacionMasiva: true,
     edicionPonderacion: true,
-    configuracion_reporte: true
+    configuracion_reporte: true,
+    validacion:true
   }
   public loading: boolean;
 

@@ -10,7 +10,7 @@ import {
   clone
 } from '../../utils';
 import swal from 'sweetalert2';
-import { ListaIndicadorDayService } from './lista-indicador-day.service';
+import { ListaValidacionService } from './lista-validacion.service';
 import { Periodo } from '../../models/periodo';
 import { Catalogo } from '../../models/catalogo';
 import {
@@ -25,11 +25,12 @@ import { PetMetaKpi } from '../../models/pet-meta-kpi';
 
 declare var $: any;
 declare var Materialize: any;
+
 @Component({
-  selector: 'app-lista-indicador-day',
-  templateUrl: './lista-indicador-day.component.html',
-  styleUrls: ['lista-indicador-day.component.css'],
-  providers: [ListaIndicadorDayService],
+  selector: 'app-lista-validacion',
+  templateUrl: './lista-validacion.component.html',
+  styleUrls: [ 'lista-validacion.component.css' ],
+  providers: [ ListaValidacionService ],
   animations: [
     trigger('visibility', [
       state('inactive', style({
@@ -43,7 +44,7 @@ declare var Materialize: any;
     ])
   ]
 })
-export class ListaIndicadorDayComponent implements OnInit {
+export class ListaValidacionComponent implements OnInit {
 
   public loading: boolean;
   public datos_tabla: boolean;
@@ -72,9 +73,6 @@ export class ListaIndicadorDayComponent implements OnInit {
   public area_consulta: string;
   public grupo_consulta: string;
 
-  //edicion_detalle variable para editar
-  public edicion_detalle: boolean;
-
 
 
   /*
@@ -89,7 +87,7 @@ export class ListaIndicadorDayComponent implements OnInit {
    */
 
   constructor(private auth: AuthService,
-    private service: ListaIndicadorDayService,
+    private service: ListaValidacionService,
     private fb: FormBuilder
   ) { }
 
@@ -100,7 +98,7 @@ export class ListaIndicadorDayComponent implements OnInit {
     this.submitted = false;
     this.disabled = false;
     this.kpis = [];
-    this.edicion_detalle = true;
+
 
     this.plantilla = 0;
     this.faltas = 0;
@@ -152,16 +150,6 @@ export class ListaIndicadorDayComponent implements OnInit {
       inDuration: 500,
       complete: () => { }
     });
-
-    $('#modalPorcentaje').modal({
-      opacity: 0.6,
-      inDuration: 500,
-      dismissible: false,
-      complete: () => { }
-    });
-
-
-
   }
 
 
@@ -230,7 +218,7 @@ export class ListaIndicadorDayComponent implements OnInit {
       this.datos_tabla = false;
 
       this.service.getAllIndicadores(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad).subscribe(result => {
-       
+        console.log('rrrrr', result)
         if (result.response.sucessfull) {
 
           this.registros = result.data.listIndicadorDiarios || [];
@@ -267,15 +255,13 @@ export class ListaIndicadorDayComponent implements OnInit {
     this.dia_consulta = "";
     this.area_consulta = "";
     this.grupo_consulta = "";
-    this.edicion_detalle = true;
     this.kpis = [];
 
     this.service.getDetailIndicadores(this.auth.getIdUsuario(), id_grupo, this.idEtad, dia).subscribe(result => {
-      
+
       if (result.response.sucessfull) {
         this.kpis = result.data.listIndicadorDiarios || [];
         setTimeout(() => {
-          this.edicion_detalle = (this.kpis[0].estatus == 0);
           this.dia_consulta = dia;
           this.area_consulta = this.getDescriptivo(this.etads, this.idEtad);
           this.grupo_consulta = grupo_descripcion;
@@ -304,12 +290,16 @@ export class ListaIndicadorDayComponent implements OnInit {
 
   }
 
-  openModalConfirmacion(accion: string, event?: any): void {
+  openModalConfirmacion(accion: string, dia:string, id_grupo:number, grupo_descripcion:string,  index:number,event?: any): void {
+   
     this.mensajeModal = '';
 
     switch (accion) {
-      case 'edit':
-        this.mensajeModal = '¿Está seguro de actualizar los indicadores? ';
+      case 'validar':
+        this.mensajeModal = '¿Está seguro de validar los indicadores registrados? ';
+        break;
+      case 'invalidar':
+        this.mensajeModal = '¿Está seguro de quitar la validación de los indicadores? ';
         break;
     }
 
@@ -321,7 +311,7 @@ export class ListaIndicadorDayComponent implements OnInit {
       swal({
         title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
         type: 'question',
-        html: '<p style="color: #303f9f "> Area Etad : <b>' + this.getDescriptivo(this.etads, this.idEtad) + ' </b> Grupo: <b>' + this.grupo_consulta + '</b> Dia: <b>' + this.dia_consulta + '</b></p>',
+        html: '<p style="color: #303f9f "> Area Etad : <b>' + this.getDescriptivo(this.etads, this.idEtad) + ' </b> Grupo: <b>' + grupo_descripcion + '</b> Dia: <b>' + dia + '</b></p>',
         showCancelButton: true,
         confirmButtonColor: '#303f9f',
         cancelButtonColor: '#9fa8da ',
@@ -335,24 +325,27 @@ export class ListaIndicadorDayComponent implements OnInit {
          */
         if (result.value) {
           switch (accion) {
-            case 'edit':
-              /* 
-              * Se forma el modelo a enviar al backend
-              * contenedor.ponderaciones Es una variable que se necesita por el backend
-              */
-              let contenedor: any = { indicadores: {} };
-              this.kpis.map(el => {
-                if (Number.isNaN(parseInt("" + el.valor)) || el.valor == undefined) {
-                  el.valor = 0;
-                }
-              });
-
-              contenedor.indicadores = this.kpis;
-
-              this.service.updateIndicadores(this.auth.getIdUsuario(), contenedor).subscribe(result => {
+            case 'validar':
+              this.service.validateIndicadores(this.auth.getIdUsuario(), id_grupo, this.idEtad , dia).subscribe(result => {
+              
                 if (result.response.sucessfull) {
+                  this.registros[index].estatus = 1;
+                  Materialize.toast(' Se validó correctamente ', 4000, 'green');
+                } else {
 
-                  Materialize.toast(' Se actualizarón correctamente ', 4000, 'green');
+                  Materialize.toast(result.response.message, 4000, 'red');
+                }
+              }, error => {
+                Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+              });
+              break;
+
+            case 'invalidar':
+              this.service.removeValidationIndicadores(this.auth.getIdUsuario(), id_grupo, this.idEtad , dia).subscribe(result => {
+             
+                if (result.response.sucessfull) {
+                  this.registros[index].estatus = 0;
+                  Materialize.toast(' Quito la validación correctamente ', 4000, 'green');
                 } else {
 
                   Materialize.toast(result.response.message, 4000, 'red');
@@ -393,24 +386,9 @@ export class ListaIndicadorDayComponent implements OnInit {
 
   }
 
-  calcularAusentismo(id_meta_kpi: number, name_kpi: string) {
-    this.plantilla = 0;
-    this.faltas = 0;
-    this.porcentaje = "";
-    this.id_meta_kpi_tmp = id_meta_kpi;
-    let modal = $('#modalPorcentaje');
-    modal.find('#titulo').html(name_kpi);
-    modal.modal('open');
-  }
 
-  asignarPorcentaje(): void {
-    this.kpis.filter(el => el.id_meta_kpi == this.id_meta_kpi_tmp)[0].valor = this.porcentaje;
-    $('#modalPorcentaje').modal('close');
-  }
 
-  cancelar(): void {
-    $('#modalPorcentaje').modal('close');
-  }
+
 
   onlyNumber(event: any): boolean {
     let charCode = (event.which) ? event.which : event.keyCode;

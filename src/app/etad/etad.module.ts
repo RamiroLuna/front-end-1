@@ -34,6 +34,7 @@ import { RptDetalleBonosComponent } from './rpt-detalle-bonos/rpt-detalle-bonos.
 import { RptPosicionTrimestralComponent } from './rpt-posicion-trimestral/rpt-posicion-trimestral.component';
 import { RptPosicionAnualComponent } from './rpt-posicion-anual/rpt-posicion-anual.component';
 import { FormatoEnlaceComponent } from './formato-enlace/formato-enlace.component';
+import { ListaValidacionComponent } from './lista-validacion/lista-validacion.component';
 
 
 
@@ -144,6 +145,14 @@ const routes: Routes = [
     //   expectedRole: 
     // }
   },
+  /* ruta validaciones */
+  {
+    path: 'opciones/validaciones', component: ListaValidacionComponent,
+    // , canActivate: [AuthGuardEtad],
+    // data: {
+    //   expectedRole: 
+    // }
+  },
   /* rutas de reportes */
   { path: 'opciones/lista-reportes', component: ListaReportesComponent },
   { path: 'opciones/lista-reportes/reporte-global-area', component: RptGlobalAreaComponent },
@@ -199,7 +208,8 @@ const routes: Routes = [
     RptDetalleBonosComponent,
     RptPosicionTrimestralComponent,
     RptPosicionAnualComponent,
-    FormatoEnlaceComponent
+    FormatoEnlaceComponent,
+    ListaValidacionComponent
   ],
   providers: [
     AuthGuardEtad
