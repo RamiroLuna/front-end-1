@@ -113,7 +113,7 @@ export class RptEnlaceObjKpiComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.getReporteEnlaceObjetivos(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-        console.log(result)
+        console.log('GET REPORTE ENLACE',result)
         if (result.response.sucessfull) {
           this.datos_formato = result.data.reporteEnlace || {};
           this.viewReport = true;
