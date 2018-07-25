@@ -74,10 +74,10 @@
               </tr>
               <tr>
                 <th>Área</th>
-                <th>A</th>
-                <th>B</th>
-                <th>C</th>
-                <th>D</th>
+                <th class="right-align">A</th>
+                <th class="right-align">B</th>
+                <th class="right-align">C</th>
+                <th class="right-align">D</th>
               </tr>
             </thead>
             <tbody>
@@ -88,10 +88,10 @@
               </tr>
               <tr *ngFor="let registro of registros">
                 <td>{{ registro.area }}</td>
-                <td>{{ registro.grupoA }}</td>
-                <td>{{ registro.grupoB }}</td>
-                <td>{{ registro.grupoC }}</td>
-                <td>{{ registro.grupoD }}</td>
+                <td class="right-align">{{ registro.grupoA | formatDecimal:2 }}</td>
+                <td class="right-align">{{ registro.grupoB | formatDecimal:2 }}</td>
+                <td class="right-align">{{ registro.grupoC | formatDecimal:2 }}</td>
+                <td class="right-align">{{ registro.grupoD | formatDecimal:2 }}</td>
               </tr>
             </tbody>
           </table>

@@ -110,7 +110,7 @@
                 <td>{{ registro.grupo }}</td>
                 <td>{{ registro.no }}</td>
                 <td>{{ registro.empleado }}</td>
-                <td>{{ registro.bono + ' % ' }}</td>
+                <td>{{ (registro.bono.toString().trim() == "")? "" :  (registro.bono + ' % ') }}</td>
               </tr>
             </tbody>
           </table>
