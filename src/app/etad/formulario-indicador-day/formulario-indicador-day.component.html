@@ -16,8 +16,8 @@
   <div class="row">
     <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="consultaPeriodo($event)" autocomplete="off">
       <div class="input-field col s12 m12 l3 xl3">
-        <input id="dia" type="text" class="datepicker" formControlName="dia" [(ngModel)]="dia" (ngModelChange)="changeCombo()">
         <label for="dia" class="active">Día</label>
+        <input id="dia" type="text" class="datepicker" formControlName="dia" [(ngModel)]="dia" (ngModelChange)="changeCombo()">
         <div *ngIf="formConsultaPeriodo.controls.dia.errors?.required && (formConsultaPeriodo.controls.dia?.touched || submitted)"
           class="error">
           El dia es requerido
@@ -55,16 +55,17 @@
       </div>
     </form>
   </div>
-  <!-- <div class="row" *ngIf="!estatusPeriodo">
-        <div class="color_titulo center-align">
-            <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
-        </div>
-      </div> -->
-  <div class="row center-align" *ngIf="disabledInputText">
-    <p style="color: #ef6c00">Si desea consultar y modificar un valor vaya a la sección de CONSULTA Y EDICION</p>
+  <div class="row center-align" *ngIf="datos_tabla && estatusPeriodo == 1">
+    <span class="waves-effect color_titulo">
+      <i class="material-icons left">lock</i>Periodo cerrado</span>
+    <h5 class="color_titulo">Ya no puede registrar</h5>
   </div>
-  <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
-    <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
+  <div class="row" *ngIf="datos_tabla && estatusPeriodo == 0">
+    <div class="row center-align" *ngIf="disabledInputText">
+      <p style="color: #ef6c00">Si desea consultar y modificar un valor vaya a la sección de CONSULTA Y EDICION</p>
+    </div>
+    <table id="tabla" class="display striped scroll_ejex_tabla_reporte" cellspacing="0" width="100%" style="overflow-x:auto;"
+      [@visibility]="status">
       <thead>
         <tr>
           <th colspan="3" class="center-align color_titulo">
@@ -125,11 +126,11 @@
         <p class="color_titulo center-align" id="titulo"></p>
       </div>
       <div class="input-field col s12 m12 l12 xl12">
-        <input id="plantilla" type="text" (keypress)="onlyNumber($event)"  (keyup)="calcular()" [(ngModel)]="plantilla" [ngModelOptions]="{standalone: true}">
+        <input id="plantilla" type="text" (keypress)="onlyNumber($event)" (keyup)="calcular()" [(ngModel)]="plantilla" [ngModelOptions]="{standalone: true}">
         <label for="plantilla">No plantilla</label>
       </div>
       <div class="input-field col s12 m12 l12 xl12">
-        <input id="faltas" type="text" (keypress)="onlyNumber($event)"  (keyup)="calcular()" [(ngModel)]="faltas" [ngModelOptions]="{standalone: true}">
+        <input id="faltas" type="text" (keypress)="onlyNumber($event)" (keyup)="calcular()" [(ngModel)]="faltas" [ngModelOptions]="{standalone: true}">
         <label for="faltas">Faltas</label>
       </div>
       <div class="input-field col s12 m12 l12 xl12">
@@ -137,7 +138,7 @@
         <input id="porcentaje" type="text" [value]="porcentaje" disabled>
       </div>
       <div class="center-align">
-          <button class="waves-effect waves-light btn" (click)="asignarPorcentaje()">OK</button>
+        <button class="waves-effect waves-light btn" (click)="asignarPorcentaje()">OK</button>
       </div>
     </div>
   </div>

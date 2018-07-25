@@ -47,15 +47,16 @@
       </div>
     </form>
   </div>
-  <!-- <div class="row" *ngIf="!estatusPeriodo">
-    <div class="color_titulo center-align">
-        <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
-    </div>
-  </div> -->
 
   <div class="row center-align warning" *ngIf="datos_tabla && !bandera">
     <b>Metas asignadas para {{ getDescriptivoArea(idEtad) }} en {{ anioSeleccionado }} .</b>
-    <br>Si desea modificar algún valor vaya a la seccion Edición de metas KPI´s.
+    <br *ngIf="estatusPeriodo">Si desea modificar algún valor vaya a la seccion Edición de metas KPI´s.
+  </div>
+  <div class="row" *ngIf="estatusPeriodo">
+    <div class="color_titulo center-align">
+      <span class="waves-effect">
+        <i class="material-icons left">lock</i>Periodo cerrado</span>
+    </div>
   </div>
 
   <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">

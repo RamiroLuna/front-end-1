@@ -49,7 +49,7 @@ export class ListaValidacionComponent implements OnInit {
   public loading: boolean;
   public datos_tabla: boolean;
   public mensajeModal: string;
-  // // public estatusPeriodo: boolean;
+  public estatusPeriodo: number;
 
   public anioSeleccionado: number;
   public submitted: boolean;
@@ -105,7 +105,7 @@ export class ListaValidacionComponent implements OnInit {
     this.porcentaje = 0;
     this.id_meta_kpi_tmp = -1;
 
-    // // this.estatusPeriodo = true;
+    this.estatusPeriodo = 0;
     this.anioSeleccionado = getAnioActual();
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
@@ -164,7 +164,7 @@ export class ListaValidacionComponent implements OnInit {
 
 
   changeCombo(): void {
-    // this.estatusPeriodo = true;
+    this.estatusPeriodo = 0;
     this.datos_tabla = false;
     this.status = "inactive";
   }
@@ -211,7 +211,7 @@ export class ListaValidacionComponent implements OnInit {
   consultaPeriodo(): void {
     this.submitted = true;
     this.status = "inactive";
-
+    this.estatusPeriodo = 0;
 
     if (this.formConsultaPeriodo.valid) {
       this.disabled = true;
@@ -224,6 +224,10 @@ export class ListaValidacionComponent implements OnInit {
           this.registros = result.data.listIndicadorDiarios || [];
           this.datos_tabla = true;
           this.disabled = false;
+
+          if(this.registros.length > 0 ){
+            this.estatusPeriodo = this.registros[0].periodo.estatus;
+          }
 
           setTimeout(() => {
             this.ngAfterViewInitHttp();

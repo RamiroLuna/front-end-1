@@ -48,7 +48,7 @@ export class ListaIndicadorDayComponent implements OnInit {
   public loading: boolean;
   public datos_tabla: boolean;
   public mensajeModal: string;
-  // // public estatusPeriodo: boolean;
+  public estatusPeriodo: number;
 
   public anioSeleccionado: number;
   public submitted: boolean;
@@ -107,7 +107,7 @@ export class ListaIndicadorDayComponent implements OnInit {
     this.porcentaje = 0;
     this.id_meta_kpi_tmp = -1;
 
-    // // this.estatusPeriodo = true;
+    this.estatusPeriodo = 0;
     this.anioSeleccionado = getAnioActual();
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
@@ -176,7 +176,7 @@ export class ListaIndicadorDayComponent implements OnInit {
 
 
   changeCombo(): void {
-    // this.estatusPeriodo = true;
+    this.estatusPeriodo = 0;
     this.datos_tabla = false;
     this.status = "inactive";
   }
@@ -223,7 +223,7 @@ export class ListaIndicadorDayComponent implements OnInit {
   consultaPeriodo(): void {
     this.submitted = true;
     this.status = "inactive";
-
+    this.estatusPeriodo = 0;
 
     if (this.formConsultaPeriodo.valid) {
       this.disabled = true;
@@ -236,6 +236,10 @@ export class ListaIndicadorDayComponent implements OnInit {
           this.registros = result.data.listIndicadorDiarios || [];
           this.datos_tabla = true;
           this.disabled = false;
+          
+          if(this.registros.length > 0){
+            this.estatusPeriodo = this.registros.filter(el=>el)[0].periodo.estatus;
+          }
 
           setTimeout(() => {
             this.ngAfterViewInitHttp();
@@ -271,11 +275,12 @@ export class ListaIndicadorDayComponent implements OnInit {
     this.kpis = [];
 
     this.service.getDetailIndicadores(this.auth.getIdUsuario(), id_grupo, this.idEtad, dia).subscribe(result => {
-      
+     
       if (result.response.sucessfull) {
         this.kpis = result.data.listIndicadorDiarios || [];
         setTimeout(() => {
           this.edicion_detalle = (this.kpis[0].estatus == 0);
+          console.log('detalle: ' , this.estatusPeriodo, this.edicion_detalle)
           this.dia_consulta = dia;
           this.area_consulta = this.getDescriptivo(this.etads, this.idEtad);
           this.grupo_consulta = grupo_descripcion;

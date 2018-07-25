@@ -51,7 +51,7 @@ export class FormularioIndicadorDayComponent implements OnInit {
   public loading: boolean;
   public datos_tabla: boolean;
   public mensajeModal: string;
-  // // public estatusPeriodo: boolean;
+  public estatusPeriodo: number;
   public submitted: boolean;
   public disabled: boolean;
   public etads: Array<Catalogo> = [];
@@ -63,6 +63,7 @@ export class FormularioIndicadorDayComponent implements OnInit {
   public dia: string;
   public kpis: Array<any>;
   public disabledInputText: boolean;
+  public fecha_sistema: string;
 
   /*
    * Variables para el calculo de ausentismo
@@ -74,6 +75,9 @@ export class FormularioIndicadorDayComponent implements OnInit {
   /*
    * Fin variables para calculo de ausentismo
    */
+
+  public no_permiso_edicion: boolean;
+
   constructor(private auth: AuthService,
     private service: FormularioIndicadorDayService,
     private fb: FormBuilder
@@ -90,7 +94,8 @@ export class FormularioIndicadorDayComponent implements OnInit {
     this.faltas = 0;
     this.porcentaje = 0;
     this.id_meta_kpi_tmp = -1;
-    // // this.estatusPeriodo = true;
+    this.no_permiso_edicion = (!this.auth.permissionEdit(6) || !this.auth.permissionEdit(5) || !this.auth.permissionEdit(4));
+    this.estatusPeriodo = 1;
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
@@ -98,8 +103,14 @@ export class FormularioIndicadorDayComponent implements OnInit {
 
         this.etads = result.data.listEtads || [];
         this.grupos = result.data.listGrupos || [];
+        this.dia = result.data.dia_string || getFechaActual();
 
         this.grupos = this.grupos.filter(el => el.id != 6 && el.id != 5);
+
+        if (this.no_permiso_edicion) {
+          this.idGrupo = this.auth.getId_Grupo();
+          this.idEtad = this.auth.getId_Linea();
+        }
 
         this.loading = false;
         this.loadFormulario();
@@ -123,7 +134,7 @@ export class FormularioIndicadorDayComponent implements OnInit {
 
     $('.tooltipped').tooltip({ delay: 50 });
 
-    $('#dia').pickadate({
+    let calendario = $('#dia').pickadate({
       selectMonths: true, // Creates a dropdown to control month
       selectYears: 15, // Creates a dropdown of 15 years to control year,
       today: '',
@@ -137,13 +148,14 @@ export class FormularioIndicadorDayComponent implements OnInit {
       closeOnSelect: false, // Close upon selecting a date,
       onClose: () => {
         this.dia = $('#dia').val();
-      },
-      onStart: function () {
-        this.set('select', getFechaActual())
       }
+      // onStart: function (context) {
+      //   console.log('fecha sistema dia context', context)
+      //   this.set('select', this.dia)
+      // }
     });
 
-    this.dia = getFechaActual();
+
     Materialize.updateTextFields();
 
     $('#modalEdicion').modal({
@@ -152,6 +164,7 @@ export class FormularioIndicadorDayComponent implements OnInit {
       dismissible: false,
       complete: () => { }
     });
+
   }
 
   agregar() {
@@ -165,7 +178,7 @@ export class FormularioIndicadorDayComponent implements OnInit {
 
 
   changeCombo(): void {
-    // this.estatusPeriodo = true;
+    this.estatusPeriodo = 1;
     this.datos_tabla = false;
     this.disabledInputText = false;
     this.status = "inactive";
@@ -174,31 +187,34 @@ export class FormularioIndicadorDayComponent implements OnInit {
 
   loadFormulario(): void {
     this.formConsultaPeriodo = this.fb.group({
-      idEtad: new FormControl({ value: this.idEtad }, [Validators.required]),
-      idGrupo: new FormControl({ value: this.idGrupo }, [Validators.required]),
-      dia: new FormControl({ value: this.dia }, [Validators.required])
+      idEtad: new FormControl({ value: this.idEtad, disabled: this.no_permiso_edicion }, [Validators.required]),
+      idGrupo: new FormControl({ value: this.idGrupo, disabled: this.no_permiso_edicion }, [Validators.required]),
+      dia: new FormControl({ value: this.dia, disabled: this.no_permiso_edicion }, [Validators.required])
     });
   }
 
 
-  consultaPeriodo(): void {
+  consultaPeriodo(event): void {
+    this.estatusPeriodo = 1;
     this.disabledInputText = false;
     this.submitted = true;
     this.status = "inactive";
 
-
-    if (this.formConsultaPeriodo.valid) {
+    if (this.formConsultaPeriodo.valid || this.no_permiso_edicion) {
       this.disabled = true;
       this.datos_tabla = false;
 
       this.service.viewKpiForSave(this.auth.getIdUsuario(), this.idEtad, this.dia).subscribe(result => {
-
+       
         if (result.response.sucessfull) {
-          // // this.estatusPeriodo = result.data.estatusPeriodo;
-
+        
           this.kpis = result.data.listIndicadorDiarios || [];
           this.datos_tabla = true;
           this.disabled = false;
+
+          if(this.kpis.length > 0 ){
+            this.estatusPeriodo = this.kpis[0].periodo.estatus;
+          }
 
           setTimeout(() => {
 

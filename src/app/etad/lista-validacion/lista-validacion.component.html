@@ -48,11 +48,12 @@
       </div>
     </form>
   </div>
-  <!-- <div class="row" *ngIf="!estatusPeriodo">
-          <div class="color_titulo center-align">
-              <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
-          </div>
-    </div> -->
+  <div class="row" *ngIf="estatusPeriodo == 1">
+    <div class="color_titulo center-align">
+      <span class="waves-effect">
+        <i class="material-icons left">lock</i>Periodo cerrado</span>
+    </div>
+  </div>
   <div class="row" *ngIf="datos_tabla">
     <nav *ngIf="registros.length > 0">
       <div class="nav-wrapper grey lighten-5">
@@ -98,20 +99,35 @@
             </a>
           </td>
           <td class="center-align">
-            <button  *ngIf="registro.estatus == 0" class="btn-floating green darken-4" (click)="openModalConfirmacion('validar',registro.dia_string, registro.id_grupo, registro.grupo.valor, i)">
-              <i class="material-icons">done</i>
-            </button>
-            <button class="btn-floating green darken-4" *ngIf="registro.estatus == 1" disabled>
-              <i class="material-icons">done</i>
-            </button>
+            <ng-container *ngIf="estatusPeriodo == 0">
+              <button *ngIf="registro.estatus == 0" class="btn-floating green darken-4" (click)="openModalConfirmacion('validar',registro.dia_string, registro.id_grupo, registro.grupo.valor, i)">
+                <i class="material-icons">done</i>
+              </button>
+              <button class="btn-floating green darken-4" *ngIf="registro.estatus == 1" disabled>
+                <i class="material-icons">done</i>
+              </button>
+            </ng-container>
+            <ng-container *ngIf="estatusPeriodo == 1">
+              <button class="btn-floating green darken-4" disabled>
+                <i class="material-icons">done</i>
+              </button>
+            </ng-container>
           </td>
           <td class="center-align">
-            <button *ngIf="registro.estatus == 1" class="btn-floating red darken-4" (click)="openModalConfirmacion('invalidar',registro.dia_string, registro.id_grupo, registro.grupo.valor, i)">
-              <i class="material-icons">cancel</i>
-            </button>
-            <button *ngIf="registro.estatus == 0" class="btn-floating red darken-4" disabled>
-              <i class="material-icons">cancel</i>
-            </button>
+            <ng-container *ngIf="estatusPeriodo == 0">
+              <button *ngIf="registro.estatus == 1" class="btn-floating red darken-4" (click)="openModalConfirmacion('invalidar',registro.dia_string, registro.id_grupo, registro.grupo.valor, i)">
+                <i class="material-icons">cancel</i>
+              </button>
+              <button *ngIf="registro.estatus == 0" class="btn-floating red darken-4" disabled>
+                <i class="material-icons">cancel</i>
+              </button>
+            </ng-container>
+            <ng-container *ngIf="estatusPeriodo == 1">
+                <button class="btn-floating green darken-4" disabled>
+                  <i class="material-icons">cancel</i>
+                </button>
+              </ng-container>
+
           </td>
         </tr>
       </tbody>
