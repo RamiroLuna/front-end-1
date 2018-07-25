@@ -116,10 +116,10 @@
                 <tr *ngFor="let registro of registros">
                    <td class="center-align">{{ registro.objetivo }}</td>
                    <td class="center-align">{{ registro.kpi }}</td>
-                   <td class="center-align">{{ registro.meta }}</td>
+                   <td class="right-align">{{ registro.meta | formatDecimal:3 }}</td>
                    <td class="center-align">{{ registro.um }}</td>
                    <td class="center-align">{{ registro.ponderacion }}</td>
-                   <td class="center-align">{{ registro.total }}</td>
+                   <td class="right-align">{{ registro.total | formatDecimal:3 }}</td>
                    <td class="center-align">{{ registro.evaluacion }}</td>
                 </tr>
                 <tr  *ngIf="registros.length > 0">

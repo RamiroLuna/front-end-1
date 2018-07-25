@@ -74,7 +74,7 @@
   </div>
   <div class="section"></div>
   <div *ngIf="viewReport">
-    <div class="container center">
+    <div class="center">
       <div class="row scroll_ejex_tabla_reporte">
         <div class="col s12 m12 l12 xl12">
           <table id="tblReporte" class="display striped" cellspacing="0" width="100%">
@@ -111,14 +111,14 @@
               <tr *ngFor="let registro of registros">
                 <td class="center-align">{{ registro.objetivo }}</td>
                 <td class="center-align">{{ registro.kpi }}</td>
-                <td class="center-align">{{ registro.meta }}</td>
+                <td class="right-align">{{ registro.meta | formatDecimal:3 }}</td>
                 <td class="center-align">{{ registro.um }}</td>
                 <td class="center-align">{{ registro.ponderacion }}</td>
                 <td class="center-align">{{ registro.frecuencia }}</td>
-                <td class="center-align">{{ registro.resKpiA }}</td>
-                <td class="center-align">{{ registro.resKpiB }}</td>
-                <td class="center-align">{{ registro.resKpiC }}</td>
-                <td class="center-align">{{ registro.resKpiD }}</td>
+                <td class="right-align">{{ registro.resKpiA | formatDecimal:3  }}</td>
+                <td class="right-align">{{ registro.resKpiB | formatDecimal:3  }}</td>
+                <td class="right-align">{{ registro.resKpiC | formatDecimal:3 }}</td>
+                <td class="right-align">{{ registro.resKpiD | formatDecimal:3 }}</td>
                 <td class="center-align">{{ registro.resBonoA }}</td>
                 <td class="center-align">{{ registro.resBonoB }}</td>
                 <td class="center-align">{{ registro.resBonoC }}</td>
