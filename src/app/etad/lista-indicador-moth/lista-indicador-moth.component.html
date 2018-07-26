@@ -17,7 +17,7 @@
 
   <div class="row">
     <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="consultaPeriodo()" autocomplete="off">
-      <div class="input-field col s12 m12 l6 xl6">
+      <div class="input-field col s12 m12 l4 xl4">
         <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="idPeriodo"
           (ngModelChange)="changeCombo()">
           <option value="">SELECCIONE</option>
@@ -29,13 +29,25 @@
           Seleccione una opcion
         </div>
       </div>
-      <div class="input-field col s12 m12 l5 xl5">
+      <div class="input-field col s12 m12 l4 xl4">
         <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idEtad" [(ngModel)]="idEtad" (ngModelChange)="changeCombo()">
           <option value="">SELECCIONE</option>
           <option *ngFor="let etad of etads" [value]="etad.id">{{etad.valor}}</option>
         </select>
         <label for="etad">Area Etad</label>
         <div *ngIf="formConsultaPeriodo.controls.idEtad.errors?.required && (formConsultaPeriodo.controls.idEtad?.touched || submitted)"
+          class="error">
+          Seleccione una opcion
+        </div>
+      </div>
+      <div class="input-field col s12 m12 l3 xl3">
+        <select materialize="material_select" [materializeSelectOptions]="grupos" formControlName="idGrupo" [(ngModel)]="idGrupo"
+          (ngModelChange)="changeCombo()">
+          <option value="">SELECCIONE</option>
+          <option *ngFor="let grupo of grupos" [value]="grupo.id">{{grupo.valor}}</option>
+        </select>
+        <label for="grupo">Grupo</label>
+        <div *ngIf="formConsultaPeriodo.controls.idGrupo.errors?.required && (formConsultaPeriodo.controls.idGrupo?.touched || submitted)"
           class="error">
           Seleccione una opcion
         </div>
@@ -137,7 +149,7 @@
               <input type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}" [disabled]="!edicion_detalle" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
             </ng-container>
             <ng-container *ngIf="estatusPeriodo == 1">
-                <input type="text" [value]="kpi.valor" disabled>
+              <input type="text" [value]="kpi.valor" disabled>
             </ng-container>
           </td>
         </tr>

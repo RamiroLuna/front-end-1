@@ -27,11 +27,12 @@ export class ListaIndicatorMothService {
     return this.http.get<any>(this.URL + '?action=getDetailIndicadores&id_usuario='+idUsuario+'&id_grupo='+id_grupo+'&id_etad='+id_etad+'&frecuencia=mensual'+'&id_periodo='+id_periodo);
   }
 
-  getAllIndicadores(id_usuario:number, idPeriodo:number, idEtad:number): Observable<any>{
+  getAllIndicadores(id_usuario:number, idPeriodo:number, idEtad:number,idGrupo:number): Observable<any>{
     const body = new HttpParams()
     .set('action', 'getAllIndicadores')
     .set('id_periodo', ""+idPeriodo)
     .set('id_etad', ""+idEtad)
+    .set('id_grupo', ""+idGrupo)
     .set('frecuencia', "mensual")
     .set('id_usuario', ""+id_usuario)
     return this.http.post<any>(this.URL,body);

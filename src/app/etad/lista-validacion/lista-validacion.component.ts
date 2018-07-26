@@ -56,6 +56,7 @@ export class ListaValidacionComponent implements OnInit {
   public disabled: boolean;
   public periodos: Array<Periodo> = [];
   public etads: Array<Catalogo> = [];
+  public grupos: Array<Catalogo> = [];
   public anios: any = {};
   public meses: Array<any> = [];
   public registros: Array<any>;
@@ -63,6 +64,7 @@ export class ListaValidacionComponent implements OnInit {
   public status: string;
   public idEtad: number;
   public idPeriodo: number;
+  public idGrupo: number;
   public texto_busqueda: string = "";
   public kpis: Array<any>;
 
@@ -111,7 +113,8 @@ export class ListaValidacionComponent implements OnInit {
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
       if (result.response.sucessfull) {
-
+        this.grupos = result.data.listGrupos || [];
+        this.grupos = this.grupos.filter(el=>el.id != 6);
         this.etads = result.data.listEtads || [];
         this.periodos = result.data.listPeriodos || [];
         let tmpAnios = this.periodos.map(el => el.anio);
@@ -203,7 +206,8 @@ export class ListaValidacionComponent implements OnInit {
   loadFormulario(): void {
     this.formConsultaPeriodo = this.fb.group({
       idEtad: new FormControl({ value: this.idEtad }, [Validators.required]),
-      idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required])
+      idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required]),
+      idGrupo: new FormControl({ value: this.idGrupo }, [Validators.required])
     });
   }
 
@@ -217,17 +221,19 @@ export class ListaValidacionComponent implements OnInit {
       this.disabled = true;
       this.datos_tabla = false;
 
-      this.service.getAllIndicadores(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad).subscribe(result => {
+      this.service.getAllIndicadores(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad, this.idGrupo).subscribe(result => {
 
         if (result.response.sucessfull) {
-
+      
           this.registros = result.data.listIndicadorDiarios || [];
-          this.datos_tabla = true;
+        
           this.disabled = false;
 
           if(this.registros.length > 0 ){
             this.estatusPeriodo = this.registros[0].periodo.estatus;
           }
+
+          this.datos_tabla = true;
 
           setTimeout(() => {
             this.ngAfterViewInitHttp();
