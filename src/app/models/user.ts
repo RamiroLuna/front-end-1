@@ -9,6 +9,7 @@ export class User {
     activo:number;
     id_perfiles:Array<number>;
 
+    id_etad?:number;
     token?:string;
 
 }

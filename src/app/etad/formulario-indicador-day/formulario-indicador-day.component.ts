@@ -77,6 +77,7 @@ export class FormularioIndicadorDayComponent implements OnInit {
    */
 
   public no_permiso_edicion: boolean;
+  public isAmut: boolean;
 
   constructor(private auth: AuthService,
     private service: FormularioIndicadorDayService,
@@ -96,6 +97,7 @@ export class FormularioIndicadorDayComponent implements OnInit {
     this.id_meta_kpi_tmp = -1;
     this.no_permiso_edicion = (!this.auth.permissionEdit(6) || !this.auth.permissionEdit(5) || !this.auth.permissionEdit(4));
     this.estatusPeriodo = 0;
+    this.isAmut = false;
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
@@ -110,6 +112,12 @@ export class FormularioIndicadorDayComponent implements OnInit {
         if (this.no_permiso_edicion) {
           this.idGrupo = this.auth.getId_Grupo();
           this.idEtad = this.auth.getId_Linea();
+          this.isAmut = (this.idEtad == 1 || this.idEtad == 2);
+
+          if (this.isAmut) {
+            this.etads = this.etads.filter(el =>el.id == 1 || el.id == 2);
+          }
+
         }
 
         this.loading = false;
@@ -187,7 +195,7 @@ export class FormularioIndicadorDayComponent implements OnInit {
 
   loadFormulario(): void {
     this.formConsultaPeriodo = this.fb.group({
-      idEtad: new FormControl({ value: this.idEtad, disabled: this.no_permiso_edicion }, [Validators.required]),
+      idEtad: new FormControl({ value: this.idEtad, disabled: (this.no_permiso_edicion && !this.isAmut) }, [Validators.required]),
       idGrupo: new FormControl({ value: this.idGrupo, disabled: this.no_permiso_edicion }, [Validators.required]),
       dia: new FormControl({ value: this.dia, disabled: this.no_permiso_edicion }, [Validators.required])
     });
@@ -200,19 +208,19 @@ export class FormularioIndicadorDayComponent implements OnInit {
     this.submitted = true;
     this.status = "inactive";
 
-    if (this.formConsultaPeriodo.valid || this.no_permiso_edicion) {
+    if (this.formConsultaPeriodo.valid || (this.no_permiso_edicion && !this.isAmut)) {
       this.disabled = true;
       this.datos_tabla = false;
 
       this.service.viewKpiForSave(this.auth.getIdUsuario(), this.idEtad, this.dia).subscribe(result => {
-       
+
         if (result.response.sucessfull) {
-        
+
           this.kpis = result.data.listIndicadorDiarios || [];
           this.datos_tabla = true;
           this.disabled = false;
 
-          if(this.kpis.length > 0 ){
+          if (this.kpis.length > 0) {
             this.estatusPeriodo = this.kpis[0].periodo.estatus;
           }
 

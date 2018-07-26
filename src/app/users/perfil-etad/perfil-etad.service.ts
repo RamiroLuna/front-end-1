@@ -22,6 +22,7 @@ export class PerfilEtadService {
     .set('action', 'updateUserETAD')
     .set('id_acceso', ''+usuario.id_acceso)
     .set('id_grupo', ''+usuario.id_grupo)
+    .set('id_etad', ''+usuario.id_etad)
     .set('id_linea', ''+usuario.id_linea)
     .set('perfiles', ''+usuario.id_perfiles)
     .set('id_usuario', ""+id_usuario);

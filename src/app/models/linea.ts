@@ -5,4 +5,5 @@ export class Linea {
       activo: number;
       id_gpo_linea: number;
       descripcion_gpo_linea:string;
+      id_etad?: number;
 }

@@ -69,6 +69,9 @@ export class FormularioIndicadorMothComponent implements OnInit {
   public idPeriodo: number;
   public idGrupo:number;
 
+  public no_permiso_edicion: boolean;
+
+
   constructor(private auth: AuthService,
     private service: FormularioIndicadorMothService,
     private fb: FormBuilder
@@ -81,8 +84,8 @@ export class FormularioIndicadorMothComponent implements OnInit {
     this.disabled = false;
     this.disabledInputText = false;
     this.anioSeleccionado = getAnioActual();
-
     this.estatusPeriodo = 0;
+    this.no_permiso_edicion = (!this.auth.permissionEdit(6) || !this.auth.permissionEdit(5) || !this.auth.permissionEdit(4));
 
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
@@ -104,6 +107,12 @@ export class FormularioIndicadorMothComponent implements OnInit {
         });
 
         this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
+
+        if (this.no_permiso_edicion) {
+          this.idGrupo = this.auth.getId_Grupo();
+          this.idEtad = this.auth.getId_Linea();
+        }
+
 
         this.loading = false;
         this.loadFormulario();
@@ -147,9 +156,9 @@ export class FormularioIndicadorMothComponent implements OnInit {
 
   loadFormulario(): void {
     this.formConsultaPeriodo = this.fb.group({
-      idEtad: new FormControl({ value: this.idEtad }, [Validators.required]),
+      idEtad: new FormControl({ value: this.idEtad, disabled: this.no_permiso_edicion }, [Validators.required]),
       idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required]),
-      idGrupo: new FormControl({ value: this.idGrupo }, [Validators.required])
+      idGrupo: new FormControl({ value: this.idGrupo, disabled: this.no_permiso_edicion}, [Validators.required])
     });
   }
 

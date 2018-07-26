@@ -26,7 +26,7 @@ export class PerfilComponent implements OnInit {
   public grupos: Array<Catalogo>;
   public lineas: Array<Linea>;
   public descripcion_perfiles: string;
-
+  public areas_etads: Array<Catalogo> = [];
 
 
   constructor(
@@ -47,13 +47,14 @@ export class PerfilComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (this.auth.getIdUsuario() != null) {
         this.service.miPerfil(this.auth.getIdUsuario()).subscribe(result => {
-
+         
           if (result.response.sucessfull) {
-
+            this.areas_etads = result.data.listEtads || [];
             this.lineas = result.data.listLineas || [];
             this.grupos = result.data.listGrupos || [];
             this.perfiles = result.data.ListPerfiles || [];
             this.usuario = result.data.userETAD || new User();
+            this.lineas = this.lineas.filter(el=>el.id_etad == this.usuario.id_etad);
             let perfiles = result.data.userETAD.perfiles.split(",").map(function (item) {
               return parseInt(item);
             });

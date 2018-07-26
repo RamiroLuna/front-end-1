@@ -27,6 +27,8 @@ export class PerfilEtadComponent implements OnInit {
   public perfiles: Array<Catalogo> = [];
   public grupos: Array<Catalogo> = [];
   public lineas: Array<Linea> = [];
+  public areas_etads: Array<Catalogo> = [];
+  public lineas_disponibles: Array<Linea> = [];
 
   constructor(
     private auth: AuthService,
@@ -44,11 +46,14 @@ export class PerfilEtadComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       let id_usuario_etad = parseInt(params.get('id'));
       this.service.getPerfilEtad(this.auth.getIdUsuario(), id_usuario_etad).subscribe(result => {
+    
         if (result.response.sucessfull) {
+          this.areas_etads = result.data.listEtads || [];
           this.perfiles = result.data.ListPerfiles || [];
-          this.lineas = result.data.listLineas || [];
+          this.lineas_disponibles = result.data.listLineas || [];
           this.grupos = result.data.listGrupos || [];
           this.usuario = result.data.userETAD || new User();
+          this.lineas = this.lineas_disponibles.filter(el=>el.id_etad == this.usuario.id_etad);
           let perfiles = result.data.userETAD.perfiles.split(",").map(function (item) {
             return parseInt(item);
           });
@@ -77,7 +82,8 @@ export class PerfilEtadComponent implements OnInit {
       usuario_sonarh: new FormControl({ value: this.usuario.usuario_sonarh, disabled: true }, [Validators.required]),
       id_grupo: new FormControl({ value: this.usuario.id_grupo, disabled: true }, [Validators.required]),
       id_linea: new FormControl({ value: this.usuario.id_linea, disabled: false }, [Validators.required]),
-      id_perfiles: new FormControl({ value: this.usuario.id_perfiles, disabled: false }, [Validators.required])
+      id_perfiles: new FormControl({ value: this.usuario.id_perfiles, disabled: false }, [Validators.required]),
+      id_etad: new FormControl({ value: this.usuario.id_etad }, [Validators.required])
     });
   }
 
@@ -134,6 +140,11 @@ export class PerfilEtadComponent implements OnInit {
       Materialize.toast('Verifique los datos capturados!', 4000, 'red');
     }
 
+  }
+
+  filtraLineas(id_etad: number): void {
+    this.lineas = this.lineas_disponibles.filter(el => el.id_etad == id_etad);
+    this.formPerfilEtad.controls.id_linea.reset();
   }
 
 }

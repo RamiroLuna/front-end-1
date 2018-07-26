@@ -24,6 +24,7 @@ export class PerfilSonarhService {
     .set('numero_empleado', ''+usuario.NumEmpleado)
     .set('id_linea', ''+usuario.id_linea)
     .set('id_grupo', ''+usuario.id_grupo)
+    .set('id_etad', ''+usuario.id_etad)
     .set('perfiles', ''+usuario.id_perfiles)
     .set('id_usuario', ""+id_usuario);
     return this.http.post(this.URL,body);

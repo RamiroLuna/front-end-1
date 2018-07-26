@@ -22,6 +22,12 @@
               </div>
             </div>
             <div class="row">
+              <label>Area Etad</label>
+              <select materialize="material_select" [materializeSelectOptions]="usuario?.id_etad" disabled>
+                <option *ngFor="let area of areas_etads" [value]="area.id"  [selected]="area.id == usuario?.id_etad">{{area.valor}}</option>
+              </select>
+            </div>
+            <div class="row">
               <label>Linea</label>
               <select materialize="material_select" [materializeSelectOptions]="usuario?.id_linea" disabled>
                 <option *ngFor="let linea of lineas" [value]="linea.id_linea"  [selected]="linea.id_linea == usuario?.id_linea">{{linea.valor}}</option>

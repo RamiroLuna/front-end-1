@@ -10,6 +10,7 @@ export class UserSonarh {
     Area:string;
     id_grupo:number;
 
+    id_etad?:any;
     id_linea?:number;
     id_perfiles:Array<number>;
 

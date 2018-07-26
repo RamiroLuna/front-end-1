@@ -20,11 +20,13 @@ export class PerfilSonarhComponent implements OnInit {
   public loading: boolean;
   public perfiles: Array<Catalogo> = [];
   public grupos: Array<Catalogo> = [];
+  public areas_etads: Array<Catalogo> = [];
   public lineas: Array<Linea> = [];
+  public lineas_disponibles: Array<Linea> = [];
   public formPerfilSonarh: FormGroup;
   public submitted: boolean;
   public usuario_en_etad: boolean;
-  public existe_user:boolean;
+  public existe_user: boolean;
 
   constructor(
     private auth: AuthService,
@@ -41,26 +43,27 @@ export class PerfilSonarhComponent implements OnInit {
 
 
     this.route.paramMap.subscribe(params => {
-    
+
       let numero_empleado = parseInt(params.get('id'));
       this.service.getDetalleUsuarioSonarh(this.auth.getIdUsuario(), numero_empleado).subscribe(result => {
-          
+    
         if (result.response.sucessfull) {
-          if(result.data.usuarioSonarh){
+          if (result.data.usuarioSonarh) {
             this.grupos = result.data.listGrupos || [];
             this.perfiles = result.data.listPerfiles || [];
-            this.lineas = result.data.listLineas || [];
+            this.lineas_disponibles = result.data.listLineas || [];
+            this.areas_etads = result.data.listEtads || [];
             this.usuario = result.data.usuarioSonarh || new UserSonarh();
             /* Por default es consulta */
             this.usuario.id_perfiles = [6];
-            
+
             this.usuario_en_etad = false;
-            this.existe_user=true;
+            this.existe_user = true;
             this.loading = false;
             this.loadFormulario();
-          }else{
+          } else {
             this.loading = false;
-            this.existe_user=false;
+            this.existe_user = false;
           }
 
         } else {
@@ -76,28 +79,28 @@ export class PerfilSonarhComponent implements OnInit {
     });
 
   }
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
 
   loadFormulario(): void {
     this.formPerfilSonarh = this.fb.group({
-      nombre: new FormControl({value: this.usuario.Nombre, disabled:true}, [Validators.required]),
-      NumEmpleado: new FormControl({value: this.usuario.NumEmpleado, disabled:true}, [Validators.required]),
-      Area: new FormControl({value: this.usuario.Area, disabled:true}, [Validators.required]),
-      id_grupo: new FormControl({value: this.usuario.id_grupo, disabled:true}, [Validators.required]),
-      id_linea: new FormControl({value: this.usuario.id_linea}, [Validators.required]),
-      id_perfiles: new FormControl({value: this.usuario.id_perfiles}, [Validators.required])
-
+      nombre: new FormControl({ value: this.usuario.Nombre, disabled: true }, [Validators.required]),
+      NumEmpleado: new FormControl({ value: this.usuario.NumEmpleado, disabled: true }, [Validators.required]),
+      Area: new FormControl({ value: this.usuario.Area, disabled: true }, [Validators.required]),
+      id_grupo: new FormControl({ value: this.usuario.id_grupo, disabled: true }, [Validators.required]),
+      id_linea: new FormControl({ value: this.usuario.id_linea }, [Validators.required]),
+      id_perfiles: new FormControl({ value: this.usuario.id_perfiles }, [Validators.required]),
+      id_etad: new FormControl({ value: this.usuario.id_etad }, [Validators.required])
     });
   }
 
 
   modalConfirmacion(usuario: UserSonarh) {
-    
+
     this.submitted = true;
     if (this.formPerfilSonarh.valid) {
 
@@ -122,6 +125,11 @@ export class PerfilSonarhComponent implements OnInit {
     }
 
 
+  }
+
+  filtraLineas(id_etad: number): void {
+    this.lineas = this.lineas_disponibles.filter(el => el.id_etad == id_etad);
+    this.formPerfilSonarh.controls.id_linea.reset();
   }
 
 
