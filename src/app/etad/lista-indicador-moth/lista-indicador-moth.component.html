@@ -48,27 +48,12 @@
       </div>
     </form>
   </div>
-  <!-- <div class="row" *ngIf="!estatusPeriodo">
-          <div class="color_titulo center-align">
-              <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
-          </div>
-    </div> -->
-  <!-- <div class="row" *ngIf="datos_tabla">
-      <nav *ngIf="registros.length > 0">
-        <div class="nav-wrapper grey lighten-5">
-          <form autocomplete="off">
-            <div class="input-field">
-              <input id="search" type="search" placeholder="Escribe para filtrar por fecha" [(ngModel)]="texto_busqueda" [ngModelOptions]="{standalone: true}"
-                required>
-              <i class="material-icons" (click)="limpiarInput()">close</i>
-              <label class="label-icon busqueda" for="search">
-                <i class="material-icons" style="color:black">search</i>
-              </label>
-            </div>
-          </form>
-        </div>
-      </nav>
-    </div> -->
+  <div class="row" *ngIf="datos_tabla && estatusPeriodo == 1">
+    <div class="color_titulo center-align">
+      <span class="waves-effect">
+        <i class="material-icons left">lock</i>Periodo cerrado</span>
+    </div>
+  </div>
   <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
     <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
       <thead>
@@ -148,10 +133,15 @@
             {{ kpi.metaKpi.etadKpi.kpiOperativo.unidad_medida }}
           </td>
           <td>
-            <input type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}" [disabled]="!edicion_detalle" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
+            <ng-container *ngIf="estatusPeriodo == 0">
+              <input type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}" [disabled]="!edicion_detalle" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
+            </ng-container>
+            <ng-container *ngIf="estatusPeriodo == 1">
+                <input type="text" [value]="kpi.valor" disabled>
+            </ng-container>
           </td>
         </tr>
-        <tr *ngIf="edicion_detalle">
+        <tr *ngIf="edicion_detalle && estatusPeriodo == 0">
 
           <td colspan="3" class="center-align">
             <button type="button" class="waves-effect waves-light btn-large light-green darken-1" (click)="openModalConfirmacion('edit')">EDITAR</button>

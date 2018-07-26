@@ -61,15 +61,17 @@
       </div>
     </form>
   </div>
-  <!-- <div class="row" *ngIf="!estatusPeriodo">
-          <div class="color_titulo center-align">
-              <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
-          </div>
-        </div> -->
-  <div class="row center-align" *ngIf="disabledInputText">
-    <p style="color: #ef6c00">Si desea consultar y modificar un valor vaya a la sección de CONSULTA Y EDICION</p>
+  <div class="row" *ngIf="datos_tabla && estatusPeriodo == 1">
+    <div class="color_titulo center-align">
+      <span class="waves-effect">
+        <i class="material-icons left">lock</i>Periodo cerrado</span>
+      <h5 class="color_titulo">Ya no puede registrar</h5>
+    </div>
   </div>
-  <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
+  <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla && estatusPeriodo == 0">
+    <div class="row center-align" *ngIf="disabledInputText">
+      <p style="color: #ef6c00">Si desea consultar y modificar un valor vaya a la sección de CONSULTA Y EDICION</p>
+    </div>
     <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
       <thead>
         <tr>

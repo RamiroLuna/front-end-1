@@ -46,7 +46,7 @@ export class ListaIndicadorMothComponent implements OnInit {
   public loading: boolean;
   public datos_tabla: boolean;
   public mensajeModal: string;
-  // // public estatusPeriodo: boolean;
+  public estatusPeriodo: number;
 
   public anioSeleccionado: number;
   public submitted: boolean;
@@ -88,7 +88,7 @@ export class ListaIndicadorMothComponent implements OnInit {
     this.edicion_detalle = true;
 
 
-    // // this.estatusPeriodo = true;
+    this.estatusPeriodo = 0;
     this.anioSeleccionado = getAnioActual();
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
@@ -148,7 +148,7 @@ export class ListaIndicadorMothComponent implements OnInit {
 
 
   changeCombo(): void {
-    // this.estatusPeriodo = true;
+    this.estatusPeriodo = 0;
     this.datos_tabla = false;
     this.status = "inactive";
   }
@@ -202,12 +202,17 @@ export class ListaIndicadorMothComponent implements OnInit {
       this.datos_tabla = false;
 
       this.service.getAllIndicadores(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad).subscribe(result => {
-
+     
         if (result.response.sucessfull) {
         
           this.registros = result.data.listIndicadorMensuales || [];
-          this.datos_tabla = true;
           this.disabled = false;
+
+          if(this.registros.length > 0){
+            this.estatusPeriodo = this.registros[0].periodo.estatus;
+          }
+
+          this.datos_tabla = true;
 
           setTimeout(() => {
             this.ngAfterViewInitHttp();

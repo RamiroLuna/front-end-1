@@ -47,11 +47,12 @@
       </div>
     </form>
   </div>
-  <!-- <div class="row" *ngIf="!estatusPeriodo">
-      <div class="color_titulo center-align">
-          <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
-      </div>
-    </div> -->
+  <div class="row" *ngIf="datos_tabla && estatusPeriodo == 1">
+    <div class="color_titulo center-align">
+      <span class="waves-effect">
+        <i class="material-icons left">lock</i>Periodo cerrado</span>
+    </div>
+  </div>
 
   <div class="row center-align warning" *ngIf="datos_tabla && bandera">
     <b>No hay metas de KPI´s para {{ getDescriptivoArea(idEtad) }} en {{ anioSeleccionado }} .</b>
@@ -93,8 +94,9 @@
               <button type="button" class="waves-effect waves-light btn grey darken-1" (click)="modificaValores('cancelar')">CANCELAR</button>
               <button type="button" class="waves-effect waves-light btn light-green darken-1" (click)="openModalConfirmacion('update')">MODIFICAR</button>
             </ng-template>
-            <button type="button" class="waves-effect waves-light btn light-green darken-1" (click)="modificaValores('editar')"
-              *ngIf="disabledInputText">EDITAR</button>
+            <ng-template *ngIf="estatusPeriodo == 0">
+              <button type="button" class="waves-effect waves-light btn light-green darken-1" (click)="modificaValores('editar')" *ngIf="disabledInputText">EDITAR</button>
+            </ng-template>
           </td>
         </tr>
       </tbody>

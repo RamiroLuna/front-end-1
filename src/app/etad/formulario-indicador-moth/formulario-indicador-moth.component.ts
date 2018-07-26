@@ -50,7 +50,7 @@ export class FormularioIndicadorMothComponent implements OnInit {
   public loading: boolean;
   public datos_tabla: boolean;
   public mensajeModal: string;
-  // // public estatusPeriodo: boolean;
+  public estatusPeriodo: number;
   public submitted: boolean;
   public disabled: boolean;
   public etads: Array<Catalogo> = [];
@@ -82,7 +82,7 @@ export class FormularioIndicadorMothComponent implements OnInit {
     this.disabledInputText = false;
     this.anioSeleccionado = getAnioActual();
 
-    // // this.estatusPeriodo = true;
+    this.estatusPeriodo = 0;
 
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
@@ -138,7 +138,7 @@ export class FormularioIndicadorMothComponent implements OnInit {
 
 
   changeCombo(): void {
-    // this.estatusPeriodo = true;
+    this.estatusPeriodo = 0;
     this.datos_tabla = false;
     this.disabledInputText = false;
     this.status = "inactive";
@@ -165,13 +165,16 @@ export class FormularioIndicadorMothComponent implements OnInit {
       this.datos_tabla = false;
 
       this.service.viewKpiForSave(this.auth.getIdUsuario(), this.idEtad, this.idPeriodo).subscribe(result => {
-    
+       
         if (result.response.sucessfull) {
-          // // this.estatusPeriodo = result.data.estatusPeriodo;
 
           this.kpis = result.data.listIndicadorMensuales || [];
-          this.datos_tabla = true;
           this.disabled = false;
+          if(this.kpis.length > 0 ){
+            this.estatusPeriodo = this.kpis[0].metaKpi.periodo.estatus;
+          }
+
+          this.datos_tabla = true;
 
           setTimeout(() => {
 

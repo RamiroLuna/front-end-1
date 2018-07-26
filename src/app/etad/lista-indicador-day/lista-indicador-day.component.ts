@@ -280,7 +280,7 @@ export class ListaIndicadorDayComponent implements OnInit {
         this.kpis = result.data.listIndicadorDiarios || [];
         setTimeout(() => {
           this.edicion_detalle = (this.kpis[0].estatus == 0);
-          console.log('detalle: ' , this.estatusPeriodo, this.edicion_detalle)
+
           this.dia_consulta = dia;
           this.area_consulta = this.getDescriptivo(this.etads, this.idEtad);
           this.grupo_consulta = grupo_descripcion;

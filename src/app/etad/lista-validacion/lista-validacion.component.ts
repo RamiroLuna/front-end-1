@@ -218,7 +218,7 @@ export class ListaValidacionComponent implements OnInit {
       this.datos_tabla = false;
 
       this.service.getAllIndicadores(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad).subscribe(result => {
-        console.log('rrrrr', result)
+
         if (result.response.sucessfull) {
 
           this.registros = result.data.listIndicadorDiarios || [];

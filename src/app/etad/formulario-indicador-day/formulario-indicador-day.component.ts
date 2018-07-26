@@ -95,7 +95,7 @@ export class FormularioIndicadorDayComponent implements OnInit {
     this.porcentaje = 0;
     this.id_meta_kpi_tmp = -1;
     this.no_permiso_edicion = (!this.auth.permissionEdit(6) || !this.auth.permissionEdit(5) || !this.auth.permissionEdit(4));
-    this.estatusPeriodo = 1;
+    this.estatusPeriodo = 0;
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
@@ -178,7 +178,7 @@ export class FormularioIndicadorDayComponent implements OnInit {
 
 
   changeCombo(): void {
-    this.estatusPeriodo = 1;
+    this.estatusPeriodo = 0;
     this.datos_tabla = false;
     this.disabledInputText = false;
     this.status = "inactive";
@@ -195,7 +195,7 @@ export class FormularioIndicadorDayComponent implements OnInit {
 
 
   consultaPeriodo(event): void {
-    this.estatusPeriodo = 1;
+    this.estatusPeriodo = 0;
     this.disabledInputText = false;
     this.submitted = true;
     this.status = "inactive";

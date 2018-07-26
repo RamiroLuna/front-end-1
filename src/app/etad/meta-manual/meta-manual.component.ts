@@ -48,7 +48,7 @@ export class MetaManualComponent implements OnInit {
   public loading: boolean;
   public datos_tabla: boolean;
   public mensajeModal: string;
-  // // public estatusPeriodo: boolean;
+  public estatusPeriodo: number;
 
   public anioSeleccionado: number;
   public submitted: boolean;
@@ -80,7 +80,7 @@ export class MetaManualComponent implements OnInit {
     this.submitted = false;
     this.disabled = false;
     this.bandera = false;
-    // // this.estatusPeriodo = true;
+    this.estatusPeriodo = 0;
     this.anioSeleccionado = getAnioActual();
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
@@ -97,6 +97,7 @@ export class MetaManualComponent implements OnInit {
           this.anios[tmp] = tmp;
         });
 
+       
         this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
 
         this.loading = false;
@@ -132,7 +133,7 @@ export class MetaManualComponent implements OnInit {
 
 
   changeCombo(): void {
-    // this.estatusPeriodo = true;
+    this.estatusPeriodo = 0;
     this.datos_tabla = false;
     this.status = "inactive";
   }
@@ -186,11 +187,10 @@ export class MetaManualComponent implements OnInit {
       this.datos_tabla = false;
 
       this.service.getAllMetas(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad).subscribe(result => {
-        console.log('result get', result)
-        if (result.response.sucessfull) {
-          // // this.estatusPeriodo = result.data.estatusPeriodo;
-          this.kpis = result.data.listMetasKpiOperativos as Array<PetMetaKpi> || [];
 
+        if (result.response.sucessfull) {
+         
+          this.kpis = result.data.listMetasKpiOperativos as Array<PetMetaKpi> || [];
 
           this.kpis.filter(el => {
             if (el.id_meta_kpi == 0) {
@@ -199,8 +199,13 @@ export class MetaManualComponent implements OnInit {
             el.class_input = '';
           });
 
-          this.datos_tabla = true;
+          
+          if(this.kpis.length > 0){
+            this.estatusPeriodo = this.kpis[0].periodo.estatus;
+          }
+
           this.disabled = false;
+          this.datos_tabla = true;
 
           setTimeout(() => {
             this.ngAfterViewInitHttp();

@@ -49,7 +49,7 @@ export class ListaMetasComponent implements OnInit {
   public loading: boolean;
   public datos_tabla: boolean;
   public mensajeModal: string;
-  // // public estatusPeriodo: boolean;
+  public estatusPeriodo: number;
 
   public anioSeleccionado: number;
   public submitted: boolean;
@@ -84,7 +84,7 @@ export class ListaMetasComponent implements OnInit {
     this.disabled = false;
     this.bandera = false;
     this.disabledInputText = true;
-    // // this.estatusPeriodo = true;
+    this.estatusPeriodo = 0;
     this.anioSeleccionado = getAnioActual();
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
@@ -136,7 +136,7 @@ export class ListaMetasComponent implements OnInit {
 
 
   changeCombo(): void {
-    // this.estatusPeriodo = true;
+    this.estatusPeriodo = 0;
     this.datos_tabla = false;
     this.status = "inactive";
   }
@@ -191,9 +191,9 @@ export class ListaMetasComponent implements OnInit {
       this.datos_tabla = false;
 
       this.service.getAllMetas(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad).subscribe(result => {
-
+      
         if (result.response.sucessfull) {
-          // // this.estatusPeriodo = result.data.estatusPeriodo;
+          
           this.kpis = result.data.listMetasKpiOperativos as Array<PetMetaKpi> || [];
 
 
@@ -204,8 +204,12 @@ export class ListaMetasComponent implements OnInit {
             el.class_input = '';
           });
 
-          this.datos_tabla = true;
+          if(this.kpis.length > 0){
+            this.estatusPeriodo = this.kpis[0].periodo.estatus;
+          }
+
           this.disabled = false;
+          this.datos_tabla = true;
 
           setTimeout(() => {
             this.ngAfterViewInitHttp();
