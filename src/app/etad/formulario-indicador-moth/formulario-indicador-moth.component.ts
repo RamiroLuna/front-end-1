@@ -70,7 +70,7 @@ export class FormularioIndicadorMothComponent implements OnInit {
   public idGrupo:number;
 
   public no_permiso_edicion: boolean;
-
+  public isFacilitadorAmut: boolean;
 
   constructor(private auth: AuthService,
     private service: FormularioIndicadorMothService,
@@ -110,7 +110,13 @@ export class FormularioIndicadorMothComponent implements OnInit {
 
         if (this.no_permiso_edicion) {
           this.idGrupo = this.auth.getId_Grupo();
-          this.idEtad = this.auth.getId_Linea();
+          this.idEtad = this.auth.getIdEtad();
+
+          this.isFacilitadorAmut =  (!this.auth.permissionEdit(4) && (this.idEtad == 1 || this.idEtad == 2));
+          
+          if(this.isFacilitadorAmut){
+            this.etads = this.etads.filter(el=>el.id == 1 || el.id == 2);
+          }
         }
 
 
@@ -156,7 +162,7 @@ export class FormularioIndicadorMothComponent implements OnInit {
 
   loadFormulario(): void {
     this.formConsultaPeriodo = this.fb.group({
-      idEtad: new FormControl({ value: this.idEtad, disabled: this.no_permiso_edicion }, [Validators.required]),
+      idEtad: new FormControl({ value: this.idEtad, disabled: (this.no_permiso_edicion && !this.isFacilitadorAmut ) }, [Validators.required]),
       idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required]),
       idGrupo: new FormControl({ value: this.idGrupo, disabled: this.no_permiso_edicion}, [Validators.required])
     });

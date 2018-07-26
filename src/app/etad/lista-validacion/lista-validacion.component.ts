@@ -88,6 +88,9 @@ export class ListaValidacionComponent implements OnInit {
    * Fin variables para calculo de ausentismo
    */
 
+  public no_permiso_edicion: boolean;
+  public isFacilitadorAmut: boolean;
+
   constructor(private auth: AuthService,
     private service: ListaValidacionService,
     private fb: FormBuilder
@@ -110,6 +113,8 @@ export class ListaValidacionComponent implements OnInit {
     this.estatusPeriodo = 0;
     this.anioSeleccionado = getAnioActual();
 
+    this.no_permiso_edicion = (!this.auth.permissionEdit(6) || !this.auth.permissionEdit(5) || !this.auth.permissionEdit(4));
+
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
       if (result.response.sucessfull) {
@@ -126,6 +131,18 @@ export class ListaValidacionComponent implements OnInit {
         });
 
         this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
+
+        if (this.no_permiso_edicion) {
+          this.idGrupo = this.auth.getId_Grupo();
+          this.idEtad = this.auth.getIdEtad();
+
+          this.isFacilitadorAmut =  (!this.auth.permissionEdit(4) && (this.idEtad == 1 || this.idEtad == 2));
+          
+          if(this.isFacilitadorAmut){
+            this.etads = this.etads.filter(el=>el.id == 1 || el.id == 2);
+          }
+        }
+
 
         this.loading = false;
         this.loadFormulario();
@@ -205,9 +222,9 @@ export class ListaValidacionComponent implements OnInit {
 
   loadFormulario(): void {
     this.formConsultaPeriodo = this.fb.group({
-      idEtad: new FormControl({ value: this.idEtad }, [Validators.required]),
+      idEtad: new FormControl({ value: this.idEtad ,  disabled:  (this.no_permiso_edicion && !this.isFacilitadorAmut ) }, [Validators.required]),
       idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required]),
-      idGrupo: new FormControl({ value: this.idGrupo }, [Validators.required])
+      idGrupo: new FormControl({ value: this.idGrupo , disabled:  this.no_permiso_edicion }, [Validators.required])
     });
   }
 
