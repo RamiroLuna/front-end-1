@@ -112,8 +112,8 @@ export class ListaPonderacionComponent implements OnInit {
     this.params = {};
     this.soloconsulta = true;
 
-    // this.permission.editarMeta = findRol(3, this.auth.getRolesOee());
-    // this.permission.eliminarMeta = findRol(5, this.auth.getRolesOee());
+    this.permission.editarMeta = findRol(38, this.auth.getRolesEtad());
+
 
     //Consulta la url para saber el tipo 
     this.route.paramMap.subscribe(params => {

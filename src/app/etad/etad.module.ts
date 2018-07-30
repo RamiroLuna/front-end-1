@@ -91,25 +91,22 @@ const routes: Routes = [
     // }
   },
   {
-    path: 'opciones/:seccion/sub-menu/:tipo/:id', component: PonderacionManualComponent
-    // , canActivate: [AuthGuardEtad]
-    // data: {
-    //   expectedRole: 
-    // }
+    path: 'opciones/:seccion/sub-menu/:tipo/:id', component: PonderacionManualComponent, canActivate: [AuthGuardEtad],
+    data: {
+      expectedRole: 37
+    }
   },
   {
-    path: 'opciones/:seccion/sub-menu/:tipo', component: ListaPonderacionComponent
-    // , canActivate: [AuthGuardEtad],
-    // data: {
-    //   expectedRole:
-    // }
+    path: 'opciones/:seccion/sub-menu/:tipo', component: ListaPonderacionComponent, canActivate: [AuthGuardEtad],
+    data: {
+      expectedRole: 39
+    }
   },
   {
-    path: 'opciones/ponderacion-carga-masiva', component: PonderacionMasivaComponent
-    // , canActivate: [AuthGuardEtad],
-    // data: {
-    //   expectedRole: 
-    // }
+    path: 'opciones/ponderacion-carga-masiva', component: PonderacionMasivaComponent, canActivate: [AuthGuardEtad],
+    data: {
+      expectedRole: 36
+    }
   },
   /* rutas registro de indicadores */
   {

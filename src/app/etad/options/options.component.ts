@@ -9,17 +9,17 @@ declare var $: any;
 export class OptionsComponent implements AfterViewInit {
 
   public permission: any = {
-    cargaMetaManual: true,
-    cargaMasiva: true,
-    edicionMeta: true,
-    catalogos: true,
-    indicador_diario: true,
-    indicador_mensual: true,
-    cargaPonderacionManual: true,
-    cargaPonderacionMasiva: true,
-    edicionPonderacion: true,
-    configuracion_reporte: true,
-    validacion:true
+    cargaMetaManual: false,
+    cargaMasiva: false,
+    edicionMeta: false,
+    catalogos: false,
+    indicador_diario: false,
+    indicador_mensual: false,
+    cargaPonderacionManual: false,
+    cargaPonderacionMasiva: false,
+    edicionPonderacion: false,
+    configuracion_reporte: false,
+    validacion:false
   }
   public loading: boolean;
 
@@ -29,8 +29,10 @@ export class OptionsComponent implements AfterViewInit {
   ngOnInit() {
     this.loading = true;
   
-    // this.permission.cargaMasiva = findRol(28, this.auth.getRolesEtad());   
-    // this.permission.edicionMeta = findRol(28, this.auth.getRolesEtad());   
+    this.permission.cargaPonderacionMasiva = findRol(36, this.auth.getRolesEtad());   
+    this.permission.cargaPonderacionManual = findRol(37, this.auth.getRolesEtad());   
+    this.permission.edicionPonderacion = findRol(39, this.auth.getRolesEtad());   
+ 
 
     this.loading = false;
     setTimeout(() => {

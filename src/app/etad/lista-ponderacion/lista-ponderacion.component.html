@@ -33,8 +33,13 @@
           <tr *ngFor="let ponderacion of ponderaciones;let i = index">
             <td>{{ ponderacion.objetivoOperativo.valor }}</td>
             <td>
-              <input type="text" [(ngModel)]="ponderacion.ponderacion" [ngModelOptions]="{standalone: true}" (keypress)="onlyNumber($event)"
-                (ngModelChange)="somethingChanged(ponderacion.ponderacion)" [disabled]="disabledInputText">
+              <ng-template [ngIf]="permission.editarMeta">
+                <input type="text" [(ngModel)]="ponderacion.ponderacion" [ngModelOptions]="{standalone: true}" (keypress)="onlyNumber($event)"
+                  (ngModelChange)="somethingChanged(ponderacion.ponderacion)" [disabled]="disabledInputText">
+              </ng-template>
+              <ng-template [ngIf]="!permission.editarMeta">
+                <input type="text" [value]="ponderacion.ponderacion" disabled>
+              </ng-template>
             </td>
           </tr>
           <tr>
@@ -45,14 +50,15 @@
               <b>{{ ponderacion_total }}</b>
             </td>
           </tr>
-          <tr>
+          <tr *ngIf="permission.editarMeta">
             <td colspan="2" class="center-align">
               <ng-template [ngIf]="!disabledInputText">
                 <button type="button" class="waves-effect waves-light btn grey darken-1" (click)="modificaValores('cancelar','objetivo-operativo')">CANCELAR</button>
                 <button type="button" class="waves-effect waves-light btn light-green darken-1" [disabled]="!(ponderacion_total == 100)"
                   (click)="openModalConfirmacion('update')">MODIFICAR</button>
               </ng-template>
-              <button type="button" class="waves-effect waves-light btn light-green darken-1" (click)="modificaValores('editar','objetivo-operativo')" *ngIf="disabledInputText">EDITAR</button>
+              <button type="button" class="waves-effect waves-light btn light-green darken-1" (click)="modificaValores('editar','objetivo-operativo')"
+                *ngIf="disabledInputText">EDITAR</button>
             </td>
           </tr>
         </tbody>
@@ -121,12 +127,12 @@
     </div>
     <div class="row" *ngIf="!soloconsulta">
       <p class="color_warning center-align">
-          <b>
-            El área y el año seleccionado no cuenta con ponderaciones.
-          </b>
+        <b>
+          El área y el año seleccionado no cuenta con ponderaciones.
+        </b>
       </p>
       <p class="color_warning center-align">
-            Vaya a la seccion de carga manual o masiva para realizar el proceso de asignación   
+        Vaya a la seccion de carga manual o masiva para realizar el proceso de asignación
       </p>
     </div>
     <div class="scroll_ejex_tabla_reporte" *ngIf="soloconsulta && bVistaPre && rows.length > 0">
@@ -151,8 +157,13 @@
                 <td>{{ row.padre == 0 ? 'OBJ' : 'KPI' }}</td>
                 <td>{{ row.kpi }}</td>
                 <td *ngIf="row.padre == 1">
-                  <input type="text" [(ngModel)]="row.ponderacion" [ngModelOptions]="{standalone: true}" (keypress)="onlyNumber($event)" [disabled]="disabledInputText"
-                    (ngModelChange)="somethingChangedKPI(row.ponderacion, row.control)">
+                  <ng-template [ngIf]="permission.editarMeta">
+                    <input type="text" [(ngModel)]="row.ponderacion" [ngModelOptions]="{standalone: true}" (keypress)="onlyNumber($event)" [disabled]="disabledInputText"
+                      (ngModelChange)="somethingChangedKPI(row.ponderacion, row.control)">
+                  </ng-template>
+                  <ng-template [ngIf]="!permission.editarMeta">
+                    <input type="text" [value]="row.ponderacion" disabled>
+                  </ng-template>
                 </td>
                 <td *ngIf="row.padre == 0">
                   {{ row.ponderacion }}
@@ -166,14 +177,14 @@
                   <b>{{ ponderacion_total }}</b>
                 </td>
               </tr>
-              <tr>
+              <tr *ngIf="permission.editarMeta">
                 <td colspan="3" class="center-align">
                   <ng-template [ngIf]="!disabledInputText">
                     <button type="button" class="waves-effect waves-light btn grey darken-1" (click)="modificaValores('cancelar','kpi-operativo')">CANCELAR</button>
-                    <button type="button" class="waves-effect waves-light btn light-green darken-1" [disabled]="!disabledBtnEdit"
-                      (click)="openModalConfirmacion('update')">MODIFICAR</button>
+                    <button type="button" class="waves-effect waves-light btn light-green darken-1" [disabled]="!disabledBtnEdit" (click)="openModalConfirmacion('update')">MODIFICAR</button>
                   </ng-template>
-                  <button type="button" class="waves-effect waves-light btn light-green darken-1" (click)="modificaValores('editar','kpi-operativo')" *ngIf="disabledInputText">EDITAR</button>
+                  <button type="button" class="waves-effect waves-light btn light-green darken-1" (click)="modificaValores('editar','kpi-operativo')"
+                    *ngIf="disabledInputText">EDITAR</button>
                 </td>
               </tr>
             </tbody>
