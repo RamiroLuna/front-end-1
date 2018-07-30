@@ -117,17 +117,15 @@ const routes: Routes = [
     // }
   },
   {
-    path: 'opciones/:seccion/sub-menu-indicadores/diarios', component: ListaIndicadorDayComponent,
-    // , canActivate: [AuthGuardEtad],
-    // data: {
-    //   expectedRole: 
-    // }
+    path: 'opciones/:seccion/sub-menu-indicadores/diarios', component: ListaIndicadorDayComponent, canActivate: [AuthGuardEtad],
+    data: {
+      expectedRole: 43
+    }
   }, {
-    path: 'opciones/:seccion/sub-menu-indicadores/nuevo', component: FormularioIndicadorDayComponent,
-    // , canActivate: [AuthGuardEtad],
-    // data: {
-    //   expectedRole: 
-    // }
+    path: 'opciones/:seccion/sub-menu-indicadores/nuevo', component: FormularioIndicadorDayComponent, canActivate: [AuthGuardEtad],
+    data: {
+      expectedRole: 41
+    }
   },
   {
     path: 'opciones/:seccion/sub-menu-indicadores/mensuales', component: ListaIndicadorMothComponent,

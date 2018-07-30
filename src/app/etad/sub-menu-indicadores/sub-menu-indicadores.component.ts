@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { findRol } from '../../utils';
+import { AuthService } from '../../auth/auth.service';
 
 declare var $: any;
 declare var Materialize: any;
@@ -13,14 +15,24 @@ export class SubMenuIndicadoresComponent implements OnInit {
   public seccion: string;
   public loading: boolean;
 
+
+  public permission: any = {
+    consulta_edicion_diario: false,
+    registro_diario: false
+  }
+
   constructor(
     private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private auth: AuthService) { }
 
   ngOnInit() {
 
     this.loading = true;
     this.seccion = "";
+    this.permission.consulta_edicion_diario = findRol(43, this.auth.getRolesEtad());   
+    this.permission.registro_diario = findRol(41, this.auth.getRolesEtad());   
+
     this.route.paramMap.subscribe(params => {
       this.seccion = params.get('seccion');
       this.loading = false;

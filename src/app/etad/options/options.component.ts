@@ -31,7 +31,9 @@ export class OptionsComponent implements AfterViewInit {
   
     this.permission.cargaPonderacionMasiva = findRol(36, this.auth.getRolesEtad());   
     this.permission.cargaPonderacionManual = findRol(37, this.auth.getRolesEtad());   
-    this.permission.edicionPonderacion = findRol(39, this.auth.getRolesEtad());   
+    this.permission.edicionPonderacion = findRol(39, this.auth.getRolesEtad());
+    this.permission.indicador_diario = findRol(43, this.auth.getRolesEtad());
+
  
 
     this.loading = false;

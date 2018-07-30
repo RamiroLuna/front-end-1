@@ -41,7 +41,8 @@
         </div>
       </div>
       <div class="input-field col s12 m12 l3 xl3">
-        <select materialize="material_select" [materializeSelectOptions]="grupos" formControlName="idGrupo" [(ngModel)]="idGrupo" (ngModelChange)="changeCombo()">
+        <select materialize="material_select" [materializeSelectOptions]="grupos" formControlName="idGrupo" [(ngModel)]="idGrupo"
+          (ngModelChange)="changeCombo()">
           <option value="">SELECCIONE</option>
           <option *ngFor="let grupo of grupos" [value]="grupo.id">{{grupo.valor}}</option>
         </select>
@@ -169,21 +170,25 @@
             {{ kpi.metaKpi.etadKpi.kpiOperativo.unidad_medida }}
           </td>
           <td>
+            <ng-container *ngIf="permission.editar_indicador_diario">
+              <ng-container *ngIf="estatusPeriodo == 0">
+                <input *ngIf="kpi.metaKpi.etadKpi.kpiOperativo.id != 11" type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}"
+                  [disabled]="!edicion_detalle" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
+                <input *ngIf="kpi.metaKpi.etadKpi.kpiOperativo.id == 11" type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}"
+                  [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }" (focus)="calcularAusentismo(kpi.id_meta_kpi, kpi.metaKpi.etadKpi.kpiOperativo.valor)"
+                  readonly [disabled]="!edicion_detalle">
+              </ng-container>
 
-            <ng-container *ngIf="estatusPeriodo == 0">
-              <input *ngIf="kpi.metaKpi.etadKpi.kpiOperativo.id != 11" type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}"
-                [disabled]="!edicion_detalle" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
-              <input *ngIf="kpi.metaKpi.etadKpi.kpiOperativo.id == 11" type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}"
-                [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }" (focus)="calcularAusentismo(kpi.id_meta_kpi, kpi.metaKpi.etadKpi.kpiOperativo.valor)"
-                readonly [disabled]="!edicion_detalle">
+              <ng-container *ngIf="estatusPeriodo == 1">
+                <input type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}" disabled>
+              </ng-container>
             </ng-container>
-            <ng-container *ngIf="estatusPeriodo == 1">
-              <input type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}" disabled>
+            <ng-container *ngIf="!permission.editar_indicador_diario">
+                <input type="text" [value]="kpi.valor" disabled>
             </ng-container>
-
           </td>
         </tr>
-        <tr *ngIf="edicion_detalle && estatusPeriodo == 0">
+        <tr *ngIf="edicion_detalle && estatusPeriodo == 0 && permission.editar_indicador_diario ">
           <td colspan="3" class="center-align">
             <button type="button" class="waves-effect waves-light btn-large light-green darken-1" (click)="openModalConfirmacion('edit')">EDITAR</button>
           </td>
