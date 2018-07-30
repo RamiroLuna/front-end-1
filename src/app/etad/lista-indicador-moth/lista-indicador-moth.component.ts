@@ -78,6 +78,10 @@ export class ListaIndicadorMothComponent implements OnInit {
   public no_permiso_edicion: boolean;
   public isFacilitadorAmut: boolean;
 
+  public permission: any = {
+    editar_indicador_mensual: false
+  }
+
   constructor(private auth: AuthService,
     private service: ListaIndicatorMothService,
     private fb: FormBuilder
@@ -96,6 +100,7 @@ export class ListaIndicadorMothComponent implements OnInit {
     this.estatusPeriodo = 0;
     this.anioSeleccionado = getAnioActual();
     this.no_permiso_edicion = (!this.auth.permissionEdit(6) || !this.auth.permissionEdit(5) || !this.auth.permissionEdit(4));
+    this.permission.editar_indicador_mensual = findRol(46, this.auth.getRolesEtad());   
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
     

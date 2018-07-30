@@ -18,7 +18,9 @@ export class SubMenuIndicadoresComponent implements OnInit {
 
   public permission: any = {
     consulta_edicion_diario: false,
-    registro_diario: false
+    registro_diario: false,
+    consulta_edicion_mensual: false,
+    registro_mensual: false
   }
 
   constructor(
@@ -32,6 +34,8 @@ export class SubMenuIndicadoresComponent implements OnInit {
     this.seccion = "";
     this.permission.consulta_edicion_diario = findRol(43, this.auth.getRolesEtad());   
     this.permission.registro_diario = findRol(41, this.auth.getRolesEtad());   
+    this.permission.consulta_edicion_mensual = findRol(47, this.auth.getRolesEtad());   
+    this.permission.registro_mensual = findRol(45, this.auth.getRolesEtad());   
 
     this.route.paramMap.subscribe(params => {
       this.seccion = params.get('seccion');

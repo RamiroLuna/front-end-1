@@ -41,16 +41,17 @@
         </div>
       </div>
       <div class="input-field col s12 m12 l3 xl3">
-          <select materialize="material_select" [materializeSelectOptions]="grupos" formControlName="idGrupo" [(ngModel)]="idGrupo" (ngModelChange)="changeCombo()">
-            <option value="">SELECCIONE</option>
-            <option *ngFor="let grupo of grupos" [value]="grupo.id">{{grupo.valor}}</option>
-          </select>
-          <label for="grupo">Grupo</label>
-          <div *ngIf="formConsultaPeriodo.controls.idGrupo.errors?.required && (formConsultaPeriodo.controls.idGrupo?.touched || submitted)"
-            class="error">
-            Seleccione una opcion
-          </div>
+        <select materialize="material_select" [materializeSelectOptions]="grupos" formControlName="idGrupo" [(ngModel)]="idGrupo"
+          (ngModelChange)="changeCombo()">
+          <option value="">SELECCIONE</option>
+          <option *ngFor="let grupo of grupos" [value]="grupo.id">{{grupo.valor}}</option>
+        </select>
+        <label for="grupo">Grupo</label>
+        <div *ngIf="formConsultaPeriodo.controls.idGrupo.errors?.required && (formConsultaPeriodo.controls.idGrupo?.touched || submitted)"
+          class="error">
+          Seleccione una opcion
         </div>
+      </div>
       <div class="input-field col s12 m12 l1 xl1">
         <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
           <i class="material-icons">search</i>
@@ -110,35 +111,48 @@
             </a>
           </td>
           <td class="center-align">
-            <ng-container *ngIf="estatusPeriodo == 0">
-              <button *ngIf="registro.estatus == 0" class="btn-floating green darken-4" (click)="openModalConfirmacion('validar',registro.dia_string, registro.id_grupo, registro.grupo.valor, i)">
-                <i class="material-icons">done</i>
-              </button>
-              <button class="btn-floating green darken-4" *ngIf="registro.estatus == 1" disabled>
-                <i class="material-icons">done</i>
-              </button>
-            </ng-container>
-            <ng-container *ngIf="estatusPeriodo == 1">
+            <ng-template [ngIf]="permission.validar">
+              <ng-container *ngIf="estatusPeriodo == 0">
+                <button *ngIf="registro.estatus == 0" class="btn-floating green darken-4" (click)="openModalConfirmacion('validar',registro.dia_string, registro.id_grupo, registro.grupo.valor, i)">
+                  <i class="material-icons">done</i>
+                </button>
+                <button class="btn-floating green darken-4" *ngIf="registro.estatus == 1" disabled>
+                  <i class="material-icons">done</i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="estatusPeriodo == 1">
+                <button class="btn-floating green darken-4" disabled>
+                  <i class="material-icons">done</i>
+                </button>
+              </ng-container>
+            </ng-template>
+            <ng-template [ngIf]="!permission.validar">
               <button class="btn-floating green darken-4" disabled>
                 <i class="material-icons">done</i>
               </button>
-            </ng-container>
+            </ng-template>
           </td>
           <td class="center-align">
-            <ng-container *ngIf="estatusPeriodo == 0">
-              <button *ngIf="registro.estatus == 1" class="btn-floating red darken-4" (click)="openModalConfirmacion('invalidar',registro.dia_string, registro.id_grupo, registro.grupo.valor, i)">
-                <i class="material-icons">cancel</i>
-              </button>
-              <button *ngIf="registro.estatus == 0" class="btn-floating red darken-4" disabled>
-                <i class="material-icons">cancel</i>
-              </button>
-            </ng-container>
-            <ng-container *ngIf="estatusPeriodo == 1">
+            <ng-template [ngIf]="permission.validar">
+              <ng-container *ngIf="estatusPeriodo == 0">
+                <button *ngIf="registro.estatus == 1" class="btn-floating red darken-4" (click)="openModalConfirmacion('invalidar',registro.dia_string, registro.id_grupo, registro.grupo.valor, i)">
+                  <i class="material-icons">cancel</i>
+                </button>
+                <button *ngIf="registro.estatus == 0" class="btn-floating red darken-4" disabled>
+                  <i class="material-icons">cancel</i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="estatusPeriodo == 1">
                 <button class="btn-floating green darken-4" disabled>
                   <i class="material-icons">cancel</i>
                 </button>
               </ng-container>
-
+            </ng-template>
+            <ng-template [ngIf]="!permission.quitar_validacion">
+              <button class="btn-floating green darken-4" disabled>
+                <i class="material-icons">cancel</i>
+              </button>
+            </ng-template>
           </td>
         </tr>
       </tbody>

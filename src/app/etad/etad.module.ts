@@ -128,25 +128,22 @@ const routes: Routes = [
     }
   },
   {
-    path: 'opciones/:seccion/sub-menu-indicadores/mensuales', component: ListaIndicadorMothComponent,
-    // , canActivate: [AuthGuardEtad],
-    // data: {
-    //   expectedRole: 
-    // }
+    path: 'opciones/:seccion/sub-menu-indicadores/mensuales', component: ListaIndicadorMothComponent, canActivate: [AuthGuardEtad],
+    data: {
+      expectedRole: 47
+    }
   }, {
-    path: 'opciones/:seccion/sub-menu-indicadores/registro-mensual', component: FormularioIndicadorMothComponent,
-    // , canActivate: [AuthGuardEtad],
-    // data: {
-    //   expectedRole: 
-    // }
+    path: 'opciones/:seccion/sub-menu-indicadores/registro-mensual', component: FormularioIndicadorMothComponent, canActivate: [AuthGuardEtad],
+    data: {
+      expectedRole: 45
+    }
   },
   /* ruta validaciones */
   {
-    path: 'opciones/validaciones', component: ListaValidacionComponent,
-    // , canActivate: [AuthGuardEtad],
-    // data: {
-    //   expectedRole: 
-    // }
+    path: 'opciones/validaciones', component: ListaValidacionComponent, canActivate: [AuthGuardEtad],
+    data: {
+      expectedRole: 52
+    }
   },
   /* rutas de reportes */
   { path: 'opciones/lista-reportes', component: ListaReportesComponent },
@@ -160,8 +157,18 @@ const routes: Routes = [
   { path: 'opciones/lista-reportes/reporte-posicion-anual', component: RptPosicionAnualComponent },
 
   /* rutas configuracion reportes */
-  { path: 'opciones/configuraciones-reportes', component: ListaConfiguracionReporteComponent },
-  { path: 'opciones/configuraciones-reportes/conf-rpt-obj-kpi', component: ConfRptEnlaceObjKpiComponent },
+  {
+    path: 'opciones/configuraciones-reportes', component: ListaConfiguracionReporteComponent, canActivate: [AuthGuardEtad],
+    data: {
+      expectedRole: 50
+    }
+  },
+  {
+    path: 'opciones/configuraciones-reportes/conf-rpt-obj-kpi', component: ConfRptEnlaceObjKpiComponent, canActivate: [AuthGuardEtad],
+    data: {
+      expectedRole: 50
+    }
+  },
 
 ];
 

@@ -145,15 +145,20 @@
             {{ kpi.metaKpi.etadKpi.kpiOperativo.unidad_medida }}
           </td>
           <td>
-            <ng-container *ngIf="estatusPeriodo == 0">
-              <input type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}" [disabled]="!edicion_detalle" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
+            <ng-container *ngIf="permission.editar_indicador_mensual">
+              <ng-container *ngIf="estatusPeriodo == 0">
+                <input type="text" [(ngModel)]="kpi.valor" [ngModelOptions]="{standalone: true}" [disabled]="!edicion_detalle" [ngStyle]="{'background-color': kpi.class_input == 'error' ? '#ffcdd2' : '' }">
+              </ng-container>
+              <ng-container *ngIf="estatusPeriodo == 1">
+                <input type="text" [value]="kpi.valor" disabled>
+              </ng-container>
             </ng-container>
-            <ng-container *ngIf="estatusPeriodo == 1">
-              <input type="text" [value]="kpi.valor" disabled>
+            <ng-container *ngIf="!permission.editar_indicador_mensual">
+                <input type="text" [value]="kpi.valor" disabled>
             </ng-container>
           </td>
         </tr>
-        <tr *ngIf="edicion_detalle && estatusPeriodo == 0">
+        <tr *ngIf="edicion_detalle && estatusPeriodo == 0 && permission.editar_indicador_mensual">
 
           <td colspan="3" class="center-align">
             <button type="button" class="waves-effect waves-light btn-large light-green darken-1" (click)="openModalConfirmacion('edit')">EDITAR</button>

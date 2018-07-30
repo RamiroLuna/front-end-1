@@ -91,6 +91,11 @@ export class ListaValidacionComponent implements OnInit {
   public no_permiso_edicion: boolean;
   public isFacilitadorAmut: boolean;
 
+  public permission: any = {
+    validar: false,
+    quitar_validacion: false
+  }
+
   constructor(private auth: AuthService,
     private service: ListaValidacionService,
     private fb: FormBuilder
@@ -114,6 +119,9 @@ export class ListaValidacionComponent implements OnInit {
     this.anioSeleccionado = getAnioActual();
 
     this.no_permiso_edicion = (!this.auth.permissionEdit(6) || !this.auth.permissionEdit(5) || !this.auth.permissionEdit(4));
+
+    this.permission.validar = findRol(49, this.auth.getRolesEtad());   
+    this.permission.quitar_validacion = findRol(51, this.auth.getRolesEtad());   
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 

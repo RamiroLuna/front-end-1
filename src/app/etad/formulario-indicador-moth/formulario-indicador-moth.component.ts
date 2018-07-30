@@ -86,7 +86,7 @@ export class FormularioIndicadorMothComponent implements OnInit {
     this.anioSeleccionado = getAnioActual();
     this.estatusPeriodo = 0;
     this.no_permiso_edicion = (!this.auth.permissionEdit(6) || !this.auth.permissionEdit(5) || !this.auth.permissionEdit(4));
-
+ 
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
     
