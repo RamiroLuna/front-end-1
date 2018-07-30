@@ -72,6 +72,10 @@ export class ListaMetasComponent implements OnInit {
   public bandera: boolean;
   public disabledInputText: boolean;
 
+  public permission: any = {
+    editar: false,
+  }
+
   constructor(private auth: AuthService,
     private service: ListaMetasService,
     private fb: FormBuilder
@@ -86,6 +90,7 @@ export class ListaMetasComponent implements OnInit {
     this.disabledInputText = true;
     this.estatusPeriodo = 0;
     this.anioSeleccionado = getAnioActual();
+    this.permission.editar =  this.permission.catalogos = findRol(32, this.auth.getRolesEtad());
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
@@ -206,6 +211,7 @@ export class ListaMetasComponent implements OnInit {
 
           if(this.kpis.length > 0){
             this.estatusPeriodo = this.kpis[0].periodo.estatus;
+         
           }
 
           this.disabled = false;

@@ -50,37 +50,33 @@ const routes: Routes = [
   {
     path: 'opciones/lista-metas', component: ListaMetasComponent, canActivate: [AuthGuardEtad],
     data: {
-      expectedRole: 28
+      expectedRole: 33
     }
   },
   {
-    path: 'opciones/metas-carga-manual/:id', component: MetaManualComponent
-    // , canActivate: [AuthGuardEtad]
-    // data: {
-    //   expectedRole: 
-    // }
+    path: 'opciones/metas-carga-manual/:id', component: MetaManualComponent, canActivate: [AuthGuardEtad],
+    data: {
+      expectedRole: 31
+    }
   },
   /* rutas de catalogos */
   {
-    path: 'opciones/catalogos', component: ListCatalogsComponent
-    // , canActivate: [AuthGuardEtad]
-    // data: {
-    //   expectedRole: 
-    // }
+    path: 'opciones/catalogos', component: ListCatalogsComponent, canActivate: [AuthGuardEtad],
+    data: {
+      expectedRole: 53
+    }
   },
   {
-    path: 'opciones/catalogos/:name', component: ListByCatalogComponent
-    // , canActivate: [AuthGuardEtad]
-    // data: {
-    //   expectedRole: 
-    // }
+    path: 'opciones/catalogos/:name', component: ListByCatalogComponent, canActivate: [AuthGuardEtad],
+    data: {
+      expectedRole: 53
+    }
   },
   {
-    path: 'opciones/catalogos/:name/formulario/:id', component: FormularioDetalleComponent
-    // , canActivate: [AuthGuardEtad]
-    // data: {
-    //   expectedRole: 
-    // }
+    path: 'opciones/catalogos/:name/formulario/:id', component: FormularioDetalleComponent, canActivate: [AuthGuardEtad],
+    data: {
+      expectedRole: 53
+    }
   },
   /* rutas de ponderaciones */
   {

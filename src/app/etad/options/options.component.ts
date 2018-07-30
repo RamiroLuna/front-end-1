@@ -29,6 +29,9 @@ export class OptionsComponent implements AfterViewInit {
   ngOnInit() {
     this.loading = true;
   
+    this.permission.cargaMasiva = findRol(28, this.auth.getRolesEtad());   
+    this.permission.cargaMetaManual = findRol(31, this.auth.getRolesEtad());   
+    this.permission.edicionMeta = findRol(33, this.auth.getRolesEtad());   
     this.permission.cargaPonderacionMasiva = findRol(36, this.auth.getRolesEtad());   
     this.permission.cargaPonderacionManual = findRol(37, this.auth.getRolesEtad());   
     this.permission.edicionPonderacion = findRol(39, this.auth.getRolesEtad());
@@ -36,6 +39,7 @@ export class OptionsComponent implements AfterViewInit {
     this.permission.indicador_mensual = findRol(47, this.auth.getRolesEtad());
     this.permission.validacion = findRol(52, this.auth.getRolesEtad());
     this.permission.configuracion_reporte = findRol(50, this.auth.getRolesEtad());
+    this.permission.catalogos = findRol(53, this.auth.getRolesEtad());
 
  
 
