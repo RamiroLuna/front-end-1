@@ -133,7 +133,7 @@
             </ng-template>
           </td>
           <td class="center-align">
-            <ng-template [ngIf]="permission.validar">
+            <ng-template [ngIf]="permission.quitar_validacion">
               <ng-container *ngIf="estatusPeriodo == 0">
                 <button *ngIf="registro.estatus == 1" class="btn-floating red darken-4" (click)="openModalConfirmacion('invalidar',registro.dia_string, registro.id_grupo, registro.grupo.valor, i)">
                   <i class="material-icons">cancel</i>
