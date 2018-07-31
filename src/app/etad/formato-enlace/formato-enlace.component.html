@@ -595,7 +595,7 @@
       <font face="Arial" size=2 color="#000000">Utilización </font>
     </td>
     <td class="border_rpt" rowspan=3 align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">
+      <font face="Arial" size=2 color="#00B050">
         <ng-container *ngIf="!consulta">
           Reporte
         </ng-container>
@@ -605,7 +605,7 @@
       </font>
     </td>
     <td class="border_rpt" rowspan=3 align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">
+      <font face="Arial" size=2 color="#00B050">
         <ng-container *ngIf="!consulta">
           Reporte
         </ng-container>
@@ -678,7 +678,7 @@
       <font face="Arial" size=2 color="#000000">Calidad </font>
     </td>
     <td class="border_rpt" rowspan=3 align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">
+      <font face="Arial" size=2 color="#00B050">
         <ng-container *ngIf="!consulta">
           Reporte
         </ng-container>
@@ -688,7 +688,7 @@
       </font>
     </td>
     <td class="border_rpt" rowspan=3 align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">
+      <font face="Arial" size=2 color="#00B050">
         <ng-container *ngIf="!consulta">
           Reporte
         </ng-container>
@@ -808,7 +808,7 @@
       <font face="Arial" size=2 color="#000000">Disponibilidad </font>
     </td>
     <td class="border_rpt" rowspan=5 align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">
+      <font face="Arial" size=2 color="#00B050">
         <ng-container *ngIf="!consulta">
           Reporte
         </ng-container>
@@ -818,7 +818,7 @@
       </font>
     </td>
     <td class="border_rpt" rowspan=5 align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">
+      <font face="Arial" size=2 color="#00B050">
         <ng-container *ngIf="!consulta">
           Reporte
         </ng-container>
@@ -946,7 +946,7 @@
       <font face="Arial" size=2 color="#000000">Utilización </font>
     </td>
     <td class="border_rpt" rowspan=3 align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">
+      <font face="Arial" size=2 color="#00B050">
         <ng-container *ngIf="!consulta">
           Reporte
         </ng-container>
@@ -956,7 +956,7 @@
       </font>
     </td>
     <td class="border_rpt" rowspan=3 align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">
+      <font face="Arial" size=2 color="#00B050">
         <ng-container *ngIf="!consulta">
           Reporte
         </ng-container>
@@ -1029,7 +1029,7 @@
       <font face="Arial" size=2 color="#000000">Calidad </font>
     </td>
     <td class="border_rpt" rowspan=3 align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">
+      <font face="Arial" size=2 color="#00B050">
         <ng-container *ngIf="!consulta">
           Reporte
         </ng-container>
@@ -1039,7 +1039,7 @@
       </font>
     </td>
     <td class="border_rpt" rowspan=3 align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">
+      <font face="Arial" size=2 color="#00B050">
         <ng-container *ngIf="!consulta">
           Reporte
         </ng-container>
@@ -1175,7 +1175,7 @@
       <font face="Arial" size=2 color="#000000">Disponibilidad</font>
     </td>
     <td class="border_rpt" rowspan=5 align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">
+      <font face="Arial" size=2 color="#00B050">
         <ng-container *ngIf="!consulta">
           Reporte
         </ng-container>
@@ -1185,7 +1185,7 @@
       </font>
     </td>
     <td class="border_rpt" rowspan=5 align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">
+      <font face="Arial" size=2 color="#00B050">
         <ng-container *ngIf="!consulta">
           Reporte
         </ng-container>
@@ -1204,10 +1204,24 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.00%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[0].meta }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[0].real }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">Mantenimiento</font>
@@ -1224,10 +1238,24 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.00%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[1].meta }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[1].real }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">Mantenimiento</font>
@@ -1244,10 +1272,24 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.00%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[2].meta }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[2].real }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">Producción</font>
@@ -1264,10 +1306,24 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.00%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[3].meta }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[3].real }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">Refacciones</font>
@@ -1313,7 +1369,7 @@
       <font face="Arial" size=2 color="#000000">Utilización </font>
     </td>
     <td class="border_rpt" rowspan=3 align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">
+      <font face="Arial" size=2 color="#00B050">
         <ng-container *ngIf="!consulta">
           Reporte
         </ng-container>
@@ -1323,7 +1379,7 @@
       </font>
     </td>
     <td class="border_rpt" rowspan=3 align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">
+      <font face="Arial" size=2 color="#00B050">
         <ng-container *ngIf="!consulta">
           Reporte
         </ng-container>
@@ -1342,10 +1398,24 @@
       <font size=2 color="#000000">kg/hr</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.00%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[5].meta }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[5].real }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">Producción</font>
@@ -1362,10 +1432,24 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.00%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[6].meta }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[6].real }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">Producción</font>
@@ -1382,10 +1466,24 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.00%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[7].meta }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[7].real }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">Mantenimiento</font>
@@ -1425,10 +1523,24 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.00%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[8].meta }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[8].real }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">Producción</font>
@@ -1445,10 +1557,24 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.00%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[9].meta }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[9].real }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">Producción</font>
@@ -1465,10 +1591,24 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF" sdnum="1033;0;0.00%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[10].meta }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle sdnum="1033;0;0.0%">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.kpisAmut1[10].real }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">Logistica</font>
@@ -1924,7 +2064,14 @@
       <font size=2 color="#000000">Dias</font>
     </td>
     <td class="border_rpt" rowspan=2 align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.eficienciaProcesos[0].result }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" rowspan=2 align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">
@@ -2051,7 +2198,14 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.eficienciaProcesos[1].result }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle>
       <font size=2 color="#000000">
@@ -2178,7 +2332,14 @@
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">
-        <font size=2 color="#00B050">Reporte</font>
+        <font size=2 color="#00B050">
+          <ng-container *ngIf="!consulta">
+            Reporte
+          </ng-container>
+          <ng-container *ngIf="consulta">
+            {{ datos.eficienciaProcesos[2].result }}
+          </ng-container>
+        </font>
       </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
@@ -2283,7 +2444,14 @@
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">
-        <font size=2 color="#00B050">Reporte</font>
+        <font size=2 color="#00B050">
+          <ng-container *ngIf="!consulta">
+            Reporte
+          </ng-container>
+          <ng-container *ngIf="consulta">
+            {{ datos.eficienciaProcesos[3].result }}
+          </ng-container>
+        </font>
       </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
@@ -2311,7 +2479,14 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.eficienciaProcesos[4].result }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">
@@ -2338,7 +2513,14 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.eficienciaProcesos[5].result }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">
@@ -2365,7 +2547,14 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.eficienciaProcesos[6].result }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">
@@ -2392,7 +2581,14 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.eficienciaProcesos[7].result }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">
@@ -2419,7 +2615,14 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.eficienciaProcesos[8].result }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">
@@ -2447,7 +2650,14 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.eficienciaProcesos[9].result }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">
@@ -2475,7 +2685,14 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.eficienciaProcesos[10].result }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">
@@ -2502,7 +2719,14 @@
       <font size=2 color="#000000">%</font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
-      <font size=2 color="#00B050">Reporte</font>
+      <font size=2 color="#00B050">
+        <ng-container *ngIf="!consulta">
+          Reporte
+        </ng-container>
+        <ng-container *ngIf="consulta">
+          {{ datos.eficienciaProcesos[11].result }}
+        </ng-container>
+      </font>
     </td>
     <td class="border_rpt" align="center" valign=middle bgcolor="#FFFFFF">
       <font size=2 color="#000000">
