@@ -210,7 +210,17 @@ export class ListaValidacionComponent implements OnInit {
       inputValidator: (value) => {
 
         return new Promise((resolve) => {
-          this.formConsultaPeriodo.reset();
+         
+          this.formConsultaPeriodo.controls.idPeriodo.reset();
+
+          if (!this.no_permiso_edicion) {
+            this.formConsultaPeriodo.controls.idEtad.reset();
+
+            if (!this.isFacilitadorAmut) {
+              this.formConsultaPeriodo.controls.idGrupo.reset();
+            }
+          }
+
           this.submitted = false;
           this.status = "inactive";
           this.datos_tabla = false;

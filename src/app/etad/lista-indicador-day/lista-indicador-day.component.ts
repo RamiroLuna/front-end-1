@@ -119,13 +119,13 @@ export class ListaIndicadorDayComponent implements OnInit {
     this.estatusPeriodo = 0;
     this.anioSeleccionado = getAnioActual();
     this.no_permiso_edicion = (!this.auth.permissionEdit(6) || !this.auth.permissionEdit(5) || !this.auth.permissionEdit(4));
-    this.permission.editar_indicador_diario = findRol(42, this.auth.getRolesEtad());   
+    this.permission.editar_indicador_diario = findRol(42, this.auth.getRolesEtad());
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-   
+
       if (result.response.sucessfull) {
         this.grupos = result.data.listGrupos || [];
-        this.grupos = this.grupos.filter(el=>el.id != 6);
+        this.grupos = this.grupos.filter(el => el.id != 6);
         this.etads = result.data.listEtads || [];
         this.periodos = result.data.listPeriodos || [];
         let tmpAnios = this.periodos.map(el => el.anio);
@@ -137,18 +137,18 @@ export class ListaIndicadorDayComponent implements OnInit {
         });
 
         this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
-        
+
         if (this.no_permiso_edicion) {
           this.idGrupo = this.auth.getId_Grupo();
           this.idEtad = this.auth.getIdEtad();
 
-          this.isFacilitadorAmut =  (!this.auth.permissionEdit(4) && (this.idEtad == 1 || this.idEtad == 2));
-          
-          if(this.isFacilitadorAmut){
-            this.etads = this.etads.filter(el=>el.id == 1 || el.id == 2);
+          this.isFacilitadorAmut = (!this.auth.permissionEdit(4) && (this.idEtad == 1 || this.idEtad == 2));
+
+          if (this.isFacilitadorAmut) {
+            this.etads = this.etads.filter(el => el.id == 1 || el.id == 2);
           }
         }
-        
+
         this.loading = false;
         this.loadFormulario();
         setTimeout(() => { this.ngAfterViewInitHttp() }, 200)
@@ -217,7 +217,19 @@ export class ListaIndicadorDayComponent implements OnInit {
       inputValidator: (value) => {
 
         return new Promise((resolve) => {
-          this.formConsultaPeriodo.reset();
+
+          this.formConsultaPeriodo.controls.idPeriodo.reset();
+
+
+
+          if (!this.no_permiso_edicion) {
+            this.formConsultaPeriodo.controls.idEtad.reset();
+
+            if (!this.isFacilitadorAmut) {
+              this.formConsultaPeriodo.controls.idGrupo.reset();
+            }
+          }
+
           this.submitted = false;
           this.status = "inactive";
           this.datos_tabla = false;
@@ -237,9 +249,9 @@ export class ListaIndicadorDayComponent implements OnInit {
 
   loadFormulario(): void {
     this.formConsultaPeriodo = this.fb.group({
-      idEtad: new FormControl({ value: this.idEtad, disabled:  (this.no_permiso_edicion && !this.isFacilitadorAmut ) }, [Validators.required]),
+      idEtad: new FormControl({ value: this.idEtad, disabled: (this.no_permiso_edicion && !this.isFacilitadorAmut) }, [Validators.required]),
       idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required]),
-      idGrupo: new FormControl({ value: this.idGrupo,  disabled:  this.no_permiso_edicion }, [Validators.required])
+      idGrupo: new FormControl({ value: this.idGrupo, disabled: this.no_permiso_edicion }, [Validators.required])
     });
   }
 
@@ -254,15 +266,15 @@ export class ListaIndicadorDayComponent implements OnInit {
       this.datos_tabla = false;
 
       this.service.getAllIndicadores(this.auth.getIdUsuario(), this.idPeriodo, this.idEtad, this.idGrupo).subscribe(result => {
-       
+
         if (result.response.sucessfull) {
 
           this.registros = result.data.listIndicadorDiarios || [];
           this.datos_tabla = true;
           this.disabled = false;
-          
-          if(this.registros.length > 0){
-            this.estatusPeriodo = this.registros.filter(el=>el)[0].periodo.estatus;
+
+          if (this.registros.length > 0) {
+            this.estatusPeriodo = this.registros.filter(el => el)[0].periodo.estatus;
           }
 
           setTimeout(() => {
@@ -299,7 +311,7 @@ export class ListaIndicadorDayComponent implements OnInit {
     this.kpis = [];
 
     this.service.getDetailIndicadores(this.auth.getIdUsuario(), id_grupo, this.idEtad, dia).subscribe(result => {
-     
+
       if (result.response.sucessfull) {
         this.kpis = result.data.listIndicadorDiarios || [];
         setTimeout(() => {
