@@ -3,8 +3,8 @@
     <!-- Solo para dispositivos moviles -->
     <br>
     <div class="hide-on-large-only right-align">
-      <a routerLink="../" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
-        data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+      <a routerLink="../" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+        data-tooltip="Regresar" (click)="regresar()">
         <i class="material-icons">
           <i class="material-icons">arrow_back</i>
         </i>
@@ -67,6 +67,9 @@
       <div class="col s12 m12 l12 xl12">
         <div class="scroll_ejex_tabla_reporte">
           <app-formato-enlace [datos]="datos_formato" [consulta]="true"></app-formato-enlace>
+        </div>
+        <div class="center-align">
+          <a class="waves-effect waves-light btn light-green lighten-1" (click)="exportarExcel()">EXPORTAR A EXCEL</a>
         </div>
       </div>
     </div>

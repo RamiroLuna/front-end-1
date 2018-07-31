@@ -4,6 +4,7 @@ import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { RptEnlaceObjKpiService } from './rpt-enlace-obj-kpi.service';
 import { PetReporteEnlace } from '../../models/pet-reporte-enlace';
+import { getTablaUtf8 } from '../../utils';
 
 declare var $: any;
 declare var Materialize: any;
@@ -113,7 +114,7 @@ export class RptEnlaceObjKpiComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
 
       this.service.getReporteEnlaceObjetivos(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
-        console.log('GET REPORTE ENLACE',result)
+    
         if (result.response.sucessfull) {
           this.datos_formato = result.data.reporteEnlace || {};
           this.viewReport = true;
@@ -131,6 +132,29 @@ export class RptEnlaceObjKpiComponent implements OnInit {
       this.viewReport = false;
       Materialize.toast('Ingrese todos los datos para mostrar reporte!', 4000, 'red');
     }
+  }
+
+  exportarExcel(): void {
+
+    let linkFile = document.createElement('a');
+    let data_type = 'data:application/vnd.ms-excel;';
+
+    if (linkFile.download != undefined) {
+      document.body.appendChild(linkFile);
+      let tabla = getTablaUtf8('rptEnlace');
+
+      linkFile.href = data_type + ', ' + tabla;
+      linkFile.download = 'ReporteEnlace';
+
+      linkFile.click();
+      linkFile.remove();
+    } else {
+
+      let elem = $("#rptEnlace")[0].outerHTML;
+      let blobObject = new Blob(["\ufeff", elem], { type: 'application/vnd.ms-excel' });
+      window.navigator.msSaveBlob(blobObject, 'ReporteEnlace.xls');
+    }
+
   }
 
 }
