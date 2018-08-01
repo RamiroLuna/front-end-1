@@ -1,0 +1,81 @@
+<div class="container" *ngIf="!loading && isCatalog">
+  <h4 class="color_titulo center-align">Catalogo de {{ nombre_catalogo }}</h4>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <a [routerLink]="['../'+ tipo_catalogo + '/formulario/nuevo']" class="btn-floating btn light-green darken-1 waves-effect waves-light tooltipped"
+      data-position="top" data-delay="50" data-tooltip="Agregar" (click)="agregar()" *ngIf="id_tipo_catalogo != 4">
+      <i class="material-icons">add</i>
+    </a>
+
+    <a routerLink="../" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+      data-tooltip="Catalogos" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">arrow_back</i>
+      </i>
+    </a>
+  </div>
+  <!-- Fin solo para dispositivos moviles -->
+
+  <!-- tabla para catalogos -->
+  <table class="display" class="striped" cellspacing="0" id="itemsCatalogos">
+    <thead>
+      <tr>
+        <th width="10%" [ngSwitch]="id_tipo_catalogo">
+          <p *ngSwitchCase="1">Grupo de Linea</p>
+          <p *ngSwitchCase="2">Etad</p>
+          <p *ngSwitchCase="3">Línea</p>
+          <p *ngSwitchCase="4">Perfil</p>
+          <p *ngSwitchDefault>Valor</p>
+        </th>
+        <th width="35%">Descripción</th>
+        <th width="5%">Actualizar</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>{{ item.valor }}</td>
+        <td>{{ item.descripcion }}</td>
+        <td>
+          <a class="btn-floating  light-green lighten-1" [routerLink]="['../'+ tipo_catalogo + '/formulario/' + item.id]">
+            <i class="material-icons">edit</i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Fin tabla para catalogos -->
+
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a [routerLink]="['../'+ tipo_catalogo + '/formulario/nuevo']" class="btn-floating btn-large light-green darken-1 waves-effect waves-light tooltipped"
+        data-position="top" data-delay="50" data-tooltip="Agregar" (click)="agregar()" *ngIf="id_tipo_catalogo != 4">
+        <i class="material-icons">add</i>
+      </a>
+      <a routerLink="../" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Catalogos" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas -->
+</div>
+<!-- Muestra si el catalogo no existe-->
+<div class="container" *ngIf="!loading && !isCatalog">
+  <div class="section"></div>
+  <h3 class="color_titulo center-align">No existe el catalogo consultado</h3>
+  <h6 class="center-align">
+    <a routerLink="../">Volver a la lista de catalogos disponibles</a>
+  </h6>
+</div>
+
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>

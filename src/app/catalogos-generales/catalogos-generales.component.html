@@ -1,0 +1,53 @@
+<div class="container">
+  <h4 class="color_titulo center-align">Catálogos generales</h4>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <a routerLink="../" class="btn-floating  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+      data-tooltip="Regresar" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">arrow_back</i>
+      </i>
+    </a>
+  </div>
+  <br>
+  <!-- Fin solo para dispositivos moviles -->
+  <div>
+    <p class="color_titulo center-align">Los catálogos que se muestran en esta sección se utilizán en los diferentes módulos que integran CUA</p>
+    <br>
+    <ul class="collapsible collection with-header" data-collapsible="accordion">
+      <li *ngFor="let catalogo of catalogos">
+        <div class="collapsible-header">
+          <i class="material-icons">keyboard_arrow_down</i>{{ catalogo.descripcion }}</div>
+        <div class="collapsible-body light-green lighten-5">
+          <div class="row">
+            <div class="col s12">
+              <div class="secondary-content">
+                <a [routerLink]="[catalogo.link]" class="waves-effect waves-circle waves-light btn-floating indigo center-align" (click)="ocultarTooltip()">
+                  <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver elementos">
+                    <i class="material-icons">list</i>
+                  </i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div *ngIf="catalogos.length == 0">
+      <h5 class="center-align" style="color:#9e9e9e">No hay catálogos registrados</h5>
+    </div>
+  </div>
+
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a routerLink="../" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </a>
+    </div>
+  </div>
+  <!-- Fin solo para pantallas-->
+</div>

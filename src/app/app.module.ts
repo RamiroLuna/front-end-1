@@ -18,6 +18,8 @@ import { OeeModule } from './oee/oee.module';
 import { NgPipesModule } from 'ngx-pipes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MenuPrincipalComponent } from './menu-principal/menu-principal.component';
+import { CatalogosGeneralesComponent } from './catalogos-generales/catalogos-generales.component';
+import { ListByCatalogComponent } from './catalogos-generales/list-by-catalog/list-by-catalog.component';
 
 
 
@@ -29,7 +31,9 @@ const routes: Routes = [
       { path: '', component:  MenuPrincipalComponent},
       { path: 'usuarios', loadChildren: './users/users.module#UsersModule' },
       { path: 'oee', loadChildren: './oee/oee.module#OeeModule' },
-      { path: 'etad', loadChildren: './etad/etad.module#EtadModule' }
+      { path: 'etad', loadChildren: './etad/etad.module#EtadModule' },
+      { path: 'catalogos-generales' , component: CatalogosGeneralesComponent },
+      { path: 'catalogos-generales/:name', component: ListByCatalogComponent }
     ]
   }
 ];
@@ -42,6 +46,8 @@ const routes: Routes = [
     HomeComponent,
     MenuComponent,
     MenuPrincipalComponent,
+    CatalogosGeneralesComponent,
+    ListByCatalogComponent,
   ],
   imports: [
     BrowserModule,
