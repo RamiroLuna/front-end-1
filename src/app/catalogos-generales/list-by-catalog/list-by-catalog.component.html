@@ -20,15 +20,16 @@
   <table class="display" class="striped" cellspacing="0" id="itemsCatalogos">
     <thead>
       <tr>
-        <th width="10%" [ngSwitch]="id_tipo_catalogo">
-          <p *ngSwitchCase="1">Grupo de Linea</p>
+        <th width="20%" [ngSwitch]="id_tipo_catalogo">
+          <p *ngSwitchCase="1">Grupo de Línea</p>
           <p *ngSwitchCase="2">Etad</p>
           <p *ngSwitchCase="3">Línea</p>
           <p *ngSwitchCase="4">Perfil</p>
           <p *ngSwitchDefault>Valor</p>
         </th>
-        <th width="35%">Descripción</th>
-        <th width="5%">Actualizar</th>
+        <th width="40%">Descripción</th>
+        <th width="30%" *ngIf="id_tipo_catalogo == 2">Estatus</th>
+        <th width="10%">Actualizar</th>
       </tr>
     </thead>
 
@@ -36,8 +37,21 @@
       <tr *ngFor="let item of items">
         <td>{{ item.valor }}</td>
         <td>{{ item.descripcion }}</td>
+        <td *ngIf="id_tipo_catalogo == 2">
+          <div class="switch">
+            <label>
+              No
+              <input type="checkbox" [checked]="item.activo == 1" (change)="openModalConfirmacion(item, 'activar', 'generico' ,$event )">
+              <span class="lever"></span>
+              Si
+            </label>
+          </div>
+        </td>
         <td>
-          <a class="btn-floating  light-green lighten-1" [routerLink]="['../'+ tipo_catalogo + '/formulario/' + item.id]">
+          <a *ngIf="id_tipo_catalogo != 3" class="btn-floating  light-green lighten-1" [routerLink]="['../'+ tipo_catalogo + '/formulario/' + item.id]">
+            <i class="material-icons">edit</i>
+          </a>
+          <a *ngIf="id_tipo_catalogo == 3" class="btn-floating  light-green lighten-1" [routerLink]="['../'+ tipo_catalogo + '/formulario/' + item.id_linea]">
             <i class="material-icons">edit</i>
           </a>
         </td>

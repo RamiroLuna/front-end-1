@@ -39,7 +39,7 @@ export class ListByCatalogComponent implements OnInit {
     this.loading = true;
     this.route.paramMap.subscribe(params => {
       this.tipo_catalogo = params.get('name');
-     
+
       switch (this.tipo_catalogo) {
         case 'gpos-lineas':
           this.nombre_catalogo = 'Grupos de Línea';
@@ -61,7 +61,7 @@ export class ListByCatalogComponent implements OnInit {
           break;
         case 'perfiles':
           this.nombre_catalogo = 'Perfiles';
-          this.nombre_tabla = 'pet_cat_perfil'; 
+          this.nombre_tabla = 'pet_cat_perfil';
           this.type_Catalogo = 'perfiles';
           this.id_tipo_catalogo = 4;
           break;
@@ -75,12 +75,25 @@ export class ListByCatalogComponent implements OnInit {
     switch (this.id_tipo_catalogo) {
       case 1:
       case 2:
-      case 3:
       case 4:
         this.service.getAllCatalogos(this.auth.getIdUsuario(), this.nombre_tabla).subscribe(result => {
-         
           if (result.response.sucessfull) {
             this.items = result.data.listCatalogosDTO || [];
+            this.loading = false;
+            setTimeout(() => { this.ngAfterViewHttp(); }, 200)
+          } else {
+            Materialize.toast(result.response.message, 4000, 'red');
+            this.loading = false;
+          }
+        }, error => {
+          Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+          this.loading = false;
+        });
+        break;
+      case 3:
+        this.service.getAllLineas(this.auth.getIdUsuario()).subscribe(result => {
+          if (result.response.sucessfull) {
+            this.items = result.data.listLineasDTO || [];
             this.loading = false;
             setTimeout(() => { this.ngAfterViewHttp(); }, 200)
           } else {
@@ -117,6 +130,72 @@ export class ListByCatalogComponent implements OnInit {
 
   regresar() {
     $('.tooltipped').tooltip('hide');
+  }
+
+  openModalConfirmacion(item: any, accion: string, type: string, event?: any): void {
+
+
+    this.mensajeModal = '';
+
+    switch (accion) {
+      case 'activar':
+        item.activo = event.target.checked ? 1 : 0;
+        this.mensajeModal = '¿Está seguro de ' + (event.target.checked ? ' activar ' : ' desactivar ') + ' ? ';
+        break;
+    }
+
+
+    /* 
+     * Configuración del modal de confirmación
+     */
+    swal({
+      title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
+      type: 'question',
+      html: '<p style="color: #303f9f "> Detalle: <b>' + (item.valor) + ' </b></p>',
+      showCancelButton: true,
+      confirmButtonColor: '#303f9f',
+      cancelButtonColor: '#9fa8da ',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Si!',
+      allowOutsideClick: false,
+      allowEnterKey: false
+    }).then((result) => {
+      /*
+       * Si acepta
+       */
+      if (result.value) {
+
+        if (accion == 'activar') {
+          this.service.update(
+            this.auth.getIdUsuario(),
+            this.nombre_tabla,
+            item
+          ).subscribe(result => {
+            if (result.response.sucessfull) {
+              Materialize.toast('Actualización completa', 4000, 'green');
+            } else {
+              Materialize.toast(result.response.message, 4000, 'red');
+            }
+          }, error => {
+            Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+          });
+        }
+
+
+        /*
+        * Si cancela accion
+        */
+      } else if (result.dismiss === swal.DismissReason.cancel) {
+        switch (accion) {
+          case 'activar':
+            item.activo = !item.activo ? 1 : 0;
+            event.target.checked = !event.target.checked;
+            break;
+        }
+
+      }
+    })
+
   }
 
 }

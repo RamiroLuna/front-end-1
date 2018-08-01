@@ -20,6 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MenuPrincipalComponent } from './menu-principal/menu-principal.component';
 import { CatalogosGeneralesComponent } from './catalogos-generales/catalogos-generales.component';
 import { ListByCatalogComponent } from './catalogos-generales/list-by-catalog/list-by-catalog.component';
+import { FormularioDetalleComponent } from './catalogos-generales/formulario-detalle/formulario-detalle.component';
 
 
 
@@ -33,7 +34,8 @@ const routes: Routes = [
       { path: 'oee', loadChildren: './oee/oee.module#OeeModule' },
       { path: 'etad', loadChildren: './etad/etad.module#EtadModule' },
       { path: 'catalogos-generales' , component: CatalogosGeneralesComponent },
-      { path: 'catalogos-generales/:name', component: ListByCatalogComponent }
+      { path: 'catalogos-generales/:name', component: ListByCatalogComponent },
+      { path: 'catalogos-generales/:name/formulario/:id', component: FormularioDetalleComponent }
     ]
   }
 ];
@@ -48,6 +50,7 @@ const routes: Routes = [
     MenuPrincipalComponent,
     CatalogosGeneralesComponent,
     ListByCatalogComponent,
+    FormularioDetalleComponent,
   ],
   imports: [
     BrowserModule,
