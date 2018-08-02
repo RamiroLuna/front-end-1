@@ -59,13 +59,6 @@ export class ListByCatalogComponent implements OnInit {
           this.type_Catalogo = 'lineas';
           this.id_tipo_catalogo = 3;
           break;
-        case 'perfiles':
-          this.nombre_catalogo = 'Perfiles';
-          this.nombre_tabla = 'pet_cat_perfil';
-          this.type_Catalogo = 'perfiles';
-          this.id_tipo_catalogo = 4;
-          break;
-
         default:
           this.isCatalog = false;
       }

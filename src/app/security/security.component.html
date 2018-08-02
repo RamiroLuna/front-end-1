@@ -1,0 +1,61 @@
+<div class="container" *ngIf="!loading">
+  <div class="section"></div>
+  <h4 class="color_titulo center-align">Seguridad</h4>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <a routerLink="../" class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+      data-tooltip="Home" (click)="regresar()">
+      <i class="material-icons">
+        <i class="material-icons">home</i>
+      </i>
+    </a>
+  </div>
+  <!-- Fin solo para dispositivos moviles -->
+
+  <!-- tabla para catalogos -->
+  <table class="display" class="striped" cellspacing="0">
+    <thead>
+      <tr>
+        <th>
+          <p>Perfil</p>
+        </th>
+        <th>Descripción</th>
+        <th>Ver permisos</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let perfil of perfiles">
+        <td>{{ perfil.valor }}</td>
+        <td>{{ perfil.descripcion }}</td>
+        <td>
+          <a class="btn-floating  light-green lighten-1" [routerLink]="['perfil-roles/'+perfil.id]">
+            <i class="material-icons">list</i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Fin tabla para catalogos -->
+
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a routerLink="../" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+        data-delay="50" data-tooltip="Home" (click)="regresar()">
+        <i class="material-icons">
+          <i class="material-icons">home</i>
+        </i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Fin solo para pantallas -->
+</div>
+<div class="container" *ngIf="loading">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+</div>

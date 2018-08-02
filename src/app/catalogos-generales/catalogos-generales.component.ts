@@ -14,8 +14,7 @@ export class CatalogosGeneralesComponent implements AfterViewInit {
   public catalogos: Array<any> = [
     { id: 1, name: 'pet_cat_gpo_linea', descripcion: ' Grupo de línea', link: 'gpos-lineas', activo: true },
     { id: 2, name: 'pet_cat_etad', descripcion: 'ETAD\'s', link: 'etad-kpis', activo: true },
-    { id: 3, name: 'pet_cat_linea', descripcion: 'Línea', link: 'lineas', activo: true },
-    { id: 4, name: 'pet_cat_perfil', descripcion: 'Perfiles', link: 'perfiles', activo: true },
+    { id: 3, name: 'pet_cat_linea', descripcion: 'Línea', link: 'lineas', activo: true }
   ];
 
 

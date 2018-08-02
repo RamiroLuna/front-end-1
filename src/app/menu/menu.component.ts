@@ -18,6 +18,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
   public menu_ishikawa: boolean;
   public menu_generales: boolean;
   public consultaSonarh: boolean;
+  public catalogos_generales: boolean;
   public consultaEtad: boolean;
   public id_usuario: number;
   public fecha:string;
@@ -31,6 +32,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
     this.menu_etad= false;
     this.menu_ishikawa= false;
     this.menu_generales= false;
+    this.catalogos_generales= false;
     this.fecha = getFechaActual();
 
     /* Si no puede ver el menu trae un "0" en la primer posicion del conjunto de roles */
@@ -44,6 +46,11 @@ export class MenuComponent implements OnInit, AfterViewInit {
     if(tmpRolesGral.includes(10)){
       this.menu_generales = true;
       this.consultaSonarh = true;
+    }
+
+    /* 54 administracion catalogos */
+    if(tmpRolesGral.includes(54)){
+       this.catalogos_generales = true;
     }
 
     /* 14 al rol de consulta de usuario */

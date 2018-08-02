@@ -54,6 +54,7 @@ export class FormularioDetalleComponent implements OnInit {
       if (params.get('id') == 'nuevo') {
         this.seccion = 'add';
       } else if (isValidId(params.get('id'))) {
+        this.id = params.get('id');
         this.seccion = 'edit';
       } else {
         this.seccion = 'invalid';
@@ -121,16 +122,16 @@ export class FormularioDetalleComponent implements OnInit {
       case 'gpos-lineas':
       case 'etad-kpis':
         this.formCatalogs = this.fb.group({
-          valor: new FormControl(this.itemCatalogo.valor, [Validators.required]),
-          descripcion: new FormControl(this.itemCatalogo.descripcion, [Validators.required])
+          valor: new FormControl({ value: this.itemCatalogo.valor, disabled: (this.type_Catalogo == 'gpos-lineas' && this.seccion == 'edit' && this.id == '4') }, [Validators.required]),
+          descripcion: new FormControl({ value: this.itemCatalogo.descripcion, disabled: (this.type_Catalogo == 'gpos-lineas' && this.seccion == 'edit' && this.id == '4') }, [Validators.required])
         });
         break;
       case 'lineas':
         this.formCatalogs = this.fb.group({
-          valor: new FormControl(this.itemCatalogo.valor, [Validators.required]),
-          descripcion: new FormControl(this.itemCatalogo.descripcion, [Validators.required]),
-          idGrupoLinea: new FormControl(this.itemCatalogo.id_gpo_linea, [Validators.required]),
-          idEtad: new FormControl(this.itemCatalogo.id_etad, [Validators.required])
+          valor: new FormControl({ value: this.itemCatalogo.valor, disabled: (this.seccion == 'edit' && this.id == "6") }, [Validators.required]),
+          descripcion: new FormControl({ value: this.itemCatalogo.descripcion, disabled: (this.seccion == 'edit' && this.id == "6") }, [Validators.required]),
+          idGrupoLinea: new FormControl({ value: this.itemCatalogo.id_gpo_linea, disabled: (this.seccion == 'edit' && this.id == "6") }, [Validators.required]),
+          idEtad: new FormControl({ value: this.itemCatalogo.id_etad, disabled: (this.seccion == 'edit' && this.id == "6") }, [Validators.required])
         });
         break;
     }
@@ -138,9 +139,11 @@ export class FormularioDetalleComponent implements OnInit {
 
   loadCombox(): void {
     this.service.loadCombobox(this.auth.getIdUsuario()).subscribe(result => {
+
       if (result.response.sucessfull) {
         this.etads = result.data.listEtads || [];
         this.grupos = result.data.listGposLinea || [];
+        this.grupos = this.grupos.filter(el => el.id != 4);
         this.loading = false;
       } else {
         Materialize.toast(result.response.message, 4000, 'red');
@@ -178,7 +181,7 @@ export class FormularioDetalleComponent implements OnInit {
         * Consulta el elemento del catalogo
         */
         this.service.getLineaById(this.auth.getIdUsuario(), id).subscribe(result => {
-       
+
           if (result.response.sucessfull) {
             this.itemCatalogo = result.data.lineasDTO || {};
             this.etads = result.data.listEtads || [];
@@ -221,7 +224,7 @@ export class FormularioDetalleComponent implements OnInit {
       swal({
         title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
         type: 'question',
-        html: '<p style="color: #303f9f "> Elemento : <b>' + (item.valor || item.nombre_equipo) + ' </b></p>',
+        html: '<p style="color: #303f9f "> Elemento : <b>' + (item.valor) + ' </b></p>',
         showCancelButton: true,
         confirmButtonColor: '#303f9f',
         cancelButtonColor: '#9fa8da ',
@@ -256,6 +259,36 @@ export class FormularioDetalleComponent implements OnInit {
                 });
               } else if (this.seccion == 'edit') {
                 this.service.update(this.auth.getIdUsuario(), this.nombre_tabla, this.itemCatalogo).subscribe(
+                  result => {
+
+                    if (result.response.sucessfull) {
+                      Materialize.toast('Actualización completa', 4000, 'green');
+                      this.texto_btn = 'Cerrar ficha';
+                    } else {
+                      Materialize.toast(result.response.message, 4000, 'red');
+                    }
+                  }, error => {
+                    Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+                  });
+              }
+              break;
+
+            case 'lineas':
+              if (this.seccion == 'add') {
+
+                this.service.insertLineas(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(result => {
+
+                  if (result.response.sucessfull) {
+                    Materialize.toast('Se agregó correctamente', 4000, 'green');
+                    this.router.navigate(['home/catalogos-generales', this.link_back]);
+                  } else {
+                    Materialize.toast(result.response.message, 4000, 'red');
+                  }
+                }, eror => {
+                  Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+                });
+              } else if (this.seccion == 'edit') {
+                this.service.updateLinea(this.auth.getIdUsuario(), this.itemCatalogo).subscribe(
                   result => {
 
                     if (result.response.sucessfull) {

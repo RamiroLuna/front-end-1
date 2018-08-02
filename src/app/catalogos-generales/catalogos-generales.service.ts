@@ -82,7 +82,7 @@ export class CatalogosGeneralesService {
     return this.http.get<any>(this.URL_LINEA + '?action=getDataByID&id_usuario=' + id_usuario + '&id_linea='+id_linea);
   }
 
-  updateLinea(id_usuario: number, tipo_catalogo:number,linea: Linea): Observable<any> {
+  updateLinea(id_usuario: number, linea: Linea): Observable<any> {
     const body = new HttpParams()
       .set('action', 'updateLineas')
       .set('id_linea', ''+linea.id_linea)
@@ -95,7 +95,7 @@ export class CatalogosGeneralesService {
   }
 
 
-  insertLineas(id_usuario: number, tipo_catalogo:number,linea: Linea): Observable<any> {
+  insertLineas(id_usuario: number, linea: Linea): Observable<any> {
     const body = new HttpParams()
       .set('action', 'insertLineas')
       .set('id_etad', ''+linea.id_etad)

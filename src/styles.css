@@ -7,6 +7,10 @@
     color: red;
 }
 
+.advertencia{
+    color: #e65100 ;
+}
+
 .disabled_menu{
     pointer-events: none;
 }
