@@ -21,6 +21,7 @@
       "styles": [
         "../node_modules/materialize-css/dist/css/materialize.css",
         "../node_modules/datatables.net-dt/css/jquery.dataTables.css",
+        "../node_modules/materialize-stepper/materialize-stepper.min.css",
         "styles.css"
       ],
       "scripts": [
@@ -34,7 +35,8 @@
         "../node_modules/highcharts/highcharts.js",
         "../node_modules/highcharts/highcharts-3d.js",
         "../node_modules/highcharts/highcharts-more.js",
-        "../node_modules/highcharts/modules/exporting.js"
+        "../node_modules/highcharts/modules/exporting.js",
+        "../node_modules/materialize-stepper/materialize-stepper.min.js"
         
       ],
       "environmentSource": "environments/environment.ts",
