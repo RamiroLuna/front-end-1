@@ -36,6 +36,7 @@ const routes: Routes = [
       { path: 'usuarios', loadChildren: './users/users.module#UsersModule' },
       { path: 'oee', loadChildren: './oee/oee.module#OeeModule' },
       { path: 'etad', loadChildren: './etad/etad.module#EtadModule' },
+      { path: 'ishikawa', loadChildren: './ishikawa/ishikawa.module#IshikawaModule' },
       { path: 'seguridad', component: SecurityComponent },
       // { path: 'seguridad/perfil-roles/:id_perfil' ,  component: RolesComponent },
       {
