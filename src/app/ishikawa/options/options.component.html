@@ -16,7 +16,7 @@
               <!-- Vista solo para moviles  -->
               <div class="hide-on-large-only">
                 <div class="row">
-                  <a *ngIf="permission.registro" routerLink="formulario-ishikawa" class=" col s12 m12 l3 xl3  waves-effect waves-light btn light-green darken-1"
+                  <a *ngIf="permission.registro" routerLink="formulario-ishikawa/nuevo" class=" col s12 m12 l3 xl3  waves-effect waves-light btn light-green darken-1"
                     (click)="ocultarTooltip()">
                     <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                       REGISTRAR
@@ -48,7 +48,7 @@
               <!-- Inicio solo para pantallas-->
               <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
                 <div class="col s1 m1 l1 xl1"></div>
-                <a *ngIf="permission.registro" routerLink="formulario-ishikawa" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">
+                <a *ngIf="permission.registro" routerLink="formulario-ishikawa/nuevo" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">
                   REGISTRAR
                 </a>
                 <a disabled *ngIf="!permission.registro" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">
