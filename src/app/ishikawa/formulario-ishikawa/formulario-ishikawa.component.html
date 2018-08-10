@@ -93,7 +93,7 @@
                   <span class="title">{{ eme.valor }}</span>
                   <ng-container *ngFor="let idea of getIdeasByEme(eme.id); let i = index">
                     <p>
-                      <input type="checkbox" [id]="eme.id + '' + i" (click)="cambioEstatus($event, idea)" [checked]="isChecked(idea)"/>
+                      <input type="checkbox" [id]="eme.id + '' + i" (click)="cambioEstatus($event, idea)" [checked]="isChecked(idea)" />
                       <label [for]="eme.id + '' + i">
                         <a href="#" (click)="openModalIdea($event, eme ,'edit', i ,idea)">
                           {{ idea.idea }}
@@ -137,20 +137,20 @@
                       <div class="col s12 m12 l4 xl4">
                         <div class="collections-title">
                           <div class="input-field col s12 m12 l12 xl12">
-                            <input id="porque_uno" type="text">
+                            <input id="porque_uno" type="text" [(ngModel)]="idea.porques.porque_uno" [ngModelOptions]="{standalone: true}">
                             <label for="porque_uno">1. ¿Por que?</label>
                           </div>
                         </div>
                       </div>
                       <div class="col s12 m12 l4 xl4">
                         <div class="input-field col s12 m12 l12 xl12">
-                          <input id="porque_dos" type="text">
+                          <input id="porque_dos" type="text" [(ngModel)]="idea.porques.porque_dos" [ngModelOptions]="{standalone: true}">
                           <label for="porque_dos">2. ¿Por que?</label>
                         </div>
                       </div>
                       <div class="col s12 m12 l4 xl4">
                         <div class="input-field col s12 m12 l12 xl12">
-                          <input id="porque_tres" type="text">
+                          <input id="porque_tres" type="text" [(ngModel)]="idea.porques.porque_tres" [ngModelOptions]="{standalone: true}">
                           <label for="porque_tres">3. ¿Por que?</label>
                         </div>
                       </div>
@@ -159,14 +159,14 @@
                       <div class="col s12 m12 l4 xl4">
                         <div class="collections-title">
                           <div class="input-field col s12 m12 l12 xl12">
-                            <input id="porque_cuatro" type="text">
+                            <input id="porque_cuatro" type="text" [(ngModel)]="idea.porques.porque_cuatro" [ngModelOptions]="{standalone: true}">
                             <label for="porque_cuatro">4. ¿Por que?</label>
                           </div>
                         </div>
                       </div>
                       <div class="col s12 m12 l4 xl4">
                         <div class="input-field col s12 m12 l12 xl12">
-                          <input id="porque_cinco" type="text">
+                          <input id="porque_cinco" type="text" [(ngModel)]="idea.porques.porque_cinco" [ngModelOptions]="{standalone: true}">
                           <label for="porque_cinco">5. ¿Por que?</label>
                         </div>
                       </div>
@@ -177,21 +177,17 @@
             </ng-container>
           </div>
           <div class="step-actions">
-            <button class="waves-effect waves-dark btn">CONTINUAR</button>
+            <button class="waves-effect waves-dark btn" (click)="validar()">CONTINUAR</button>
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
           </div>
         </div>
       </li>
       <li class="step">
-        <div class="step-title waves-effect">Realice diagrama de ishikawa</div>
+        <div class="step-title waves-effect">Diagrama de ishikawa</div>
         <div class="step-content">
-          <div class="row">
-            <div class="input-field col s12">
-              <input name="password" type="password" class="validate" required>
-              <label for="password">Your password</label>
-            </div>
-          </div>
           <div class="step-actions">
+            <button type="button" class="waves-effect waves-light btn blue darken-1" (click)="generateDiagrama()">
+              <i class="material-icons left">cloud</i>VER DIAGRAMA</button>
             <button class="waves-effect waves-dark btn next-step">CONTINUAR</button>
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
           </div>
@@ -280,5 +276,9 @@
         <div class="col s12 m12 l1 xl1"></div>
       </div>
     </div>
+  </div>
+</div>
+<div id="modalDiagrama" class="modal" style="width: calc(90%)">
+  <div class="modal-content">
   </div>
 </div>

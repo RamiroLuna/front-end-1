@@ -18,6 +18,7 @@ export class FormularioIshikawaComponent implements OnInit {
   public aux_texto_idea: string;
   public aux_index: number;
   public $modal: any;
+  public $modal_ishikawa: any;
 
   constructor() { }
 
@@ -53,6 +54,16 @@ export class FormularioIshikawaComponent implements OnInit {
         dismissible: false,
         complete: () => { }
       });
+
+
+      this.$modal_ishikawa = $('#modalDiagrama').modal({
+        opacity: 0.6,
+        inDuration: 700,
+        dismissible: true,
+        complete: () => { }
+      });
+
+
 
 
 
@@ -119,21 +130,21 @@ export class FormularioIshikawaComponent implements OnInit {
 
     tmp_emes = tmp_emes.concat(tmp_eme_selected);
     this.ishikawa.listIdeas = tmp_emes;
-  
+
     this.$modal.modal('close');
   }
 
-  cambioEstatus(event, idea:PetIdeas){
+  cambioEstatus(event, idea: PetIdeas) {
 
-    if(event.target.checked ){
+    if (event.target.checked) {
       idea.porques = new PetPorques();
-    }else{
+    } else {
       delete idea.porques;
     }
-  
+
   }
 
-  isChecked(idea: PetIdeas):boolean{
+  isChecked(idea: PetIdeas): boolean {
     return idea.porques != undefined;
   }
 
@@ -144,6 +155,11 @@ export class FormularioIshikawaComponent implements OnInit {
   getIdeasByEmeSelected(id_eme: number): Array<PetIdeas> {
     return this.ishikawa.listIdeas.filter(el => el.id_eme == id_eme && el.porques != undefined);
   }
+
+  generateDiagrama(): void {
+    this.$modal_ishikawa.modal('open');
+  }
+
 
 
 
