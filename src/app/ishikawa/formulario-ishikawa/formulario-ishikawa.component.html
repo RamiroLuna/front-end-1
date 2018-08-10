@@ -197,13 +197,13 @@
         <div class="step-title waves-effect">Realice el consenso para definir la causa raíz</div>
         <div class="step-content">
           <div class="row">
-            <div class="input-field col s12">
-              <input name="password" type="password" class="validate" required>
-              <label for="password">Your password</label>
+            <div class="input-field col s12 m12 l12 xl12">
+              <textarea id="causa_raiz" class="materialize-textarea" [(ngModel)]="ishikawa.causa_raiz" [ngModelOptions]="{standalone: true}"></textarea>
+              <label for="causa_raiz">Describe la causa raíz</label>
             </div>
           </div>
           <div class="step-actions">
-            <button class="waves-effect waves-dark btn next-step">CONTINUAR</button>
+            <button class="waves-effect waves-dark btn" (click)="validar()">CONTINUAR</button>
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
           </div>
         </div>
@@ -212,9 +212,34 @@
         <div class="step-title waves-effect">Contesta el test de causa raíz</div>
         <div class="step-content">
           <div class="row">
-            <div class="input-field col s12">
-              <input name="password" type="password" class="validate" required>
-              <label for="password">Your password</label>
+            <div class="col s12 m12 l12 xl12 scroll_ejex_tabla_reporte">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Test de Causa Raíz</th>
+                    <th>Si</th>
+                    <th>No</th>
+                  </tr>
+                </thead>
+
+                <tbody *ngFor="let pregunta of preguntas; let i = index">
+                  <tr>
+                    <td>{{ pregunta.valor}}</td>
+                    <td>
+                      <p>
+                        <input type="checkbox" [id]="i + '1'" (click)="checkedQuestion($event, i,'1')"/>
+                        <label [for]="i+'1'"></label>
+                      </p>
+                    </td>
+                    <td>
+                      <p>
+                        <input type="checkbox" [id]="i+'2'" (click)="checkedQuestion($event,i,'2')"/>
+                        <label [for]="i+'2'"></label>
+                      </p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
           <div class="step-actions">

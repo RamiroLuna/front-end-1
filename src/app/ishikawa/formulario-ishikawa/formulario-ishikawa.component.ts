@@ -13,6 +13,7 @@ declare var $: any;
 export class FormularioIshikawaComponent implements OnInit {
 
   public emes: Array<Catalogo>;
+  public preguntas: Array<Catalogo>;
   public ishikawa: PetIshikawa;
   public tmp_idea: PetIdeas;
   public aux_texto_idea: string;
@@ -36,6 +37,15 @@ export class FormularioIshikawaComponent implements OnInit {
       { id: 4, valor: 'Método', descripcion: 'Método', activo: 1 },
       { id: 5, valor: 'Material', descripcion: 'Material', activo: 1 },
       { id: 6, valor: 'Medio ambiente', descripcion: 'Medio ambiente', activo: 1 }
+    ];
+
+    this.preguntas = [
+      { id: 1, valor: '¿El enunciado de la causa raíz identifica a algún elemento del proceso? ', descripcion: '  ¿El enunciado de la causa raíz identifica a algún elemento del proceso? ', activo: 1 },
+      { id: 2, valor: '¿Es controlable la causa raíz?', descripcion: '¿Es controlable la causa raíz?', activo: 1 },
+      { id: 3, valor: '¿Se puede preguntar “por qué” otra vez y obtener otra causa raíz controlable? ', descripcion: '¿Se puede preguntar “por qué” otra vez y obtener otra causa raíz controlable? ', activo: 1 },
+      { id: 4, valor: '¿La causa raíz identificada es la falla fundamental del proceso?', descripcion: ' ¿La causa raíz identificada es la falla fundamental del proceso?', activo: 1 },
+      { id: 5, valor: 'Si corregimos o mejoramos la causa raíz identificada,  ¿Asegurará que el problema identificado no vuelva a ocurrir?', descripcion: 'sin descripcion', activo: 1 },
+      { id: 6, valor: '¿Hemos identificado la causa raíz del problema? ', descripcion: '  ¿Hemos identificado la causa raíz del problema? ', activo: 1 }
     ];
 
     setTimeout(() => {
@@ -158,6 +168,16 @@ export class FormularioIshikawaComponent implements OnInit {
 
   generateDiagrama(): void {
     this.$modal_ishikawa.modal('open');
+  }
+
+  checkedQuestion(event: any, renglon: number, columna: string): void {
+    if (event.target.checked) {
+      if (columna == '1') {
+        $('#' + renglon + '2').prop("checked", false);
+      } else if (columna == '2') {
+        $('#' + renglon + '1').prop("checked", false);
+      }
+    }
   }
 
 
