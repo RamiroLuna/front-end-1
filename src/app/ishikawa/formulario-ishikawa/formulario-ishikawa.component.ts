@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Catalogo } from '../../models/catalogo';
 import { PetIshikawa } from '../../models/pet-ishikawa';
 import { PetIdeas } from '../../models/pet-ideas';
+import { PetPorques } from '../../models/pet-porques';
 
 declare var $: any;
 @Component({
@@ -112,8 +113,6 @@ export class FormularioIshikawaComponent implements OnInit {
   }
 
   eliminarIdea(): void {
-
-    
     let tmp_emes = this.ishikawa.listIdeas.filter(el => el.id_eme != this.tmp_idea.id_eme);
     let tmp_eme_selected = this.ishikawa.listIdeas.filter(el => el.id_eme == this.tmp_idea.id_eme)
     tmp_eme_selected.splice(this.aux_index, 1)
@@ -124,8 +123,26 @@ export class FormularioIshikawaComponent implements OnInit {
     this.$modal.modal('close');
   }
 
+  cambioEstatus(event, idea:PetIdeas){
+
+    if(event.target.checked ){
+      idea.porques = new PetPorques();
+    }else{
+      delete idea.porques;
+    }
+  
+  }
+
+  isChecked(idea: PetIdeas):boolean{
+    return idea.porques != undefined;
+  }
+
   getIdeasByEme(id_eme: number): Array<PetIdeas> {
     return this.ishikawa.listIdeas.filter(el => el.id_eme == id_eme);
+  }
+
+  getIdeasByEmeSelected(id_eme: number): Array<PetIdeas> {
+    return this.ishikawa.listIdeas.filter(el => el.id_eme == id_eme && el.porques != undefined);
   }
 
 

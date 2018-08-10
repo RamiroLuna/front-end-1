@@ -75,24 +75,30 @@
         <div class="step-content">
           <div class="row">
             <div class="col s12 m12 l12 xl12">
-              <p> Haga clic en el icono
-                <b>+</b> para agregar ideas en la opción que corresponda</p>
-              <p>Si desea
-                <b>editar</b> o
-                <b>eliminar</b> haga clic sobre la idea</p>
+              <ul>
+                <li>* Haga clic en el icono
+                  <b>+</b> para agregar ideas en la opción que corresponda</li>
+                <li>* Si desea
+                  <b>editar</b> o
+                  <b> eliminar</b> haga clic sobre la idea</li>
+                <li>* Haga clic en la casilla para seleccionar la idea y poder agregar los 5 ¿Por que? en el siguiente paso</li>
+              </ul>
             </div>
           </div>
           <div class="row">
             <div class="col s12 m12 l12 xl12">
               <ul class="collection">
                 <li class="collection-item avatar" *ngFor="let eme of emes">
-                  <i class="material-icons circle">folder</i>
+                  <i class="material-icons circle teal lighten-2">M</i>
                   <span class="title">{{ eme.valor }}</span>
                   <ng-container *ngFor="let idea of getIdeasByEme(eme.id); let i = index">
                     <p>
-                      <a href="#" (click)="openModalIdea($event, eme ,'edit', i ,idea)">
-                        {{ idea.idea }}
-                      </a>
+                      <input type="checkbox" [id]="eme.id + '' + i" (click)="cambioEstatus($event, idea)" [checked]="isChecked(idea)"/>
+                      <label [for]="eme.id + '' + i">
+                        <a href="#" (click)="openModalIdea($event, eme ,'edit', i ,idea)">
+                          {{ idea.idea }}
+                        </a>
+                      </label>
                     </p>
                   </ng-container>
                   <a href="#" class="secondary-content" (click)="openModalIdea($event,eme, 'add' , i)">
@@ -109,10 +115,66 @@
         </div>
       </li>
       <li class="step">
-        <div class="step-title waves-effect">Utilice los 5 ¿Por qué? En cada una de sus causas secundarias</div>
+        <div class="step-title waves-effect">Utilice los 5 ¿Por qué? En cada una de sus causas secundarias seleccionadas previamente</div>
         <div class="step-content">
-          <div class="row">
-           
+          <div class="row" *ngFor="let eme of emes">
+            <ng-container *ngIf="getIdeasByEmeSelected(eme.id).length > 0">
+              <h6 class="font_color">
+                <b>{{ eme.valor }}</b>
+              </h6>
+              <hr>
+              <div class="row">
+                <ul id="issues-collection" class="collection z-depth-1" *ngFor="let idea of getIdeasByEmeSelected(eme.id); let i = index">
+                  <li class="collection-item avatar">
+                    <h6 class="collection-header">
+                      <i class="material-icons teal lighten-2 circle cursor">help_outline</i>
+                      <b>Causa secundaria </b>
+                      <p>{{ idea.idea }}</p>
+                    </h6>
+                  </li>
+                  <li class="collection-item">
+                    <div class="row">
+                      <div class="col s12 m12 l4 xl4">
+                        <div class="collections-title">
+                          <div class="input-field col s12 m12 l12 xl12">
+                            <input id="porque_uno" type="text">
+                            <label for="porque_uno">1. ¿Por que?</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col s12 m12 l4 xl4">
+                        <div class="input-field col s12 m12 l12 xl12">
+                          <input id="porque_dos" type="text">
+                          <label for="porque_dos">2. ¿Por que?</label>
+                        </div>
+                      </div>
+                      <div class="col s12 m12 l4 xl4">
+                        <div class="input-field col s12 m12 l12 xl12">
+                          <input id="porque_tres" type="text">
+                          <label for="porque_tres">3. ¿Por que?</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col s12 m12 l4 xl4">
+                        <div class="collections-title">
+                          <div class="input-field col s12 m12 l12 xl12">
+                            <input id="porque_cuatro" type="text">
+                            <label for="porque_cuatro">4. ¿Por que?</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col s12 m12 l4 xl4">
+                        <div class="input-field col s12 m12 l12 xl12">
+                          <input id="porque_cinco" type="text">
+                          <label for="porque_cinco">5. ¿Por que?</label>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </ng-container>
           </div>
           <div class="step-actions">
             <button class="waves-effect waves-dark btn">CONTINUAR</button>
@@ -198,18 +260,24 @@
       <div class="col s12 m12 l12 xl12 btn-add">
         <div class="col s12 m12 l1 xl1"></div>
         <button class="col s12 m12 l4 xl4 waves-effect waves-light btn grey darken-1" (click)="cancelar()">CANCELAR</button>
-        <div class="col s12 m12 l2 xl2"><br></div>
+        <div class="col s12 m12 l2 xl2">
+          <br>
+        </div>
         <button class="col s12 m12 l4 xl4 waves-effect waves-light btn blue darken-1" (click)="agregarIdea()">AÑADIR</button>
         <div class="col s12 m12 l1 xl1"></div>
       </div>
       <div class="col s12 m12 l12 xl12 btn-edit">
-          <div class="col s12 m12 l1 xl1"></div>        
-          <button class="col s12 m12 l2 xl2 waves-effect waves-light btn red darken-1" (click)="eliminarIdea()">ELIMINAR</button>
-          <div class="col s12 m12 l1 xl1"><br></div>
-          <button class="col s12 m12 l2 xl2 waves-effect waves-light btn blue darken-1" (click)="editarIdea()">EDITAR</button>
-          <div class="col s12 m12 l1 xl1"><br></div>          
-          <button class="col s12 m12 l4 xl4 waves-effect waves-light btn grey darken-1" (click)="cancelarEdit()">CANCELAR</button>
-          <div class="col s12 m12 l1 xl1"></div>                  
+        <div class="col s12 m12 l1 xl1"></div>
+        <button class="col s12 m12 l2 xl2 waves-effect waves-light btn red darken-1" (click)="eliminarIdea()">ELIMINAR</button>
+        <div class="col s12 m12 l1 xl1">
+          <br>
+        </div>
+        <button class="col s12 m12 l2 xl2 waves-effect waves-light btn blue darken-1" (click)="editarIdea()">EDITAR</button>
+        <div class="col s12 m12 l1 xl1">
+          <br>
+        </div>
+        <button class="col s12 m12 l4 xl4 waves-effect waves-light btn grey darken-1" (click)="cancelarEdit()">CANCELAR</button>
+        <div class="col s12 m12 l1 xl1"></div>
       </div>
     </div>
   </div>
