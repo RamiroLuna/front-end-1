@@ -227,13 +227,13 @@
                     <td>{{ pregunta.valor}}</td>
                     <td>
                       <p>
-                        <input type="checkbox" [id]="i + '1'" (click)="checkedQuestion($event, i,'1')"/>
+                        <input type="checkbox" [id]="i + '1'" (click)="checkedQuestion($event, i,'1')" [checked]="isCheckedQuestionTest(pregunta.id, ishikawa.listConsenso, 1)"/>
                         <label [for]="i+'1'"></label>
                       </p>
                     </td>
                     <td>
                       <p>
-                        <input type="checkbox" [id]="i+'2'" (click)="checkedQuestion($event,i,'2')"/>
+                        <input type="checkbox" [id]="i+'2'" (click)="checkedQuestion($event,i,'2')" [checked]="isCheckedQuestionTest(pregunta.id, ishikawa.listConsenso, 0)"/>
                         <label [for]="i+'2'"></label>
                       </p>
                     </td>

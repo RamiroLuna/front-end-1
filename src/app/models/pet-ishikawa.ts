@@ -21,5 +21,5 @@ export class PetIshikawa {
     autorizado: string;
     estatus:number;
     listIdeas:  Array<PetIdeas> = [];
-    listConsenso: Array<PetConsenso>;
+    listConsenso: Array<PetConsenso> = [];
 }

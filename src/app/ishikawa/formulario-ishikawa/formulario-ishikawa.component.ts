@@ -3,6 +3,7 @@ import { Catalogo } from '../../models/catalogo';
 import { PetIshikawa } from '../../models/pet-ishikawa';
 import { PetIdeas } from '../../models/pet-ideas';
 import { PetPorques } from '../../models/pet-porques';
+import { PetConsenso } from '../../models/pet-consenso';
 
 declare var $: any;
 @Component({
@@ -178,6 +179,23 @@ export class FormularioIshikawaComponent implements OnInit {
         $('#' + renglon + '1').prop("checked", false);
       }
     }
+  }
+
+  isCheckedQuestionTest(id_pregunta: number, consensos: Array<PetConsenso>, option: number): boolean {
+
+    let resp = false;
+
+    if (consensos.length > 0) {
+      
+      let tmp =  consensos.filter(el => el.id_pregunta == id_pregunta);
+
+      if(tmp.length > 0){
+        resp = tmp[0].respuesta == option;
+      }
+
+    }
+
+    return resp;
   }
 
 
