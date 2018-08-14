@@ -4,8 +4,11 @@ import { PetIshikawa } from '../../models/pet-ishikawa';
 import { PetIdeas } from '../../models/pet-ideas';
 import { PetPorques } from '../../models/pet-porques';
 import { PetConsenso } from '../../models/pet-consenso';
+import { materialize } from 'rxjs/operators';
+import { isValidText } from '../../utils';
 
 declare var $: any;
+declare var Materialize: any;
 @Component({
   selector: 'app-formulario-ishikawa',
   templateUrl: './formulario-ishikawa.component.html',
@@ -75,15 +78,83 @@ export class FormularioIshikawaComponent implements OnInit {
         complete: () => { }
       });
 
-
-
-
-
     }, 100);
   }
 
-  validar(): void {
-    $('.stepper').nextStep();
+  validar(step: number): void {
+    let b = false;
+    let menssage = "";
+    switch (step) {
+      case 1:
+        b = isValidText(this.ishikawa.que) &&
+          isValidText(this.ishikawa.donde) &&
+          isValidText(this.ishikawa.cuando) &&
+          isValidText(this.ishikawa.como) &&
+          isValidText(this.ishikawa.problema);
+        menssage = "Capture todos los datos";
+        break;
+      case 2:
+        b = this.ishikawa.listIdeas.filter(el => el.porques != undefined).length > 0
+        menssage = "Agregue ideas y seleccione al menos una";
+        break;
+      case 3:
+        this.ishikawa.listIdeas.forEach((item, index) => {
+          item.control_error = 0;
+          if (item.porques) {
+            let porque: PetPorques = item.porques;
+
+            if (isValidText(porque.porque_uno)) {
+              if (isValidText(porque.porque_dos)) {
+                if (isValidText(porque.porque_tres)) {
+                  if (isValidText(porque.porque_cuatro)) {
+                    item.control_error = 0;
+                  } else if (!isValidText(porque.porque_cinco)) {
+                    item.control_error = 0;
+                  } else {
+                    item.control_error = 2;
+                  }
+                } else if (!isValidText(porque.porque_cuatro) && !isValidText(porque.porque_cinco)) {
+                  item.control_error = 0;
+                } else {
+                  item.control_error = 2;
+                }
+              } else if (!isValidText(porque.porque_tres) && !isValidText(porque.porque_cuatro) && !isValidText(porque.porque_cinco)) {
+                item.control_error = 0;
+              } else {
+                item.control_error = 2;
+              }
+            } else if (!isValidText(porque.porque_dos) && !isValidText(porque.porque_tres) && !isValidText(porque.porque_cuatro) && !isValidText(porque.porque_cinco)) {
+              item.control_error = 1;
+            } else {
+              item.control_error = 2;
+            }
+          }
+
+        });
+
+        menssage = "Verifique los datos capturados";
+
+        let errores = this.ishikawa.listIdeas.filter(el => el.porques != undefined).map(el => el.control_error).reduce((anterior, actual) => anterior + actual);
+
+        b = errores == 0;
+
+        break;
+      case 5:
+        b = isValidText(this.ishikawa.causa_raiz);
+        menssage = "Ingrese la causa raíz";
+        break;
+      case 6:
+        let question_available = this.preguntas.length;
+        b = (question_available == this.ishikawa.listConsenso.length);
+        menssage = "Responda todo el test";
+        break;
+    }
+
+    if (b) {
+      $('.stepper').nextStep();
+    } else {
+      Materialize.toast(menssage, 4500, 'red');
+    }
   }
 
   openModalIdea(event: any, eme: Catalogo, action: string, index: number, idea: PetIdeas): void {
@@ -173,14 +244,27 @@ export class FormularioIshikawaComponent implements OnInit {
     this.$modal_ishikawa.modal('open');
   }
 
-  checkedQuestion(event: any, renglon: number, columna: string): void {
+  checkedQuestion(event: any, columna: string, id_pregunta: number): void {
+
+    let tmp_consenso = this.ishikawa.listConsenso.map(el => el.id_pregunta);
+    let nuevoConsenso: PetConsenso = new PetConsenso();
+
+    if (!tmp_consenso.includes(id_pregunta)) {
+      nuevoConsenso.id_pregunta = id_pregunta;
+      this.ishikawa.listConsenso.push(nuevoConsenso);
+    }
+
+
     if (event.target.checked) {
       if (columna == '1') {
-        $('#' + renglon + '2').prop("checked", false);
+        this.ishikawa.listConsenso.filter(el => el.id_pregunta == id_pregunta)[0].respuesta = 1;
       } else if (columna == '2') {
-        $('#' + renglon + '1').prop("checked", false);
+        this.ishikawa.listConsenso.filter(el => el.id_pregunta == id_pregunta)[0].respuesta = 0;
       }
+    } else {
+      this.ishikawa.listConsenso = this.ishikawa.listConsenso.filter(el => el.id_pregunta != id_pregunta);
     }
+
   }
 
   isCheckedQuestionTest(id_pregunta: number, consensos: Array<PetConsenso>, option: number): boolean {
@@ -201,31 +285,21 @@ export class FormularioIshikawaComponent implements OnInit {
   }
 
   getEmesPresentesIdeas(ideas: Array<PetIdeas>): Array<Catalogo> {
-    let eme:Array<Catalogo> = [];
+    let eme: Array<Catalogo> = [];
     let eme_tmp = this.emes.map(el => el);
-    let emes_ideas = ideas.filter(el=> el.porques != undefined ).map(el => el.id_eme);
+    let emes_ideas = ideas.filter(el => el.porques != undefined).map(el => el.id_eme);
 
     eme_tmp.forEach((item, index, arg) => {
-      
-      if (emes_ideas.includes(item.id) && !eme.map(el=>el.id).includes(item.id)) {
-          eme.push(item)
+
+      if (emes_ideas.includes(item.id) && !eme.map(el => el.id).includes(item.id)) {
+        eme.push(item)
       }
 
     });
 
-
-
     return eme;
 
   }
-
-
-
-
-
-
-
-
 
 
 }

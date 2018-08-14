@@ -37,19 +37,19 @@
             <div class="col s12 m12 l12 xl12">
               <div class="col s12 m12 l6 xl6">
                 <div class="input-field col s12 m12 l12 xl12">
-                  <input name="pregunta" type="text" class="validate" required>
+                  <input name="pregunta" type="text" [(ngModel)]="ishikawa.que" [ngModelOptions]="{standalone: true}">
                   <label for="pregunta">¿ Qué situación se presenta ?</label>
                 </div>
                 <div class="input-field col s12 m12 l12 xl12">
-                  <input name="pregunta" type="text" class="validate" required>
+                  <input name="pregunta" type="text" [(ngModel)]="ishikawa.donde" [ngModelOptions]="{standalone: true}">
                   <label for="pregunta">¿ Dónde se presenta la situación ?</label>
                 </div>
                 <div class="input-field col s12 m12 l12 xl12">
-                  <input name="pregunta" type="text" class="validate" required>
+                  <input name="pregunta" type="text" [(ngModel)]="ishikawa.cuando" [ngModelOptions]="{standalone: true}">
                   <label for="pregunta">¿ Cuándo se presenta ?</label>
                 </div>
                 <div class="input-field col s12 m12 l12 xl12">
-                  <input id="ss" name="pregunta" type="text" class="validate" required>
+                  <input id="ss" name="pregunta" type="text" [(ngModel)]="ishikawa.como" [ngModelOptions]="{standalone: true}">
                   <label for="pregunta">¿ Cómo afecta la situación ?</label>
                 </div>
               </div>
@@ -64,7 +64,7 @@
           <div class="row">
             <div class="col s12 m12 l6 xl6">
               <div class="step-actions">
-                <button type="button" class="waves-effect waves-dark blue darken-1 btn" (click)="validar()">CONTINUAR</button>
+                <button type="button" class="waves-effect waves-dark blue darken-1 btn" (click)="validar(1)">CONTINUAR</button>
               </div>
             </div>
           </div>
@@ -109,7 +109,7 @@
             </div>
           </div>
           <div class="step-actions">
-            <button type="button" class="waves-effect waves-dark blue darken-1 btn" (click)="validar()">CONTINUAR</button>
+            <button type="button" class="waves-effect waves-dark blue darken-1 btn" (click)="validar(2)">CONTINUAR</button>
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
           </div>
         </div>
@@ -171,13 +171,23 @@
                         </div>
                       </div>
                     </div>
+                    <div class="row" *ngIf="idea.control_error == 2">
+                      <div class="col s12 m12 l12 xl12">
+                          <p class="error"><b>Favor de respetar la secuencia de los porques</b></p>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="idea.control_error == 1">
+                      <div class="col s12 m12 l12 xl12">
+                          <p class="error"><b>Favor de ingresar al menos el primer porque</b></p>
+                      </div>
+                    </div>
                   </li>
                 </ul>
               </div>
             </ng-container>
           </div>
           <div class="step-actions">
-            <button class="waves-effect waves-dark btn" (click)="validar()">CONTINUAR</button>
+            <button class="waves-effect waves-dark btn  blue darken-1" (click)="validar(3)">CONTINUAR</button>
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
           </div>
         </div>
@@ -186,9 +196,9 @@
         <div class="step-title waves-effect">Diagrama de ishikawa</div>
         <div class="step-content">
           <div class="step-actions">
-            <button type="button" class="waves-effect waves-light btn blue darken-1" (click)="generateDiagrama()">
+            <button type="button" class="waves-effect waves-light btn" (click)="generateDiagrama()">
               <i class="material-icons left">cloud</i>VER DIAGRAMA</button>
-            <button class="waves-effect waves-dark btn next-step">CONTINUAR</button>
+            <button class="waves-effect waves-dark  blue darken-1 btn next-step">CONTINUAR</button>
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
           </div>
         </div>
@@ -203,7 +213,7 @@
             </div>
           </div>
           <div class="step-actions">
-            <button class="waves-effect waves-dark btn" (click)="validar()">CONTINUAR</button>
+            <button class="waves-effect waves-dark  blue darken-1 btn" (click)="validar(5)">CONTINUAR</button>
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
           </div>
         </div>
@@ -227,14 +237,14 @@
                     <td>{{ pregunta.valor}}</td>
                     <td>
                       <p>
-                        <input type="checkbox" [id]="i + '1'" (click)="checkedQuestion($event, i,'1')" [checked]="isCheckedQuestionTest(pregunta.id, ishikawa.listConsenso, 1)"
+                        <input type="checkbox" [id]="i + '1'" (click)="checkedQuestion($event,'1', pregunta.id)" [checked]="isCheckedQuestionTest(pregunta.id, ishikawa.listConsenso, 1)"
                         />
                         <label [for]="i+'1'"></label>
                       </p>
                     </td>
                     <td>
                       <p>
-                        <input type="checkbox" [id]="i+'2'" (click)="checkedQuestion($event,i,'2')" [checked]="isCheckedQuestionTest(pregunta.id, ishikawa.listConsenso, 0)"
+                        <input type="checkbox" [id]="i+'2'" (click)="checkedQuestion($event,'2', pregunta.id)" [checked]="isCheckedQuestionTest(pregunta.id, ishikawa.listConsenso, 0)"
                         />
                         <label [for]="i+'2'"></label>
                       </p>
@@ -245,7 +255,7 @@
             </div>
           </div>
           <div class="step-actions">
-            <button class="waves-effect waves-dark btn next-step">CONTINUAR</button>
+            <button class="waves-effect waves-dark  blue darken-1 btn" (click)="validar(6)">CONTINUAR</button>
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
           </div>
         </div>
@@ -274,16 +284,16 @@
               </thead>
 
               <tbody>
-                
+
                 <ng-container *ngFor="let eme of getEmesPresentesIdeas(ishikawa.listIdeas);">
                   <ng-container *ngIf="getIdeasByEmeSelected(eme.id).length > 0">
-                  
+
                     <tr *ngFor="let idea of getIdeasByEmeSelected(eme.id); let i = index">
                       <td>{{ eme.valor }}</td>
                       <td>{{ idea.idea }}</td>
                       <td>{{ idea.porques.porque_uno }}</td>
                       <td>{{ idea.porques.porque_dos }}</td>
-                      <td>{{ idea.porques.porque_tres }}</td>                     
+                      <td>{{ idea.porques.porque_tres }}</td>
                       <td>
                         <input type="text">
                       </td>
@@ -292,14 +302,14 @@
                       </td>
                       <td>{{ j }}</td>
                     </tr>
-                   
+
                   </ng-container>
                 </ng-container>
               </tbody>
             </table>
           </div>
           <div class="step-actions">
-            <button class="waves-effect waves-dark btn" type="submit">REGISTRAR</button>
+            <button class="waves-effect waves-dark blue darken-1 btn" type="submit">REGISTRAR</button>
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
           </div>
         </div>

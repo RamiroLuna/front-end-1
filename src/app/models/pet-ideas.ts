@@ -8,4 +8,5 @@ export class PetIdeas {
     idea: string;
     eme?:Catalogo;
     porques?: PetPorques;
+    control_error:number =  -1;
 }

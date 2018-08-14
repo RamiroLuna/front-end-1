@@ -506,6 +506,18 @@ function hmToMs(hora: string): number {
 }
 
 
+/**
+* @function isValidText
+* @param  {string} text -  texto a validar
+* @return  {number} 
+* @description permite clonar objeto
+*/
+function isValidText(text: string): boolean {
+   text = (!text)? "": text;
+   return !/^\s*$/.test(text.trim());
+}
+
+
 
 // Tipo de metas disponibles
 function getMetasKPI(): Array<any> {
@@ -525,6 +537,8 @@ function getFrecuenciaMetaKPI(): Array<any> {
         { id: 1, value: 'mensual', descripcion: 'MENSUAL' }
     ];
 }
+
+
 
 
 export {
@@ -552,5 +566,6 @@ export {
     hmToMs,
     getMetasKPI,
     getFrecuenciaMetaKPI,
-    isNum
+    isNum,
+    isValidText
 }

@@ -1,6 +1,6 @@
 export class PetConsenso {
-    id_detalle: number;
-    id_pregunta: number;
-    id_ishikawa: number;
-    respuesta: number;
+    id_detalle: number = -1;
+    id_pregunta: number = -1;
+    id_ishikawa: number = -1;
+    respuesta: number = -1;
 }
