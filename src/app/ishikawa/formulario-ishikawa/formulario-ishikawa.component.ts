@@ -22,6 +22,7 @@ export class FormularioIshikawaComponent implements OnInit {
   public $modal: any;
   public $modal_ishikawa: any;
 
+
   constructor() { }
 
   ngOnInit() {
@@ -86,6 +87,7 @@ export class FormularioIshikawaComponent implements OnInit {
   }
 
   openModalIdea(event: any, eme: Catalogo, action: string, index: number, idea: PetIdeas): void {
+
     event.preventDefault();
     this.aux_texto_idea = "";
 
@@ -186,10 +188,10 @@ export class FormularioIshikawaComponent implements OnInit {
     let resp = false;
 
     if (consensos.length > 0) {
-      
-      let tmp =  consensos.filter(el => el.id_pregunta == id_pregunta);
 
-      if(tmp.length > 0){
+      let tmp = consensos.filter(el => el.id_pregunta == id_pregunta);
+
+      if (tmp.length > 0) {
         resp = tmp[0].respuesta == option;
       }
 
@@ -197,6 +199,30 @@ export class FormularioIshikawaComponent implements OnInit {
 
     return resp;
   }
+
+  getEmesPresentesIdeas(ideas: Array<PetIdeas>): Array<Catalogo> {
+    let eme:Array<Catalogo> = [];
+    let eme_tmp = this.emes.map(el => el);
+    let emes_ideas = ideas.filter(el=> el.porques != undefined ).map(el => el.id_eme);
+
+    eme_tmp.forEach((item, index, arg) => {
+      
+      if (emes_ideas.includes(item.id) && !eme.map(el=>el.id).includes(item.id)) {
+          eme.push(item)
+      }
+
+    });
+
+
+
+    return eme;
+
+  }
+
+
+
+
+
 
 
 

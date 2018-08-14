@@ -17,3 +17,8 @@ hr {
     height: 12px; 
     box-shadow: inset 0 12px 12px -12px #0d47a1;
 }
+
+.head_table{
+    background-color: #1e88e5;
+    color: white; 
+}

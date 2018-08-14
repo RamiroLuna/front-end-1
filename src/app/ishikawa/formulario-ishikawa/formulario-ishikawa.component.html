@@ -55,7 +55,7 @@
               </div>
               <div class="col s12 m12 l6 xl6">
                 <div class="input-field col s12 m12 l12 xl12">
-                  <textarea id="definicion" class="materialize-textarea"></textarea>
+                  <textarea id="definicion" class="materialize-textarea" [(ngModel)]="ishikawa.problema" [ngModelOptions]="{standalone: true}"></textarea>
                   <label for="definicion">Define el enunciado del problema</label>
                 </div>
               </div>
@@ -227,13 +227,15 @@
                     <td>{{ pregunta.valor}}</td>
                     <td>
                       <p>
-                        <input type="checkbox" [id]="i + '1'" (click)="checkedQuestion($event, i,'1')" [checked]="isCheckedQuestionTest(pregunta.id, ishikawa.listConsenso, 1)"/>
+                        <input type="checkbox" [id]="i + '1'" (click)="checkedQuestion($event, i,'1')" [checked]="isCheckedQuestionTest(pregunta.id, ishikawa.listConsenso, 1)"
+                        />
                         <label [for]="i+'1'"></label>
                       </p>
                     </td>
                     <td>
                       <p>
-                        <input type="checkbox" [id]="i+'2'" (click)="checkedQuestion($event,i,'2')" [checked]="isCheckedQuestionTest(pregunta.id, ishikawa.listConsenso, 0)"/>
+                        <input type="checkbox" [id]="i+'2'" (click)="checkedQuestion($event,i,'2')" [checked]="isCheckedQuestionTest(pregunta.id, ishikawa.listConsenso, 0)"
+                        />
                         <label [for]="i+'2'"></label>
                       </p>
                     </td>
@@ -249,16 +251,55 @@
         </div>
       </li>
       <li class="step">
-        <div class="step-title waves-effect">Genere plan de acción</div>
+        <div class="step-title waves-effect">Visualicé la tabla guia APDT y genere plan de acción</div>
         <div class="step-content">
           <div class="row">
-            <div class="input-field col s12">
-              <input name="password" type="password" class="validate" required>
-              <label for="password">Your password</label>
-            </div>
+            <table border="1" class="bordered">
+              <thead>
+                <tr>
+                  <th colspan="8" class="center-align">
+                    <b>{{ ishikawa.problema }}</b>
+                  </th>
+                </tr>
+                <tr class="head_table">
+                  <th>Causa Primaria</th>
+                  <th>Causa Secundaria</th>
+                  <th>Causa Terciaria</th>
+                  <th>Causa Cuaternaria</th>
+                  <th>Causa Quinitaria</th>
+                  <th>Acción Correctiva</th>
+                  <th>Responsable</th>
+                  <th>Fecha</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                
+                <ng-container *ngFor="let eme of getEmesPresentesIdeas(ishikawa.listIdeas);">
+                  <ng-container *ngIf="getIdeasByEmeSelected(eme.id).length > 0">
+                  
+                    <tr *ngFor="let idea of getIdeasByEmeSelected(eme.id); let i = index">
+                      <td>{{ eme.valor }}</td>
+                      <td>{{ idea.idea }}</td>
+                      <td>{{ idea.porques.porque_uno }}</td>
+                      <td>{{ idea.porques.porque_dos }}</td>
+                      <td>{{ idea.porques.porque_tres }}</td>                     
+                      <td>
+                        <input type="text">
+                      </td>
+                      <td>
+                        <input type="text">
+                      </td>
+                      <td>{{ j }}</td>
+                    </tr>
+                   
+                  </ng-container>
+                </ng-container>
+              </tbody>
+            </table>
           </div>
           <div class="step-actions">
-            <button class="waves-effect waves-dark btn" type="submit">SUBMIT</button>
+            <button class="waves-effect waves-dark btn" type="submit">REGISTRAR</button>
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
           </div>
         </div>
