@@ -26,6 +26,7 @@ export class RegistroComponent implements OnInit {
   public grupos: Array<Catalogo>;
   public fecha: string;
   public ishikawa: PetIshikawa;
+  public bloquear: boolean;
 
   constructor(
     private router: Router,
@@ -36,6 +37,7 @@ export class RegistroComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.ishikawa = new PetIshikawa();
+    this.bloquear = false;
     this.fecha = "";
     this.service.init(this.auth.getIdUsuario()).subscribe(result => {
       if (result.response.sucessfull) {
@@ -79,10 +81,10 @@ export class RegistroComponent implements OnInit {
       if (result.value) {
 
         this.service.saveIshikawa(this.auth.getIdUsuario(), this.ishikawa).subscribe(result => {
-          console.log('response ishikawa', result)
+
           if (result.response.sucessfull) {
-           
-            Materialize.toast(' Se registro correctamente ', 4000, 'green');
+            this.bloquear = true;
+            Materialize.toast(' Se registro correctamente ', 5000, 'green');
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
           }

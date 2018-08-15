@@ -24,6 +24,7 @@ export class FormularioIshikawaComponent implements OnInit {
   @Input() grupos: Array<Catalogo>;
   @Input() fecha: string;
   @Input() action: string;
+  @Input() bloquear: boolean;
 
 
   @Output() enviaModelo = new EventEmitter();

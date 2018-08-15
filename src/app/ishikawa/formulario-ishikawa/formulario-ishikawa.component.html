@@ -5,18 +5,19 @@
       <label for="fecha" class="active">Fecha de análisis</label>
     </div>
     <div class="input-field col s12 m12 l3 xl3">
-      <input id="nombre_etad" name="nombre_etad" type="text"  [(ngModel)]="ishikawa.nombre_etad" [ngModelOptions]="{standalone: true}">
+      <input id="nombre_etad" name="nombre_etad" type="text" [(ngModel)]="ishikawa.nombre_etad" [ngModelOptions]="{standalone: true}"
+        [disabled]="bloquear">
       <label for="nombre_etad" class="active">Nombre Etad</label>
     </div>
     <div class="input-field col s12 m12 l3 xl3">
-      <select materialize="material_select" [materializeSelectOptions]="grupos" [(ngModel)]="ishikawa.id_grupo">
+      <select materialize="material_select" [materializeSelectOptions]="grupos" [(ngModel)]="ishikawa.id_grupo" [disabled]="bloquear">
         <option value="">SELECCIONE</option>
         <option *ngFor="let grupo of grupos" [value]="grupo.id">{{grupo.valor}}</option>
       </select>
       <label for="grupo">Grupo</label>
     </div>
     <div class="input-field col s12 m12 l3 xl3">
-      <select materialize="material_select" [materializeSelectOptions]="etads" [(ngModel)]="ishikawa.id_etad">
+      <select materialize="material_select" [materializeSelectOptions]="etads" [(ngModel)]="ishikawa.id_etad" [disabled]="bloquear">
         <option value="">SELECCIONE</option>
         <option *ngFor="let etad of etads" [value]="etad.id">{{etad.valor}}</option>
       </select>
@@ -34,25 +35,26 @@
             <div class="col s12 m12 l12 xl12">
               <div class="col s12 m12 l6 xl6">
                 <div class="input-field col s12 m12 l12 xl12">
-                  <input name="pregunta" type="text" [(ngModel)]="ishikawa.que" [ngModelOptions]="{standalone: true}">
+                  <input name="pregunta" type="text" [(ngModel)]="ishikawa.que" [ngModelOptions]="{standalone: true}" [disabled]="bloquear">
                   <label for="pregunta">¿ Qué situación se presenta ?</label>
                 </div>
                 <div class="input-field col s12 m12 l12 xl12">
-                  <input name="pregunta" type="text" [(ngModel)]="ishikawa.donde" [ngModelOptions]="{standalone: true}">
+                  <input name="pregunta" type="text" [(ngModel)]="ishikawa.donde" [ngModelOptions]="{standalone: true}" [disabled]="bloquear">
                   <label for="pregunta">¿ Dónde se presenta la situación ?</label>
                 </div>
                 <div class="input-field col s12 m12 l12 xl12">
-                  <input name="pregunta" type="text" [(ngModel)]="ishikawa.cuando" [ngModelOptions]="{standalone: true}">
+                  <input name="pregunta" type="text" [(ngModel)]="ishikawa.cuando" [ngModelOptions]="{standalone: true}" [disabled]="bloquear">
                   <label for="pregunta">¿ Cuándo se presenta ?</label>
                 </div>
                 <div class="input-field col s12 m12 l12 xl12">
-                  <input id="ss" name="pregunta" type="text" [(ngModel)]="ishikawa.como" [ngModelOptions]="{standalone: true}">
+                  <input id="ss" name="pregunta" type="text" [(ngModel)]="ishikawa.como" [ngModelOptions]="{standalone: true}" [disabled]="bloquear">
                   <label for="pregunta">¿ Cómo afecta la situación ?</label>
                 </div>
               </div>
               <div class="col s12 m12 l6 xl6">
                 <div class="input-field col s12 m12 l12 xl12">
-                  <textarea id="definicion" class="materialize-textarea" [(ngModel)]="ishikawa.problema" [ngModelOptions]="{standalone: true}"></textarea>
+                  <textarea id="definicion" class="materialize-textarea" [(ngModel)]="ishikawa.problema" [ngModelOptions]="{standalone: true}"
+                    [disabled]="bloquear"></textarea>
                   <label for="definicion">Define el enunciado del problema</label>
                 </div>
               </div>
@@ -90,15 +92,17 @@
                   <span class="title">{{ eme.valor }}</span>
                   <ng-container *ngFor="let idea of getIdeasByEme(eme.id); let i = index">
                     <p>
-                      <input type="checkbox" [id]="eme.id + '' + i" (click)="cambioEstatus($event, idea)" [checked]="isChecked(idea)" />
+                      <input type="checkbox" [id]="eme.id + '' + i" (click)="cambioEstatus($event, idea)" [checked]="isChecked(idea)" [disabled]="bloquear"
+                      />
                       <label [for]="eme.id + '' + i">
-                        <a href="#" (click)="openModalIdea($event, eme ,'edit', i ,idea)">
+                        <a href="#" (click)="openModalIdea($event, eme ,'edit', i ,idea)" *ngIf="!bloquear">
                           {{ idea.idea }}
                         </a>
+                        <p *ngIf="bloquear">{{ idea.idea }}</p>
                       </label>
                     </p>
                   </ng-container>
-                  <a href="#" class="secondary-content" (click)="openModalIdea($event,eme, 'add' , i)">
+                  <a href="#" class="secondary-content" (click)="openModalIdea($event,eme, 'add' , i)" *ngIf="!bloquear">
                     <i class="material-icons">add</i>
                   </a>
                 </li>
@@ -106,8 +110,8 @@
             </div>
           </div>
           <div class="step-actions">
-            <button type="button" class="waves-effect waves-dark blue darken-1 btn" (click)="validar(2)">CONTINUAR</button>
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
+            <button type="button" class="waves-effect waves-dark blue darken-1 btn" (click)="validar(2)">CONTINUAR</button>
           </div>
         </div>
       </li>
@@ -134,20 +138,20 @@
                       <div class="col s12 m12 l4 xl4">
                         <div class="collections-title">
                           <div class="input-field col s12 m12 l12 xl12">
-                            <input id="porque_uno" type="text" [(ngModel)]="idea.porques.porque_uno" [ngModelOptions]="{standalone: true}">
+                            <input id="porque_uno" type="text" [(ngModel)]="idea.porques.porque_uno" [ngModelOptions]="{standalone: true}" [disabled]="bloquear">
                             <label for="porque_uno">1. ¿Por que?</label>
                           </div>
                         </div>
                       </div>
                       <div class="col s12 m12 l4 xl4">
                         <div class="input-field col s12 m12 l12 xl12">
-                          <input id="porque_dos" type="text" [(ngModel)]="idea.porques.porque_dos" [ngModelOptions]="{standalone: true}">
+                          <input id="porque_dos" type="text" [(ngModel)]="idea.porques.porque_dos" [ngModelOptions]="{standalone: true}" [disabled]="bloquear">
                           <label for="porque_dos">2. ¿Por que?</label>
                         </div>
                       </div>
                       <div class="col s12 m12 l4 xl4">
                         <div class="input-field col s12 m12 l12 xl12">
-                          <input id="porque_tres" type="text" [(ngModel)]="idea.porques.porque_tres" [ngModelOptions]="{standalone: true}">
+                          <input id="porque_tres" type="text" [(ngModel)]="idea.porques.porque_tres" [ngModelOptions]="{standalone: true}" [disabled]="bloquear">
                           <label for="porque_tres">3. ¿Por que?</label>
                         </div>
                       </div>
@@ -156,14 +160,14 @@
                       <div class="col s12 m12 l4 xl4">
                         <div class="collections-title">
                           <div class="input-field col s12 m12 l12 xl12">
-                            <input id="porque_cuatro" type="text" [(ngModel)]="idea.porques.porque_cuatro" [ngModelOptions]="{standalone: true}">
+                            <input id="porque_cuatro" type="text" [(ngModel)]="idea.porques.porque_cuatro" [ngModelOptions]="{standalone: true}" [disabled]="bloquear">
                             <label for="porque_cuatro">4. ¿Por que?</label>
                           </div>
                         </div>
                       </div>
                       <div class="col s12 m12 l4 xl4">
                         <div class="input-field col s12 m12 l12 xl12">
-                          <input id="porque_cinco" type="text" [(ngModel)]="idea.porques.porque_cinco" [ngModelOptions]="{standalone: true}">
+                          <input id="porque_cinco" type="text" [(ngModel)]="idea.porques.porque_cinco" [ngModelOptions]="{standalone: true}" [disabled]="bloquear">
                           <label for="porque_cinco">5. ¿Por que?</label>
                         </div>
                       </div>
@@ -188,8 +192,8 @@
             </ng-container>
           </div>
           <div class="step-actions">
-            <button class="waves-effect waves-dark btn  blue darken-1" (click)="validar(3)">CONTINUAR</button>
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
+            <button class="waves-effect waves-dark btn  blue darken-1" (click)="validar(3)">CONTINUAR</button>
           </div>
         </div>
       </li>
@@ -197,10 +201,11 @@
         <div class="step-title waves-effect">Diagrama de ishikawa</div>
         <div class="step-content">
           <div class="step-actions">
+            <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
             <button type="button" class="waves-effect waves-light btn" (click)="generateDiagrama()">
+
               <i class="material-icons left">cloud</i>VER DIAGRAMA</button>
             <button class="waves-effect waves-dark  blue darken-1 btn next-step">CONTINUAR</button>
-            <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
           </div>
         </div>
       </li>
@@ -209,13 +214,14 @@
         <div class="step-content">
           <div class="row">
             <div class="input-field col s12 m12 l12 xl12">
-              <textarea id="causa_raiz" class="materialize-textarea" [(ngModel)]="ishikawa.causa_raiz" [ngModelOptions]="{standalone: true}"></textarea>
+              <textarea id="causa_raiz" class="materialize-textarea" [(ngModel)]="ishikawa.causa_raiz" [ngModelOptions]="{standalone: true}"
+                [disabled]="bloquear"></textarea>
               <label for="causa_raiz">Describe la causa raíz</label>
             </div>
           </div>
           <div class="step-actions">
-            <button class="waves-effect waves-dark  blue darken-1 btn" (click)="validar(5)">CONTINUAR</button>
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
+            <button class="waves-effect waves-dark  blue darken-1 btn" (click)="validar(5)">CONTINUAR</button>
           </div>
         </div>
       </li>
@@ -239,14 +245,14 @@
                     <td>
                       <p>
                         <input type="checkbox" [id]="i + '1_q'" (click)="checkedQuestion($event,'1', pregunta.id)" [checked]="isCheckedQuestionTest(pregunta.id, ishikawa.listConsenso, 1)"
-                        />
+                          [disabled]="bloquear" />
                         <label [for]="i+'1_q'"></label>
                       </p>
                     </td>
                     <td>
                       <p>
                         <input type="checkbox" [id]="i+'2_q'" (click)="checkedQuestion($event,'2', pregunta.id)" [checked]="isCheckedQuestionTest(pregunta.id, ishikawa.listConsenso, 0)"
-                        />
+                          [disabled]="bloquear" />
                         <label [for]="i+'2_q'"></label>
                       </p>
                     </td>
@@ -256,8 +262,8 @@
             </div>
           </div>
           <div class="step-actions">
-            <button class="waves-effect waves-dark  blue darken-1 btn" (click)="validar(6)">CONTINUAR</button>
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
+            <button class="waves-effect waves-dark  blue darken-1 btn" (click)="validar(6)">CONTINUAR</button>
           </div>
         </div>
       </li>
@@ -296,13 +302,16 @@
                       <td>{{ idea.porques.porque_dos }}</td>
                       <td>{{ idea.porques.porque_tres }}</td>
                       <td>
-                        <input type="text" [(ngModel)]="idea.porques.planAccion.accion" [ngModelOptions]="{standalone: true}" placeholder="Escriba aquí">
+                        <input type="text" [(ngModel)]="idea.porques.planAccion.accion" [ngModelOptions]="{standalone: true}" placeholder="Escriba aquí"
+                          [disabled]="bloquear">
                       </td>
                       <td>
-                        <input type="text" [(ngModel)]="idea.porques.planAccion.responsable" [ngModelOptions]="{standalone: true}" placeholder="Escriba aquí">
+                        <input type="text" [(ngModel)]="idea.porques.planAccion.responsable" [ngModelOptions]="{standalone: true}" placeholder="Escriba aquí"
+                          [disabled]="bloquear">
                       </td>
                       <td>
-                        <input type="text" [id]="eme.id+','+i" class="datepicker" [(ngModel)]="idea.porques.planAccion.fecha_string" [ngModelOptions]="{standalone: true}">
+                        <input type="text" [id]="eme.id+','+i" class="datepicker" [(ngModel)]="idea.porques.planAccion.fecha_string" [ngModelOptions]="{standalone: true}"
+                          [disabled]="bloquear">
                       </td>
                     </tr>
 
@@ -312,8 +321,8 @@
             </table>
           </div>
           <div class="step-actions">
-            <button class="waves-effect waves-dark blue darken-1 btn" type="button" (click)="validar(7)">REGISTRAR ISHIKAWA</button>
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
+            <button class="waves-effect waves-dark blue darken-1 btn" type="button" (click)="validar(7)" *ngIf="action == 'registro' && !bloquear">REGISTRAR ISHIKAWA</button>
           </div>
         </div>
       </li>
