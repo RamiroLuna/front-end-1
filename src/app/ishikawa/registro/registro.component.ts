@@ -21,6 +21,9 @@ export class RegistroComponent implements OnInit {
   public loading: boolean;
   public emes: Array<Catalogo>;
   public preguntas: Array<Catalogo>;
+  public etads: Array<Catalogo>;
+  public grupos: Array<Catalogo>;
+  public fecha:string;
 
   constructor(
     private router: Router,
@@ -30,12 +33,15 @@ export class RegistroComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-
+    this.fecha = "";
     this.service.init(this.auth.getIdUsuario()).subscribe(result => {
       console.log('init ishikawa', result)
       if (result.response.sucessfull) {
         this.emes = result.data.listMs || [];
         this.preguntas = result.data.listPreguntas || [];
+        this.etads = result.data.listEtads || [];
+        this.grupos = result.data.listGrupos || [];
+        this.fecha = result.data.dia_actual;
         this.loading = false;
 
         // setTimeout(() => this.ngAfterViewInit(), 20);

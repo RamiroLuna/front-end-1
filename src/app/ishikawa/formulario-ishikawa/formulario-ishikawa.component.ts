@@ -17,10 +17,12 @@ declare var Materialize: any;
 })
 export class FormularioIshikawaComponent implements OnInit {
 
-  // public emes: Array<Catalogo>;
-  // public preguntas: Array<Catalogo>;
+
   @Input() emes: Array<Catalogo>;
   @Input() preguntas: Array<Catalogo>;
+  @Input() etads: Array<Catalogo>;
+  @Input() grupos: Array<Catalogo>;
+  @Input() fecha: string;
 
   public ishikawa: PetIshikawa;
   public tmp_idea: PetIdeas;
@@ -28,37 +30,19 @@ export class FormularioIshikawaComponent implements OnInit {
   public aux_index: number;
   public $modal: any;
   public $modal_ishikawa: any;
-  public $tbody:any;
- 
+  public $tbody: any;
+
 
   constructor() { }
 
   ngOnInit() {
 
     this.ishikawa = new PetIshikawa();
+    this.ishikawa.fecha = this.fecha;
+
     this.tmp_idea = new PetIdeas();
     this.aux_texto_idea = "";
     this.aux_index = -1;
-
-    // this.emes = [
-    //   { id: 1, valor: 'Mano de obra', descripcion: 'Mano de obra', activo: 1 },
-    //   { id: 2, valor: 'Maquinaría', descripcion: 'Maquinaría', activo: 1 },
-    //   { id: 3, valor: 'Mediciones', descripcion: 'Mediciones', activo: 1 },
-    //   { id: 4, valor: 'Método', descripcion: 'Método', activo: 1 },
-    //   { id: 5, valor: 'Material', descripcion: 'Material', activo: 1 },
-    //   { id: 6, valor: 'Medio ambiente', descripcion: 'Medio ambiente', activo: 1 }
-    // ];
-
-    // this.preguntas = [
-    //   { id: 1, valor: '¿El enunciado de la causa raíz identifica a algún elemento del proceso? ', descripcion: '  ¿El enunciado de la causa raíz identifica a algún elemento del proceso? ', activo: 1 },
-    //   { id: 2, valor: '¿Es controlable la causa raíz?', descripcion: '¿Es controlable la causa raíz?', activo: 1 },
-    //   { id: 3, valor: '¿Se puede preguntar “por qué” otra vez y obtener otra causa raíz controlable? ', descripcion: '¿Se puede preguntar “por qué” otra vez y obtener otra causa raíz controlable? ', activo: 1 },
-    //   { id: 4, valor: '¿La causa raíz identificada es la falla fundamental del proceso?', descripcion: ' ¿La causa raíz identificada es la falla fundamental del proceso?', activo: 1 },
-    //   { id: 5, valor: 'Si corregimos o mejoramos la causa raíz identificada,  ¿Asegurará que el problema identificado no vuelva a ocurrir?', descripcion: 'sin descripcion', activo: 1 },
-    //   { id: 6, valor: '¿Hemos identificado la causa raíz del problema? ', descripcion: '  ¿Hemos identificado la causa raíz del problema? ', activo: 1 }
-    // ];
-
-    console.log('emes enviadas desde el padre: ', this.emes)
 
     setTimeout(() => {
 
@@ -179,12 +163,31 @@ export class FormularioIshikawaComponent implements OnInit {
         break;
     }
 
-    if (b && step == 6) {
-      this.loadingCalendario(0);
-    }
-
     if (b) {
-      $('.stepper').nextStep();
+
+      if (step == 7) {
+        // Valida campos nombre equipo etad, grupo, area etad
+        if (isValidText(this.ishikawa.nombre_etad)) {
+          if (this.ishikawa.id_grupo) {
+            if (this.ishikawa.id_etad) {
+              alert('todo ook')
+            } else {
+              Materialize.toast("Seleccione el area", 4500, 'red');
+            }
+          } else {
+            Materialize.toast("Seleccione el grupo", 4500, 'red');
+          }
+        } else {
+          Materialize.toast("Ingrese nombre de etad", 4500, 'red');
+        }
+
+      } else if (step == 6) {
+        this.loadingCalendario(0);
+        $('.stepper').nextStep();
+      } else {
+        $('.stepper').nextStep();
+      }
+
     } else {
       Materialize.toast(menssage, 4500, 'red');
     }
@@ -215,28 +218,28 @@ export class FormularioIshikawaComponent implements OnInit {
   }
 
   loadingCalendario(indice: number): void {
-  
-    this.$tbody.find('.datepicker').each((index, value)=>{
+
+    this.$tbody.find('.datepicker').each((index, value) => {
       $(value).pickadate({
-          selectMonths: true, // Creates a dropdown to control month
-          selectYears: 15, // Creates a dropdown of 15 years to control year,
-          today: '',
-          clear: 'Limpiar',
-          close: 'OK',
-          monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-          monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-          weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-          weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-          format: 'dd/mm/yyyy',
-          closeOnSelect: false, // Close upon selecting a date,
-          onClose: () => {
-            // eme_idea[0]  id de la meta  
-            // eme_idea[1] posicion de la idea dentro de la eme 
-            let eme_idea = $(value).attr('id').split(',');
-            this.ishikawa.listIdeas.filter(el => el.porques != undefined && el.id_eme == eme_idea[0])[eme_idea[1]].porques.planAccion.fecha = $(value).val();
-          
-          }
-        });
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 15, // Creates a dropdown of 15 years to control year,
+        today: '',
+        clear: 'Limpiar',
+        close: 'OK',
+        monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+        format: 'dd/mm/yyyy',
+        closeOnSelect: false, // Close upon selecting a date,
+        onClose: () => {
+          // eme_idea[0]  id de la meta  
+          // eme_idea[1] posicion de la idea dentro de la eme 
+          let eme_idea = $(value).attr('id').split(',');
+          this.ishikawa.listIdeas.filter(el => el.porques != undefined && el.id_eme == eme_idea[0])[eme_idea[1]].porques.planAccion.fecha = $(value).val();
+
+        }
+      });
     });
 
   }
@@ -360,6 +363,5 @@ export class FormularioIshikawaComponent implements OnInit {
     return eme;
 
   }
-
 
 }
