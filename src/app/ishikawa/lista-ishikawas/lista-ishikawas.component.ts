@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
-import { Meta } from '../../models/meta';
 import { deleteItemArray, getAnioActual, calculaDiaPorMes, isNumeroAsignacionValid, findRol } from '../../utils';
 import swal from 'sweetalert2';
 import { ListaIshikawasService } from './lista-ishikawas.service';
@@ -15,6 +14,7 @@ import {
   animate,
   transition
 } from '@angular/animations';
+import { PetIshikawa } from '../../models/pet-ishikawa';
 
 declare var $: any;
 declare var Materialize: any;
@@ -54,6 +54,8 @@ export class ListaIshikawasComponent implements OnInit {
   public idLinea: number;
   public idPeriodo: number;
 
+  public recordsIshikawa: Array<PetIshikawa>;
+
 
   public permission: any = {
     editarMeta: true,
@@ -71,6 +73,7 @@ export class ListaIshikawasComponent implements OnInit {
     this.submitted = false;
     this.disabled = false;
     this.estatusPeriodo = true;
+    this.recordsIshikawa = [];
 
     // this.permission.editarMeta = findRol(3, this.auth.getRolesOee());
     // this.permission.eliminarMeta = findRol(5, this.auth.getRolesOee());
@@ -129,6 +132,7 @@ export class ListaIshikawasComponent implements OnInit {
     this.estatusPeriodo = true;
     this.datos_tabla = false;
     this.status = "inactive";
+    this.recordsIshikawa = [];
   }
 
   openModalYear(event): void {
@@ -148,7 +152,7 @@ export class ListaIshikawasComponent implements OnInit {
           this.submitted = false;
           this.status = "inactive";
           this.datos_tabla = false;
-
+          this.recordsIshikawa = [];
 
           if (value != '') {
             resolve();
@@ -177,27 +181,31 @@ export class ListaIshikawasComponent implements OnInit {
     if (this.formConsultaPeriodo.valid) {
       this.disabled = true;
       this.datos_tabla = false;
+      this.recordsIshikawa = [];
 
-      // this.service.getAllMetas(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea).subscribe(result => {
-      //   if (result.response.sucessfull) {
-      //     this.estatusPeriodo = result.data.estatusPeriodo;
-      //     this.datos_tabla = true;
-      //     this.disabled = false;
+      this.service.getAllIshikawas(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea).subscribe(result => {
+        console.log('registros de ishikawas', result)
+        if (result.response.sucessfull) {
+          // this.estatusPeriodo = result.data.estatusPeriodo;
+          
+          this.recordsIshikawa = result.data.listIshikawas || [];
+          this.datos_tabla = true;
+          this.disabled = false;
+          
+          setTimeout(() => {
+            this.ngAfterViewInitHttp();
+            this.status = 'active';
+          }, 200);
 
-      //     setTimeout(() => {
-      //       this.ngAfterViewInitHttp();
-      //       this.status = 'active';
-      //     }, 200);
 
-
-      //   } else {
-      //     this.disabled = false;
-      //     Materialize.toast(result.response.message, 4000, 'red');
-      //   }
-      // }, error => {
-      //   this.disabled = false;
-      //   Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
-      // });
+        } else {
+          this.disabled = false;
+          Materialize.toast(result.response.message, 4000, 'red');
+        }
+      }, error => {
+        this.disabled = false;
+        Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+      });
 
     } else {
       Materialize.toast('Verifique los datos capturados!', 4000, 'red');
@@ -207,12 +215,12 @@ export class ListaIshikawasComponent implements OnInit {
 
   }
 
-  openModalConfirmacion(rowForecast: Meta, accion: string, event?: any): void {
+  openModalConfirmacion(ishikawa: PetIshikawa, accion: string, event?: any): void {
     this.mensajeModal = '';
 
     switch (accion) {
       case 'eliminar':
-        this.mensajeModal = '¿Está seguro de eliminar? ';
+        this.mensajeModal = '¿Está seguro de eliminar ishikawa? ';
         break;
     }
 
@@ -222,7 +230,7 @@ export class ListaIshikawasComponent implements OnInit {
     swal({
       title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
       type: 'question',
-      html: '<p style="color: #303f9f "> Dia : <b>' + rowForecast.dia_string + ' </b>Turno: <b>' + rowForecast.id_turno + '</b> Grupo: <b>' + rowForecast.nombre_grupo + '</b></p>',
+      html: '<p style="color: #303f9f ">Día registro: <b>'+ ishikawa.fecha_string+'</b> Área etad: <b>'+ ishikawa.etad.valor +'</b> Grupo: <b>'+ishikawa.grupo.valor+'</b></p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
@@ -237,9 +245,9 @@ export class ListaIshikawasComponent implements OnInit {
       if (result.value) {
         switch (accion) {
           case 'eliminar':
-            // this.service.delete(this.auth.getIdUsuario(), rowForecast.id_meta).subscribe(result => {
+            // this.service.delete(this.auth.getIdUsuario(), ishikawa.id_meta).subscribe(result => {
             //   if (result.response.sucessfull) {
-            //     // deleteItemArray(this.metas, rowForecast.id_meta, 'id_meta');
+            //     // deleteItemArray(this.metas, ishikawa.id_meta, 'id_meta');
             //     Materialize.toast('Se eliminó correctamente ', 4000, 'green');
             //   } else {
 
@@ -280,6 +288,10 @@ export class ListaIshikawasComponent implements OnInit {
       return -1;
     }
 
+  }
+
+  openModalDetalle(ishikawa:PetIshikawa):void{
+    alert('abre modal')
   }
 
 

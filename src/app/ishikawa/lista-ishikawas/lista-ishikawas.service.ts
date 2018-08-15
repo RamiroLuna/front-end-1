@@ -17,4 +17,8 @@ export class ListaIshikawasService {
     return this.http.get<any>(this.URL + '?action=loadCombobox&id_usuario='+idUsuario);
   }
 
+  getAllIshikawas(idUsuario:number, id_periodo:number, id_etad:number): Observable<any> {
+    return this.http.get<any>(this.URL + '?action=getAllIshikawas&id_etad='+id_etad+'&id_periodo='+id_periodo+'&id_usuario='+idUsuario);
+  }
+
 }

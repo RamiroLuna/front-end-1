@@ -1,5 +1,6 @@
 import { PetIdeas } from "./pet-ideas";
 import { PetConsenso } from "./pet-consenso";
+import { Catalogo } from "./catalogo";
 
 export class PetIshikawa {
     id:number;
@@ -23,4 +24,7 @@ export class PetIshikawa {
     estatus:number;
     listIdeas:  Array<PetIdeas> = [];
     listConsenso: Array<PetConsenso> = [];
+
+    etad?:Catalogo;
+    grupo?:Catalogo;
 }
