@@ -4,7 +4,17 @@
   </div>
 </div>
 
-<app-formulario-ishikawa *ngIf="!loading" [bloquear]="bloquear" [preguntas]="preguntas" [emes]="emes" [fecha]="fecha" [etads]="etads" [grupos]="grupos" [action]="'registro'" (enviaModelo)="registro($event)" (agregarOtro)="agregarOtro()"></app-formulario-ishikawa>
+<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+  <a routerLink="../../" class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top"
+    data-delay="50" data-tooltip="Regresar" (click)="regresar()">
+    <i class="material-icons">
+      <i class="material-icons">arrow_back</i>
+    </i>
+  </a>
+</div>
+
+<app-formulario-ishikawa *ngIf="!loading" [bloquear]="bloquear" [preguntas]="preguntas" [emes]="emes" [fecha]="fecha" [etads]="etads"
+  [grupos]="grupos" [action]="'registro'" (enviaModelo)="registro($event)" (agregarOtro)="agregarOtro()"></app-formulario-ishikawa>
 
 <div class="container" *ngIf="loading">
   <div id="loader-wrapper">

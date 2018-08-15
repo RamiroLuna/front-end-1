@@ -52,6 +52,10 @@ export class RegistroComponent implements OnInit {
         this.fecha = result.data.dia_actual;
         this.loading = false;
 
+        setTimeout(()=>{
+          this.ngAfterViewHttp();
+        },100);
+
       } else {
         this.loading = false;
         Materialize.toast(result.response.message, 4000, 'red');
@@ -70,7 +74,7 @@ export class RegistroComponent implements OnInit {
     swal({
       title: '<span style="color: #303f9f ">¿Está seguro de registrar ishikawa?</span>',
       type: 'question',
-      html: '<p style="color: #303f9f "> Área: :</b>' + this.etads.filter(el => el.id == this.ishikawa.id_etad)[0].valor + ' </b></p><p> Nombre etad: <b>' + this.ishikawa.nombre_etad + ' </b></p>',
+      html: '<p style="color: #303f9f "> Área: :</b>' + this.etads.filter(el => el.id == this.ishikawa.id_etad)[0].valor + ' </b></p><p style="color: #303f9f> Nombre etad: <b>' + this.ishikawa.nombre_etad + ' </b></p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
@@ -105,6 +109,17 @@ export class RegistroComponent implements OnInit {
 
   agregarOtro(): void {
     this.initComponent();
+  }
+
+  regresar() {
+    $('.tooltipped').tooltip('hide');
+  }
+
+  /*
+ * Carga plugins despues de cargar y mostrar objetos en el DOM
+ */
+  ngAfterViewHttp(): void {
+    $('.tooltipped').tooltip({ delay: 50 });
   }
 
 }
