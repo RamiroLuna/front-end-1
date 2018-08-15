@@ -35,6 +35,10 @@ export class RegistroComponent implements OnInit {
     private service: RegistroService) { }
 
   ngOnInit() {
+    this.initComponent();
+  }
+
+  initComponent(): void {
     this.loading = true;
     this.ishikawa = new PetIshikawa();
     this.bloquear = false;
@@ -97,6 +101,10 @@ export class RegistroComponent implements OnInit {
       } else if (result.dismiss === swal.DismissReason.cancel) {
       }
     });
+  }
+
+  agregarOtro(): void {
+    this.initComponent();
   }
 
 }

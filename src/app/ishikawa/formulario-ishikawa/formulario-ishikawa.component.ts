@@ -28,6 +28,7 @@ export class FormularioIshikawaComponent implements OnInit {
 
 
   @Output() enviaModelo = new EventEmitter();
+  @Output() agregarOtro = new EventEmitter();
 
 
   public ishikawa: PetIshikawa;
@@ -368,6 +369,10 @@ export class FormularioIshikawaComponent implements OnInit {
 
     return eme;
 
+  }
+
+  agregarNuevo():void{
+    this.agregarOtro.emit({ });
   }
 
 }

@@ -323,6 +323,7 @@
           <div class="step-actions">
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
             <button class="waves-effect waves-dark blue darken-1 btn" type="button" (click)="validar(7)" *ngIf="action == 'registro' && !bloquear">REGISTRAR ISHIKAWA</button>
+            <button class="waves-effect waves-dark btn" type="button" *ngIf="action == 'registro' && bloquear" (click)="agregarNuevo()">REGISTRAR OTRO</button>
           </div>
         </div>
       </li>
