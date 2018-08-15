@@ -30,7 +30,7 @@
                   </a>
                 </div>
                 <div class="row">
-                  <a *ngIf="permission.consulta" routerLink="" class="col s12 m12 l3 xl3 waves-effect waves-light btn light-green darken-1"
+                  <a *ngIf="permission.consulta" routerLink="lista-ishikawas" class="col s12 m12 l3 xl3 waves-effect waves-light btn light-green darken-1"
                     (click)="ocultarTooltip()">
                     <i class="mdi-content-add tooltipped" data-position="top" data-delay="50" data-tooltip="Ver">
                       CONSULTAR
@@ -55,7 +55,7 @@
                   REGISTRAR
                 </a>
                 <div class="col s2 m2 l2 xl2"></div>
-                <a *ngIf="permission.consulta" routerLink="" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">
+                <a *ngIf="permission.consulta" routerLink="lista-ishikawas" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">
                   CONSULTAR
                 </a>
                 <a disabled *ngIf="!permission.consulta" class="col s4 m4 l4 xl4 waves-effect waves-light btn light-green lighten-2">
