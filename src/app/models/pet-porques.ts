@@ -8,5 +8,5 @@ export class PetPorques {
     porque_tres: string;
     porque_cuatro: string;
     porque_cinco: string;
-    planAccion: PetPlanAccion;
+    planAccion:PetPlanAccion = new PetPlanAccion();
 }

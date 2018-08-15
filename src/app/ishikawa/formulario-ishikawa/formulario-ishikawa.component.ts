@@ -6,6 +6,7 @@ import { PetPorques } from '../../models/pet-porques';
 import { PetConsenso } from '../../models/pet-consenso';
 import { materialize } from 'rxjs/operators';
 import { isValidText } from '../../utils';
+import { PetPlanAccion } from '../../models/pet-plan-accion';
 
 declare var $: any;
 declare var Materialize: any;
@@ -24,6 +25,7 @@ export class FormularioIshikawaComponent implements OnInit {
   public aux_index: number;
   public $modal: any;
   public $modal_ishikawa: any;
+  public $tbody:any;
 
 
   constructor() { }
@@ -77,6 +79,8 @@ export class FormularioIshikawaComponent implements OnInit {
         dismissible: true,
         complete: () => { }
       });
+
+      this.$tbody = $('#cuerpoTabla');
 
     }, 100);
   }
@@ -148,6 +152,30 @@ export class FormularioIshikawaComponent implements OnInit {
         b = (question_available == this.ishikawa.listConsenso.length);
         menssage = "Responda todo el test";
         break;
+      case 7:
+        let ideas_selected = this.ishikawa.listIdeas.filter(el => el.porques != undefined);
+        ideas_selected.forEach((item) => {
+          item.control_error = 0;
+
+          if (item.porques.planAccion) {
+            let planAccion: PetPlanAccion = item.porques.planAccion;
+            if (isValidText(planAccion.accion) && isValidText(planAccion.responsable) && isValidText(planAccion.fecha)) {
+              planAccion.control_error = 0;
+            } else {
+              planAccion.control_error = 1;
+            }
+          }
+
+        });
+
+        let errores_plan = this.ishikawa.listIdeas.filter(el => el.porques != undefined).map(el => el.porques).map(el => el.planAccion.control_error).reduce((anterior, actual) => anterior + actual);
+        b = (errores_plan == 0);
+        menssage = "Ingrese todos los datos";
+        break;
+    }
+
+    if (b && step == 6) {
+      this.loadingCalendario(0);
     }
 
     if (b) {
@@ -179,6 +207,33 @@ export class FormularioIshikawaComponent implements OnInit {
     }
 
     this.$modal.modal('open');
+  }
+
+  loadingCalendario(indice: number): void {
+  
+    this.$tbody.find('.datepicker').each((index, value)=>{
+      $(value).pickadate({
+          selectMonths: true, // Creates a dropdown to control month
+          selectYears: 15, // Creates a dropdown of 15 years to control year,
+          today: '',
+          clear: 'Limpiar',
+          close: 'OK',
+          monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+          weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+          weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+          format: 'dd/mm/yyyy',
+          closeOnSelect: false, // Close upon selecting a date,
+          onClose: () => {
+            // eme_idea[0]  id de la meta  
+            // eme_idea[1] posicion de la idea dentro de la eme 
+            let eme_idea = $(value).attr('id').split(',');
+            this.ishikawa.listIdeas.filter(el => el.porques != undefined && el.id_eme == eme_idea[0])[eme_idea[1]].porques.planAccion.fecha = $(value).val();
+          
+          }
+        });
+    });
+
   }
 
   cancelar(): void {
