@@ -3,6 +3,7 @@ import { PetConsenso } from "./pet-consenso";
 
 export class PetIshikawa {
     id:number;
+    fecha_string: string;
     que: string;
     donde: string;
     cuando: string;

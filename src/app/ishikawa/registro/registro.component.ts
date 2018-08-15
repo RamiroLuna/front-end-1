@@ -6,6 +6,7 @@ import { AuthService } from '../../auth/auth.service';
 import { Linea } from '../../models/linea';
 import { Catalogo } from '../../models/catalogo';
 import swal from 'sweetalert2';
+import { PetIshikawa } from '../../models/pet-ishikawa';
 
 
 declare var $: any;
@@ -23,7 +24,8 @@ export class RegistroComponent implements OnInit {
   public preguntas: Array<Catalogo>;
   public etads: Array<Catalogo>;
   public grupos: Array<Catalogo>;
-  public fecha:string;
+  public fecha: string;
+  public ishikawa: PetIshikawa;
 
   constructor(
     private router: Router,
@@ -33,9 +35,9 @@ export class RegistroComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
+    this.ishikawa = new PetIshikawa();
     this.fecha = "";
     this.service.init(this.auth.getIdUsuario()).subscribe(result => {
-      console.log('init ishikawa', result)
       if (result.response.sucessfull) {
         this.emes = result.data.listMs || [];
         this.preguntas = result.data.listPreguntas || [];
@@ -44,7 +46,6 @@ export class RegistroComponent implements OnInit {
         this.fecha = result.data.dia_actual;
         this.loading = false;
 
-        // setTimeout(() => this.ngAfterViewInit(), 20);
       } else {
         this.loading = false;
         Materialize.toast(result.response.message, 4000, 'red');
@@ -52,6 +53,47 @@ export class RegistroComponent implements OnInit {
     }, error => {
       this.loading = false;
       Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+    });
+  }
+
+  registro(data: any): void {
+    this.ishikawa = data.ishikawa;
+    /* 
+     * Configuración del modal de confirmación
+     */
+    swal({
+      title: '<span style="color: #303f9f ">¿Está seguro de registrar ishikawa?</span>',
+      type: 'question',
+      html: '<p style="color: #303f9f "> Área: :</b>' + this.etads.filter(el => el.id == this.ishikawa.id_etad)[0].valor + ' </b></p><p> Nombre etad: <b>' + this.ishikawa.nombre_etad + ' </b></p>',
+      showCancelButton: true,
+      confirmButtonColor: '#303f9f',
+      cancelButtonColor: '#9fa8da ',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Si!',
+      allowOutsideClick: false,
+      allowEnterKey: false
+    }).then((result) => {
+      /*
+       * Si acepta
+       */
+      if (result.value) {
+
+        this.service.saveIshikawa(this.auth.getIdUsuario(), this.ishikawa).subscribe(result => {
+          console.log('response ishikawa', result)
+          if (result.response.sucessfull) {
+           
+            Materialize.toast(' Se registro correctamente ', 4000, 'green');
+          } else {
+            Materialize.toast(result.response.message, 4000, 'red');
+          }
+        }, error => {
+          Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+        });
+        /*
+        * Si cancela accion
+        */
+      } else if (result.dismiss === swal.DismissReason.cancel) {
+      }
     });
   }
 

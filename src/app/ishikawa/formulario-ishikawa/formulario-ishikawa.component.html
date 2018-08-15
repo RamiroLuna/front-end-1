@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col s12 m12 l12 xl12">
     <div class="input-field col s12 m12 l3 xl3">
-      <input id="fecha" name="fecha" [value]="ishikawa.fecha" type="text" disabled>
+      <input id="fecha" name="fecha" [value]="ishikawa.fecha_string" type="text" disabled>
       <label for="fecha" class="active">Fecha de análisis</label>
     </div>
     <div class="input-field col s12 m12 l3 xl3">
@@ -302,7 +302,7 @@
                         <input type="text" [(ngModel)]="idea.porques.planAccion.responsable" [ngModelOptions]="{standalone: true}" placeholder="Escriba aquí">
                       </td>
                       <td>
-                        <input type="text" [id]="eme.id+','+i" class="datepicker" [(ngModel)]="idea.porques.planAccion.fecha" [ngModelOptions]="{standalone: true}">
+                        <input type="text" [id]="eme.id+','+i" class="datepicker" [(ngModel)]="idea.porques.planAccion.fecha_string" [ngModelOptions]="{standalone: true}">
                       </td>
                     </tr>
 

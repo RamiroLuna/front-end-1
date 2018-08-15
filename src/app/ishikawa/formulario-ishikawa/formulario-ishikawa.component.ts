@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Catalogo } from '../../models/catalogo';
 import { PetIshikawa } from '../../models/pet-ishikawa';
 import { PetIdeas } from '../../models/pet-ideas';
@@ -23,6 +23,11 @@ export class FormularioIshikawaComponent implements OnInit {
   @Input() etads: Array<Catalogo>;
   @Input() grupos: Array<Catalogo>;
   @Input() fecha: string;
+  @Input() action: string;
+
+
+  @Output() enviaModelo = new EventEmitter();
+
 
   public ishikawa: PetIshikawa;
   public tmp_idea: PetIdeas;
@@ -38,7 +43,7 @@ export class FormularioIshikawaComponent implements OnInit {
   ngOnInit() {
 
     this.ishikawa = new PetIshikawa();
-    this.ishikawa.fecha = this.fecha;
+    this.ishikawa.fecha_string = this.fecha;
 
     this.tmp_idea = new PetIdeas();
     this.aux_texto_idea = "";
@@ -148,7 +153,7 @@ export class FormularioIshikawaComponent implements OnInit {
 
           if (item.porques.planAccion) {
             let planAccion: PetPlanAccion = item.porques.planAccion;
-            if (isValidText(planAccion.accion) && isValidText(planAccion.responsable) && isValidText(planAccion.fecha)) {
+            if (isValidText(planAccion.accion) && isValidText(planAccion.responsable) && isValidText(planAccion.fecha_string)) {
               planAccion.control_error = 0;
             } else {
               planAccion.control_error = 1;
@@ -170,7 +175,7 @@ export class FormularioIshikawaComponent implements OnInit {
         if (isValidText(this.ishikawa.nombre_etad)) {
           if (this.ishikawa.id_grupo) {
             if (this.ishikawa.id_etad) {
-              alert('todo ook')
+              this.enviaModelo.emit({ ishikawa: this.ishikawa, action: this.action });
             } else {
               Materialize.toast("Seleccione el area", 4500, 'red');
             }
@@ -236,7 +241,7 @@ export class FormularioIshikawaComponent implements OnInit {
           // eme_idea[0]  id de la meta  
           // eme_idea[1] posicion de la idea dentro de la eme 
           let eme_idea = $(value).attr('id').split(',');
-          this.ishikawa.listIdeas.filter(el => el.porques != undefined && el.id_eme == eme_idea[0])[eme_idea[1]].porques.planAccion.fecha = $(value).val();
+          this.ishikawa.listIdeas.filter(el => el.porques != undefined && el.id_eme == eme_idea[0])[eme_idea[1]].porques.planAccion.fecha_string = $(value).val();
 
         }
       });

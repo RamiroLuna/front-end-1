@@ -5,6 +5,7 @@ export class PetPlanAccion {
     accion:string;
     responsable:string;
     fecha:string;
+    fecha_string:string;
     id_porque:number;
     verificacion:PetVerificacion;
     control_error:number= -1;
