@@ -56,8 +56,8 @@ export class ListaIshikawasComponent implements OnInit {
   public $modalFormIshikawa: any;
 
   /* Catalogos requeridos y varibales para visualizar formulario detalle */
-  public consultaById:boolean;
-  public bloquear:boolean;
+  public consultaById: boolean;
+  public bloquear: boolean;
   public emes: Array<Catalogo>;
   public preguntas: Array<Catalogo>;
   public etads: Array<Catalogo>;
@@ -205,7 +205,7 @@ export class ListaIshikawasComponent implements OnInit {
       this.recordsIshikawa = [];
 
       this.service.getAllIshikawas(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea).subscribe(result => {
-       
+
         if (result.response.sucessfull) {
           // this.estatusPeriodo = result.data.estatusPeriodo;
           this.recordsIshikawa = result.data.listIshikawas || [];
@@ -312,12 +312,12 @@ export class ListaIshikawasComponent implements OnInit {
   openModalDetalle(ishikawa: PetIshikawa): void {
 
     this.consultaById = false;
-    this.ishikawa = new  PetIshikawa();
+    this.ishikawa = new PetIshikawa();
 
     this.service.getIshikawaById(this.auth.getIdUsuario(), ishikawa.id).subscribe(result => {
-    
+
       if (result.response.sucessfull) {
-        this.ishikawa =  result.data.ishikawa;
+        this.ishikawa = result.data.ishikawa;
         this.consultaById = true;
         this.$modalFormIshikawa.modal('open');
       } else {
@@ -327,6 +327,11 @@ export class ListaIshikawasComponent implements OnInit {
       Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
     });
 
+  }
+
+  closeModalFormulario(): void {
+    this.$modalFormIshikawa.modal('close');
+    this.consultaById = false;
   }
 
 

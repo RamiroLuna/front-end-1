@@ -61,6 +61,7 @@
           <th>Área etad</th>
           <th>Grupo</th>
           <th>Descripción del problema</th>
+          <th>PDF</th>
           <th *ngIf="permission.editarMeta">Detalle</th>
           <th *ngIf="permission.eliminarMeta">Eliminar</th>
         </tr>
@@ -75,6 +76,11 @@
           <td>{{ ishikawa.etad.valor }}</td>
           <td>{{ ishikawa.grupo.valor }}</td>
           <td>{{ ishikawa.problema }}</td>
+          <td>
+            <button type="button" class="btn-floating green lighten-2" disabled>
+              <i class="material-icons">cloud_download</i>
+            </button>
+          </td>
           <td>
             <a class="btn-floating green lighten-2" (click)="openModalDetalle(ishikawa)">
               <i class="material-icons">list</i>
@@ -103,12 +109,16 @@
   <!-- Fin solo para pantallas-->
 </div>
 
-<div id="modalFormIshikawa" class="modal" style="width: calc(100%)">
+<div id="modalFormIshikawa" class="modal">
+  <div class="modal-footer">
+    <button (click)="closeModalFormulario()" class="modal-close waves-effect waves-green btn-flat" style="color: #00695c">CERRAR</button>
+  </div>
   <div class="modal-content">
-    <app-formulario-ishikawa *ngIf="consultaById" [bloquear]="bloquear" [preguntas]="preguntas" [emes]="emes"  [etads]="etads"
-      [grupos]="grupos" [action]="'edit'"  [ishikawa]="ishikawa"></app-formulario-ishikawa>
-    <!-- <app-formulario-ishikawa *ngIf="consultaById" [bloquear]="bloquear" [preguntas]="preguntas" [emes]="emes" [fecha]="fecha" [etads]="etads"
-      [grupos]="grupos" [action]="'edit'" (enviaModelo)="registro($event)" (agregarOtro)="agregarOtro()"></app-formulario-ishikawa> -->
+    <app-formulario-ishikawa *ngIf="consultaById" [bloquear]="bloquear" [preguntas]="preguntas" [emes]="emes" [etads]="etads"
+      [grupos]="grupos" [action]="'edit'" [ishikawa]="ishikawa"></app-formulario-ishikawa>
+  </div>
+  <div class="modal-footer">
+    <button (click)="closeModalFormulario()" class="modal-close waves-effect waves-green btn-flat" style="color: #00695c">CERRAR</button>
   </div>
 </div>
 
