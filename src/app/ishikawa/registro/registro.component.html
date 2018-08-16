@@ -14,7 +14,7 @@
 </div>
 
 <app-formulario-ishikawa *ngIf="!loading" [bloquear]="bloquear" [preguntas]="preguntas" [emes]="emes" [fecha]="fecha" [etads]="etads"
-  [grupos]="grupos" [action]="'registro'" (enviaModelo)="registro($event)" (agregarOtro)="agregarOtro()"></app-formulario-ishikawa>
+  [grupos]="grupos" [action]="'registro'" (enviaModelo)="registro($event)" (agregarOtro)="agregarOtro()" [ishikawa]="ishikawa"></app-formulario-ishikawa>
 
 <div class="container" *ngIf="loading">
   <div id="loader-wrapper">

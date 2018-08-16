@@ -22,7 +22,9 @@ export class ListaIshikawasService {
     return this.http.get<any>(this.URL + '?action=getAllIshikawas&id_etad=' + id_etad + '&id_periodo=' + id_periodo + '&id_usuario=' + idUsuario);
   }
 
-  
+  getIshikawaById(idUsuario: number, id_ishikawa: number): Observable<any> {
+    return this.http.get<any>(this.URL + '?action=getIshikawaById&id_ishikawa=' + id_ishikawa + '&id_usuario=' + idUsuario);
+  }
 
   deleteIshikawa(id_usuario: number, ishikawa: PetIshikawa): Observable<any> {
     const body = new HttpParams()

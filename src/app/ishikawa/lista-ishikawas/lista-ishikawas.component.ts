@@ -21,7 +21,7 @@ declare var Materialize: any;
 @Component({
   selector: 'app-lista-ishikawas',
   templateUrl: './lista-ishikawas.component.html',
-  providers: [ ListaIshikawasService ],
+  providers: [ListaIshikawasService],
   styleUrls: ['./lista-ishikawas.component.css'],
   animations: [
     trigger('visibility', [
@@ -46,15 +46,24 @@ export class ListaIshikawasComponent implements OnInit {
   public submitted: boolean;
   public disabled: boolean;
   public periodos: Array<Periodo> = [];
-  public etads: Array<Catalogo> = [];
   public anios: any = {};
   public meses: Array<any> = [];
   public formConsultaPeriodo: FormGroup;
   public status: string;
   public idLinea: number;
   public idPeriodo: number;
-
   public recordsIshikawa: Array<PetIshikawa>;
+  public $modalFormIshikawa: any;
+
+  /* Catalogos requeridos y varibales para visualizar formulario detalle */
+  public consultaById:boolean;
+  public bloquear:boolean;
+  public emes: Array<Catalogo>;
+  public preguntas: Array<Catalogo>;
+  public etads: Array<Catalogo>;
+  public grupos: Array<Catalogo>;
+  public ishikawa: PetIshikawa;
+  /* Fin catalogos requeridos */
 
 
   public permission: any = {
@@ -73,6 +82,8 @@ export class ListaIshikawasComponent implements OnInit {
     this.submitted = false;
     this.disabled = false;
     this.estatusPeriodo = true;
+    this.consultaById = false;
+    this.bloquear = true;
     this.recordsIshikawa = [];
 
     // this.permission.editarMeta = findRol(3, this.auth.getRolesOee());
@@ -81,12 +92,16 @@ export class ListaIshikawasComponent implements OnInit {
     this.anioSeleccionado = getAnioActual();
 
     this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-     
+
       if (result.response.sucessfull) {
 
         this.etads = result.data.listEtads || [];
         this.periodos = result.data.listPeriodos || [];
-        
+
+        this.emes = result.data.listMs || [];
+        this.preguntas = result.data.listPreguntas || [];
+        this.grupos = result.data.listGrupos || [];
+
         let tmpAnios = this.periodos.map(el => el.anio);
         this.periodos.filter((el, index) => {
           return tmpAnios.indexOf(el.anio) === index;
@@ -117,6 +132,12 @@ export class ListaIshikawasComponent implements OnInit {
    */
   ngAfterViewInitHttp(): void {
     $('.tooltipped').tooltip({ delay: 50 });
+    this.$modalFormIshikawa = $('#modalFormIshikawa').modal({
+      opacity: 0.6,
+      inDuration: 800,
+      dismissible: false,
+      complete: () => { }
+    });
   }
 
   agregar() {
@@ -184,14 +205,13 @@ export class ListaIshikawasComponent implements OnInit {
       this.recordsIshikawa = [];
 
       this.service.getAllIshikawas(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea).subscribe(result => {
-        console.log('registros de ishikawas', result)
+       
         if (result.response.sucessfull) {
           // this.estatusPeriodo = result.data.estatusPeriodo;
-          
           this.recordsIshikawa = result.data.listIshikawas || [];
           this.datos_tabla = true;
           this.disabled = false;
-          
+
           setTimeout(() => {
             this.ngAfterViewInitHttp();
             this.status = 'active';
@@ -230,7 +250,7 @@ export class ListaIshikawasComponent implements OnInit {
     swal({
       title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
       type: 'question',
-      html: '<p style="color: #303f9f ">Día registro: <b>'+ ishikawa.fecha_string+'</b> Área etad: <b>'+ ishikawa.etad.valor +'</b> Grupo: <b>'+ishikawa.grupo.valor+'</b></p>',
+      html: '<p style="color: #303f9f ">Día registro: <b>' + ishikawa.fecha_string + '</b> Área etad: <b>' + ishikawa.etad.valor + '</b> Grupo: <b>' + ishikawa.grupo.valor + '</b></p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
@@ -250,7 +270,6 @@ export class ListaIshikawasComponent implements OnInit {
                 deleteItemArray(this.recordsIshikawa, ishikawa.id, 'id');
                 Materialize.toast('Se eliminó correctamente ', 4000, 'green');
               } else {
-
                 Materialize.toast(result.response.message, 4000, 'red');
               }
             }, error => {
@@ -290,8 +309,24 @@ export class ListaIshikawasComponent implements OnInit {
 
   }
 
-  openModalDetalle(ishikawa:PetIshikawa):void{
-    alert('abre modal')
+  openModalDetalle(ishikawa: PetIshikawa): void {
+
+    this.consultaById = false;
+    this.ishikawa = new  PetIshikawa();
+
+    this.service.getIshikawaById(this.auth.getIdUsuario(), ishikawa.id).subscribe(result => {
+    
+      if (result.response.sucessfull) {
+        this.ishikawa =  result.data.ishikawa;
+        this.consultaById = true;
+        this.$modalFormIshikawa.modal('open');
+      } else {
+        Materialize.toast(result.response.message, 4000, 'red');
+      }
+    }, error => {
+      Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+    });
+
   }
 
 

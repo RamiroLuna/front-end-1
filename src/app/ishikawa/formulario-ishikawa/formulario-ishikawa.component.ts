@@ -25,13 +25,13 @@ export class FormularioIshikawaComponent implements OnInit {
   @Input() fecha: string;
   @Input() action: string;
   @Input() bloquear: boolean;
+  @Input() ishikawa: PetIshikawa;
 
 
   @Output() enviaModelo = new EventEmitter();
   @Output() agregarOtro = new EventEmitter();
 
 
-  public ishikawa: PetIshikawa;
   public tmp_idea: PetIdeas;
   public aux_texto_idea: string;
   public aux_index: number;
@@ -44,8 +44,9 @@ export class FormularioIshikawaComponent implements OnInit {
 
   ngOnInit() {
 
-    this.ishikawa = new PetIshikawa();
-    this.ishikawa.fecha_string = this.fecha;
+    if(this.action == 'registro'){
+      this.ishikawa.fecha_string = this.fecha;
+    }
 
     this.tmp_idea = new PetIdeas();
     this.aux_texto_idea = "";
@@ -77,6 +78,10 @@ export class FormularioIshikawaComponent implements OnInit {
       });
 
       this.$tbody = $('#cuerpoTabla');
+
+      if(this.action != 'registro'){
+        Materialize.updateTextFields(); 
+      }
 
     }, 100);
   }

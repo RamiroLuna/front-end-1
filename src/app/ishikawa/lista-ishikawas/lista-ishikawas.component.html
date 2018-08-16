@@ -103,6 +103,16 @@
   <!-- Fin solo para pantallas-->
 </div>
 
+<div id="modalFormIshikawa" class="modal" style="width: calc(100%)">
+  <div class="modal-content">
+    <app-formulario-ishikawa *ngIf="consultaById" [bloquear]="bloquear" [preguntas]="preguntas" [emes]="emes"  [etads]="etads"
+      [grupos]="grupos" [action]="'edit'"  [ishikawa]="ishikawa"></app-formulario-ishikawa>
+    <!-- <app-formulario-ishikawa *ngIf="consultaById" [bloquear]="bloquear" [preguntas]="preguntas" [emes]="emes" [fecha]="fecha" [etads]="etads"
+      [grupos]="grupos" [action]="'edit'" (enviaModelo)="registro($event)" (agregarOtro)="agregarOtro()"></app-formulario-ishikawa> -->
+  </div>
+</div>
+
+
 <div class="container" *ngIf="loading">
   <div id="loader-wrapper">
     <div id="loader"></div>
