@@ -245,17 +245,17 @@ export class ListaIshikawasComponent implements OnInit {
       if (result.value) {
         switch (accion) {
           case 'eliminar':
-            // this.service.delete(this.auth.getIdUsuario(), ishikawa.id_meta).subscribe(result => {
-            //   if (result.response.sucessfull) {
-            //     // deleteItemArray(this.metas, ishikawa.id_meta, 'id_meta');
-            //     Materialize.toast('Se eliminó correctamente ', 4000, 'green');
-            //   } else {
+            this.service.deleteIshikawa(this.auth.getIdUsuario(), ishikawa).subscribe(result => {
+              if (result.response.sucessfull) {
+                deleteItemArray(this.recordsIshikawa, ishikawa.id, 'id');
+                Materialize.toast('Se eliminó correctamente ', 4000, 'green');
+              } else {
 
-            //     Materialize.toast(result.response.message, 4000, 'red');
-            //   }
-            // }, error => {
-            //   Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
-            // });
+                Materialize.toast(result.response.message, 4000, 'red');
+              }
+            }, error => {
+              Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+            });
             break;
         }
         /*
