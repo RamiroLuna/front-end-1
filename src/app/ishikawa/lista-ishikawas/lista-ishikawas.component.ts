@@ -67,8 +67,7 @@ export class ListaIshikawasComponent implements OnInit {
 
 
   public permission: any = {
-    editarMeta: true,
-    eliminarMeta: true
+    editarIshikawa: true
   }
 
   constructor(private auth: AuthService,
@@ -86,8 +85,7 @@ export class ListaIshikawasComponent implements OnInit {
     this.bloquear = true;
     this.recordsIshikawa = [];
 
-    // this.permission.editarMeta = findRol(3, this.auth.getRolesOee());
-    // this.permission.eliminarMeta = findRol(5, this.auth.getRolesOee());
+    // this.permission.editarIshikawa = findRol(3, this.auth.getRolesOee());
 
     this.anioSeleccionado = getAnioActual();
 
@@ -113,8 +111,12 @@ export class ListaIshikawasComponent implements OnInit {
         this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
 
         this.loading = false;
-        this.loadFormulario();
-        setTimeout(() => { this.ngAfterViewInitHttp() }, 200)
+        // this.loadFormulario();
+
+        setTimeout(() => {
+          this.ngAfterViewInitHttp();
+        }, 200);
+
       } else {
         Materialize.toast(result.response.message, 4000, 'red');
         this.loading = false;
@@ -138,6 +140,9 @@ export class ListaIshikawasComponent implements OnInit {
       dismissible: false,
       complete: () => { }
     });
+
+    this.consultaPeriodo();
+
   }
 
   agregar() {
@@ -169,16 +174,15 @@ export class ListaIshikawasComponent implements OnInit {
       inputValidator: (value) => {
 
         return new Promise((resolve) => {
-          this.formConsultaPeriodo.reset();
-          this.submitted = false;
-          this.status = "inactive";
-          this.datos_tabla = false;
-          this.recordsIshikawa = [];
 
           if (value != '') {
             resolve();
-            this.anioSeleccionado = value;
-            this.meses = this.periodos.filter(el => el.anio == this.anioSeleccionado);
+            this.anioSeleccionado = value;                    
+            this.submitted = false;
+            this.status = "inactive";
+            this.datos_tabla = false;
+            this.recordsIshikawa = [];
+            this.consultaPeriodo();
           } else {
             resolve('Seleccione un año')
           }
@@ -187,51 +191,34 @@ export class ListaIshikawasComponent implements OnInit {
     })
   }
 
-  loadFormulario(): void {
-    this.formConsultaPeriodo = this.fb.group({
-      idLinea: new FormControl({ value: this.idLinea }, [Validators.required]),
-      idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required])
-    });
-  }
-
 
   consultaPeriodo(): void {
     this.submitted = true;
     this.status = "inactive";
+    this.disabled = true;
+    this.datos_tabla = false;
+    this.recordsIshikawa = [];
 
-    if (this.formConsultaPeriodo.valid) {
-      this.disabled = true;
-      this.datos_tabla = false;
-      this.recordsIshikawa = [];
+    this.service.getAllIshikawas(this.auth.getIdUsuario(), this.anioSeleccionado).subscribe(result => {
 
-      this.service.getAllIshikawas(this.auth.getIdUsuario(), this.idPeriodo, this.idLinea).subscribe(result => {
-
-        if (result.response.sucessfull) {
-          // this.estatusPeriodo = result.data.estatusPeriodo;
-          this.recordsIshikawa = result.data.listIshikawas || [];
-          this.datos_tabla = true;
-          this.disabled = false;
-
-          setTimeout(() => {
-            this.ngAfterViewInitHttp();
-            this.status = 'active';
-          }, 200);
-
-
-        } else {
-          this.disabled = false;
-          Materialize.toast(result.response.message, 4000, 'red');
-        }
-      }, error => {
+      if (result.response.sucessfull) {
+        this.recordsIshikawa = result.data.listIshikawas || [];
+        this.datos_tabla = true;
         this.disabled = false;
-        Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
-      });
 
-    } else {
-      Materialize.toast('Verifique los datos capturados!', 4000, 'red');
-    }
+        setTimeout(() => {
+          this.status = 'active';
+        }, 200);
 
 
+      } else {
+        this.disabled = false;
+        Materialize.toast(result.response.message, 4000, 'red');
+      }
+    }, error => {
+      this.disabled = false;
+      Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+    });
 
   }
 

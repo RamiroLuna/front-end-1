@@ -13,41 +13,6 @@
     </a>
   </div>
   <!-- fin Solo para dispositivos moviles -->
-
-  <div class="row">
-    <form class="col s12 m12 l12 xl12" [formGroup]="formConsultaPeriodo" (ngSubmit)="consultaPeriodo()" autocomplete="off">
-      <div class="input-field col s12 m12 l6 xl6">
-        <select class="mes" materialize="material_select" [materializeSelectOptions]="meses" formControlName="idPeriodo" [(ngModel)]="idPeriodo"
-          (ngModelChange)="changeCombo()">
-          <option value="">SELECCIONE</option>
-          <option *ngFor="let mes of meses" [value]="mes.id_periodo">{{mes.descripcion_mes}}</option>
-        </select>
-        <label for="mes">mes</label>
-        <div *ngIf="formConsultaPeriodo.controls.idPeriodo.errors?.required && (formConsultaPeriodo.controls.idPeriodo?.touched || submitted)"
-          class="error">
-          Seleccione una opcion
-        </div>
-      </div>
-      <div class="input-field col s12 m12 l5 xl5">
-        <select materialize="material_select" [materializeSelectOptions]="etads" formControlName="idLinea" [(ngModel)]="idLinea"
-          (ngModelChange)="changeCombo()">
-          <option value="">SELECCIONE</option>
-          <option *ngFor="let etad of etads" [value]="etad.id">{{etad.valor}}</option>
-        </select>
-        <label for="etad">Área</label>
-        <div *ngIf="formConsultaPeriodo.controls.idLinea.errors?.required && (formConsultaPeriodo.controls.idLinea?.touched || submitted)"
-          class="error">
-          Seleccione una opcion
-        </div>
-      </div>
-      <div class="input-field col s12 m12 l1 xl1">
-        <button type="submit" class="col s12 m12 l12 xl12 waves-effect waves-light btn right light-green lighten-1" [disabled]="disabled">
-          <i class="material-icons">search</i>
-        </button>
-        <label></label>
-      </div>
-    </form>
-  </div>
   <!-- <div class="row" *ngIf="!estatusPeriodo">
       <div class="color_titulo center-align">
           <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
@@ -62,8 +27,7 @@
           <th>Grupo</th>
           <th>Descripción del problema</th>
           <th>PDF</th>
-          <th *ngIf="permission.editarMeta">Detalle</th>
-          <th *ngIf="permission.eliminarMeta">Eliminar</th>
+          <th *ngIf="permission.editarIshikawa">Detalle</th>
         </tr>
       </thead>
 
@@ -84,11 +48,6 @@
           <td>
             <a class="btn-floating green lighten-2" (click)="openModalDetalle(ishikawa)">
               <i class="material-icons">list</i>
-            </a>
-          </td>
-          <td>
-            <a class="btn-floating red lighten-2" (click)="openModalConfirmacion(ishikawa,'eliminar')">
-              <i class="material-icons">delete</i>
             </a>
           </td>
         </tr>
