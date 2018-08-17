@@ -119,7 +119,8 @@ export class ListaPonderacionComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.tipo_seccion = params.get('tipo');
       this.service.getInitCatalogos(this.auth.getIdUsuario()).subscribe(result => {
-        
+        console.log(result)
+        debugger
         if (result.response.sucessfull) {
 
           //Acciones para objetivos operativos

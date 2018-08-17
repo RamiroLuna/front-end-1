@@ -5,9 +5,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { MaterializeModule } from 'angular2-materialize';
 import { OptionsComponent } from './options/options.component';
 import { FormularioIshikawaComponent } from './formulario-ishikawa/formulario-ishikawa.component';
+import { PruebaPdfComponent } from './prueba-pdf/prueba-pdf.component';
 
 const routesIshikawa: Routes = [
   { path: 'opciones', component: OptionsComponent },
+  { path: 'opciones/pdf', component: PruebaPdfComponent },
   { path: 'opciones/formulario-ishikawa/:id', component: FormularioIshikawaComponent },
 ];
 
@@ -19,6 +21,6 @@ const routesIshikawa: Routes = [
     FormsModule,
     RouterModule.forChild(routesIshikawa)
   ],
-  declarations: [OptionsComponent, FormularioIshikawaComponent]
+  declarations: [OptionsComponent, FormularioIshikawaComponent, PruebaPdfComponent]
 })
 export class IshikawaModule { }
