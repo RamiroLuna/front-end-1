@@ -277,12 +277,12 @@
       <li class="step">
         <div class="step-title waves-effect">Visualicé la tabla guia APDT y genere plan de acción</div>
         <div class="step-content">
-          <div class="row">
+          <div class="row scroll_ejex_tabla_reporte">
             <table border="1" class="bordered">
               <thead>
                 <tr>
-                  <th colspan="8" class="center-align">
-                    <b>{{ ishikawa.problema }}</b>
+                  <th colspan="10" class="center-align">
+                    <p>Problema: {{ ishikawa.problema }} </p>
                   </th>
                 </tr>
                 <tr class="head_table">
@@ -291,6 +291,8 @@
                   <th>Causa Terciaria</th>
                   <th>Causa Cuaternaria</th>
                   <th>Causa Quinitaria</th>
+                  <th>Causa Sextenaria</th>
+                  <th>Causa Septenaria</th>
                   <th>Acción Correctiva</th>
                   <th>Responsable</th>
                   <th>Fecha</th>
@@ -308,17 +310,19 @@
                       <td>{{ idea.porques.porque_uno }}</td>
                       <td>{{ idea.porques.porque_dos }}</td>
                       <td>{{ idea.porques.porque_tres }}</td>
+                      <td>{{ idea.porques.porque_cuatro }}</td>
+                      <td>{{ idea.porques.porque_cinco }}</td>
                       <td>
-                        <input type="text" [(ngModel)]="idea.porques.planAccion.accion" [ngModelOptions]="{standalone: true}" placeholder="Escriba aquí"
-                          [disabled]="bloquear">
+                        <input *ngIf="!bloquear" type="text" [(ngModel)]="idea.porques.planAccion.accion" [ngModelOptions]="{standalone: true}" placeholder="Escriba aquí" >
+                        <p *ngIf="bloquear"> {{ idea.porques.planAccion.accion }}</p>
                       </td>
                       <td>
-                        <input type="text" [(ngModel)]="idea.porques.planAccion.responsable" [ngModelOptions]="{standalone: true}" placeholder="Escriba aquí"
-                          [disabled]="bloquear">
+                        <input *ngIf="!bloquear" type="text" [(ngModel)]="idea.porques.planAccion.responsable" [ngModelOptions]="{standalone: true}" placeholder="Escriba aquí">
+                        <p *ngIf="bloquear"> {{ idea.porques.planAccion.responsable }}</p>
                       </td>
                       <td>
-                        <input type="text" [id]="eme.id+','+i" class="datepicker" [(ngModel)]="idea.porques.planAccion.fecha_string" [ngModelOptions]="{standalone: true}"
-                          [disabled]="bloquear">
+                        <input *ngIf="!bloquear" type="text" [id]="eme.id+','+i" class="datepicker" [(ngModel)]="idea.porques.planAccion.fecha_string" [ngModelOptions]="{standalone: true}">
+                        <p *ngIf="bloquear"> {{ idea.porques.planAccion.fecha_string }}</p>
                       </td>
                     </tr>
 
