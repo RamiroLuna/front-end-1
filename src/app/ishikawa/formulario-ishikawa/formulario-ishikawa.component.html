@@ -237,7 +237,7 @@
           </div>
           <div class="row">
             <div class="col s12 m12 l12 xl12 scroll_ejex_tabla_reporte">
-              <table>
+              <table class="highlight">
                 <thead>
                   <tr>
                     <th>Test de Causa Raíz</th>
@@ -248,15 +248,15 @@
 
                 <tbody *ngFor="let pregunta of preguntas; let i = index">
                   <tr>
-                    <td>{{ pregunta.valor}}</td>
-                    <td>
+                    <td class="preguntas">{{ pregunta.valor}}</td>
+                    <td class="preguntas">
                       <p>
                         <input type="checkbox" [id]="i + '1_q'" (click)="checkedQuestion($event,'1', pregunta.id)" [checked]="isCheckedQuestionTest(pregunta.id, ishikawa.listConsenso, 1)"
                           [disabled]="bloquear" />
                         <label [for]="i+'1_q'"></label>
                       </p>
                     </td>
-                    <td>
+                    <td class="preguntas">
                       <p>
                         <input type="checkbox" [id]="i+'2_q'" (click)="checkedQuestion($event,'2', pregunta.id)" [checked]="isCheckedQuestionTest(pregunta.id, ishikawa.listConsenso, 0)"
                           [disabled]="bloquear" />
