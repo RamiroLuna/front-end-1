@@ -22,3 +22,7 @@ hr {
     background-color: #1e88e5;
     color: white; 
 }
+
+ul.stepper:not(.horizontal) .step.active::before, ul.stepper:not(.horizontal) .step.done::before, ul.stepper.horizontal .step.active .step-title::before, ul.stepper.horizontal .step.done .step-title::before {
+    background-color: #558b2f !important;
+ }

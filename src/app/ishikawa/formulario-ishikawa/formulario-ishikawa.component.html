@@ -63,7 +63,7 @@
           <div class="row">
             <div class="col s12 m12 l6 xl6">
               <div class="step-actions">
-                <button type="button" class="waves-effect waves-dark blue darken-1 btn" (click)="validar(1)">CONTINUAR</button>
+                <button type="button" class="waves-effect waves-dark  light-green darken-3 btn" (click)="validar(1)">CONTINUAR</button>
               </div>
             </div>
           </div>
@@ -88,7 +88,7 @@
             <div class="col s12 m12 l12 xl12">
               <ul class="collection">
                 <li class="collection-item avatar" *ngFor="let eme of emes">
-                  <i class="material-icons circle teal lighten-2">M</i>
+                  <i class="material-icons circle light-blue darken-2">M</i>
                   <span class="title">{{ eme.valor }}</span>
                   <ng-container *ngFor="let idea of getIdeasByEme(eme.id); let i = index">
                     <p>
@@ -103,7 +103,7 @@
                     </p>
                   </ng-container>
                   <a href="#" class="secondary-content" (click)="openModalIdea($event,eme, 'add' , i)" *ngIf="!bloquear">
-                    <i class="material-icons">add</i>
+                    <i class="material-icons" style="color: #0288d1">add</i>
                   </a>
                 </li>
               </ul>
@@ -111,7 +111,7 @@
           </div>
           <div class="step-actions">
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
-            <button type="button" class="waves-effect waves-dark blue darken-1 btn" (click)="validar(2)">CONTINUAR</button>
+            <button type="button" class="waves-effect waves-dark  light-green darken-3 btn" (click)="validar(2)">CONTINUAR</button>
           </div>
         </div>
       </li>
@@ -128,7 +128,7 @@
                 <ul id="issues-collection" class="collection z-depth-1" *ngFor="let idea of getIdeasByEmeSelected(eme.id); let i = index">
                   <li class="collection-item avatar">
                     <h6 class="collection-header">
-                      <i class="material-icons teal lighten-2 circle cursor">help_outline</i>
+                      <i class="material-icons light-blue darken-2 circle cursor">help_outline</i>
                       <b>Causa secundaria </b>
                       <p>{{ idea.idea }}</p>
                     </h6>
@@ -193,7 +193,7 @@
           </div>
           <div class="step-actions">
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
-            <button class="waves-effect waves-dark btn  blue darken-1" (click)="validar(3)">CONTINUAR</button>
+            <button class="waves-effect waves-dark btn   light-green darken-3" (click)="validar(3)">CONTINUAR</button>
           </div>
         </div>
       </li>
@@ -202,10 +202,10 @@
         <div class="step-content">
           <div class="step-actions">
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
-            <button type="button" class="waves-effect waves-light btn" (click)="generateDiagrama()">
+            <button type="button" class="waves-effect waves-light btn light-blue darken-2" (click)="generateDiagrama()">
 
-              <i class="material-icons left">cloud</i>VER DIAGRAMA</button>
-            <button class="waves-effect waves-dark  blue darken-1 btn next-step">CONTINUAR</button>
+              <i class="material-icons left">remove_red_eye</i>VER DIAGRAMA</button>
+            <button class="waves-effect waves-dark   light-green darken-3 btn next-step">CONTINUAR</button>
           </div>
         </div>
       </li>
@@ -221,13 +221,20 @@
           </div>
           <div class="step-actions">
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
-            <button class="waves-effect waves-dark  blue darken-1 btn" (click)="validar(5)">CONTINUAR</button>
+            <button class="waves-effect waves-dark   light-green darken-3 btn" (click)="validar(5)">CONTINUAR</button>
           </div>
         </div>
       </li>
       <li class="step">
         <div class="step-title waves-effect">Contesta el test de causa raíz</div>
         <div class="step-content">
+          <div class="row">
+            <div class="col s12 m12 l12 xl12">
+              <p>
+                <b>Causa raíz: {{ ishikawa.causa_raiz }} </b>
+              </p>
+            </div>
+          </div>
           <div class="row">
             <div class="col s12 m12 l12 xl12 scroll_ejex_tabla_reporte">
               <table>
@@ -263,7 +270,7 @@
           </div>
           <div class="step-actions">
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
-            <button class="waves-effect waves-dark  blue darken-1 btn" (click)="validar(6)">CONTINUAR</button>
+            <button class="waves-effect waves-dark   light-green darken-3 btn" (click)="validar(6)">CONTINUAR</button>
           </div>
         </div>
       </li>
@@ -322,7 +329,7 @@
           </div>
           <div class="step-actions">
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
-            <button class="waves-effect waves-dark blue darken-1 btn" type="button" (click)="validar(7)" *ngIf="action == 'registro' && !bloquear">REGISTRAR ISHIKAWA</button>
+            <button class="waves-effect waves-dark light-blue darken-2  btn" type="button" (click)="validar(7)" *ngIf="action == 'registro' && !bloquear">REGISTRAR ISHIKAWA</button>
             <button class="waves-effect waves-dark btn" type="button" *ngIf="action == 'registro' && bloquear" (click)="agregarNuevo()">REGISTRAR OTRO</button>
           </div>
         </div>
@@ -348,7 +355,7 @@
         <div class="col s12 m12 l2 xl2">
           <br>
         </div>
-        <button class="col s12 m12 l4 xl4 waves-effect waves-light btn blue darken-1" (click)="agregarIdea()">AÑADIR</button>
+        <button class="col s12 m12 l4 xl4 waves-effect waves-light btn light-blue darken-2" (click)="agregarIdea()">AÑADIR</button>
         <div class="col s12 m12 l1 xl1"></div>
       </div>
       <div class="col s12 m12 l12 xl12 btn-edit">
@@ -357,7 +364,7 @@
         <div class="col s12 m12 l1 xl1">
           <br>
         </div>
-        <button class="col s12 m12 l2 xl2 waves-effect waves-light btn blue darken-1" (click)="editarIdea()">EDITAR</button>
+        <button class="col s12 m12 l2 xl2 waves-effect waves-light btn light-blue darken-2" (click)="editarIdea()">EDITAR</button>
         <div class="col s12 m12 l1 xl1">
           <br>
         </div>

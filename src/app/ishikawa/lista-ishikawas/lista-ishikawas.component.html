@@ -24,8 +24,9 @@
         <tr>
           <th>Día de registro</th>
           <th>Área etad</th>
+          <th>Nombre etad</th>
           <th>Grupo</th>
-          <th>Descripción del problema</th>
+          <th width="25%">Descripción del problema</th>
           <th>PDF</th>
           <th *ngIf="permission.editarIshikawa">Detalle</th>
         </tr>
@@ -38,6 +39,7 @@
         <tr *ngFor="let ishikawa of recordsIshikawa;let i = index">
           <td>{{ ishikawa.fecha_string }}</td>
           <td>{{ ishikawa.etad.valor }}</td>
+          <td>{{ ishikawa.nombre_etad }}</td>
           <td>{{ ishikawa.grupo.valor }}</td>
           <td>{{ ishikawa.problema }}</td>
           <td>

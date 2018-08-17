@@ -44,7 +44,7 @@ export class FormularioIshikawaComponent implements OnInit {
 
   ngOnInit() {
 
-    if(this.action == 'registro'){
+    if (this.action == 'registro') {
       this.ishikawa.fecha_string = this.fecha;
     }
 
@@ -79,8 +79,8 @@ export class FormularioIshikawaComponent implements OnInit {
 
       this.$tbody = $('#cuerpoTabla');
 
-      if(this.action != 'registro'){
-        Materialize.updateTextFields(); 
+      if (this.action != 'registro') {
+        Materialize.updateTextFields();
       }
 
     }, 100);
@@ -272,13 +272,21 @@ export class FormularioIshikawaComponent implements OnInit {
 
 
   editarIdea(): void {
-    this.tmp_idea = new PetIdeas();
-    this.$modal.modal('close');
+    if (isValidText(this.tmp_idea.idea)) {
+      this.tmp_idea = new PetIdeas();
+      this.$modal.modal('close');
+    } else {
+      Materialize.toast("Escriba una idea", 4500, 'red');
+    }
   }
 
   agregarIdea(): void {
-    this.ishikawa.listIdeas.push(this.tmp_idea);
-    this.$modal.modal('close');
+    if (isValidText(this.tmp_idea.idea)) {
+      this.ishikawa.listIdeas.push(this.tmp_idea);
+      this.$modal.modal('close');
+    } else {
+      Materialize.toast("Escriba una idea", 4500, 'red');
+    }
 
   }
 
@@ -376,8 +384,8 @@ export class FormularioIshikawaComponent implements OnInit {
 
   }
 
-  agregarNuevo():void{
-    this.agregarOtro.emit({ });
+  agregarNuevo(): void {
+    this.agregarOtro.emit({});
   }
 
 }
