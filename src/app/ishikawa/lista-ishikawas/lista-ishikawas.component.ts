@@ -224,12 +224,19 @@ export class ListaIshikawasComponent implements OnInit {
 
   }
 
+  verificaIshikawa(data):void{
+      this.openModalConfirmacion(data.ishikawa, 'verificar');
+  }
+
   openModalConfirmacion(ishikawa: PetIshikawa, accion: string, event?: any): void {
     this.mensajeModal = '';
 
     switch (accion) {
       case 'eliminar':
         this.mensajeModal = '¿Está seguro de eliminar ishikawa? ';
+        break;
+      case 'verificar':
+        this.mensajeModal = '¿Está seguro de finalizar ishikawa? ';
         break;
     }
 
@@ -258,6 +265,22 @@ export class ListaIshikawasComponent implements OnInit {
               if (result.response.sucessfull) {
                 deleteItemArray(this.recordsIshikawa, ishikawa.id, 'id');
                 Materialize.toast('Se eliminó correctamente ', 4000, 'green');
+              } else {
+                Materialize.toast(result.response.message, 4000, 'red');
+              }
+            }, error => {
+              Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+            });
+            break;
+          case 'verificar':
+            this.service.checkIshikawa(this.auth.getIdUsuario(), ishikawa).subscribe(result => {
+           
+              if (result.response.sucessfull) {
+                ishikawa.estatus = 1
+                this.ishikawa = ishikawa;
+                this.recordsIshikawa.filter(el=>el.id == ishikawa.id)[0].estatus = 1;
+  
+                Materialize.toast('Finalizó ishikawa correctamente ', 4000, 'green');
               } else {
                 Materialize.toast(result.response.message, 4000, 'red');
               }

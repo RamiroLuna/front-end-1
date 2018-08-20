@@ -90,7 +90,7 @@
   </div>
   <div class="modal-content">
     <app-formulario-ishikawa *ngIf="consultaById" [bloquear]="bloquear" [preguntas]="preguntas" [emes]="emes" [etads]="etads"
-      [grupos]="grupos" [action]="action" [ishikawa]="ishikawa"></app-formulario-ishikawa>
+      [grupos]="grupos" [action]="action" [ishikawa]="ishikawa" (verificarModelo)="verificaIshikawa($event)" ></app-formulario-ishikawa>
   </div>
   <div class="modal-footer">
     <button (click)="closeModalFormulario()" class="modal-close waves-effect waves-green btn-flat" style="color: #00695c">CERRAR</button>

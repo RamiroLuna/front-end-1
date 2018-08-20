@@ -24,7 +24,7 @@ export class RegistroService {
   /*
 * Bloque de codigo para peticiones CRUD 
 */
-saveIshikawa(id_usuario: number, ishikawa: PetIshikawa): Observable<any> {
+  saveIshikawa(id_usuario: number, ishikawa: PetIshikawa): Observable<any> {
     let contenedor: any = { ishikawa };
     const body = new HttpParams()
       .set('action', 'saveIshikawa')

@@ -34,4 +34,13 @@ export class ListaIshikawasService {
     return this.http.post(this.URL, body);
   }
 
+  checkIshikawa(id_usuario: number, ishikawa: PetIshikawa): Observable<any> {
+    let contenedor: any = { ishikawa };
+    const body = new HttpParams()
+      .set('action', 'checkIshikawa')
+      .set('data', JSON.stringify(contenedor))
+      .set('id_usuario', '' + id_usuario);
+    return this.http.post(this.URL, body);
+  }
+
 }

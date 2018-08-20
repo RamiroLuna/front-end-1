@@ -29,6 +29,7 @@ export class FormularioIshikawaComponent implements OnInit {
 
 
   @Output() enviaModelo = new EventEmitter();
+  @Output() verificarModelo = new EventEmitter();
   @Output() agregarOtro = new EventEmitter();
 
 
@@ -189,7 +190,7 @@ export class FormularioIshikawaComponent implements OnInit {
         if (isValidText(this.ishikawa.nombre_etad)) {
           if (this.ishikawa.id_grupo) {
             if (this.ishikawa.id_etad) {
-              this.enviaModelo.emit({ ishikawa: this.ishikawa, action: this.action });
+              this.enviaModelo.emit({ ishikawa: this.ishikawa });
             } else {
               Materialize.toast("Seleccione el area", 4500, 'red');
             }
@@ -246,7 +247,7 @@ export class FormularioIshikawaComponent implements OnInit {
       if (step == 8) {
         $('.stepper').nextStep();
       } else if(step == 9) {
-        alert('Ok')
+        this.verificarModelo.emit({ ishikawa: this.ishikawa, action: this.action });
       }
     } else {
       Materialize.toast(menssage, 4500, 'red');
