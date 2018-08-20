@@ -45,7 +45,7 @@ export class FormularioIshikawaComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('datos ishikawa', this.ishikawa)
+   
     if (this.action == 'registro') {
       this.ishikawa.fecha_string = this.fecha;
     } else if (this.action == 'edit' || this.action == 'consult') {

@@ -28,7 +28,8 @@
           <th>Grupo</th>
           <th width="25%">Descripción del problema</th>
           <th>PDF</th>
-          <th *ngIf="permission.editarIshikawa">Detalle</th>
+          <th *ngIf="permission.editarIshikawa" class="center-align">Actualizar</th>
+          <th *ngIf="permission.finalizar" class="center-align">Verificar</th>
         </tr>
       </thead>
 
@@ -47,7 +48,12 @@
               <i class="material-icons">cloud_download</i>
             </button>
           </td>
-          <td>
+          <td class="center-align">
+            <a class="btn-floating blue lighten-2" (click)="openModalDetalle(ishikawa)">
+              <i class="material-icons">edit</i>
+            </a>
+          </td>
+          <td class="center-align">
             <a class="btn-floating green lighten-2" (click)="openModalDetalle(ishikawa)">
               <i class="material-icons">list</i>
             </a>

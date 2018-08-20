@@ -67,7 +67,8 @@ export class ListaIshikawasComponent implements OnInit {
 
 
   public permission: any = {
-    editarIshikawa: true
+    editarIshikawa: true,
+    finalizar: true
   }
 
   constructor(private auth: AuthService,

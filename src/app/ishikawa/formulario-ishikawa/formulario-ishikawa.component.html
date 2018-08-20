@@ -25,7 +25,7 @@
     </div>
   </div>
 </div>
-<div class="row" id="formulario_ishikawa">
+<div [ngClass]="{ 'row':true, 'consulta_contenedor': action == 'consult' || action == 'edit', 'registro_contenedor': action == 'registro' }" id="formulario_ishikawa">
   <div class="col s12 m12 l12 xl12">
     <ul [ngClass]="{'stepper': true , 'linear': action == 'registro'}">
       <li [ngClass]="{'step':true, 'active': action == 'registro'}">
