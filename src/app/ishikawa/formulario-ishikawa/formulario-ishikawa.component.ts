@@ -38,15 +38,27 @@ export class FormularioIshikawaComponent implements OnInit {
   public $modal: any;
   public $modal_ishikawa: any;
   public $tbody: any;
+  public configPlugin: any;
+  public acciones: Array<PetPlanAccion>;
 
 
   constructor() { }
 
   ngOnInit() {
-
+    console.log('datos ishikawa', this.ishikawa)
     if (this.action == 'registro') {
       this.ishikawa.fecha_string = this.fecha;
+    } else if (this.action == 'edit' || this.action == 'consult') {
+      this.acciones = this.getAcciones();
     }
+
+    this.configPlugin = {
+      linearStepsNavigation: false, //allow navigation by clicking on the next and previous steps on linear steppers
+      autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
+      autoFormCreation: false, //control the auto generation of a form around the stepper (in case you want to disable it)
+      showFeedbackLoader: true //set if a loading screen will appear while feedbacks functions are running
+    };
+
 
     this.tmp_idea = new PetIdeas();
     this.aux_texto_idea = "";
@@ -54,12 +66,7 @@ export class FormularioIshikawaComponent implements OnInit {
 
     setTimeout(() => {
 
-      $('.stepper').activateStepper({
-        linearStepsNavigation: false, //allow navigation by clicking on the next and previous steps on linear steppers
-        autoFocusInput: true, //since 2.1.1, stepper can auto focus on first input of each step
-        autoFormCreation: false, //control the auto generation of a form around the stepper (in case you want to disable it)
-        showFeedbackLoader: true //set if a loading screen will appear while feedbacks functions are running
-      });
+      $('.stepper').activateStepper(this.configPlugin);
 
 
       this.$modal = $('#modalCaptura').modal({
@@ -200,6 +207,47 @@ export class FormularioIshikawaComponent implements OnInit {
         $('.stepper').nextStep();
       }
 
+    } else {
+      Materialize.toast(menssage, 4500, 'red');
+    }
+  }
+
+  validarVerificacion(step: number): void {
+    let b = false;
+    let menssage = "";
+
+    switch (step) {
+      case 8:
+        let contador = 0;
+
+        do {
+
+          if (isValidText(this.acciones[contador].porque)) {
+            b = true;
+          } else {
+            b = false;
+          }
+
+          contador++;
+
+
+        } while (b && contador < this.acciones.length);
+
+        menssage = "Ingrese todos los datos";
+        break;
+      case 9:
+        b =  (isValidText(this.ishikawa.revisado) && isValidText(this.ishikawa.autorizado));
+        menssage = "Ingrese todos los datos";
+        break;
+    }
+
+    if (b) {
+
+      if (step == 8) {
+        $('.stepper').nextStep();
+      } else if(step == 9) {
+        alert('Ok')
+      }
     } else {
       Materialize.toast(menssage, 4500, 'red');
     }
@@ -388,4 +436,21 @@ export class FormularioIshikawaComponent implements OnInit {
     this.agregarOtro.emit({});
   }
 
+  getAcciones(): Array<PetPlanAccion> {
+    return this.ishikawa.listIdeas.filter(el => el.porques != undefined).map(el => el.porques.planAccion);
+  }
+
+  checkedVerficacion(option: number, planAccion: PetPlanAccion): void {
+    planAccion.efectiva = option;
+  }
+
+  changeCheckVefificacion(option: number, tipo: string): void {
+    if (tipo == 'solucionado') {
+      this.ishikawa.solucionado = option;
+    } else if (tipo == 'recurrente') {
+      this.ishikawa.recurrente = option;
+    } else if (tipo == 'analisis') {
+      this.ishikawa.analisis = option;
+    }
+  }
 }

@@ -37,3 +37,11 @@ ul.stepper:not(.horizontal) .step.active::before, ul.stepper:not(.horizontal) .s
 td > p{
     margin: 0px;
 }
+
+.inline_check{
+    display: inline;
+}
+
+.space_check{
+    margin-right: 10px
+}
