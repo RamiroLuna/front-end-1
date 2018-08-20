@@ -63,6 +63,7 @@ export class ListaIshikawasComponent implements OnInit {
   public etads: Array<Catalogo>;
   public grupos: Array<Catalogo>;
   public ishikawa: PetIshikawa;
+  public action: string;
   /* Fin catalogos requeridos */
 
 
@@ -85,7 +86,7 @@ export class ListaIshikawasComponent implements OnInit {
     this.consultaById = false;
     this.bloquear = true;
     this.recordsIshikawa = [];
-
+    this.action = '';
     // this.permission.editarIshikawa = findRol(3, this.auth.getRolesOee());
 
     this.anioSeleccionado = getAnioActual();
@@ -178,7 +179,7 @@ export class ListaIshikawasComponent implements OnInit {
 
           if (value != '') {
             resolve();
-            this.anioSeleccionado = value;                    
+            this.anioSeleccionado = value;
             this.submitted = false;
             this.status = "inactive";
             this.datos_tabla = false;
@@ -297,8 +298,10 @@ export class ListaIshikawasComponent implements OnInit {
 
   }
 
-  openModalDetalle(ishikawa: PetIshikawa): void {
+  openModalDetalle(ishikawa: PetIshikawa, action: string): void {
 
+    this.action = action;
+    this.bloquear = ('consult' == this.action);
     this.consultaById = false;
     this.ishikawa = new PetIshikawa();
 
@@ -321,6 +324,27 @@ export class ListaIshikawasComponent implements OnInit {
     this.$modalFormIshikawa.modal('close');
     this.consultaById = false;
   }
+
+  help(event): void {
+    $('.tooltipped').tooltip('hide');
+    event.preventDefault();
+    swal({
+      title: 'Ayuda',
+      type: 'info',
+      html: ' Para <b>editar</b> un ishikawa haga clic en el botón <i class="material-icons">edit</i> <br>' +
+        '<b>Solo podra editar si el ishikawa no ha sido verificado</b></br>' +
+        'Para <b>verficar</b> haga clic en el botón <i class="material-icons">list</i> <br>'+
+        '<b> La verificación se habilitará un día después de la fecha más lejana registrada en el plan de acción</b> <br><br>'+
+        ' El formato <b>PDF</b> se habilitará cuando el ishikawa este finalizado',
+      showCloseButton: false,
+      showCancelButton: false,
+      focusConfirm: false,
+      confirmButtonText: 'Ok!'
+    })
+
+  }
+
+
 
 
 }

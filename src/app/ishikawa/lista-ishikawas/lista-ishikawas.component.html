@@ -11,6 +11,10 @@
         <i class="material-icons">arrow_back</i>
       </i>
     </a>
+    <a class="btn-floating indigo darken-4  waves-effect waves-light tooltipped" data-position="top" data-delay="50" data-tooltip="Ayuda"
+      (click)="help($event)">
+      <i class="material-icons">help</i>
+    </a>
   </div>
   <!-- fin Solo para dispositivos moviles -->
   <!-- <div class="row" *ngIf="!estatusPeriodo">
@@ -29,7 +33,7 @@
           <th width="25%">Descripción del problema</th>
           <th>PDF</th>
           <th *ngIf="permission.editarIshikawa" class="center-align">Actualizar</th>
-          <th *ngIf="permission.finalizar" class="center-align">Verificar</th>
+          <th *ngIf="permission.finalizar" class="center-align">Consulta y verificación</th>
         </tr>
       </thead>
 
@@ -49,12 +53,12 @@
             </button>
           </td>
           <td class="center-align">
-            <a class="btn-floating blue lighten-2" (click)="openModalDetalle(ishikawa)">
+            <button type="button" class="btn-floating blue lighten-2" (click)="openModalDetalle(ishikawa, 'edit')" [disabled]="ishikawa.estatus == 1">
               <i class="material-icons">edit</i>
-            </a>
+            </button>
           </td>
           <td class="center-align">
-            <a class="btn-floating green lighten-2" (click)="openModalDetalle(ishikawa)">
+            <a class="btn-floating green lighten-2" (click)="openModalDetalle(ishikawa,'consult')">
               <i class="material-icons">list</i>
             </a>
           </td>
@@ -71,6 +75,10 @@
           <i class="material-icons">arrow_back</i>
         </i>
       </a>
+      <a class="btn-floating btn-large  indigo darken-4  waves-effect waves-light tooltipped"
+        data-position="top" data-delay="50" data-tooltip="Ayuda" (click)="help($event)">
+        <i class="material-icons">help</i>
+      </a>
     </div>
   </div>
   <!-- Fin solo para pantallas-->
@@ -82,7 +90,7 @@
   </div>
   <div class="modal-content">
     <app-formulario-ishikawa *ngIf="consultaById" [bloquear]="bloquear" [preguntas]="preguntas" [emes]="emes" [etads]="etads"
-      [grupos]="grupos" [action]="'edit'" [ishikawa]="ishikawa"></app-formulario-ishikawa>
+      [grupos]="grupos" [action]="action" [ishikawa]="ishikawa"></app-formulario-ishikawa>
   </div>
   <div class="modal-footer">
     <button (click)="closeModalFormulario()" class="modal-close waves-effect waves-green btn-flat" style="color: #00695c">CERRAR</button>

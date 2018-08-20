@@ -48,7 +48,7 @@ export class FormularioIshikawaComponent implements OnInit {
    
     if (this.action == 'registro') {
       this.ishikawa.fecha_string = this.fecha;
-    } else if (this.action == 'edit' || this.action == 'consult') {
+    } else if (this.action == 'consult') {
       this.acciones = this.getAcciones();
     }
 

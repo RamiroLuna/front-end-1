@@ -25,10 +25,10 @@
     </div>
   </div>
 </div>
-<div [ngClass]="{ 'row':true, 'consulta_contenedor': action == 'consult' || action == 'edit', 'registro_contenedor': action == 'registro' }" id="formulario_ishikawa">
+<div [ngClass]="{ 'row':true, 'consulta_contenedor': action == 'consult' , 'registro_contenedor': action == 'registro' || action == 'edit' }" id="formulario_ishikawa">
   <div class="col s12 m12 l12 xl12">
-    <ul [ngClass]="{'stepper': true , 'linear': action == 'registro'}">
-      <li [ngClass]="{'step':true, 'active': action == 'registro'}">
+    <ul [ngClass]="{'stepper': true , 'linear': action == 'registro' || action == 'edit' }">
+      <li [ngClass]="{'step':true, 'active': action == 'registro' || action == 'edit' }">
         <div class="step-title waves-effect">Defina el problema contestando las siguientes preguntas</div>
         <div class="step-content">
           <div class="row">
@@ -60,7 +60,7 @@
               </div>
             </div>
           </div>
-          <div class="row" *ngIf="action == 'registro'">
+          <div class="row" *ngIf="action == 'registro' || action == 'edit'">
             <div class="col s12 m12 l6 xl6">
               <div class="step-actions">
                 <button type="button" class="waves-effect waves-dark  light-green darken-3 btn" (click)="validar(1)">CONTINUAR</button>
@@ -109,7 +109,7 @@
               </ul>
             </div>
           </div>
-          <div class="step-actions" *ngIf="action == 'registro'">
+          <div class="step-actions" *ngIf="action == 'registro' || action == 'edit'">
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
             <button type="button" class="waves-effect waves-dark  light-green darken-3 btn" (click)="validar(2)">CONTINUAR</button>
           </div>
@@ -191,7 +191,7 @@
               </div>
             </ng-container>
           </div>
-          <div class="step-actions" *ngIf="action == 'registro'">
+          <div class="step-actions" *ngIf="action == 'registro' || action == 'edit'">
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
             <button class="waves-effect waves-dark btn   light-green darken-3" (click)="validar(3)">CONTINUAR</button>
           </div>
@@ -201,11 +201,11 @@
         <div class="step-title waves-effect">Diagrama de ishikawa</div>
         <div class="step-content">
           <div class="step-actions">
-            <button class="waves-effect waves-dark btn-flat previous-step" *ngIf="action == 'registro'">REGRESAR</button>
+            <button class="waves-effect waves-dark btn-flat previous-step" *ngIf="action == 'registro' || action == 'edit'">REGRESAR</button>
             <button type="button" class="waves-effect waves-light btn light-blue darken-2" (click)="generateDiagrama()">
 
               <i class="material-icons left">remove_red_eye</i>VER DIAGRAMA</button>
-            <button class="waves-effect waves-dark   light-green darken-3 btn next-step" *ngIf="action == 'registro'">CONTINUAR</button>
+            <button class="waves-effect waves-dark   light-green darken-3 btn next-step" *ngIf="action == 'registro' || action == 'edit'">CONTINUAR</button>
           </div>
         </div>
       </li>
@@ -219,7 +219,7 @@
               <label for="causa_raiz">Describe la causa raíz</label>
             </div>
           </div>
-          <div class="step-actions" *ngIf="action == 'registro'">
+          <div class="step-actions" *ngIf="action == 'registro' || action == 'edit'">
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
             <button class="waves-effect waves-dark   light-green darken-3 btn" (click)="validar(5)">CONTINUAR</button>
           </div>
@@ -268,7 +268,7 @@
               </table>
             </div>
           </div>
-          <div class="step-actions" *ngIf="action == 'registro'">
+          <div class="step-actions" *ngIf="action == 'registro' || action == 'edit'">
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
             <button class="waves-effect waves-dark   light-green darken-3 btn" (click)="validar(6)">CONTINUAR</button>
           </div>
@@ -333,14 +333,15 @@
               </tbody>
             </table>
           </div>
-          <div class="step-actions" *ngIf="action == 'registro'">
+          <div class="step-actions" *ngIf="action == 'registro' || action == 'edit'">
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
             <button class="waves-effect waves-dark light-blue darken-2  btn" type="button" (click)="validar(7)" *ngIf="action == 'registro' && !bloquear">REGISTRAR ISHIKAWA</button>
+            <button class="waves-effect waves-dark light-blue darken-2  btn" type="button" (click)="validar(7)" *ngIf="action == 'edit' && !bloquear">ACTUALIZAR ISHIKAWA</button>
             <button class="waves-effect waves-dark btn" type="button" *ngIf="action == 'registro' && bloquear" (click)="agregarNuevo()">REGISTRAR OTRO</button>
           </div>
         </div>
       </li>
-      <li class="step" *ngIf="action == 'edit' || action == 'consult'">
+      <li class="step" *ngIf="action == 'consult'">
         <div class="step-title waves-effect">Verificación</div>
         <div class="step-content">
           <table>
@@ -412,7 +413,7 @@
           </div>
         </div>
       </li>
-      <li class="step" *ngIf="action == 'edit' || action == 'consult'">
+      <li class="step" *ngIf="action == 'consult'">
         <div class="step-title waves-effect">Seguimiento</div>
         <div class="step-content">
           <table class="highlight">
