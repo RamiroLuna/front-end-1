@@ -31,6 +31,14 @@ hr {
     background-color: #558b2f !important;
 }
 
+.consulta_contenedor li.step.deshabilitado::before{
+    background-color: #9e9e9e !important;
+}
+
+.consulta_contenedor li.step.deshabilitado_sin::before{
+    background-color: #9e9e9e !important;
+}
+
 .preguntas {
     padding-top: 0px;
     padding-right: 5px;

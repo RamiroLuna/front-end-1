@@ -329,7 +329,6 @@ export class ListaIshikawasComponent implements OnInit {
     this.ishikawa = new PetIshikawa();
 
     this.service.getIshikawaById(this.auth.getIdUsuario(), ishikawa.id).subscribe(result => {
-
       if (result.response.sucessfull) {
         this.ishikawa = result.data.ishikawa;
         this.consultaById = true;

@@ -27,4 +27,6 @@ export class PetIshikawa {
 
     etad?:Catalogo;
     grupo?:Catalogo;
+
+    verificar?:boolean;
 }

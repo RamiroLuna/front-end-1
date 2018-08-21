@@ -341,10 +341,10 @@
             <button class="waves-effect waves-dark btn" type="button" *ngIf="action == 'registro' && bloquear" (click)="agregarNuevo()">REGISTRAR OTRO</button>
           </div>
         </div>
-      </li>
-      <li class="step" *ngIf="action == 'consult'">
+      </li>                                                                                    
+      <li [ngClass]="{'step':true, 'deshabilitado':!ishikawa.verificar, 'deshabilitado_sin':(ishikawa.verificar && ishikawa.estatus == 0) }" *ngIf="action == 'consult'">
         <div class="step-title waves-effect">Verificación</div>
-        <div class="step-content">
+        <div class="step-content" *ngIf="ishikawa.verificar">
           <table>
             <thead>
               <tr>
@@ -423,10 +423,20 @@
             <button class="waves-effect waves-dark light-green darken-3  btn" type="button" (click)="validarVerificacion(8)" *ngIf="ishikawa.estatus == 0">CONTINUAR</button>
           </div>
         </div>
+        <div class="step-content" *ngIf="!ishikawa.verificar">
+          <div class="row">
+            <div class="col s112 m12 l12 xl12">
+              <p class="color_titulo center-align">Aún no puede realizar este paso.</p>
+              <p class="color_titulo center-align">
+                <b>Verifique las fechas del plan de acción</b>
+              </p>
+            </div>
+          </div>
+        </div>
       </li>
-      <li class="step" *ngIf="action == 'consult'">
+      <li [ngClass]="{'step':true, 'deshabilitado':!ishikawa.verificar, 'deshabilitado_sin':(ishikawa.verificar && ishikawa.estatus == 0) }" *ngIf="action == 'consult'">
         <div class="step-title waves-effect">Seguimiento</div>
-        <div class="step-content">
+        <div class="step-content" *ngIf="ishikawa.verificar">
           <table class="highlight">
             <thead>
               <tr>
@@ -504,6 +514,16 @@
           <div class="step-actions" *ngIf="ishikawa.estatus == 0">
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
             <button class="waves-effect waves-dark light-blue darken-2  btn" type="button" (click)="validarVerificacion(9)">FINALIZAR ISHIKAWA</button>
+          </div>
+        </div>
+        <div class="step-content" *ngIf="!ishikawa.verificar">
+          <div class="row">
+            <div class="col s112 m12 l12 xl12">
+              <p class="color_titulo center-align">Aún no puede realizar este paso.</p>
+              <p class="color_titulo center-align">
+                <b>Verifique las fechas del plan de acción</b>
+              </p>
+            </div>
           </div>
         </div>
       </li>

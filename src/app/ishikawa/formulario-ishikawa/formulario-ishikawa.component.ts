@@ -68,7 +68,7 @@ export class FormularioIshikawaComponent implements OnInit {
     setTimeout(() => {
 
       $('.stepper').activateStepper(this.configPlugin);
-
+     
 
       this.$modal = $('#modalCaptura').modal({
         opacity: 0.6,
