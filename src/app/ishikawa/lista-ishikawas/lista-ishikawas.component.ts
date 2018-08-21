@@ -660,20 +660,14 @@ export class ListaIshikawasComponent implements OnInit {
             {
               style: 'tabla',
               table: {
-                heights: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 22, 22],
+                heights: [45, 45, 45, 45, 45, 50],
                 body: [
                   [{text: 'Con este ajuste  evitamos que expulse el material arriba de 285 grados', style: 'textoIshikawa'}],
                   [{text: '', style: 'textoIshikawa'}],
                   [{text: '', style: 'textoIshikawa'}],
                   [{text: '', style: 'textoIshikawa'}],
                   [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}]
+                  [{text: '', style: 'textoIshikawa'}]                 
                 ]
               }
             }
@@ -721,7 +715,7 @@ export class ListaIshikawasComponent implements OnInit {
               style: 'tabla',
               table: {
                 widths: [240],
-                heights: [25, 25],
+                heights: [10, 10],
                 body: [
                   [{text: ishikawa.elaborado, style: 'textoIshikawa'}],
                   [{text: 'Elaboró', style: 'fuenteFirma'}]
@@ -732,7 +726,7 @@ export class ListaIshikawasComponent implements OnInit {
               style: 'tabla',
               table: {
                 widths: [240],
-                heights: [25, 25],
+                heights: [10, 10],
                 body: [
                   [{text: ishikawa.revisado, style: 'textoIshikawa'}],
                   [{text: 'Revisó', style: 'fuenteFirma'}]
@@ -743,7 +737,7 @@ export class ListaIshikawasComponent implements OnInit {
               style: 'tabla',
               table: {
                 widths: [240],
-                heights: [25, 25],
+                heights: [10, 10],
                 body: [
                   [{text: ishikawa.autorizado, style: 'textoIshikawa'}],
                   [{text: 'Autorizó(Gerente de Área)', style: 'fuenteFirma'}]
