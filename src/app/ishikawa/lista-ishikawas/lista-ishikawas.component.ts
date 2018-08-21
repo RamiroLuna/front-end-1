@@ -367,6 +367,13 @@ export class ListaIshikawasComponent implements OnInit {
   }
 
 
+  /*
+   * 
+   * 
+   */
+  viewPDF(ishikawa:PetIshikawa):void{
+    alert();
+  }
 
 
 }

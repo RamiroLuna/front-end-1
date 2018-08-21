@@ -48,7 +48,7 @@
           <td>{{ ishikawa.grupo.valor }}</td>
           <td>{{ ishikawa.problema }}</td>
           <td>
-            <button type="button" class="btn-floating green lighten-2" disabled>
+            <button type="button" class="btn-floating red lighten-2" [disabled]="!(ishikawa.estatus == 1)" (click)="viewPDF(ishikawa)">
               <i class="material-icons">cloud_download</i>
             </button>
           </td>
