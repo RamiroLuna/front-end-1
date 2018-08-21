@@ -15,6 +15,8 @@ import {
   transition
 } from '@angular/animations';
 import { PetIshikawa } from '../../models/pet-ishikawa';
+import * as pdfMake from 'pdfmake/build/pdfmake.js';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 
 declare var $: any;
 declare var Materialize: any;
