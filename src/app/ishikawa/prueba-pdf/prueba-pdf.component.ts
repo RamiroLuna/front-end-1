@@ -283,20 +283,14 @@ export class PruebaPdfComponent implements OnInit {
               style: 'tabla',
               table: {
                 widths: [140],
-                heights: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 22, 22],
+                heights: [45, 45, 45, 45, 45, 50],
                 body: [
-                  [{text: 'Sí X', style: 'textoIshikawa'}],
+                  [{text: 'No', style: 'textoIshikawa'}],
+                  [{text: 'Sí', style: 'textoIshikawa'}],
                   [{text: 'NO ', style: 'textoIshikawa'}],
-                  [{text: 'Sí X', style: 'textoIshikawa'}],
+                  [{text: 'Sí', style: 'textoIshikawa'}],
                   [{text: 'NO ', style: 'textoIshikawa'}],
-                  [{text: 'Sí X', style: 'textoIshikawa'}],
-                  [{text: 'NO ', style: 'textoIshikawa'}],
-                  [{text: 'Sí X', style: 'textoIshikawa'}],
-                  [{text: 'NO ', style: 'textoIshikawa'}],
-                  [{text: 'Sí X', style: 'textoIshikawa'}],
-                  [{text: 'NO ', style: 'textoIshikawa'}],
-                  [{text: 'Sí X', style: 'textoIshikawa'}],
-                  [{text: 'NO ', style: 'textoIshikawa'}]
+                  [{text: 'Sí', style: 'textoIshikawa'}],
                 ]
               }
             },
