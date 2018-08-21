@@ -379,7 +379,7 @@ export class ListaIshikawasComponent implements OnInit {
    */
 
   viewPDF(ishikawa: PetIshikawa): void {
-   
+    
     var dd = {
       content: [
         {
@@ -842,4 +842,5 @@ export class ListaIshikawasComponent implements OnInit {
     });
     return test_raiz;
   }
+
 }
