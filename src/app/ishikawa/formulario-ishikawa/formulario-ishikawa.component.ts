@@ -380,12 +380,15 @@ export class FormularioIshikawaComponent implements OnInit {
 
 	  let img = new Image();
 
-	  img.onload = function(){
+	  img.onload = ()=>{
         canvas.width = img.naturalWidth
         canvas.height = img.naturalHeight
         ctx.drawImage(img, 0, 0);
-        ctx.font = "40px Arial";
-		    //ajusteDeTexto(texto, canvas.width - 190, (canvas.height/2), 100, 25);
+        ctx.font = "12px Arial";
+
+        //Pinta probelma
+        let problema = this.ishikawa.problema;
+		    this.ajusteDeTexto(problema, canvas.width - 185, 170, 180, 15, ctx);
 	}
 	  img.src = this.image_src;
     this.$modal_ishikawa.modal('open');
