@@ -267,6 +267,13 @@
                   </tr>
                 </tbody>
               </table>
+              <div class="row">
+                <div class="col s12 m12 l12 xl12">
+                  <p class="center-align">
+                    <b>Si alguna de estas preguntas es inexacta, define de nuevo la causa raíz.</b> 
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
           <div class="step-actions" *ngIf="action == 'registro' || action == 'edit'">
@@ -341,8 +348,9 @@
             <button class="waves-effect waves-dark btn" type="button" *ngIf="action == 'registro' && bloquear" (click)="agregarNuevo()">REGISTRAR OTRO</button>
           </div>
         </div>
-      </li>                                                                                    
-      <li [ngClass]="{'step':true, 'deshabilitado':!ishikawa.verificar, 'deshabilitado_sin':(ishikawa.verificar && ishikawa.estatus == 0) }" *ngIf="action == 'consult'">
+      </li>
+      <li [ngClass]="{'step':true, 'deshabilitado':!ishikawa.verificar, 'deshabilitado_sin':(ishikawa.verificar && ishikawa.estatus == 0) }"
+        *ngIf="action == 'consult'">
         <div class="step-title waves-effect">Verificación</div>
         <div class="step-content" *ngIf="ishikawa.verificar">
           <table>
@@ -434,7 +442,8 @@
           </div>
         </div>
       </li>
-      <li [ngClass]="{'step':true, 'deshabilitado':!ishikawa.verificar, 'deshabilitado_sin':(ishikawa.verificar && ishikawa.estatus == 0) }" *ngIf="action == 'consult'">
+      <li [ngClass]="{'step':true, 'deshabilitado':!ishikawa.verificar, 'deshabilitado_sin':(ishikawa.verificar && ishikawa.estatus == 0) }"
+        *ngIf="action == 'consult'">
         <div class="step-title waves-effect">Seguimiento</div>
         <div class="step-content" *ngIf="ishikawa.verificar">
           <table class="highlight">
@@ -570,7 +579,7 @@
 <div id="modalDiagrama" class="modal" style="width: calc(95%); height: calc(100%)">
   <div class="modal-content center-align">
     <div class="content_diagrama">
-        <canvas id="image" ></canvas>
+      <canvas id="image"></canvas>
     </div>
   </div>
 </div>

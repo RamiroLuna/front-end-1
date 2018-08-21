@@ -48,6 +48,8 @@ export class FormularioIshikawaComponent implements OnInit {
 
   ngOnInit() {
 
+   
+
     if (this.action == 'registro') {
       this.ishikawa.fecha_string = this.fecha;
     } else if (this.action == 'consult') {
@@ -160,8 +162,17 @@ export class FormularioIshikawaComponent implements OnInit {
         break;
       case 6:
         let question_available = this.preguntas.length;
-        b = (question_available == this.ishikawa.listConsenso.length);
-        menssage = "Responda todo el test";
+        if(question_available == this.ishikawa.listConsenso.length){
+          let pregunta3 = this.ishikawa.listConsenso.filter(el=>el.id_pregunta == 4)[0].respuesta;
+          let total = this.ishikawa.listConsenso.filter(el=>el.id_pregunta !=4).map(el=>el.respuesta).reduce((anterior,actual)=>{
+            return anterior + actual;
+          });
+          b = (pregunta3 === 0 && (total == (question_available-1)))
+          menssage = "Test no válido. Regrese a la lluvia de ideas";
+        
+        }else{
+          menssage = "Responda todo el test";
+        }
         break;
       case 7:
         let ideas_selected = this.ishikawa.listIdeas.filter(el => el.porques != undefined);
@@ -388,7 +399,44 @@ export class FormularioIshikawaComponent implements OnInit {
 
         //Pinta probelma
         let problema = this.ishikawa.problema;
-		    this.ajusteDeTexto(problema, canvas.width - 185, 170, 180, 15, ctx);
+        this.ajusteDeTexto(problema, canvas.width - 185, 170, 180, 15, ctx);
+        
+        ctx.font = "10px Arial";
+        //Pinta si existe idea seleccionada de maquinaria 
+        let ideas_maquinarias = this.getIdeasByEmeSelected(2);
+        if(ideas_maquinarias.length > 0){
+          let idea_maquinaria = ideas_maquinarias[0].idea;
+          let porques = ideas_maquinarias[0].porques;
+          this.ajusteDeTexto(idea_maquinaria, 550, 180, 100, 10, ctx);
+          this.ajusteDeTexto(porques.porque_uno, 650, 110, 110, 10, ctx);
+          this.ajusteDeTexto(porques.porque_dos, 500, 90, 110, 10, ctx);
+          this.ajusteDeTexto(porques.porque_tres, 605, 40, 110, 10, ctx);
+          this.ajusteDeTexto(porques.porque_cuatro, 450, 20, 110, 10, ctx);
+        }
+
+        //Pinta si existe idea seleccionada de metodos 
+        let ideas_metodos = this.getIdeasByEmeSelected(4);
+        if(ideas_metodos.length > 0){
+          let idea_metodo = ideas_metodos[0].idea;
+          let porques = ideas_metodos[0].porques;
+          this.ajusteDeTexto(idea_metodo, 300, 180, 100, 10, ctx);
+          this.ajusteDeTexto(porques.porque_uno, 395, 110, 110, 10, ctx);
+          this.ajusteDeTexto(porques.porque_dos,240, 90, 110, 10, ctx);
+          this.ajusteDeTexto(porques.porque_tres, 345, 45, 110, 10, ctx);
+          this.ajusteDeTexto(porques.porque_cuatro, 175, 20, 100, 10, ctx);
+        }
+
+        //Pinta si existe idea seleccionada de material 
+        let ideas_material = this.getIdeasByEmeSelected(5);
+        if(ideas_material.length > 0){
+          let idea_material = ideas_material[0].idea;
+          let porques = ideas_material[0].porques;
+          this.ajusteDeTexto(idea_material, 45, 180, 100, 10, ctx);
+          this.ajusteDeTexto(porques.porque_uno, 140, 110, 110, 10, ctx);
+          this.ajusteDeTexto(porques.porque_dos,0, 95, 100, 10, ctx);
+          this.ajusteDeTexto(porques.porque_tres, 90, 45, 100, 10, ctx);
+          this.ajusteDeTexto(porques.porque_cuatro, 0, 10, 90, 10, ctx);
+        }
 	}
 	  img.src = this.image_src;
     this.$modal_ishikawa.modal('open');
