@@ -57,3 +57,17 @@ td > p{
 .space_check{
     margin-right: 10px
 }
+
+.content_diagrama {
+    margin: 0px;
+    padding: 0px;
+  }
+
+ #myCanvas{
+ max-width: 100%;
+ height: auto;
+ }
+
+ #modalDiagrama { 
+     width: 90% !important ; height: 90% !important ;
+}

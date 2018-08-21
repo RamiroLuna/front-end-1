@@ -41,12 +41,13 @@ export class FormularioIshikawaComponent implements OnInit {
   public $tbody: any;
   public configPlugin: any;
   public acciones: Array<PetPlanAccion>;
+  public image_src:string;
 
 
   constructor() { }
 
   ngOnInit() {
-   
+
     if (this.action == 'registro') {
       this.ishikawa.fecha_string = this.fecha;
     } else if (this.action == 'consult') {
@@ -64,11 +65,12 @@ export class FormularioIshikawaComponent implements OnInit {
     this.tmp_idea = new PetIdeas();
     this.aux_texto_idea = "";
     this.aux_index = -1;
+    this.image_src = '../../../assets/diagrama_ishikawa.png';
 
     setTimeout(() => {
 
       $('.stepper').activateStepper(this.configPlugin);
-     
+
 
       this.$modal = $('#modalCaptura').modal({
         opacity: 0.6,
@@ -237,7 +239,7 @@ export class FormularioIshikawaComponent implements OnInit {
         menssage = "Ingrese todos los datos";
         break;
       case 9:
-        b =  (isValidText(this.ishikawa.revisado) && isValidText(this.ishikawa.autorizado));
+        b = (isValidText(this.ishikawa.revisado) && isValidText(this.ishikawa.autorizado));
         menssage = "Ingrese todos los datos";
         break;
     }
@@ -246,7 +248,7 @@ export class FormularioIshikawaComponent implements OnInit {
 
       if (step == 8) {
         $('.stepper').nextStep();
-      } else if(step == 9) {
+      } else if (step == 9) {
         this.verificarModelo.emit({ ishikawa: this.ishikawa, action: this.action });
       }
     } else {
@@ -373,6 +375,19 @@ export class FormularioIshikawaComponent implements OnInit {
   }
 
   generateDiagrama(): void {
+    let canvas = <HTMLCanvasElement> document.getElementById('image');
+	  let ctx = canvas.getContext('2d');
+
+	  let img = new Image();
+
+	  img.onload = function(){
+        canvas.width = img.naturalWidth
+        canvas.height = img.naturalHeight
+        ctx.drawImage(img, 0, 0);
+        ctx.font = "40px Arial";
+		    //ajusteDeTexto(texto, canvas.width - 190, (canvas.height/2), 100, 25);
+	}
+	  img.src = this.image_src;
     this.$modal_ishikawa.modal('open');
   }
 
@@ -453,5 +468,32 @@ export class FormularioIshikawaComponent implements OnInit {
     } else if (tipo == 'analisis') {
       this.ishikawa.analisis = option;
     }
+  }
+
+  ajusteDeTexto(texto, x, y, maxWidth, alturaDeLinea, ctx: any): void {
+    // crea el array de las palabras del texto
+    let palabrasRy = texto.split(" ");
+    // inicia la variable var lineaDeTexto
+    let lineaDeTexto = "";
+    // un bucle for recorre todas las palabras
+    for (var i = 0; i < palabrasRy.length; i++) {
+      var testTexto = lineaDeTexto + palabrasRy[i] + " ";
+      // calcula la anchura del texto textWidth 
+      var textWidth = ctx.measureText(testTexto).width;
+      // si textWidth > maxWidth
+      if (textWidth > maxWidth && i > 0) {
+        // escribe en el canvas la lineaDeTexto
+        ctx.fillText(lineaDeTexto, x, y);
+        // inicia otra lineaDeTexto			
+        lineaDeTexto = palabrasRy[i] + " ";
+        // incrementa el valor de la variable y 
+        //donde empieza la nueva lineaDeTexto
+        y += alturaDeLinea;
+      } else {// de lo contrario,  si textWidth <= maxWidth 
+        lineaDeTexto = testTexto;
+      }
+    }// acaba el bucle for
+    // escribe en el canvas la última lineaDeTexto
+    ctx.fillText(lineaDeTexto, x, y);
   }
 }
