@@ -18,6 +18,8 @@ import { PetIshikawa } from '../../models/pet-ishikawa';
 import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 declare var $: any;
 declare var Materialize: any;
 @Component({
@@ -374,6 +376,9 @@ export class ListaIshikawasComponent implements OnInit {
    * 
    */
   viewPDF(ishikawa:PetIshikawa):void{
+    console.log(ishikawa);
+    ;
+    
     var dd = {
       content: [
         {
@@ -404,13 +409,13 @@ export class ListaIshikawasComponent implements OnInit {
                 heights: ['*', 30, '*', 30, '*', 30, '*', 30],
                 body: [
                   [{text: '¿Qué situación se presenta?', style: 'fuenteTabla'}],
-                  [{text: 'Quemadura en cuello del compañero Edgar Hernandez Angeles', style: 'textoTabla'}],
+                  [{text: ishikawa.que, style: 'textoTabla'}],
                   [{text: '¿Dónde se presenta la situación?', style: 'fuenteTabla'}],
-                  [{text: 'Filtro fino del extruso ext 1', style: 'textoTabla'}],
+                  [{text: ishikawa.donde, style: 'textoTabla'}],
                   [{text: '¿Cuándo se presenta?', style: 'fuenteTabla'}],
-                  [{text: 'El día 29/07/18 en el tercer turno', style: 'textoTabla'}],
+                  [{text: ishikawa.cuando, style: 'textoTabla'}],
                   [{text: '¿Cómo afecta la situación?', style: 'fuenteTabla'}],
-                  [{text: 'Afecta a la integridad del colaborador, asi como el objetivo de cero accidentes', style: 'textoTabla'}]
+                  [{text: ishikawa.como, style: 'textoTabla'}]
                 ]
               }
             }
@@ -418,10 +423,11 @@ export class ListaIshikawasComponent implements OnInit {
             {             
               style: 'tabla',
                 table: {
+                  widths: [370],
                   heights: ['*', 200],
                   body: [
                     [{text: 'Define el enunciado del problema', style: 'fuenteTabla'}],
-                    [{text: 'El día 29/07/18 el compañero Edgar Hernandez Angeles sufrió una qumadura en cuello al sacar la charola de plasta del filtro fino del EXT 1', style: 'textoTabla'}],                 
+                    [{text: ishikawa.problema, style: 'textoTabla'}],                 
                   ]                
                 }                          
             }
@@ -439,11 +445,11 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [370],                
                 body: [
                   [{text: 'Nombre ETAD', style: 'fuenteTabla'}],
-                  [{text: 'Los simpson', style: 'textoTabla'}],
+                  [{text: ishikawa.nombre_etad, style: 'textoTabla'}],
                   [{text: 'Grupo', style: 'fuenteTabla'}],
-                  [{text: 'C', style: 'textoTabla'}],
+                  [{text: ishikawa.grupo.valor, style: 'textoTabla'}],
                   [{text: 'Área', style: 'fuenteTabla'}],
-                  [{text: 'Producción Buhler', style: 'textoTabla'}]
+                  [{text: ishikawa.etad.valor, style: 'textoTabla'}]
                 ]
               }
             }
@@ -484,17 +490,17 @@ export class ListaIshikawasComponent implements OnInit {
                 heights: ['*', 40, '*', 40, '*', 40, '*', 40, '*', 40, '*', 40],
                 body: [
                   [{text: 'Mano de Obra', style: 'fuenteTabla'}],
-                  [{text: 'Baja presión del piston del backflush (piston de purga)', style: 'textoIshikawa'}],
+                  [{text: ishikawa.listIdeas.filter(el=>el.id_eme == 1).map(el=>el.idea).toString(), style: 'textoIshikawa'}],
                   [{text: 'Maquinaria', style: 'fuenteTabla'}],
-                  [{text: 'Guarda el desfogue del aire del piston de purga inadecuada\n Alta temperatura de las resistencias del filtro fino', style: 'textoIshikawa'}],
+                  [{text: ishikawa.listIdeas.filter(el=>el.id_eme == 2).map(el=>el.idea).toString(), style: 'textoIshikawa'}],
                   [{text: 'Mediciones', style: 'fuenteTabla'}],
-                  [{text: 'Sensor 1PT0430 Dañado', style: 'textoIshikawa'}],
+                  [{text: ishikawa.listIdeas.filter(el=>el.id_eme == 3).map(el=>el.idea).toString(), style: 'textoIshikawa'}],
                   [{text: 'Método', style: 'fuenteTabla'}],
-                  [{text: '', style: 'textoIshikawa'}],
+                  [{text: ishikawa.listIdeas.filter(el=>el.id_eme == 4).map(el=>el.idea).toString(), style: 'textoIshikawa'}],
                   [{text: 'Material', style: 'fuenteTabla'}],
-                  [{text: 'Hojuela Sucia', style: 'textoIshikawa'}],
+                  [{text: ishikawa.listIdeas.filter(el=>el.id_eme == 5).map(el=>el.idea).toString(), style: 'textoIshikawa'}],
                   [{text: 'Medio Ambiente', style: 'fuenteTabla'}],
-                  [{text: '', style: 'textoIshikawa'}]
+                  [{text: ishikawa.listIdeas.filter(el=>el.id_eme == 6).map(el=>el.idea).toString(), style: 'textoIshikawa'}]
                 ]
               }
             },
@@ -519,7 +525,7 @@ export class ListaIshikawasComponent implements OnInit {
                 heights: ['*', 200],
                 body: [
                   [{text: 'Describe la causa raíz', style: 'fuenteTabla'}],
-                  [{text: 'La guarda de desfogue de aire del piston del filtro fino no es la adecuada ya que no venia de fabrica, y con ayuda de altas temperaturas del filtro fino expulsa el material fundido degradado', style: 'textoTabla'}]
+                  [{text: ishikawa.causa_raiz, style: 'textoTabla'}]
                 ]
               }
             },
@@ -547,14 +553,14 @@ export class ListaIshikawasComponent implements OnInit {
           text: 'Tabla guia APDT y plan de acción',
           style: 'header'
         },
-        '\n\n',
+        '\n',
         {
           style: 'tabla',          
           table:{
             heights: ['*', 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
             body: [
               [{text: 'Enunciado del Problema', style: 'fuenteTabla2'}, {text: 'Causa Primaria', style: 'fuenteTabla2'}, {text: 'Causa Secundaria', style: 'fuenteTabla2'}, {text: 'Causa terciaria', style: 'fuenteTabla2'}, {text: 'Causa Cuaternaria', style: 'fuenteTabla2'}, {text: 'Causa quinaria', style: 'fuenteTabla2'}, {text: 'Causa sextenaria', style: 'fuenteTabla2'}, {text: 'Causa septenaria', style: 'fuenteTabla2'}, {text: 'Acción Correctiva', style: 'fuenteTabla2'}, {text: 'Responsable', style: 'fuenteTabla2'}, {text: 'Fecha', style: 'fuenteTabla2'}],
-              [{rowSpan: 10, text: 'El dia 29/07/18 el compañero Edgar Hernandez Angeles sufrio una quenadura en cuello al sacar la charola de plasta del filtro fino del Ext 1', style: 'textoIshikawa'}, {text: 'Maquinaria', style: 'textoIshikawa'}, {text: 'Alta temperatura de las resistencias del filtro fino', style: 'textoIshikawa'}, {text: 'Por ajuste del proceso', style: 'textoIshikawa'}, {text: 'Por baja viscosidad de la resina', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: 'Bajar  temperaturas del filtro fino', style: 'textoIshikawa'}, {text: 'Aurelio Marcial', style: 'textoIshikawa'}, {text: '31/07/2018', style: 'textoIshikawa'}],
+              [{rowSpan: 10, text: ishikawa.problema, style: 'textoIshikawa'}, {text: 'Maquinaria', style: 'textoIshikawa'}, {text: 'Alta temperatura de las resistencias del filtro fino', style: 'textoIshikawa'}, {text: 'Por ajuste del proceso', style: 'textoIshikawa'}, {text: 'Por baja viscosidad de la resina', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: 'Bajar  temperaturas del filtro fino', style: 'textoIshikawa'}, {text: 'Aurelio Marcial', style: 'textoIshikawa'}, {text: '31/07/2018', style: 'textoIshikawa'}],
               [{text: '', style: 'textoIshikawa'}, {text: 'Maquinaria', style: 'textoIshikawa'}, {text: 'Guarda de desgogue de aire del piston de purga inadecuado', style: 'textoIshikawa'}, {text: 'Ya que solo se coloco una guarda provicional', style: 'textoIshikawa'}, {text: 'Por que no venia de fabrica', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: 'Fabricar la guarda que lleva igual que en el extrusor 2', style: 'textoIshikawa'}, {text: 'Eduardo Izquierdo', style: 'textoIshikawa'}, {text: '15/08/2018', style: 'textoIshikawa'}],
               [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}],
               [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}],
@@ -567,7 +573,7 @@ export class ListaIshikawasComponent implements OnInit {
             ]
           }
         },
-        '\n\n\n',
+        '\n\n\n\n',
         {
           text: 'Verificación y Seguimiento',
           style: 'header'
@@ -607,7 +613,7 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [140],
                 heights: [300],
                 body: [
-                  [{text: 'El dia 29/07/18 el compañero Edgar Hernandez Angeles sufrio una quenadura en cuello al sacar la charola de plasta del filtro fino del Ext 1', style: 'textoIshikawa'}]
+                  [{text: ishikawa.problema, style: 'textoIshikawa'}]
                 ]
               }
             },
@@ -617,7 +623,7 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [140],
                 heights: [300],
                 body: [
-                  [{text: 'La guarda de desfogue de aire del piston del filtro fino no es la adecuada ya que no venia de fabrica, y con ayuda de altas temperaturas del filtro fino expulsa el material fundido degradado', style: 'textoIshikawa'}]
+                  [{text: ishikawa.causa_raiz, style: 'textoIshikawa'}]
                 ]
               }
             },
@@ -654,20 +660,14 @@ export class ListaIshikawasComponent implements OnInit {
             {
               style: 'tabla',
               table: {
-                heights: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 22, 22],
+                heights: [45, 45, 45, 45, 45, 50],
                 body: [
                   [{text: 'Con este ajuste  evitamos que expulse el material arriba de 285 grados', style: 'textoIshikawa'}],
                   [{text: '', style: 'textoIshikawa'}],
                   [{text: '', style: 'textoIshikawa'}],
                   [{text: '', style: 'textoIshikawa'}],
                   [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}]
+                  [{text: '', style: 'textoIshikawa'}]                 
                 ]
               }
             }
@@ -715,9 +715,9 @@ export class ListaIshikawasComponent implements OnInit {
               style: 'tabla',
               table: {
                 widths: [240],
-                heights: [25, 25],
+                heights: [10, 10],
                 body: [
-                  [{text: '', style: 'textoIshikawa'}],
+                  [{text: ishikawa.elaborado, style: 'textoIshikawa'}],
                   [{text: 'Elaboró', style: 'fuenteFirma'}]
                 ]
               }
@@ -726,9 +726,9 @@ export class ListaIshikawasComponent implements OnInit {
               style: 'tabla',
               table: {
                 widths: [240],
-                heights: [25, 25],
+                heights: [10, 10],
                 body: [
-                  [{text: '', style: 'textoIshikawa'}],
+                  [{text: ishikawa.revisado, style: 'textoIshikawa'}],
                   [{text: 'Revisó', style: 'fuenteFirma'}]
                 ]
               }
@@ -737,9 +737,9 @@ export class ListaIshikawasComponent implements OnInit {
               style: 'tabla',
               table: {
                 widths: [240],
-                heights: [25, 25],
+                heights: [10, 10],
                 body: [
-                  [{text: '', style: 'textoIshikawa'}],
+                  [{text: ishikawa.autorizado, style: 'textoIshikawa'}],
                   [{text: 'Autorizó(Gerente de Área)', style: 'fuenteFirma'}]
                 ]
               }             
