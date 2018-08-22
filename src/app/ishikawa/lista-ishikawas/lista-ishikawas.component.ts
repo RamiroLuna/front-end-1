@@ -432,29 +432,7 @@ export class ListaIshikawasComponent implements OnInit {
                 }                          
             }
           ]
-        },
-        {
-          alignment: 'center',
-          columns: [
-            {
-
-            },
-            {
-              style: 'tabla',              
-              table: {
-                widths: [370],                
-                body: [
-                  [{text: 'Nombre ETAD', style: 'fuenteTabla'}],
-                  [{text: ishikawa.nombre_etad, style: 'textoTabla'}],
-                  [{text: 'Grupo', style: 'fuenteTabla'}],
-                  [{text: ishikawa.grupo.valor, style: 'textoTabla'}],
-                  [{text: 'Área', style: 'fuenteTabla'}],
-                  [{text: ishikawa.etad.valor, style: 'textoTabla'}]
-                ]
-              }
-            }
-          ]
-        },
+        },        
         '\n\n',
         /*Página dos diagrama de ishikawa*/
         {
