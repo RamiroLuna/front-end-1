@@ -373,6 +373,73 @@ export class ListaIshikawasComponent implements OnInit {
   }
 
 
+  updateIshikawa(data: any): void {
+
+    this.ishikawa = data.ishikawa;
+    /* 
+     * Configuración del modal de confirmación
+     */
+    swal({
+      title: '<span style="color: #303f9f ">¿Está seguro de actualizar ishikawa?</span>',
+      type: 'question',
+      input: 'text',
+      inputPlaceholder: 'Escribe aquí',
+      html: '<p style="color: #303f9f ">Ingrese descripción corta para identificar el registro</b></p>',
+      showCancelButton: true,
+      confirmButtonColor: '#303f9f',
+      cancelButtonColor: '#9fa8da ',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Si!',
+      inputValue: this.ishikawa.descripcion_corta,
+      allowOutsideClick: false,
+      allowEnterKey: false,
+      inputValidator: (value) => {
+
+        if (!value) {
+          return 'Se requiere descripción!';
+        } else {
+          if (value.length > 30) {
+            return 'Máximo 30 caracteres';
+          }else{
+            this.ishikawa.descripcion_corta = value;
+          }
+        }
+      }
+    }).then((result) => {
+      /*
+       * Si acepta
+       */
+      if (result.value) {
+
+        this.service.updateIshikawa(this.auth.getIdUsuario(), this.ishikawa).subscribe(result => {        
+          if (result.response.sucessfull) {
+            debugger
+            let id_old = this.ishikawa.id;
+            let id = parseInt(result.response.message);
+            this.ishikawa.id = id;
+            this.recordsIshikawa.forEach((el, index, arg)=>{
+              if(el.id == id_old){
+                 arg[index] = this.ishikawa;
+              }
+            });
+            Materialize.toast(' Se actualizo correctamente ', 5000, 'green');
+          } else {
+            Materialize.toast(result.response.message, 4000, 'red');
+          }
+        }, error => {
+          Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+        });
+        /*
+        * Si cancela accion
+        */
+      } else if (result.dismiss === swal.DismissReason.cancel) {
+      }
+    });
+
+  }
+
+
+
   /*
    * 
    * 

@@ -203,7 +203,7 @@ export class FormularioIshikawaComponent implements OnInit {
         if (isValidText(this.ishikawa.nombre_etad)) {
           if (this.ishikawa.id_grupo) {
             if (this.ishikawa.id_etad) {
-              this.enviaModelo.emit({ ishikawa: this.ishikawa });
+                this.enviaModelo.emit({ ishikawa: this.ishikawa });
             } else {
               Materialize.toast("Seleccione el area", 4500, 'red');
             }

@@ -29,7 +29,7 @@ export class ListaIshikawasService {
   deleteIshikawa(id_usuario: number, ishikawa: PetIshikawa): Observable<any> {
     const body = new HttpParams()
       .set('action', 'deleteIshikawa')
-      .set('id_ishikawa', ''+ishikawa.id)
+      .set('id_ishikawa', '' + ishikawa.id)
       .set('id_usuario', '' + id_usuario);
     return this.http.post(this.URL, body);
   }
@@ -42,5 +42,18 @@ export class ListaIshikawasService {
       .set('id_usuario', '' + id_usuario);
     return this.http.post(this.URL, body);
   }
+
+/*
+* Bloque de codigo para peticiones CRUD 
+*/
+  updateIshikawa(id_usuario: number, ishikawa: PetIshikawa): Observable<any> {
+    let contenedor: any = { ishikawa };
+    const body = new HttpParams()
+      .set('action', 'updateIshikawa')
+      .set('data', JSON.stringify(contenedor))
+      .set('id_usuario', '' + id_usuario);
+    return this.http.post(this.URL, body);
+  }
+
 
 }
