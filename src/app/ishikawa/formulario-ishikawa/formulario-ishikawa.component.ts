@@ -31,6 +31,8 @@ export class FormularioIshikawaComponent implements OnInit {
   @Output() enviaModelo = new EventEmitter();
   @Output() verificarModelo = new EventEmitter();
   @Output() agregarOtro = new EventEmitter();
+  @Output() revisaIshikawa = new EventEmitter();
+  
 
 
   public tmp_idea: PetIdeas;
@@ -48,7 +50,7 @@ export class FormularioIshikawaComponent implements OnInit {
 
   ngOnInit() {
 
-
+    console.log(this.ishikawa)
 
     if (this.action == 'registro') {
       this.ishikawa.fecha_string = this.fecha;
@@ -250,7 +252,7 @@ export class FormularioIshikawaComponent implements OnInit {
         menssage = "Ingrese todos los datos";
         break;
       case 9:
-        b = (isValidText(this.ishikawa.revisado) && isValidText(this.ishikawa.autorizado));
+        b = true;
         menssage = "Ingrese todos los datos";
         break;
     }
@@ -289,6 +291,10 @@ export class FormularioIshikawaComponent implements OnInit {
     }
 
     this.$modal.modal('open');
+  }
+
+  revisarIshikawa():void{
+    this.revisaIshikawa.emit({  ishikawa: this.ishikawa });
   }
 
   loadingCalendario(indice: number): void {

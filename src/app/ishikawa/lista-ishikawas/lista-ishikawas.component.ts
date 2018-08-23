@@ -252,7 +252,7 @@ export class ListaIshikawasComponent implements OnInit {
     swal({
       title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
       type: 'question',
-      html: '<p style="color: #303f9f ">Día registro: <b>' + ishikawa.fecha_string + '</b> Área etad: <b>' + ishikawa.etad.valor + '</b> Grupo: <b>' + ishikawa.grupo.valor + '</b></p>',
+      html: '<p style="color: #303f9f ">Descripción ishikawa: <b>'+ishikawa.descripcion_corta+'</b></p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
@@ -282,9 +282,13 @@ export class ListaIshikawasComponent implements OnInit {
             this.service.checkIshikawa(this.auth.getIdUsuario(), ishikawa).subscribe(result => {
 
               if (result.response.sucessfull) {
-                ishikawa.estatus = 1
-                this.ishikawa = ishikawa;
-                this.recordsIshikawa.filter(el => el.id == ishikawa.id)[0].estatus = 1;
+               
+                this.ishikawa = result.data.ishikawa;
+                this.recordsIshikawa.forEach((el, index, arg) => {
+                  if (el.id == ishikawa.id) {
+                    arg[index] = this.ishikawa;
+                  }
+                });
 
                 Materialize.toast('Finalizó ishikawa correctamente ', 4000, 'green');
               } else {
@@ -400,7 +404,7 @@ export class ListaIshikawasComponent implements OnInit {
         } else {
           if (value.length > 30) {
             return 'Máximo 30 caracteres';
-          }else{
+          } else {
             this.ishikawa.descripcion_corta = value;
           }
         }
@@ -411,15 +415,14 @@ export class ListaIshikawasComponent implements OnInit {
        */
       if (result.value) {
 
-        this.service.updateIshikawa(this.auth.getIdUsuario(), this.ishikawa).subscribe(result => {        
+        this.service.updateIshikawa(this.auth.getIdUsuario(), this.ishikawa).subscribe(result => {
           if (result.response.sucessfull) {
-            debugger
             let id_old = this.ishikawa.id;
             let id = parseInt(result.response.message);
             this.ishikawa.id = id;
-            this.recordsIshikawa.forEach((el, index, arg)=>{
-              if(el.id == id_old){
-                 arg[index] = this.ishikawa;
+            this.recordsIshikawa.forEach((el, index, arg) => {
+              if (el.id == id_old) {
+                arg[index] = this.ishikawa;
               }
             });
             Materialize.toast(' Se actualizo correctamente ', 5000, 'green');
@@ -438,6 +441,49 @@ export class ListaIshikawasComponent implements OnInit {
 
   }
 
+  revisaIshikawa(data: any): void {
+  /* 
+   * Configuración del modal de confirmación
+   */
+    swal({
+      title: '<span style="color: #303f9f ">¿Está seguro de marcar ishikawa como revisado? </span>',
+      type: 'question',
+      html: '<p style="color: #303f9f "><b>Si confirma esta acción su nombre quedará registrado</b></p>',
+      showCancelButton: true,
+      confirmButtonColor: '#303f9f',
+      cancelButtonColor: '#9fa8da ',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Si!',
+      allowOutsideClick: false,
+      allowEnterKey: false
+    }).then((result) => {
+      /*
+       * Si acepta
+       */
+      if (result.value) {
+
+        this.service.revisarIshikawa(this.auth.getIdUsuario(), data.ishikawa).subscribe(result => {
+        
+          if (result.response.sucessfull) {
+            this.ishikawa = result.data.ishikawa;
+            this.recordsIshikawa.filter(el => el.id == this.ishikawa.id)[0].estatus = 1;
+            Materialize.toast('Ishikawa revisado ', 4000, 'green');
+          } else {
+            Materialize.toast(result.response.message, 4000, 'red');
+          }
+        }, error => {
+          Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+        });
+
+        /*
+        * Si cancela accion
+        */
+      } else if (result.dismiss === swal.DismissReason.cancel) {
+      }
+    })
+
+  }
+
 
 
   /*
@@ -446,7 +492,7 @@ export class ListaIshikawasComponent implements OnInit {
    */
 
   viewPDF(ishikawa: PetIshikawa): void {
-    
+
     var dd = {
       content: [
         {
@@ -477,14 +523,14 @@ export class ListaIshikawasComponent implements OnInit {
                 heights: ['*', 30, '*', 30, '*', 30, '*', 30],
                 body: [
 
-                  [{text: '¿Qué situación se presenta?', style: 'fuenteTabla'}],
-                  [{text: ishikawa.que, style: 'textoTabla'}],
-                  [{text: '¿Dónde se presenta la situación?', style: 'fuenteTabla'}],
-                  [{text: ishikawa.donde, style: 'textoTabla'}],
-                  [{text: '¿Cuándo se presenta?', style: 'fuenteTabla'}],
-                  [{text: ishikawa.cuando, style: 'textoTabla'}],
-                  [{text: '¿Cómo afecta la situación?', style: 'fuenteTabla'}],
-                  [{text: ishikawa.como, style: 'textoTabla'}]
+                  [{ text: '¿Qué situación se presenta?', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.que, style: 'textoTabla' }],
+                  [{ text: '¿Dónde se presenta la situación?', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.donde, style: 'textoTabla' }],
+                  [{ text: '¿Cuándo se presenta?', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.cuando, style: 'textoTabla' }],
+                  [{ text: '¿Cómo afecta la situación?', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.como, style: 'textoTabla' }]
                 ]
               }
             }
@@ -492,14 +538,14 @@ export class ListaIshikawasComponent implements OnInit {
             {
               style: 'tabla',
 
-                table: {
-                  widths: [370],
-                  heights: ['*', 200],
-                  body: [
-                    [{text: 'Define el enunciado del problema', style: 'fuenteTabla'}],
-                    [{text: ishikawa.problema, style: 'textoTabla'}],                 
-                  ]                
-                }                          
+              table: {
+                widths: [370],
+                heights: ['*', 200],
+                body: [
+                  [{ text: 'Define el enunciado del problema', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.problema, style: 'textoTabla' }],
+                ]
+              }
             }
           ]
         },
@@ -514,12 +560,12 @@ export class ListaIshikawasComponent implements OnInit {
               table: {
                 widths: [370],
                 body: [
-                  [{text: 'Nombre ETAD', style: 'fuenteTabla'}],
-                  [{text: ishikawa.nombre_etad, style: 'textoTabla'}],
-                  [{text: 'Grupo', style: 'fuenteTabla'}],
-                  [{text: ishikawa.grupo.valor, style: 'textoTabla'}],
-                  [{text: 'Área', style: 'fuenteTabla'}],
-                  [{text: ishikawa.etad.valor, style: 'textoTabla'}]
+                  [{ text: 'Nombre ETAD', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.nombre_etad, style: 'textoTabla' }],
+                  [{ text: 'Grupo', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.grupo.valor, style: 'textoTabla' }],
+                  [{ text: 'Área', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.etad.valor, style: 'textoTabla' }]
                 ]
               }
             }
@@ -559,18 +605,18 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [195],
                 heights: ['*', 40, '*', 40, '*', 40, '*', 40, '*', 40, '*', 40],
                 body: [
-                  [{text: 'Mano de Obra', style: 'fuenteTabla'}],
-                  [{text: ishikawa.listIdeas.filter(el=>el.id_eme == 1).map(el=>el.idea).toString(), style: 'textoIshikawa'}],
-                  [{text: 'Maquinaria', style: 'fuenteTabla'}],
-                  [{text: ishikawa.listIdeas.filter(el=>el.id_eme == 2).map(el=>el.idea).toString(), style: 'textoIshikawa'}],
-                  [{text: 'Mediciones', style: 'fuenteTabla'}],
-                  [{text: ishikawa.listIdeas.filter(el=>el.id_eme == 3).map(el=>el.idea).toString(), style: 'textoIshikawa'}],
-                  [{text: 'Método', style: 'fuenteTabla'}],
-                  [{text: ishikawa.listIdeas.filter(el=>el.id_eme == 4).map(el=>el.idea).toString(), style: 'textoIshikawa'}],
-                  [{text: 'Material', style: 'fuenteTabla'}],
-                  [{text: ishikawa.listIdeas.filter(el=>el.id_eme == 5).map(el=>el.idea).toString(), style: 'textoIshikawa'}],
-                  [{text: 'Medio Ambiente', style: 'fuenteTabla'}],
-                  [{text: ishikawa.listIdeas.filter(el=>el.id_eme == 6).map(el=>el.idea).toString(), style: 'textoIshikawa'}]
+                  [{ text: 'Mano de Obra', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.listIdeas.filter(el => el.id_eme == 1).map(el => el.idea).toString(), style: 'textoIshikawa' }],
+                  [{ text: 'Maquinaria', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.listIdeas.filter(el => el.id_eme == 2).map(el => el.idea).toString(), style: 'textoIshikawa' }],
+                  [{ text: 'Mediciones', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.listIdeas.filter(el => el.id_eme == 3).map(el => el.idea).toString(), style: 'textoIshikawa' }],
+                  [{ text: 'Método', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.listIdeas.filter(el => el.id_eme == 4).map(el => el.idea).toString(), style: 'textoIshikawa' }],
+                  [{ text: 'Material', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.listIdeas.filter(el => el.id_eme == 5).map(el => el.idea).toString(), style: 'textoIshikawa' }],
+                  [{ text: 'Medio Ambiente', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.listIdeas.filter(el => el.id_eme == 6).map(el => el.idea).toString(), style: 'textoIshikawa' }]
                 ]
               }
             },
@@ -594,8 +640,8 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [350],
                 heights: ['*', 200],
                 body: [
-                  [{text: 'Describe la causa raíz', style: 'fuenteTabla'}],
-                  [{text: ishikawa.causa_raiz, style: 'textoTabla'}]
+                  [{ text: 'Describe la causa raíz', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.causa_raiz, style: 'textoTabla' }]
                 ]
               }
             },
@@ -620,17 +666,17 @@ export class ListaIshikawasComponent implements OnInit {
           table: {
             heights: ['*', 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
             body: [
-              [{text: 'Enunciado del Problema', style: 'fuenteTabla2'}, {text: 'Causa Primaria', style: 'fuenteTabla2'}, {text: 'Causa Secundaria', style: 'fuenteTabla2'}, {text: 'Causa terciaria', style: 'fuenteTabla2'}, {text: 'Causa Cuaternaria', style: 'fuenteTabla2'}, {text: 'Causa quinaria', style: 'fuenteTabla2'}, {text: 'Causa sextenaria', style: 'fuenteTabla2'}, {text: 'Causa septenaria', style: 'fuenteTabla2'}, {text: 'Acción Correctiva', style: 'fuenteTabla2'}, {text: 'Responsable', style: 'fuenteTabla2'}, {text: 'Fecha', style: 'fuenteTabla2'}],
-              [{rowSpan: 10, text: ishikawa.problema, style: 'textoIshikawa'}, {text: 'Maquinaria', style: 'textoIshikawa'}, {text: 'Alta temperatura de las resistencias del filtro fino', style: 'textoIshikawa'}, {text: 'Por ajuste del proceso', style: 'textoIshikawa'}, {text: 'Por baja viscosidad de la resina', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: 'Bajar  temperaturas del filtro fino', style: 'textoIshikawa'}, {text: 'Aurelio Marcial', style: 'textoIshikawa'}, {text: '31/07/2018', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: 'Maquinaria', style: 'textoIshikawa'}, {text: 'Guarda de desgogue de aire del piston de purga inadecuado', style: 'textoIshikawa'}, {text: 'Ya que solo se coloco una guarda provicional', style: 'textoIshikawa'}, {text: 'Por que no venia de fabrica', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: 'Fabricar la guarda que lleva igual que en el extrusor 2', style: 'textoIshikawa'}, {text: 'Eduardo Izquierdo', style: 'textoIshikawa'}, {text: '15/08/2018', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}]
+              [{ text: 'Enunciado del Problema', style: 'fuenteTabla2' }, { text: 'Causa Primaria', style: 'fuenteTabla2' }, { text: 'Causa Secundaria', style: 'fuenteTabla2' }, { text: 'Causa terciaria', style: 'fuenteTabla2' }, { text: 'Causa Cuaternaria', style: 'fuenteTabla2' }, { text: 'Causa quinaria', style: 'fuenteTabla2' }, { text: 'Causa sextenaria', style: 'fuenteTabla2' }, { text: 'Causa septenaria', style: 'fuenteTabla2' }, { text: 'Acción Correctiva', style: 'fuenteTabla2' }, { text: 'Responsable', style: 'fuenteTabla2' }, { text: 'Fecha', style: 'fuenteTabla2' }],
+              [{ rowSpan: 10, text: ishikawa.problema, style: 'textoIshikawa' }, { text: 'Maquinaria', style: 'textoIshikawa' }, { text: 'Alta temperatura de las resistencias del filtro fino', style: 'textoIshikawa' }, { text: 'Por ajuste del proceso', style: 'textoIshikawa' }, { text: 'Por baja viscosidad de la resina', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: 'Bajar  temperaturas del filtro fino', style: 'textoIshikawa' }, { text: 'Aurelio Marcial', style: 'textoIshikawa' }, { text: '31/07/2018', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: 'Maquinaria', style: 'textoIshikawa' }, { text: 'Guarda de desgogue de aire del piston de purga inadecuado', style: 'textoIshikawa' }, { text: 'Ya que solo se coloco una guarda provicional', style: 'textoIshikawa' }, { text: 'Por que no venia de fabrica', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: 'Fabricar la guarda que lleva igual que en el extrusor 2', style: 'textoIshikawa' }, { text: 'Eduardo Izquierdo', style: 'textoIshikawa' }, { text: '15/08/2018', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }]
             ]
           }
         },
@@ -674,7 +720,7 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [140],
                 heights: [300],
                 body: [
-                  [{text: ishikawa.problema, style: 'textoIshikawa'}]
+                  [{ text: ishikawa.problema, style: 'textoIshikawa' }]
                 ]
               }
             },
@@ -684,7 +730,7 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [140],
                 heights: [300],
                 body: [
-                  [{text: ishikawa.causa_raiz, style: 'textoIshikawa'}]
+                  [{ text: ishikawa.causa_raiz, style: 'textoIshikawa' }]
                 ]
               }
             },
@@ -723,12 +769,12 @@ export class ListaIshikawasComponent implements OnInit {
               table: {
                 heights: [45, 45, 45, 45, 45, 50],
                 body: [
-                  [{text: 'Con este ajuste  evitamos que expulse el material arriba de 285 grados', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}]                 
+                  [{ text: 'Con este ajuste  evitamos que expulse el material arriba de 285 grados', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'textoIshikawa' }]
                 ]
               }
             }
@@ -778,8 +824,8 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [240],
                 heights: [10, 10],
                 body: [
-                  [{text: ishikawa.elaborado, style: 'textoIshikawa'}],
-                  [{text: 'Elaboró', style: 'fuenteFirma'}]
+                  [{ text: ishikawa.elaborado, style: 'textoIshikawa' }],
+                  [{ text: 'Elaboró', style: 'fuenteFirma' }]
                 ]
               }
             },
@@ -789,8 +835,8 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [240],
                 heights: [10, 10],
                 body: [
-                  [{text: ishikawa.revisado, style: 'textoIshikawa'}],
-                  [{text: 'Revisó', style: 'fuenteFirma'}]
+                  [{ text: ishikawa.revisado, style: 'textoIshikawa' }],
+                  [{ text: 'Revisó', style: 'fuenteFirma' }]
                 ]
               }
             },
@@ -800,8 +846,8 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [240],
                 heights: [10, 10],
                 body: [
-                  [{text: ishikawa.autorizado, style: 'textoIshikawa'}],
-                  [{text: 'Autorizó(Gerente de Área)', style: 'fuenteFirma'}]
+                  [{ text: ishikawa.autorizado, style: 'textoIshikawa' }],
+                  [{ text: 'Autorizó(Gerente de Área)', style: 'fuenteFirma' }]
                 ]
               }
             }
@@ -865,7 +911,7 @@ export class ListaIshikawasComponent implements OnInit {
   }
 
 
-  getDrawTestRaiz(listConsenso: Array<PetConsenso>):Array<any>{
+  getDrawTestRaiz(listConsenso: Array<PetConsenso>): Array<any> {
     let test_raiz = [];
     let temporal = [];
     temporal.push({ text: 'Text de causa raíz', style: 'fuenteTabla' });
@@ -898,12 +944,12 @@ export class ListaIshikawasComponent implements OnInit {
           break;
       }
 
-      if(el.respuesta == 1){
-        temporal.push({text: 'X', style: 'textoTabla'});
-        temporal.push({text: '', style: 'textoTabla'});
-      }else{
-        temporal.push({text: '', style: 'textoTabla'});
-        temporal.push({text: 'X', style: 'textoTabla'});
+      if (el.respuesta == 1) {
+        temporal.push({ text: 'X', style: 'textoTabla' });
+        temporal.push({ text: '', style: 'textoTabla' });
+      } else {
+        temporal.push({ text: '', style: 'textoTabla' });
+        temporal.push({ text: 'X', style: 'textoTabla' });
       }
       test_raiz.push(temporal);
     });

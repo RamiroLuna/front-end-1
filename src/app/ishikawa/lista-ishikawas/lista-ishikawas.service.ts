@@ -43,6 +43,15 @@ export class ListaIshikawasService {
     return this.http.post(this.URL, body);
   }
 
+
+  revisarIshikawa(id_usuario: number, ishikawa:PetIshikawa): Observable<any> {
+    const body = new HttpParams()
+      .set('action', 'revisarIshikawa')
+      .set('id_ishikawa', ''+ishikawa.id)
+      .set('id_usuario', '' + id_usuario);
+    return this.http.post(this.URL, body);
+  }
+
 /*
 * Bloque de codigo para peticiones CRUD 
 */
