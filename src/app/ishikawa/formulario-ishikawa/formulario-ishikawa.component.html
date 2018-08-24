@@ -445,8 +445,8 @@
             </tbody>
           </table>
           <div class="step-actions">
-            <!-- <button class="waves-effect waves-dark light-green darken-3  btn" type="button" (click)="validarVerificacion(8)" *ngIf="ishikawa.estatus == 1">CONTINUAR</button> -->
-            <button [ngClass]="{'waves-effect waves-dark light-green darken-3  btn': true, 'next-step': showSteepEight }" type="button"  (click)="validarVerificacion(8)" *ngIf="ishikawa.estatus == 1">CONTINUAR</button>
+            <button [ngClass]="{'waves-effect waves-dark light-green darken-3  btn': true, 'next-step': showSteepEight }" type="button"
+              (click)="validarVerificacion(8)" *ngIf="ishikawa.estatus == 1">CONTINUAR</button>
           </div>
         </div>
         <div class="step-content" *ngIf="!ishikawa.verificar">
@@ -469,8 +469,7 @@
       <li [ngClass]="{'step':true, 'deshabilitado': (ishikawa.estatus == 0 || ishikawa.estatus == 1), 'seguimiento_paso_9':true }"
         *ngIf="action == 'consult'">
         <div class="step-title waves-effect">Seguimiento</div>
-        <ng-container *ngIf="showSteepEight">
-          <div class="step-content" *ngIf="ishikawa.verificar || ishikawa.estatus == 2">
+        <div class="step-content" *ngIf="ishikawa.verificar || ishikawa.estatus == 2">
           <table class="highlight">
             <thead>
               <tr>
@@ -534,15 +533,15 @@
               <div class="input-field" *ngIf="ishikawa.estatus == 2">
                 <input id="autorizado" type="text" [value]="ishikawa.autorizado" disabled>
                 <label for="autorizado" class="active">Autorizó (Gerente de área)</label>
-              </div> 
+              </div>
             </div>
           </div>
           <div class="step-actions" *ngIf="ishikawa.estatus == 1">
             <button class="waves-effect waves-dark btn-flat previous-step">REGRESAR</button>
-            <button  class="waves-effect waves-dark light-blue darken-2  btn" type="button" (click)="validarVerificacion(9)">FINALIZAR ISHIKAWA</button>            
+            <button class="waves-effect waves-dark light-blue darken-2  btn" type="button" (click)="validarVerificacion(9)">FINALIZAR ISHIKAWA</button>
           </div>
         </div>
-        </ng-container>
+
       </li>
     </ul>
   </div>

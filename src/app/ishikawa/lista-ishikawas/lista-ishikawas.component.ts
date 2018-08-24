@@ -280,9 +280,9 @@ export class ListaIshikawasComponent implements OnInit {
             break;
           case 'verificar':
             this.service.checkIshikawa(this.auth.getIdUsuario(), ishikawa).subscribe(result => {
-              debugger
+              
               if (result.response.sucessfull) {
-               
+                
                 this.ishikawa = result.data.ishikawa;
                 this.recordsIshikawa.forEach((el, index, arg) => {
                   if (el.id == ishikawa.id) {

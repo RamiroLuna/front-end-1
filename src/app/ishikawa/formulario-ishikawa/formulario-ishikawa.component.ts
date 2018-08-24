@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, } from '@angular/core';
 import { Catalogo } from '../../models/catalogo';
 import { PetIshikawa } from '../../models/pet-ishikawa';
 import { PetIdeas } from '../../models/pet-ideas';
@@ -15,7 +15,7 @@ declare var Materialize: any;
   templateUrl: './formulario-ishikawa.component.html',
   styleUrls: ['./formulario-ishikawa.component.css']
 })
-export class FormularioIshikawaComponent implements OnInit {
+export class FormularioIshikawaComponent implements OnInit, OnChanges {
 
 
   @Input() emes: Array<Catalogo>;
@@ -44,7 +44,7 @@ export class FormularioIshikawaComponent implements OnInit {
   public configPlugin: any;
   public acciones: Array<PetPlanAccion>;
   public image_src: string;
-  public showSteepEight:boolean;
+  public showSteepEight: boolean;
 
 
   constructor() { }
@@ -77,7 +77,13 @@ export class FormularioIshikawaComponent implements OnInit {
 
       $('.stepper').activateStepper(this.configPlugin);
 
-      $('.seguimiento_paso_9').on('click', ()=>{
+      if (this.ishikawa.estatus == 1 || this.ishikawa.estatus == 0) {
+        $('.seguimiento_paso_9').prop("disabled", true);
+        
+      }
+
+
+      $('.seguimiento_paso_9').on('click', () => {
         this.showSteepEight = this.isValidStepOcho();
       });
 
@@ -103,6 +109,16 @@ export class FormularioIshikawaComponent implements OnInit {
       }
 
     }, 100);
+  }
+
+  //Detecta cambios en ishikawa
+  ngOnChanges(changes: SimpleChanges) {
+    let ishikawa_tmp = changes['ishikawa'];
+    if(ishikawa_tmp){
+      if (ishikawa_tmp.currentValue.estatus == 2) {       
+        $('.seguimiento_paso_9').removeProp("disabled");
+      }  
+    }
   }
 
 
@@ -254,10 +270,10 @@ export class FormularioIshikawaComponent implements OnInit {
     if (b) {
 
       if (step == 8) {
-      
+
         this.showSteepEight = true;
 
-      
+
       } else if (step == 9) {
         this.verificarModelo.emit({ ishikawa: this.ishikawa, action: this.action });
       }
