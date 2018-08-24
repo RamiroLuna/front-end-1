@@ -367,7 +367,7 @@
           </div>
         </div>
       </li>
-      <li [ngClass]="{'step':true, 'deshabilitado':(!ishikawa.verificar && ishikawa.estatus == 1), 'deshabilitado_sin':(ishikawa.verificar && ishikawa.estatus == 2) }"
+      <li [ngClass]="{'step':true, 'deshabilitado': (ishikawa.estatus == 0 || ishikawa.estatus == 1)  }"
         *ngIf="action == 'consult'">
         <div class="step-title waves-effect">Verificación</div>
         <div class="step-content" *ngIf="ishikawa.verificar || ishikawa.estatus == 2">
@@ -433,10 +433,10 @@
                       </div>
                     </td>
                     <td>
-                      <ng-container *ngIf="ishikawa.estatus == 0">
+                      <ng-container *ngIf="ishikawa.estatus == 1">
                         <input type="text" [(ngModel)]="accion.porque" [ngModelOptions]="{standalone: true}">
                       </ng-container>
-                      <ng-container *ngIf="ishikawa.estatus == 1">
+                      <ng-container *ngIf="ishikawa.estatus == 2">
                         {{ accion.porque }}
                       </ng-container>
                     </td>
@@ -466,7 +466,7 @@
           </div>
         </div>
       </li>
-      <li [ngClass]="{'step':true, 'deshabilitado': (!ishikawa.verificar && ishikawa.estatus == 1), 'deshabilitado_sin':(ishikawa.verificar && ishikawa.estatus == 1) }"
+      <li [ngClass]="{'step':true, 'deshabilitado': (ishikawa.estatus == 0 || ishikawa.estatus == 1) }"
         *ngIf="action == 'consult'">
         <div class="step-title waves-effect">Seguimiento</div>
         <div class="step-content" *ngIf="ishikawa.verificar || ishikawa.estatus == 2">

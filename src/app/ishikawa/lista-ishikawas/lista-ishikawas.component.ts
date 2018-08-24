@@ -280,7 +280,7 @@ export class ListaIshikawasComponent implements OnInit {
             break;
           case 'verificar':
             this.service.checkIshikawa(this.auth.getIdUsuario(), ishikawa).subscribe(result => {
-
+              debugger
               if (result.response.sucessfull) {
                
                 this.ishikawa = result.data.ishikawa;
@@ -339,6 +339,7 @@ export class ListaIshikawasComponent implements OnInit {
     this.ishikawa = new PetIshikawa();
 
     this.service.getIshikawaById(this.auth.getIdUsuario(), ishikawa.id).subscribe(result => {
+     
       if (result.response.sucessfull) {
         this.ishikawa = result.data.ishikawa;
         this.consultaById = true;
@@ -465,8 +466,17 @@ export class ListaIshikawasComponent implements OnInit {
         this.service.revisarIshikawa(this.auth.getIdUsuario(), data.ishikawa).subscribe(result => {
         
           if (result.response.sucessfull) {
-            this.ishikawa = result.data.ishikawa;
-            this.recordsIshikawa.filter(el => el.id == this.ishikawa.id)[0].estatus = 1;
+
+            this.ishikawa.estatus = 1;
+            this.ishikawa.revisado = result.data.ishikawa.revisado;
+            this.ishikawa.verificar = result.data.ishikawa.verificar;
+
+            this.recordsIshikawa.forEach((el, index, arg) => {
+              if (el.id ==  data.ishikawa.id) {
+                arg[index].estatus = 1;
+                arg[index].revisado = result.data.ishikawa.reviso;
+              }
+            });
             Materialize.toast('Ishikawa revisado ', 4000, 'green');
           } else {
             Materialize.toast(result.response.message, 4000, 'red');
