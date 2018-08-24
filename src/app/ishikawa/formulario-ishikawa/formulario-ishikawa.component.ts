@@ -44,6 +44,7 @@ export class FormularioIshikawaComponent implements OnInit {
   public configPlugin: any;
   public acciones: Array<PetPlanAccion>;
   public image_src: string;
+  public showSteepEight:boolean;
 
 
   constructor() { }
@@ -66,7 +67,7 @@ export class FormularioIshikawaComponent implements OnInit {
       showFeedbackLoader: true //set if a loading screen will appear while feedbacks functions are running
     };
 
-
+    this.showSteepEight = false;
     this.tmp_idea = new PetIdeas();
     this.aux_texto_idea = "";
     this.aux_index = -1;
@@ -76,6 +77,9 @@ export class FormularioIshikawaComponent implements OnInit {
 
       $('.stepper').activateStepper(this.configPlugin);
 
+      $('.seguimiento_paso_9').on('click', ()=>{
+        this.showSteepEight = this.isValidStepOcho();
+      });
 
       this.$modal = $('#modalCaptura').modal({
         opacity: 0.6,
@@ -100,6 +104,7 @@ export class FormularioIshikawaComponent implements OnInit {
 
     }, 100);
   }
+
 
   validar(step: number): void {
     let b = false;
@@ -230,26 +235,13 @@ export class FormularioIshikawaComponent implements OnInit {
   }
 
   validarVerificacion(step: number): void {
+    this.showSteepEight = false;
     let b = false;
     let menssage = "";
 
     switch (step) {
       case 8:
-        let contador = 0;
-
-        do {
-
-          if (isValidText(this.acciones[contador].porque)) {
-            b = true;
-          } else {
-            b = false;
-          }
-
-          contador++;
-
-
-        } while (b && contador < this.acciones.length);
-
+        b = this.isValidStepOcho();
         menssage = "Ingrese todos los datos";
 
         break;
@@ -262,13 +254,35 @@ export class FormularioIshikawaComponent implements OnInit {
     if (b) {
 
       if (step == 8) {
-        $('.stepper').nextStep();
+      
+        this.showSteepEight = true;
+
+      
       } else if (step == 9) {
         this.verificarModelo.emit({ ishikawa: this.ishikawa, action: this.action });
       }
     } else {
       Materialize.toast(menssage, 4500, 'red');
     }
+  }
+
+  isValidStepOcho(): boolean {
+    let b = false;
+    let contador = 0;
+
+    do {
+
+      if (isValidText(this.acciones[contador].porque)) {
+        b = true;
+      } else {
+        b = false;
+      }
+
+      contador++;
+
+
+    } while (b && contador < this.acciones.length);
+    return b;
   }
 
   openModalIdea(event: any, eme: Catalogo, action: string, index: number, idea: PetIdeas): void {
