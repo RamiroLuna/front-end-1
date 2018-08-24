@@ -3,30 +3,31 @@ import { PetConsenso } from "./pet-consenso";
 import { Catalogo } from "./catalogo";
 
 export class PetIshikawa {
-    id:number;
+    id: number;
     fecha_string: string;
     que: string;
     donde: string;
     cuando: string;
     como: string;
     problema: string;
-    fecha:string;
+    fecha: string;
     nombre_etad: string;
-    id_grupo:number;
-    id_etad:number;
+    descripcion_corta: string = "";
+    id_grupo: number;
+    id_etad: number;
     causa_raiz: string;
-    solucionado:number;
-    recurrente:number;
-    analisis:number;
+    solucionado: number;
+    recurrente: number;
+    analisis: number;
     elaborado: string;
     revisado: string;
     autorizado: string;
-    estatus:number;
-    listIdeas:  Array<PetIdeas> = [];
+    estatus: number;
+    listIdeas: Array<PetIdeas> = [];
     listConsenso: Array<PetConsenso> = [];
 
-    etad?:Catalogo;
-    grupo?:Catalogo;
+    etad?: Catalogo;
+    grupo?: Catalogo;
 
-    verificar?:boolean;
+    verificar?: boolean;
 }

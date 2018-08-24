@@ -17,6 +17,8 @@ import {
 import { PetIshikawa } from '../../models/pet-ishikawa';
 import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
+import { PetConsenso } from '../../models/pet-consenso';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -228,8 +230,8 @@ export class ListaIshikawasComponent implements OnInit {
 
   }
 
-  verificaIshikawa(data):void{
-      this.openModalConfirmacion(data.ishikawa, 'verificar');
+  verificaIshikawa(data): void {
+    this.openModalConfirmacion(data.ishikawa, 'verificar');
   }
 
   openModalConfirmacion(ishikawa: PetIshikawa, accion: string, event?: any): void {
@@ -250,7 +252,7 @@ export class ListaIshikawasComponent implements OnInit {
     swal({
       title: '<span style="color: #303f9f ">' + this.mensajeModal + '</span>',
       type: 'question',
-      html: '<p style="color: #303f9f ">Día registro: <b>' + ishikawa.fecha_string + '</b> Área etad: <b>' + ishikawa.etad.valor + '</b> Grupo: <b>' + ishikawa.grupo.valor + '</b></p>',
+      html: '<p style="color: #303f9f ">Descripción ishikawa: <b>'+ishikawa.descripcion_corta+'</b></p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
@@ -278,12 +280,16 @@ export class ListaIshikawasComponent implements OnInit {
             break;
           case 'verificar':
             this.service.checkIshikawa(this.auth.getIdUsuario(), ishikawa).subscribe(result => {
-           
+              debugger
               if (result.response.sucessfull) {
-                ishikawa.estatus = 1
-                this.ishikawa = ishikawa;
-                this.recordsIshikawa.filter(el=>el.id == ishikawa.id)[0].estatus = 1;
-  
+               
+                this.ishikawa = result.data.ishikawa;
+                this.recordsIshikawa.forEach((el, index, arg) => {
+                  if (el.id == ishikawa.id) {
+                    arg[index] = this.ishikawa;
+                  }
+                });
+
                 Materialize.toast('Finalizó ishikawa correctamente ', 4000, 'green');
               } else {
                 Materialize.toast(result.response.message, 4000, 'red');
@@ -333,6 +339,7 @@ export class ListaIshikawasComponent implements OnInit {
     this.ishikawa = new PetIshikawa();
 
     this.service.getIshikawaById(this.auth.getIdUsuario(), ishikawa.id).subscribe(result => {
+     
       if (result.response.sucessfull) {
         this.ishikawa = result.data.ishikawa;
         this.consultaById = true;
@@ -359,8 +366,8 @@ export class ListaIshikawasComponent implements OnInit {
       type: 'info',
       html: ' Para <b>editar</b> un ishikawa haga clic en el botón <i class="material-icons">edit</i> <br>' +
         '<b>Solo podra editar si el ishikawa no ha sido verificado</b></br>' +
-        'Para <b>verficar</b> haga clic en el botón <i class="material-icons">list</i> <br>'+
-        '<b> La verificación se habilitará un día después de la fecha más lejana registrada en el plan de acción</b> <br><br>'+
+        'Para <b>verficar</b> haga clic en el botón <i class="material-icons">list</i> <br>' +
+        '<b> La verificación se habilitará un día después de la fecha más lejana registrada en el plan de acción</b> <br><br>' +
         ' El formato <b>PDF</b> se habilitará cuando el ishikawa este finalizado',
       showCloseButton: false,
       showCancelButton: false,
@@ -371,14 +378,131 @@ export class ListaIshikawasComponent implements OnInit {
   }
 
 
+  updateIshikawa(data: any): void {
+
+    this.ishikawa = data.ishikawa;
+    /* 
+     * Configuración del modal de confirmación
+     */
+    swal({
+      title: '<span style="color: #303f9f ">¿Está seguro de actualizar ishikawa?</span>',
+      type: 'question',
+      input: 'text',
+      inputPlaceholder: 'Escribe aquí',
+      html: '<p style="color: #303f9f ">Ingrese descripción corta para identificar el registro</b></p>',
+      showCancelButton: true,
+      confirmButtonColor: '#303f9f',
+      cancelButtonColor: '#9fa8da ',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Si!',
+      inputValue: this.ishikawa.descripcion_corta,
+      allowOutsideClick: false,
+      allowEnterKey: false,
+      inputValidator: (value) => {
+
+        if (!value) {
+          return 'Se requiere descripción!';
+        } else {
+          if (value.length > 30) {
+            return 'Máximo 30 caracteres';
+          } else {
+            this.ishikawa.descripcion_corta = value;
+          }
+        }
+      }
+    }).then((result) => {
+      /*
+       * Si acepta
+       */
+      if (result.value) {
+
+        this.service.updateIshikawa(this.auth.getIdUsuario(), this.ishikawa).subscribe(result => {
+          if (result.response.sucessfull) {
+            let id_old = this.ishikawa.id;
+            let id = parseInt(result.response.message);
+            this.ishikawa.id = id;
+            this.recordsIshikawa.forEach((el, index, arg) => {
+              if (el.id == id_old) {
+                arg[index] = this.ishikawa;
+              }
+            });
+            Materialize.toast(' Se actualizo correctamente ', 5000, 'green');
+          } else {
+            Materialize.toast(result.response.message, 4000, 'red');
+          }
+        }, error => {
+          Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+        });
+        /*
+        * Si cancela accion
+        */
+      } else if (result.dismiss === swal.DismissReason.cancel) {
+      }
+    });
+
+  }
+
+  revisaIshikawa(data: any): void {
+  /* 
+   * Configuración del modal de confirmación
+   */
+    swal({
+      title: '<span style="color: #303f9f ">¿Está seguro de marcar ishikawa como revisado? </span>',
+      type: 'question',
+      html: '<p style="color: #303f9f "><b>Si confirma esta acción su nombre quedará registrado</b></p>',
+      showCancelButton: true,
+      confirmButtonColor: '#303f9f',
+      cancelButtonColor: '#9fa8da ',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Si!',
+      allowOutsideClick: false,
+      allowEnterKey: false
+    }).then((result) => {
+      /*
+       * Si acepta
+       */
+      if (result.value) {
+
+        this.service.revisarIshikawa(this.auth.getIdUsuario(), data.ishikawa).subscribe(result => {
+        
+          if (result.response.sucessfull) {
+
+            this.ishikawa.estatus = 1;
+            this.ishikawa.revisado = result.data.ishikawa.revisado;
+            this.ishikawa.verificar = result.data.ishikawa.verificar;
+
+            this.recordsIshikawa.forEach((el, index, arg) => {
+              if (el.id ==  data.ishikawa.id) {
+                arg[index].estatus = 1;
+                arg[index].revisado = result.data.ishikawa.reviso;
+              }
+            });
+            Materialize.toast('Ishikawa revisado ', 4000, 'green');
+          } else {
+            Materialize.toast(result.response.message, 4000, 'red');
+          }
+        }, error => {
+          Materialize.toast('Ocurrió  un error en el servicio!', 4000, 'red');
+        });
+
+        /*
+        * Si cancela accion
+        */
+      } else if (result.dismiss === swal.DismissReason.cancel) {
+      }
+    })
+
+  }
+
+
+
   /*
    * 
    * 
    */
-  viewPDF(ishikawa:PetIshikawa):void{
-    console.log(ishikawa);
-    ;
-    
+
+  viewPDF(ishikawa: PetIshikawa): void {
+
     var dd = {
         
         header: [
@@ -393,9 +517,11 @@ export class ListaIshikawasComponent implements OnInit {
         '\n',
         //Descripción del problema
         {
+
           alignment: 'center',
           width: 220,
           image: 'data:image/png;base64,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'
+
         },
         '\n',
         {
@@ -438,7 +564,7 @@ export class ListaIshikawasComponent implements OnInit {
           alignment: 'center',
           columns: [
             {
-              text: 'Definición del problema',             
+              text: 'Definición del problema',
               style: 'fuente'
             },
             {
@@ -451,33 +577,35 @@ export class ListaIshikawasComponent implements OnInit {
           alignment: 'center',
           columns: [
             {
-              style: 'tabla',              
+              style: 'tabla',
               table: {
                 widths: [350],
                 heights: ['*', 30, '*', 30, '*', 30, '*', 30],
                 body: [
-                  [{text: '¿Qué situación se presenta?', style: 'fuenteTabla'}],
-                  [{text: ishikawa.que, style: 'textoTabla'}],
-                  [{text: '¿Dónde se presenta la situación?', style: 'fuenteTabla'}],
-                  [{text: ishikawa.donde, style: 'textoTabla'}],
-                  [{text: '¿Cuándo se presenta?', style: 'fuenteTabla'}],
-                  [{text: ishikawa.cuando, style: 'textoTabla'}],
-                  [{text: '¿Cómo afecta la situación?', style: 'fuenteTabla'}],
-                  [{text: ishikawa.como, style: 'textoTabla'}]
+
+                  [{ text: '¿Qué situación se presenta?', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.que, style: 'textoTabla' }],
+                  [{ text: '¿Dónde se presenta la situación?', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.donde, style: 'textoTabla' }],
+                  [{ text: '¿Cuándo se presenta?', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.cuando, style: 'textoTabla' }],
+                  [{ text: '¿Cómo afecta la situación?', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.como, style: 'textoTabla' }]
                 ]
               }
             }
             ,
-            {             
+            {
               style: 'tabla',
-                table: {
-                  widths: [370],
-                  heights: ['*', 200],
-                  body: [
-                    [{text: 'Define el enunciado del problema', style: 'fuenteTabla'}],
-                    [{text: ishikawa.problema, style: 'textoTabla'}],                 
-                  ]                
-                }                          
+
+              table: {
+                widths: [370],
+                heights: ['*', 200],
+                body: [
+                  [{ text: 'Define el enunciado del problema', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.problema, style: 'textoTabla' }],
+                ]
+              }
             }
           ]
         },
@@ -485,8 +613,10 @@ export class ListaIshikawasComponent implements OnInit {
         //Lluvia de ideas
         {
           alignment: 'center',
+
           width: 220,
           image: 'data:image/png;base64,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'
+
         },
         '\n',
         {         
@@ -528,8 +658,10 @@ export class ListaIshikawasComponent implements OnInit {
         //Test de causa raíz  
         {
           alignment: 'center',
+
           width: 220,
           image: 'data:image/png;base64,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'
+
         },
         '\n\n',
         {
@@ -541,8 +673,8 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [350],
                 heights: ['*', 200],
                 body: [
-                  [{text: 'Describe la causa raíz', style: 'fuenteTabla'}],
-                  [{text: ishikawa.causa_raiz, style: 'textoTabla'}]
+                  [{ text: 'Describe la causa raíz', style: 'fuenteTabla' }],
+                  [{ text: ishikawa.causa_raiz, style: 'textoTabla' }]
                 ]
               }
             },
@@ -551,18 +683,9 @@ export class ListaIshikawasComponent implements OnInit {
               table: {
                 widths: [270, 40, 40],
                 heights: ['*', 50, 50, 50, 50, 50, 50, 50],
-                body: [
-                  [{text: 'Text de causa raíz', style: 'fuenteTabla'}, {text: 'Sí', style: 'fuenteTabla'}, {text: 'No', style: 'fuenteTabla'}],
-                  [{text: '¿El enunciado de la causa raíz idenrifica a algún elemento del proceso?', style: 'textoTabla'}, {text: 'X', style: 'textoTabla'}, {text: '', style: 'textoTabla'}],
-                  [{text: '¿Es controlable la causa raíz?', style: 'textoTabla'}, {text: 'X', style: 'textoTabla'}, {text: '', style: 'textoTabla'}],
-                  [{text: '¿Se puede preguntar "por qué" otra vez y obtener otra causa raíz controlable?', style: 'textoTabla'}, {text: '', style: 'textoTabla'}, {text: 'X', style: 'textoTabla'}],
-                  [{text: '¿La causa raíz identificada es la falla fundamental del proceso?', style: 'textoTabla'}, {text: 'X', style: 'textoTabla'}, {text: '', style: 'textoTabla'}],
-                  [{text: 'Si corregimos o mejoramos la causa raíz identificada, ¿Asegurará que el problema identificado no vuelva a ocurrir?', style: 'textoTabla'}, {text: 'X', style: 'textoTabla'}, {text: '', style: 'textoTabla'}],
-                  [{text: '¿Hemos identificado la causa raíz del prblema?', style: 'textoTabla'}, {text: 'X', style: 'textoTabla'}, {text: '', style: 'textoTabla'}],
-                  [{text: 'Ya checamos que nuestra causa raíz identificada sea aplicable para más de una parte o proceso', style: 'textoTabla'}, {text: 'X', style: 'textoTabla'}, {text: '', style: 'textoTabla'}]
-                ]
+                body: this.getDrawTestRaiz(ishikawa.listConsenso)
               }
-            }            
+            }
           ]
         },
         '\n\n',
@@ -574,21 +697,21 @@ export class ListaIshikawasComponent implements OnInit {
         },
         '\n',
         {
-          style: 'tabla',          
-          table:{
+          style: 'tabla',
+          table: {
             heights: ['*', 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
             body: [
-              [{text: 'Enunciado del Problema', style: 'fuenteTabla2'}, {text: 'Causa Primaria', style: 'fuenteTabla2'}, {text: 'Causa Secundaria', style: 'fuenteTabla2'}, {text: 'Causa terciaria', style: 'fuenteTabla2'}, {text: 'Causa Cuaternaria', style: 'fuenteTabla2'}, {text: 'Causa quinaria', style: 'fuenteTabla2'}, {text: 'Causa sextenaria', style: 'fuenteTabla2'}, {text: 'Causa septenaria', style: 'fuenteTabla2'}, {text: 'Acción Correctiva', style: 'fuenteTabla2'}, {text: 'Responsable', style: 'fuenteTabla2'}, {text: 'Fecha', style: 'fuenteTabla2'}],
-              [{rowSpan: 10, text: ishikawa.problema, style: 'textoIshikawa'}, {text: 'Maquinaria', style: 'textoIshikawa'}, {text: 'Alta temperatura de las resistencias del filtro fino', style: 'textoIshikawa'}, {text: 'Por ajuste del proceso', style: 'textoIshikawa'}, {text: 'Por baja viscosidad de la resina', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: 'Bajar  temperaturas del filtro fino', style: 'textoIshikawa'}, {text: 'Aurelio Marcial', style: 'textoIshikawa'}, {text: '31/07/2018', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: 'Maquinaria', style: 'textoIshikawa'}, {text: 'Guarda de desgogue de aire del piston de purga inadecuado', style: 'textoIshikawa'}, {text: 'Ya que solo se coloco una guarda provicional', style: 'textoIshikawa'}, {text: 'Por que no venia de fabrica', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: 'Fabricar la guarda que lleva igual que en el extrusor 2', style: 'textoIshikawa'}, {text: 'Eduardo Izquierdo', style: 'textoIshikawa'}, {text: '15/08/2018', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}],
-              [{text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}, {text: '', style: 'textoIshikawa'}]
+              [{ text: 'Enunciado del Problema', style: 'fuenteTabla2' }, { text: 'Causa Primaria', style: 'fuenteTabla2' }, { text: 'Causa Secundaria', style: 'fuenteTabla2' }, { text: 'Causa terciaria', style: 'fuenteTabla2' }, { text: 'Causa Cuaternaria', style: 'fuenteTabla2' }, { text: 'Causa quinaria', style: 'fuenteTabla2' }, { text: 'Causa sextenaria', style: 'fuenteTabla2' }, { text: 'Causa septenaria', style: 'fuenteTabla2' }, { text: 'Acción Correctiva', style: 'fuenteTabla2' }, { text: 'Responsable', style: 'fuenteTabla2' }, { text: 'Fecha', style: 'fuenteTabla2' }],
+              [{ rowSpan: 10, text: ishikawa.problema, style: 'textoIshikawa' }, { text: 'Maquinaria', style: 'textoIshikawa' }, { text: 'Alta temperatura de las resistencias del filtro fino', style: 'textoIshikawa' }, { text: 'Por ajuste del proceso', style: 'textoIshikawa' }, { text: 'Por baja viscosidad de la resina', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: 'Bajar  temperaturas del filtro fino', style: 'textoIshikawa' }, { text: 'Aurelio Marcial', style: 'textoIshikawa' }, { text: '31/07/2018', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: 'Maquinaria', style: 'textoIshikawa' }, { text: 'Guarda de desgogue de aire del piston de purga inadecuado', style: 'textoIshikawa' }, { text: 'Ya que solo se coloco una guarda provicional', style: 'textoIshikawa' }, { text: 'Por que no venia de fabrica', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: 'Fabricar la guarda que lleva igual que en el extrusor 2', style: 'textoIshikawa' }, { text: 'Eduardo Izquierdo', style: 'textoIshikawa' }, { text: '15/08/2018', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }],
+              [{ text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }, { text: '', style: 'textoIshikawa' }]
             ]
           }
         },
@@ -602,7 +725,7 @@ export class ListaIshikawasComponent implements OnInit {
         '\n',
         {
           alignment: 'center',
-          columns:[
+          columns: [
             {
               text: 'Colocar el enunciado del problema',
               style: 'fuenteTabla2'
@@ -620,7 +743,7 @@ export class ListaIshikawasComponent implements OnInit {
               style: 'fuenteTabla2'
             },
             {
-              text: '¿Por qué?', 
+              text: '¿Por qué?',
               style: 'fuenteTabla2'
             }
           ]
@@ -634,7 +757,7 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [140],
                 heights: [300],
                 body: [
-                  [{text: ishikawa.problema, style: 'textoIshikawa'}]
+                  [{ text: ishikawa.problema, style: 'textoIshikawa' }]
                 ]
               }
             },
@@ -644,7 +767,7 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [140],
                 heights: [300],
                 body: [
-                  [{text: ishikawa.causa_raiz, style: 'textoIshikawa'}]
+                  [{ text: ishikawa.causa_raiz, style: 'textoIshikawa' }]
                 ]
               }
             },
@@ -654,12 +777,12 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [140],
                 heights: [45, 45, 45, 45, 45, 50],
                 body: [
-                  [{text: 'Bajar temperaturas del filtro fino', style: 'textoIshikawa'}],
-                  [{text: 'Fabricar la guarda que lleva igual que en el extrusor 2', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}]
+                  [{ text: 'Bajar temperaturas del filtro fino', style: 'textoIshikawa' }],
+                  [{ text: 'Fabricar la guarda que lleva igual que en el extrusor 2', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'textoIshikawa' }]
                 ]
               }
             },
@@ -669,12 +792,12 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [140],
                 heights: [45, 45, 45, 45, 45, 50],
                 body: [
-                  [{text: 'No', style: 'textoIshikawa'}],
-                  [{text: 'Sí', style: 'textoIshikawa'}],
-                  [{text: 'NO ', style: 'textoIshikawa'}],
-                  [{text: 'Sí', style: 'textoIshikawa'}],
-                  [{text: 'NO ', style: 'textoIshikawa'}],
-                  [{text: 'Sí', style: 'textoIshikawa'}],
+                  [{ text: 'No', style: 'textoIshikawa' }],
+                  [{ text: 'Sí', style: 'textoIshikawa' }],
+                  [{ text: 'NO ', style: 'textoIshikawa' }],
+                  [{ text: 'Sí', style: 'textoIshikawa' }],
+                  [{ text: 'NO ', style: 'textoIshikawa' }],
+                  [{ text: 'Sí', style: 'textoIshikawa' }],
                 ]
               }
             },
@@ -683,12 +806,12 @@ export class ListaIshikawasComponent implements OnInit {
               table: {
                 heights: [45, 45, 45, 45, 45, 50],
                 body: [
-                  [{text: 'Con este ajuste  evitamos que expulse el material arriba de 285 grados', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}],
-                  [{text: '', style: 'textoIshikawa'}]                 
+                  [{ text: 'Con este ajuste  evitamos que expulse el material arriba de 285 grados', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'textoIshikawa' }]
                 ]
               }
             }
@@ -702,8 +825,8 @@ export class ListaIshikawasComponent implements OnInit {
               table: {
                 widths: [215, 15],
                 body: [
-                  [{rowSpan: 2, text: '¿Se solucionó el problema?', style: 'fuentePregunta'}, {text: 'Sí X', style: 'textoIshikawa'}],
-                  [{text: '', style: 'fuentePregunta'}, {text: 'No ', style: 'textoIshikawa'}]
+                  [{ rowSpan: 2, text: '¿Se solucionó el problema?', style: 'fuentePregunta' }, { text: 'Sí X', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'fuentePregunta' }, { text: 'No ', style: 'textoIshikawa' }]
                 ]
               }
             },
@@ -712,8 +835,8 @@ export class ListaIshikawasComponent implements OnInit {
               table: {
                 widths: [215, 15],
                 body: [
-                  [{rowSpan: 2, text: '¿Ha sido recurrente el problema?', style: 'fuentePregunta'}, {text: 'Sí ', style: 'textoIshikawa'}],
-                  [{text: '', style: 'fuentePregunta'}, {text: 'No ', style: 'textoIshikawa'}]
+                  [{ rowSpan: 2, text: '¿Ha sido recurrente el problema?', style: 'fuentePregunta' }, { text: 'Sí ', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'fuentePregunta' }, { text: 'No ', style: 'textoIshikawa' }]
                 ]
               }
             },
@@ -722,8 +845,8 @@ export class ListaIshikawasComponent implements OnInit {
               table: {
                 widths: [215, 15],
                 body: [
-                  [{rowSpan: 2, text: '¿Es necesario un analisis mas profundo?', style: 'fuentePregunta'}, {text: 'Sí ', style: 'textoIshikawa'}],
-                  [{text: '', style: 'fuentePregunta'}, {text: 'No ', style: 'textoIshikawa'}]
+                  [{ rowSpan: 2, text: '¿Es necesario un analisis mas profundo?', style: 'fuentePregunta' }, { text: 'Sí ', style: 'textoIshikawa' }],
+                  [{ text: '', style: 'fuentePregunta' }, { text: 'No ', style: 'textoIshikawa' }]
                 ]
               }
             }
@@ -738,8 +861,8 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [240],
                 heights: [10, 10],
                 body: [
-                  [{text: ishikawa.elaborado, style: 'textoIshikawa'}],
-                  [{text: 'Elaboró', style: 'fuenteFirma'}]
+                  [{ text: ishikawa.elaborado, style: 'textoIshikawa' }],
+                  [{ text: 'Elaboró', style: 'fuenteFirma' }]
                 ]
               }
             },
@@ -749,8 +872,8 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [240],
                 heights: [10, 10],
                 body: [
-                  [{text: ishikawa.revisado, style: 'textoIshikawa'}],
-                  [{text: 'Revisó', style: 'fuenteFirma'}]
+                  [{ text: ishikawa.revisado, style: 'textoIshikawa' }],
+                  [{ text: 'Revisó', style: 'fuenteFirma' }]
                 ]
               }
             },
@@ -760,10 +883,10 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [240],
                 heights: [10, 10],
                 body: [
-                  [{text: ishikawa.autorizado, style: 'textoIshikawa'}],
-                  [{text: 'Autorizó(Gerente de Área)', style: 'fuenteFirma'}]
+                  [{ text: ishikawa.autorizado, style: 'textoIshikawa' }],
+                  [{ text: 'Autorizó(Gerente de Área)', style: 'fuenteFirma' }]
                 ]
-              }             
+              }
             }
           ]
         }
@@ -776,14 +899,14 @@ export class ListaIshikawasComponent implements OnInit {
         image: 'data:image/png;base64,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'
       },
       pageOrientation: 'landscape',
-      styles:{
+      styles: {
         header: {
           fontSize: 20,
           bold: true,
           alignment: 'center'
         }
         ,
-        fuente:{
+        fuente: {
           fontSize: 16,
           bold: true,
           alignment: 'center'
@@ -809,14 +932,14 @@ export class ListaIshikawasComponent implements OnInit {
           fontSize: 10,
           bold: true,
           alignment: 'center',
-          color: '#000000'          
+          color: '#000000'
         },
         fuenteFirma: {
           fontSize: 10,
           bold: true,
           alignment: 'center',
-          color: '#000000', 
-          fillColor: '#F2F2F2'        
+          color: '#000000',
+          fillColor: '#F2F2F2'
         },
         textoTabla: {
           fontSize: 12,
@@ -830,4 +953,51 @@ export class ListaIshikawasComponent implements OnInit {
     }
     pdfMake.createPdf(dd).open();
   }
+
+
+  getDrawTestRaiz(listConsenso: Array<PetConsenso>): Array<any> {
+    let test_raiz = [];
+    let temporal = [];
+    temporal.push({ text: 'Text de causa raíz', style: 'fuenteTabla' });
+    temporal.push({ text: 'Sí', style: 'fuenteTabla' });
+    temporal.push({ text: 'No', style: 'fuenteTabla' });
+    test_raiz.push(temporal);
+    listConsenso.forEach(el => {
+      let temporal = [];
+      switch (el.id_pregunta) {
+        case 2:
+          temporal.push({ text: '¿El enunciado de la causa raíz idenrifica a algún elemento del proceso?', style: 'fuenteTabla' });
+          break;
+        case 3:
+          temporal.push({ text: '¿Es controlable la causa raíz?', style: 'fuenteTabla' });
+          break;
+        case 4:
+          temporal.push({ text: '¿Se puede preguntar "por qué" otra vez y obtener otra causa raíz controlable?', style: 'fuenteTabla' });
+          break;
+        case 5:
+          temporal.push({ text: '¿La causa raíz identificada es la falla fundamental del proceso?', style: 'fuenteTabla' });
+          break;
+        case 6:
+          temporal.push({ text: 'Si corregimos o mejoramos la causa raíz identificada, ¿Asegurará que el problema identificado no vuelva a ocurrir?', style: 'fuenteTabla' });
+          break;
+        case 7:
+          temporal.push({ text: '¿Hemos identificado la causa raíz del prblema?', style: 'fuenteTabla' });
+          break;
+        case 8:
+          temporal.push({ text: 'Ya checamos que nuestra causa raíz identificada sea aplicable para más de una parte o proceso', style: 'fuenteTabla' });
+          break;
+      }
+
+      if (el.respuesta == 1) {
+        temporal.push({ text: 'X', style: 'textoTabla' });
+        temporal.push({ text: '', style: 'textoTabla' });
+      } else {
+        temporal.push({ text: '', style: 'textoTabla' });
+        temporal.push({ text: 'X', style: 'textoTabla' });
+      }
+      test_raiz.push(temporal);
+    });
+    return test_raiz;
+  }
+
 }

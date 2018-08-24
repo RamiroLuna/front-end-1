@@ -31,6 +31,8 @@ export class FormularioIshikawaComponent implements OnInit {
   @Output() enviaModelo = new EventEmitter();
   @Output() verificarModelo = new EventEmitter();
   @Output() agregarOtro = new EventEmitter();
+  @Output() revisaIshikawa = new EventEmitter();
+
 
 
   public tmp_idea: PetIdeas;
@@ -41,20 +43,21 @@ export class FormularioIshikawaComponent implements OnInit {
   public $tbody: any;
   public configPlugin: any;
   public acciones: Array<PetPlanAccion>;
-  public image_src:string;
+  public image_src: string;
 
 
   constructor() { }
 
   ngOnInit() {
 
-   
+
 
     if (this.action == 'registro') {
       this.ishikawa.fecha_string = this.fecha;
     } else if (this.action == 'consult') {
       this.acciones = this.getAcciones();
     }
+
 
     this.configPlugin = {
       linearStepsNavigation: false, //allow navigation by clicking on the next and previous steps on linear steppers
@@ -162,15 +165,15 @@ export class FormularioIshikawaComponent implements OnInit {
         break;
       case 6:
         let question_available = this.preguntas.length;
-        if(question_available == this.ishikawa.listConsenso.length){
-          let pregunta3 = this.ishikawa.listConsenso.filter(el=>el.id_pregunta == 4)[0].respuesta;
-          let total = this.ishikawa.listConsenso.filter(el=>el.id_pregunta !=4).map(el=>el.respuesta).reduce((anterior,actual)=>{
+        if (question_available == this.ishikawa.listConsenso.length) {
+          let pregunta3 = this.ishikawa.listConsenso.filter(el => el.id_pregunta == 4)[0].respuesta;
+          let total = this.ishikawa.listConsenso.filter(el => el.id_pregunta != 4).map(el => el.respuesta).reduce((anterior, actual) => {
             return anterior + actual;
           });
-          b = (pregunta3 === 0 && (total == (question_available-1)))
+          b = (pregunta3 === 0 && (total == (question_available - 1)))
           menssage = "Test no válido. Regrese a la lluvia de ideas";
-        
-        }else{
+
+        } else {
           menssage = "Responda todo el test";
         }
         break;
@@ -248,9 +251,10 @@ export class FormularioIshikawaComponent implements OnInit {
         } while (b && contador < this.acciones.length);
 
         menssage = "Ingrese todos los datos";
+
         break;
       case 9:
-        b = (isValidText(this.ishikawa.revisado) && isValidText(this.ishikawa.autorizado));
+        b = true;
         menssage = "Ingrese todos los datos";
         break;
     }
@@ -289,6 +293,10 @@ export class FormularioIshikawaComponent implements OnInit {
     }
 
     this.$modal.modal('open');
+  }
+
+  revisarIshikawa(): void {
+    this.revisaIshikawa.emit({ ishikawa: this.ishikawa });
   }
 
   loadingCalendario(indice: number): void {
@@ -386,60 +394,214 @@ export class FormularioIshikawaComponent implements OnInit {
   }
 
   generateDiagrama(): void {
-    let canvas = <HTMLCanvasElement> document.getElementById('image');
-	  let ctx = canvas.getContext('2d');
+    let canvas = <HTMLCanvasElement>document.getElementById('image');
+    let ctx = canvas.getContext('2d');
 
-	  let img = new Image();
+    let img = new Image();
 
-	  img.onload = ()=>{
-        canvas.width = img.naturalWidth
-        canvas.height = img.naturalHeight
-        ctx.drawImage(img, 0, 0);
-        ctx.font = "12px Arial";
+    img.onload = () => {
+      canvas.width = img.naturalWidth
+      canvas.height = img.naturalHeight
+      ctx.drawImage(img, 0, 0);
+      ctx.font = "12px Arial";
 
-        //Pinta probelma
-        let problema = this.ishikawa.problema;
-        this.ajusteDeTexto(problema, canvas.width - 185, 170, 180, 15, ctx);
-        
-        ctx.font = "10px Arial";
-        //Pinta si existe idea seleccionada de maquinaria 
-        let ideas_maquinarias = this.getIdeasByEmeSelected(2);
-        if(ideas_maquinarias.length > 0){
-          let idea_maquinaria = ideas_maquinarias[0].idea;
-          let porques = ideas_maquinarias[0].porques;
-          this.ajusteDeTexto(idea_maquinaria, 550, 180, 100, 10, ctx);
-          this.ajusteDeTexto(porques.porque_uno, 650, 110, 110, 10, ctx);
-          this.ajusteDeTexto(porques.porque_dos, 500, 90, 110, 10, ctx);
-          this.ajusteDeTexto(porques.porque_tres, 605, 40, 110, 10, ctx);
-          this.ajusteDeTexto(porques.porque_cuatro, 450, 20, 110, 10, ctx);
-        }
+      //Pinta probelma
+      let problema = this.ishikawa.problema;
+      this.ajusteDeTexto(problema, canvas.width - 200, 170, 170, 11, ctx);
 
-        //Pinta si existe idea seleccionada de metodos 
-        let ideas_metodos = this.getIdeasByEmeSelected(4);
-        if(ideas_metodos.length > 0){
-          let idea_metodo = ideas_metodos[0].idea;
-          let porques = ideas_metodos[0].porques;
-          this.ajusteDeTexto(idea_metodo, 300, 180, 100, 10, ctx);
-          this.ajusteDeTexto(porques.porque_uno, 395, 110, 110, 10, ctx);
-          this.ajusteDeTexto(porques.porque_dos,240, 90, 110, 10, ctx);
-          this.ajusteDeTexto(porques.porque_tres, 345, 45, 110, 10, ctx);
-          this.ajusteDeTexto(porques.porque_cuatro, 175, 20, 100, 10, ctx);
-        }
+      ctx.font = "10px Arial";
+      //Pinta si existe idea seleccionada de mano de obra 
+      let ideas_mano_obra = this.getIdeasByEmeSelected(1);
+      if (ideas_mano_obra.length > 0) {
+        let idea_mano_obra = ideas_mano_obra[0].idea;
+        let porques = ideas_mano_obra[0].porques;
+        this.ajusteDeTexto(idea_mano_obra, canvas.width - 360, 260, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_uno, canvas.width - 370, 278, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_dos, canvas.width - 400, 321, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_tres, canvas.width - 431, 364, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 460, 407, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 490, 450, 180, 11, ctx);
 
-        //Pinta si existe idea seleccionada de material 
-        let ideas_material = this.getIdeasByEmeSelected(5);
-        if(ideas_material.length > 0){
-          let idea_material = ideas_material[0].idea;
-          let porques = ideas_material[0].porques;
-          this.ajusteDeTexto(idea_material, 45, 180, 100, 10, ctx);
-          this.ajusteDeTexto(porques.porque_uno, 140, 110, 110, 10, ctx);
-          this.ajusteDeTexto(porques.porque_dos,0, 95, 100, 10, ctx);
-          this.ajusteDeTexto(porques.porque_tres, 90, 45, 100, 10, ctx);
-          this.ajusteDeTexto(porques.porque_cuatro, 0, 10, 90, 10, ctx);
-        }
-	}
-	  img.src = this.image_src;
+      }
+
+      //Pinta si existe idea seleccionada de mediciones
+      let ideas_mediciones = this.getIdeasByEmeSelected(3);
+      if (ideas_mediciones.length > 0) {
+        let idea_mediciones = ideas_mediciones[0].idea;
+        let porques = ideas_mediciones[0].porques;
+        this.ajusteDeTexto(idea_mediciones, canvas.width - 590, 260, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_uno, canvas.width - 600, 278, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_dos, canvas.width - 630, 321, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_tres, canvas.width - 661, 364, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 690, 407, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 720, 450, 180, 11, ctx);
+
+      }
+
+      //Pinta si existe idea seleccionada de medio ambiente
+      let ideas_medio_ambiente = this.getIdeasByEmeSelected(6);
+      if (ideas_medio_ambiente.length > 0) {
+        let idea_ambiente = ideas_medio_ambiente[0].idea;
+        let porques = ideas_medio_ambiente[0].porques;
+        this.ajusteDeTexto(idea_ambiente, canvas.width - 820, 260, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_uno, canvas.width - 830, 278, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_dos, canvas.width - 860, 321, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_tres, canvas.width - 891, 364, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 920, 407, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 950, 450, 180, 11, ctx);
+
+      }
+
+      //Pinta si existe idea seleccionada de Maquinaria
+      let ideas_maquinaria = this.getIdeasByEmeSelected(2);
+      if (ideas_maquinaria.length > 0) {
+        let idea_maquinaria = ideas_maquinaria[0].idea;
+        let porques = ideas_maquinaria[0].porques;
+        this.ajusteDeTexto(idea_maquinaria, canvas.width - 360, 240, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_uno, canvas.width - 370, 190, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_dos, canvas.width - 400, 147, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_tres, canvas.width - 431, 103, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 460, 61, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 490, 29, 235, 11, ctx);
+      }
+
+      //Pinta si existe idea seleccionada de Metodo
+      let ideas_metodos = this.getIdeasByEmeSelected(4);
+      if (ideas_metodos.length > 0) {
+        let idea_metodo = ideas_metodos[0].idea;
+        let porques = ideas_metodos[0].porques;
+        this.ajusteDeTexto(idea_metodo, canvas.width - 590, 240, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_uno, canvas.width - 600, 190, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_dos, canvas.width - 630, 147, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_tres, canvas.width - 661, 103, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 690, 61, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 720, 29, 235, 11, ctx);
+      }
+
+      //Pinta si existe idea seleccionada de material
+      let ideas_material = this.getIdeasByEmeSelected(5);
+      if (ideas_material.length > 0) {
+        let idea_aterial = ideas_material[0].idea;
+        let porques = ideas_material[0].porques;
+        this.ajusteDeTexto(idea_aterial, canvas.width - 820, 240, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_uno, canvas.width - 830, 190, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_dos, canvas.width - 860, 147, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_tres, canvas.width - 891, 103, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 920, 61, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 950, 29, 235, 11, ctx);
+      }
+
+    }
+    img.src = this.image_src;
     this.$modal_ishikawa.modal('open');
+  }
+
+
+  getDiagramaBase64(): string {
+    let canvas = <HTMLCanvasElement>document.getElementById('image');
+    let ctx = canvas.getContext('2d');
+    let dataURL = "";
+    let img = new Image();
+
+    img.onload = () => {
+      canvas.width = img.naturalWidth
+      canvas.height = img.naturalHeight
+      ctx.drawImage(img, 0, 0);
+      ctx.font = "12px Arial";
+
+      //Pinta probelma
+      let problema = this.ishikawa.problema;
+      this.ajusteDeTexto(problema, canvas.width - 200, 170, 170, 11, ctx);
+
+      ctx.font = "10px Arial";
+      //Pinta si existe idea seleccionada de mano de obra 
+      let ideas_mano_obra = this.getIdeasByEmeSelected(1);
+      if (ideas_mano_obra.length > 0) {
+        let idea_mano_obra = ideas_mano_obra[0].idea;
+        let porques = ideas_mano_obra[0].porques;
+        this.ajusteDeTexto(idea_mano_obra, canvas.width - 360, 260, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_uno, canvas.width - 370, 278, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_dos, canvas.width - 400, 321, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_tres, canvas.width - 431, 364, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 460, 407, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 490, 450, 180, 11, ctx);
+
+      }
+
+      //Pinta si existe idea seleccionada de mediciones
+      let ideas_mediciones = this.getIdeasByEmeSelected(3);
+      if (ideas_mediciones.length > 0) {
+        let idea_mediciones = ideas_mediciones[0].idea;
+        let porques = ideas_mediciones[0].porques;
+        this.ajusteDeTexto(idea_mediciones, canvas.width - 590, 260, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_uno, canvas.width - 600, 278, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_dos, canvas.width - 630, 321, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_tres, canvas.width - 661, 364, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 690, 407, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 720, 450, 180, 11, ctx);
+
+      }
+
+      //Pinta si existe idea seleccionada de medio ambiente
+      let ideas_medio_ambiente = this.getIdeasByEmeSelected(6);
+      if (ideas_medio_ambiente.length > 0) {
+        let idea_ambiente = ideas_medio_ambiente[0].idea;
+        let porques = ideas_medio_ambiente[0].porques;
+        this.ajusteDeTexto(idea_ambiente, canvas.width - 820, 260, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_uno, canvas.width - 830, 278, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_dos, canvas.width - 860, 321, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_tres, canvas.width - 891, 364, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 920, 407, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 950, 450, 180, 11, ctx);
+
+      }
+
+      //Pinta si existe idea seleccionada de Maquinaria
+      let ideas_maquinaria = this.getIdeasByEmeSelected(2);
+      if (ideas_maquinaria.length > 0) {
+        let idea_maquinaria = ideas_maquinaria[0].idea;
+        let porques = ideas_maquinaria[0].porques;
+        this.ajusteDeTexto(idea_maquinaria, canvas.width - 360, 240, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_uno, canvas.width - 370, 190, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_dos, canvas.width - 400, 147, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_tres, canvas.width - 431, 103, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 460, 61, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 490, 29, 235, 11, ctx);
+      }
+
+      //Pinta si existe idea seleccionada de Metodo
+      let ideas_metodos = this.getIdeasByEmeSelected(4);
+      if (ideas_metodos.length > 0) {
+        let idea_metodo = ideas_metodos[0].idea;
+        let porques = ideas_metodos[0].porques;
+        this.ajusteDeTexto(idea_metodo, canvas.width - 590, 240, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_uno, canvas.width - 600, 190, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_dos, canvas.width - 630, 147, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_tres, canvas.width - 661, 103, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 690, 61, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 720, 29, 235, 11, ctx);
+      }
+
+      //Pinta si existe idea seleccionada de material
+      let ideas_material = this.getIdeasByEmeSelected(5);
+      if (ideas_material.length > 0) {
+        let idea_aterial = ideas_material[0].idea;
+        let porques = ideas_material[0].porques;
+        this.ajusteDeTexto(idea_aterial, canvas.width - 820, 240, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_uno, canvas.width - 830, 190, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_dos, canvas.width - 860, 147, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_tres, canvas.width - 891, 103, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 920, 61, 180, 11, ctx);
+        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 950, 29, 235, 11, ctx);
+      }
+
+
+      dataURL = canvas.toDataURL();
+    }
+
+    img.src = this.image_src;
+    return dataURL;
+
   }
 
   checkedQuestion(event: any, columna: string, id_pregunta: number): void {

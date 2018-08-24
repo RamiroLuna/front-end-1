@@ -17,11 +17,7 @@
     </a>
   </div>
   <!-- fin Solo para dispositivos moviles -->
-  <!-- <div class="row" *ngIf="!estatusPeriodo">
-      <div class="color_titulo center-align">
-          <span class="waves-effect"><i class="material-icons left">lock</i>Periodo cerrado</span>
-      </div>
-    </div> -->
+
   <div class="row scroll_ejex_tabla_reporte" *ngIf="datos_tabla">
     <table id="tabla" class="display striped" cellspacing="0" width="100%" style="overflow-x:auto;" [@visibility]="status">
       <thead>
@@ -30,30 +26,25 @@
           <th>Área etad</th>
           <th>Nombre etad</th>
           <th>Grupo</th>
-          <th width="25%">Descripción del problema</th>
-          <th>PDF</th>
+          <th width="25%">Descripción corta</th>
           <th *ngIf="permission.editarIshikawa" class="center-align">Actualizar</th>
           <th *ngIf="permission.finalizar" class="center-align">Consulta y verificación</th>
+          <th>PDF</th>
         </tr>
       </thead>
 
       <tbody>
         <tr *ngIf="recordsIshikawa.length == 0 ">
-          <th colspan="6" class="center">No hay registros</th>
+          <th colspan="8" class="center">No hay registros</th>
         </tr>
         <tr *ngFor="let ishikawa of recordsIshikawa;let i = index">
           <td>{{ ishikawa.fecha_string }}</td>
           <td>{{ ishikawa.etad.valor }}</td>
           <td>{{ ishikawa.nombre_etad }}</td>
           <td>{{ ishikawa.grupo.valor }}</td>
-          <td>{{ ishikawa.problema }}</td>
-          <td>
-            <button type="button" class="btn-floating red lighten-2" [disabled]="!(ishikawa.estatus == 1)" (click)="viewPDF(ishikawa)">
-              <i class="material-icons">cloud_download</i>
-            </button>
-          </td>
+          <td>{{ ishikawa.descripcion_corta }}</td>
           <td class="center-align">
-            <button type="button" class="btn-floating blue lighten-2" (click)="openModalDetalle(ishikawa, 'edit')" [disabled]="ishikawa.estatus == 1">
+            <button type="button" class="btn-floating blue lighten-2" (click)="openModalDetalle(ishikawa, 'edit')" [disabled]="!(ishikawa.estatus == 0)">
               <i class="material-icons">edit</i>
             </button>
           </td>
@@ -61,6 +52,11 @@
             <a class="btn-floating green lighten-2" (click)="openModalDetalle(ishikawa,'consult')">
               <i class="material-icons">list</i>
             </a>
+          </td>
+          <td>
+            <button type="button" class="btn-floating red lighten-2" [disabled]="!(ishikawa.estatus == 2)" (click)="viewPDF(ishikawa)">
+              <i class="material-icons">cloud_download</i>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -75,8 +71,8 @@
           <i class="material-icons">arrow_back</i>
         </i>
       </a>
-      <a class="btn-floating btn-large  indigo darken-4  waves-effect waves-light tooltipped"
-        data-position="top" data-delay="50" data-tooltip="Ayuda" (click)="help($event)">
+      <a class="btn-floating btn-large  indigo darken-4  waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+        data-tooltip="Ayuda" (click)="help($event)">
         <i class="material-icons">help</i>
       </a>
     </div>
@@ -90,7 +86,8 @@
   </div>
   <div class="modal-content">
     <app-formulario-ishikawa *ngIf="consultaById" [bloquear]="bloquear" [preguntas]="preguntas" [emes]="emes" [etads]="etads"
-      [grupos]="grupos" [action]="action" [ishikawa]="ishikawa" (verificarModelo)="verificaIshikawa($event)" ></app-formulario-ishikawa>
+      [grupos]="grupos" [action]="action" [ishikawa]="ishikawa" (verificarModelo)="verificaIshikawa($event)" (enviaModelo)="updateIshikawa($event)"
+      (revisaIshikawa)="revisaIshikawa($event)"></app-formulario-ishikawa>
   </div>
   <div class="modal-footer">
     <button (click)="closeModalFormulario()" class="modal-close waves-effect waves-green btn-flat" style="color: #00695c">CERRAR</button>

@@ -52,9 +52,9 @@ export class RegistroComponent implements OnInit {
         this.fecha = result.data.dia_actual;
         this.loading = false;
 
-        setTimeout(()=>{
+        setTimeout(() => {
           this.ngAfterViewHttp();
-        },100);
+        }, 100);
 
       } else {
         this.loading = false;
@@ -67,21 +67,36 @@ export class RegistroComponent implements OnInit {
   }
 
   registro(data: any): void {
+
     this.ishikawa = data.ishikawa;
     /* 
      * Configuración del modal de confirmación
      */
     swal({
-      title: '<span style="color: #303f9f ">¿Está seguro de registrar ishikawa?</span>',
+      title: '<span style="color: #303f9f ">¿Está seguro de agregar ishikawa?</span>',
       type: 'question',
-      html: '<p style="color: #303f9f "> Área: :</b>' + this.etads.filter(el => el.id == this.ishikawa.id_etad)[0].valor + ' </b></p><p style="color: #303f9f> Nombre etad: <b>' + this.ishikawa.nombre_etad + ' </b></p>',
+      input: 'text',
+      inputPlaceholder: 'Escribe aquí',
+      html: '<p style="color: #303f9f ">Ingrese descripción corta para identificar el registro</b></p>',
       showCancelButton: true,
       confirmButtonColor: '#303f9f',
       cancelButtonColor: '#9fa8da ',
       cancelButtonText: 'Cancelar',
       confirmButtonText: 'Si!',
       allowOutsideClick: false,
-      allowEnterKey: false
+      allowEnterKey: false,
+      inputValidator: (value) => {
+
+        if (!value) {
+          return 'Se requiere descripción!';
+        } else {
+          if (value.length > 30) {
+            return 'Máximo 30 caracteres';
+          }else{
+            this.ishikawa.descripcion_corta = value;
+          }
+        }
+      }
     }).then((result) => {
       /*
        * Si acepta
@@ -105,6 +120,7 @@ export class RegistroComponent implements OnInit {
       } else if (result.dismiss === swal.DismissReason.cancel) {
       }
     });
+
   }
 
   agregarOtro(): void {
