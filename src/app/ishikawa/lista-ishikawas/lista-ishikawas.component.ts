@@ -404,27 +404,30 @@ export class ListaIshikawasComponent implements OnInit {
             {
               style: 'tabla',
               table: {
-                widths: [110, 110],                
+                widths: [220],                
                 body: [
-                  [{text: 'Nombre ETAD', style: 'fuenteTabla'}, {text: ishikawa.nombre_etad, style: 'textoTabla'}]
+                  [{text: 'Nombre ETAD', style: 'fuenteTabla'}],
+                  [ {text: ishikawa.nombre_etad, style: 'textoTabla'}]
                 ]
               }  
             },
             {
               style: 'tabla',
               table: {
-                widths: [110, 110],
+                widths: [220],
                 body: [
-                  [{text: 'Grupo', style: 'fuenteTabla'}, {text: ishikawa.grupo.valor, style: 'textoTabla'}]
+                  [{text: 'Grupo', style: 'fuenteTabla'}], 
+                  [{text: ishikawa.grupo.valor, style: 'textoTabla'}]
                 ]
               }
             },
             {
               style: 'tabla',
               table: {
-                widths: [110, 110],
+                widths: [220],
                 body: [
-                  [{text: 'Área', style: 'fuenteTabla'}, {text: ishikawa.etad.valor, style: 'texttoTabla'}]
+                  [{text: 'Área', style: 'fuenteTabla'}], 
+                  [{text: ishikawa.etad.valor, style: 'texttoTabla'}]
                 ]
               }
             }
