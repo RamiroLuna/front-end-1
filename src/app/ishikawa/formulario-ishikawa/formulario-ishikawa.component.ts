@@ -7,6 +7,7 @@ import { PetConsenso } from '../../models/pet-consenso';
 import { materialize } from 'rxjs/operators';
 import { isValidText } from '../../utils';
 import { PetPlanAccion } from '../../models/pet-plan-accion';
+import { getDiamagraIshikawa } from '../utils-for-pdf/generate.diagram.text';
 
 declare var $: any;
 declare var Materialize: any;
@@ -419,6 +420,10 @@ export class FormularioIshikawaComponent implements OnInit, OnChanges {
     return this.ishikawa.listIdeas.filter(el => el.id_eme == id_eme);
   }
 
+  getIdeasByEmeSelected(id_eme: number): Array<PetIdeas> {
+    return this.ishikawa.listIdeas.filter(el => el.id_eme == id_eme && el.porques != undefined);
+   }
+
   generateDiagrama(): void {
     let canvas = <HTMLCanvasElement>document.getElementById('image');
     let ctx = canvas.getContext('2d');
@@ -429,8 +434,8 @@ export class FormularioIshikawaComponent implements OnInit, OnChanges {
       canvas.width = img.naturalWidth
       canvas.height = img.naturalHeight
       ctx.drawImage(img, 0, 0);
-      ctx.font = "12px Arial";
-
+      ctx.font = "9px Arial";
+      getDiamagraIshikawa(this.ishikawa,ctx, canvas);
     
     }
     img.src = this.image_src;
