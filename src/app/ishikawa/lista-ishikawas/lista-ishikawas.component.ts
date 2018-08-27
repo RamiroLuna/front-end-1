@@ -73,7 +73,7 @@ export class ListaIshikawasComponent implements OnInit {
   public recordsIshikawa: Array<PetIshikawa>;
   public $modalFormIshikawa: any;
   public image_src: string;
-  public imageForPdf:boolean;
+  public imageForPdf: boolean;
 
 
   /* Catalogos requeridos y varibales para visualizar formulario detalle */
@@ -349,7 +349,7 @@ export class ListaIshikawasComponent implements OnInit {
   }
 
   openModalDetalle(ishikawa: PetIshikawa, action: string): void {
-    
+
     this.action = action;
     this.bloquear = ('consult' == this.action);
     this.consultaById = false;
@@ -519,8 +519,16 @@ export class ListaIshikawasComponent implements OnInit {
    */
 
   viewPDF(ishikawa: PetIshikawa): void {
-    this.imageForPdf= true;
-    console.log('imagen en base 64', this.getDiagramaBase64())
+    this.imageForPdf = true;
+
+    this.getDiagramaBase64(this.image_src).then(
+      function (successurl) {
+        console.log('exito base 64', successurl)
+      },
+      function (errorurl) {
+        console.log('Error loading ' + errorurl)
+      });
+
     var dd = {
 
       header: [
@@ -1089,25 +1097,26 @@ export class ListaIshikawasComponent implements OnInit {
     return tabla;
   }
 
-  getDiagramaBase64():string {
-    let canvas = <HTMLCanvasElement>document.getElementById('image');
-    let ctx = canvas.getContext('2d');
-    let dataURL = "";
-    let img = new Image();
+  getDiagramaBase64(url) {
+    return new Promise(function (resolve, reject) {
+      let canvas = <HTMLCanvasElement>document.getElementById('image');
+      let ctx = canvas.getContext('2d');
+      let dataURL = "";
+      var img = new Image()
+      img.onload = function () {
+        canvas.width = img.naturalWidth
+        canvas.height = img.naturalHeight
+        ctx.drawImage(img, 0, 0);
+        ctx.font = "9px Arial";
+        dataURL = canvas.toDataURL();
+        resolve(dataURL)
+      }
+      img.onerror = function () {
+        reject(url)
+      }
+      img.src = url;
+    })
 
-    img.onload = () => {
-      canvas.width = img.naturalWidth
-      canvas.height = img.naturalHeight
-      ctx.drawImage(img, 0, 0);
-      ctx.font = "12px Arial";
-      dataURL = canvas.toDataURL();
-
-      console.log('url image', dataURL)
-
-    }
-
-    img.src = this.image_src;
-    return dataURL;
   }
 
 
