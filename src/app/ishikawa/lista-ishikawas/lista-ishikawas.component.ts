@@ -374,9 +374,9 @@ export class ListaIshikawasComponent implements OnInit {
       title: 'Ayuda',
       type: 'info',
       html: ' Para <b>editar</b> un ishikawa haga clic en el botón <i class="material-icons">edit</i> <br>' +
-        '<b>Solo podra editar si el ishikawa no ha sido verificado</b></br>' +
+        '<b>Solo podra editar si el ishikawa no ha sido revisado o verificado</b></br>' +
         'Para <b>verficar</b> haga clic en el botón <i class="material-icons">list</i> <br>' +
-        '<b> La verificación se habilitará un día después de la fecha más lejana registrada en el plan de acción</b> <br><br>' +
+        '<b> La verificación se habilitará un día después de la fecha más lejana registrada en el plan de acción</b> y si el ishikawa ha sido revisado<br><br>' +
         ' El formato <b>PDF</b> se habilitará cuando el ishikawa este finalizado',
       showCloseButton: false,
       showCancelButton: false,
