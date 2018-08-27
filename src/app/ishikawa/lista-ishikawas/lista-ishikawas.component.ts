@@ -72,6 +72,9 @@ export class ListaIshikawasComponent implements OnInit {
   public idPeriodo: number;
   public recordsIshikawa: Array<PetIshikawa>;
   public $modalFormIshikawa: any;
+  public image_src: string;
+  public imageForPdf:boolean;
+
 
   /* Catalogos requeridos y varibales para visualizar formulario detalle */
   public consultaById: boolean;
@@ -105,7 +108,9 @@ export class ListaIshikawasComponent implements OnInit {
     this.bloquear = true;
     this.recordsIshikawa = [];
     this.action = '';
-    // this.permission.editarIshikawa = findRol(3, this.auth.getRolesOee());
+    this.image_src = '../../../assets/diagrama_ishikawa.png';
+    this.imageForPdf = false;
+
 
     this.anioSeleccionado = getAnioActual();
 
@@ -344,7 +349,7 @@ export class ListaIshikawasComponent implements OnInit {
   }
 
   openModalDetalle(ishikawa: PetIshikawa, action: string): void {
-
+    
     this.action = action;
     this.bloquear = ('consult' == this.action);
     this.consultaById = false;
@@ -514,7 +519,8 @@ export class ListaIshikawasComponent implements OnInit {
    */
 
   viewPDF(ishikawa: PetIshikawa): void {
-    console.log(ishikawa)
+    this.imageForPdf= true;
+    console.log('imagen en base 64', this.getDiagramaBase64())
     var dd = {
 
       header: [
@@ -813,8 +819,8 @@ export class ListaIshikawasComponent implements OnInit {
                 widths: [210, 20],
                 body: [
                   [{ rowSpan: 2, text: '¿Se solucionó el problema?', style: 'fuentePregunta' },
-                   { text: 'SÍ '+((ishikawa.solucionado == 1)?'X':''), style: 'textoIshikawa' }],
-                  [{ text: '', style: 'fuentePregunta' }, { text: 'NO '+((ishikawa.solucionado == 0)?'X':''), style: 'textoIshikawa' }]
+                  { text: 'SÍ ' + ((ishikawa.solucionado == 1) ? 'X' : ''), style: 'textoIshikawa' }],
+                  [{ text: '', style: 'fuentePregunta' }, { text: 'NO ' + ((ishikawa.solucionado == 0) ? 'X' : ''), style: 'textoIshikawa' }]
                 ]
               }
             },
@@ -823,9 +829,9 @@ export class ListaIshikawasComponent implements OnInit {
               table: {
                 widths: [210, 20],
                 body: [
-                  [{ rowSpan: 2, text: '¿Ha sido recurrente el problema?', style: 'fuentePregunta' }, 
-                  { text: 'SÍ '+((ishikawa.recurrente == 1)?'X':''), style: 'textoIshikawa' }],
-                  [{ text: '', style: 'fuentePregunta' }, { text: 'NO '+((ishikawa.recurrente == 0)?'X':''), style: 'textoIshikawa' }]
+                  [{ rowSpan: 2, text: '¿Ha sido recurrente el problema?', style: 'fuentePregunta' },
+                  { text: 'SÍ ' + ((ishikawa.recurrente == 1) ? 'X' : ''), style: 'textoIshikawa' }],
+                  [{ text: '', style: 'fuentePregunta' }, { text: 'NO ' + ((ishikawa.recurrente == 0) ? 'X' : ''), style: 'textoIshikawa' }]
                 ]
               }
             },
@@ -834,9 +840,9 @@ export class ListaIshikawasComponent implements OnInit {
               table: {
                 widths: [210, 20],
                 body: [
-                  [{ rowSpan: 2, text: '¿Es necesario un analisis mas profundo?', style: 'fuentePregunta' }, 
-                  { text: 'SÍ '+((ishikawa.analisis == 1)?'X':''), style: 'textoIshikawa' }],
-                  [{ text: '', style: 'fuentePregunta' }, { text: 'NO '+((ishikawa.analisis == 0)?'X':''), style: 'textoIshikawa' }]
+                  [{ rowSpan: 2, text: '¿Es necesario un analisis mas profundo?', style: 'fuentePregunta' },
+                  { text: 'SÍ ' + ((ishikawa.analisis == 1) ? 'X' : ''), style: 'textoIshikawa' }],
+                  [{ text: '', style: 'fuentePregunta' }, { text: 'NO ' + ((ishikawa.analisis == 0) ? 'X' : ''), style: 'textoIshikawa' }]
                 ]
               }
             }
@@ -941,6 +947,7 @@ export class ListaIshikawasComponent implements OnInit {
         }
       }
     }
+    this.imageForPdf = false;
     pdfMake.createPdf(dd).open();
   }
 
@@ -1018,10 +1025,10 @@ export class ListaIshikawasComponent implements OnInit {
   }
 
   getAccionesCorrectivas(lista_ideas: Array<PetIdeas>): Array<any> {
-    let acciones:Array<PetPlanAccion> = lista_ideas.filter(el => el.porques != undefined).map(el => el.porques.planAccion);
+    let acciones: Array<PetPlanAccion> = lista_ideas.filter(el => el.porques != undefined).map(el => el.porques.planAccion);
     let tabla = [];
-    acciones.forEach((accion,index)=>{
-      if(index < 6){
+    acciones.forEach((accion, index) => {
+      if (index < 6) {
         let renglon = [
           { text: accion.accion, style: "textoIshikawa" }
         ]
@@ -1039,11 +1046,11 @@ export class ListaIshikawasComponent implements OnInit {
   }
 
   getEfectividad(lista_ideas: Array<PetIdeas>): Array<any> {
-    let acciones:Array<PetPlanAccion> = lista_ideas.filter(el => el.porques != undefined).map(el => el.porques.planAccion);
+    let acciones: Array<PetPlanAccion> = lista_ideas.filter(el => el.porques != undefined).map(el => el.porques.planAccion);
     let tabla = [];
-    acciones.forEach((accion,index)=>{
-      if(index < 6){
-        let res = (accion.efectiva == 1)?"SI": "NO";
+    acciones.forEach((accion, index) => {
+      if (index < 6) {
+        let res = (accion.efectiva == 1) ? "SI" : "NO";
         let renglon = [
           { text: res, style: "textoIshikawa" }
         ]
@@ -1062,10 +1069,10 @@ export class ListaIshikawasComponent implements OnInit {
 
 
   getPorqueAcciones(lista_ideas: Array<PetIdeas>): Array<any> {
-    let acciones:Array<PetPlanAccion> = lista_ideas.filter(el => el.porques != undefined).map(el => el.porques.planAccion);
+    let acciones: Array<PetPlanAccion> = lista_ideas.filter(el => el.porques != undefined).map(el => el.porques.planAccion);
     let tabla = [];
-    acciones.forEach((accion,index)=>{
-      if(index < 6){
+    acciones.forEach((accion, index) => {
+      if (index < 6) {
         let renglon = [
           { text: accion.porque, style: "textoIshikawa" }
         ]
@@ -1080,6 +1087,27 @@ export class ListaIshikawasComponent implements OnInit {
     }
 
     return tabla;
+  }
+
+  getDiagramaBase64():string {
+    let canvas = <HTMLCanvasElement>document.getElementById('image');
+    let ctx = canvas.getContext('2d');
+    let dataURL = "";
+    let img = new Image();
+
+    img.onload = () => {
+      canvas.width = img.naturalWidth
+      canvas.height = img.naturalHeight
+      ctx.drawImage(img, 0, 0);
+      ctx.font = "12px Arial";
+      dataURL = canvas.toDataURL();
+
+      console.log('url image', dataURL)
+
+    }
+
+    img.src = this.image_src;
+    return dataURL;
   }
 
 
