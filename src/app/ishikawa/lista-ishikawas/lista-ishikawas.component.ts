@@ -21,6 +21,7 @@ import { PetConsenso } from '../../models/pet-consenso';
 import { PetIdeas } from '../../models/pet-ideas';
 import { PetPlanAccion } from '../../models/pet-plan-accion';
 import { getDefinitionPdf } from '../utils-for-pdf/doc.definition.pdf';
+import { getDiamagraIshikawa } from '../utils-for-pdf/generate.diagram.text';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -510,10 +511,12 @@ export class ListaIshikawasComponent implements OnInit {
    */
 
   viewPDF(ishikawa: PetIshikawa): void {
+   
     this.imageForPdf = true;
 
-    this.getDiagramaBase64(this.image_src).then(
+    this.getDiagramaBase64(this.image_src, ishikawa).then(
       (successurl) =>{
+        //Si ya tiene todos los elementos necesarios para generar el pdf
         let tabla_apdt = this.generateTableApdt(ishikawa);
         let acciones = this.getAccionesCorrectivas(ishikawa.listIdeas);
         let efectividad =  this.getEfectividad(ishikawa.listIdeas);
@@ -522,7 +525,8 @@ export class ListaIshikawasComponent implements OnInit {
         pdfMake.createPdf(documento).open();
       },
       (errorurl) =>{
-        console.log('Error loading ' + errorurl)
+         //Si no genera la base64 del pdf
+         Materialize.toast('Ocurrió  un error al crear pdf!', 4000, 'red');
       });
 
     this.imageForPdf = false;
@@ -666,21 +670,29 @@ export class ListaIshikawasComponent implements OnInit {
     return tabla;
   }
 
-  getDiagramaBase64(url) {
+  getDiagramaBase64(url,ishikawa:PetIshikawa) {
     return new Promise(function (resolve, reject) {
       let canvas = <HTMLCanvasElement>document.getElementById('image');
       let ctx = canvas.getContext('2d');
       let dataURL = "";
       var img = new Image()
-      img.onload = function () {
+      img.onload =  () => {
+        /*
+         * Inicia el pintado del diagrama de ishikawa
+         */ 
         canvas.width = img.naturalWidth
         canvas.height = img.naturalHeight
         ctx.drawImage(img, 0, 0);
         ctx.font = "9px Arial";
+        getDiamagraIshikawa(ishikawa,ctx, canvas);
+        /*
+         * Fin generación diagrama
+         */ 
+        
         dataURL = canvas.toDataURL();
         resolve(dataURL)
       }
-      img.onerror = function () {
+      img.onerror =  () =>{
         reject(url)
       }
       img.src = url;

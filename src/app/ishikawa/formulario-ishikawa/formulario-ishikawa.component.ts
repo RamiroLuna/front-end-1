@@ -419,10 +419,6 @@ export class FormularioIshikawaComponent implements OnInit, OnChanges {
     return this.ishikawa.listIdeas.filter(el => el.id_eme == id_eme);
   }
 
-  getIdeasByEmeSelected(id_eme: number): Array<PetIdeas> {
-    return this.ishikawa.listIdeas.filter(el => el.id_eme == id_eme && el.porques != undefined);
-  }
-
   generateDiagrama(): void {
     let canvas = <HTMLCanvasElement>document.getElementById('image');
     let ctx = canvas.getContext('2d');
@@ -435,92 +431,7 @@ export class FormularioIshikawaComponent implements OnInit, OnChanges {
       ctx.drawImage(img, 0, 0);
       ctx.font = "12px Arial";
 
-      //Pinta probelma
-      let problema = this.ishikawa.problema;
-      this.ajusteDeTexto(problema, canvas.width - 200, 170, 170, 11, ctx);
-
-      ctx.font = "10px Arial";
-      //Pinta si existe idea seleccionada de mano de obra 
-      let ideas_mano_obra = this.getIdeasByEmeSelected(1);
-      if (ideas_mano_obra.length > 0) {
-        let idea_mano_obra = ideas_mano_obra[0].idea;
-        let porques = ideas_mano_obra[0].porques;
-        this.ajusteDeTexto(idea_mano_obra, canvas.width - 360, 260, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_uno, canvas.width - 370, 278, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_dos, canvas.width - 400, 321, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_tres, canvas.width - 431, 364, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 460, 407, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 490, 450, 180, 11, ctx);
-
-      }
-
-      //Pinta si existe idea seleccionada de mediciones
-      let ideas_mediciones = this.getIdeasByEmeSelected(3);
-      if (ideas_mediciones.length > 0) {
-        let idea_mediciones = ideas_mediciones[0].idea;
-        let porques = ideas_mediciones[0].porques;
-        this.ajusteDeTexto(idea_mediciones, canvas.width - 590, 260, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_uno, canvas.width - 600, 278, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_dos, canvas.width - 630, 321, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_tres, canvas.width - 661, 364, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 690, 407, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 720, 450, 180, 11, ctx);
-
-      }
-
-      //Pinta si existe idea seleccionada de medio ambiente
-      let ideas_medio_ambiente = this.getIdeasByEmeSelected(6);
-      if (ideas_medio_ambiente.length > 0) {
-        let idea_ambiente = ideas_medio_ambiente[0].idea;
-        let porques = ideas_medio_ambiente[0].porques;
-        this.ajusteDeTexto(idea_ambiente, canvas.width - 820, 260, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_uno, canvas.width - 830, 278, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_dos, canvas.width - 860, 321, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_tres, canvas.width - 891, 364, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 920, 407, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 950, 450, 180, 11, ctx);
-
-      }
-
-      //Pinta si existe idea seleccionada de Maquinaria
-      let ideas_maquinaria = this.getIdeasByEmeSelected(2);
-      if (ideas_maquinaria.length > 0) {
-        let idea_maquinaria = ideas_maquinaria[0].idea;
-        let porques = ideas_maquinaria[0].porques;
-        this.ajusteDeTexto(idea_maquinaria, canvas.width - 360, 240, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_uno, canvas.width - 370, 190, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_dos, canvas.width - 400, 147, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_tres, canvas.width - 431, 103, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 460, 61, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 490, 29, 235, 11, ctx);
-      }
-
-      //Pinta si existe idea seleccionada de Metodo
-      let ideas_metodos = this.getIdeasByEmeSelected(4);
-      if (ideas_metodos.length > 0) {
-        let idea_metodo = ideas_metodos[0].idea;
-        let porques = ideas_metodos[0].porques;
-        this.ajusteDeTexto(idea_metodo, canvas.width - 590, 240, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_uno, canvas.width - 600, 190, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_dos, canvas.width - 630, 147, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_tres, canvas.width - 661, 103, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 690, 61, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 720, 29, 235, 11, ctx);
-      }
-
-      //Pinta si existe idea seleccionada de material
-      let ideas_material = this.getIdeasByEmeSelected(5);
-      if (ideas_material.length > 0) {
-        let idea_aterial = ideas_material[0].idea;
-        let porques = ideas_material[0].porques;
-        this.ajusteDeTexto(idea_aterial, canvas.width - 820, 240, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_uno, canvas.width - 830, 190, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_dos, canvas.width - 860, 147, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_tres, canvas.width - 891, 103, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_cuatro, canvas.width - 920, 61, 180, 11, ctx);
-        this.ajusteDeTexto(porques.porque_cinco, canvas.width - 950, 29, 235, 11, ctx);
-      }
-
+    
     }
     img.src = this.image_src;
     this.$modal_ishikawa.modal('open');
@@ -606,30 +517,5 @@ export class FormularioIshikawaComponent implements OnInit, OnChanges {
     }
   }
 
-  ajusteDeTexto(texto, x, y, maxWidth, alturaDeLinea, ctx: any): void {
-    // crea el array de las palabras del texto
-    let palabrasRy = texto.split(" ");
-    // inicia la variable var lineaDeTexto
-    let lineaDeTexto = "";
-    // un bucle for recorre todas las palabras
-    for (var i = 0; i < palabrasRy.length; i++) {
-      var testTexto = lineaDeTexto + palabrasRy[i] + " ";
-      // calcula la anchura del texto textWidth 
-      var textWidth = ctx.measureText(testTexto).width;
-      // si textWidth > maxWidth
-      if (textWidth > maxWidth && i > 0) {
-        // escribe en el canvas la lineaDeTexto
-        ctx.fillText(lineaDeTexto, x, y);
-        // inicia otra lineaDeTexto			
-        lineaDeTexto = palabrasRy[i] + " ";
-        // incrementa el valor de la variable y 
-        //donde empieza la nueva lineaDeTexto
-        y += alturaDeLinea;
-      } else {// de lo contrario,  si textWidth <= maxWidth 
-        lineaDeTexto = testTexto;
-      }
-    }// acaba el bucle for
-    // escribe en el canvas la última lineaDeTexto
-    ctx.fillText(lineaDeTexto, x, y);
-  }
+
 }
