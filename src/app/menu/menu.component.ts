@@ -38,7 +38,9 @@ export class MenuComponent implements OnInit, AfterViewInit {
     /* Si no puede ver el menu trae un "0" en la primer posicion del conjunto de roles */
     this.menu_cua = !(this.auth.getRolesOee().split(",")[0] == "0");
     this.menu_etad = !(this.auth.getRolesEtad().split(",")[0] == "0");
-    this.menu_ishikawa = !(this.auth.getRolesIshikawa().split(",")[0] == "0");
+    // Descomentar si se requiere verificar si tiene roles en ishikawa
+    // this.menu_ishikawa = !(this.auth.getRolesIshikawa().split(",")[0] == "0");
+    this.menu_ishikawa = true;
     
     let tmpRolesGral = this.auth.getRolesGenerales().split(",").map(el=>parseInt(el));
 
