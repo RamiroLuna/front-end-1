@@ -17,6 +17,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
   public menu_etad: boolean;
   public menu_ishikawa: boolean;
   public menu_generales: boolean;
+  public videowall: boolean;
   public consultaSonarh: boolean;
   public catalogos_generales: boolean;
   public consultaEtad: boolean;
@@ -33,6 +34,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
     this.menu_ishikawa= false;
     this.menu_generales= false;
     this.catalogos_generales= false;
+    this.videowall = false;
     this.fecha = getFechaActual();
 
     /* Si no puede ver el menu trae un "0" en la primer posicion del conjunto de roles */
@@ -41,6 +43,8 @@ export class MenuComponent implements OnInit, AfterViewInit {
     // Descomentar si se requiere verificar si tiene roles en ishikawa
     // this.menu_ishikawa = !(this.auth.getRolesIshikawa().split(",")[0] == "0");
     this.menu_ishikawa = true;
+    this.videowall = true;
+    
     
     let tmpRolesGral = this.auth.getRolesGenerales().split(",").map(el=>parseInt(el));
 

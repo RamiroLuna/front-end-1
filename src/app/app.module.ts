@@ -37,6 +37,7 @@ const routes: Routes = [
       { path: 'oee', loadChildren: './oee/oee.module#OeeModule' },
       { path: 'etad', loadChildren: './etad/etad.module#EtadModule' },
       { path: 'ishikawa', loadChildren: './ishikawa/ishikawa.module#IshikawaModule' },
+      { path: 'videowall', loadChildren: './videowall/videowall.module#VideowallModule' },
       { path: 'seguridad', component: SecurityComponent },
       // { path: 'seguridad/perfil-roles/:id_perfil' ,  component: RolesComponent },
       {
@@ -73,7 +74,7 @@ const routes: Routes = [
     ListByCatalogComponent,
     FormularioDetalleComponent,
     SecurityComponent,
-    RolesComponent,
+    RolesComponent
   ],
   imports: [
     BrowserModule,
