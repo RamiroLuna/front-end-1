@@ -73,7 +73,7 @@ export class FormularioIshikawaComponent implements OnInit, OnChanges {
     this.tmp_idea = new PetIdeas();
     this.aux_texto_idea = "";
     this.aux_index = -1;
-    this.image_src = '../../../assets/diagrama_ishikawa.png';
+    this.image_src = 'assets/diagrama_ishikawa.png';
     this.viewDiagrama = false;
 
     setTimeout(() => {

@@ -100,7 +100,7 @@ export class ListaIshikawasComponent implements OnInit {
     this.bloquear = true;
     this.recordsIshikawa = [];
     this.action = '';
-    this.image_src = '../../../assets/diagrama_ishikawa_pdf.png';
+    this.image_src = 'assets/diagrama_ishikawa_pdf.png';
     this.imageForPdf = false;
 
 
