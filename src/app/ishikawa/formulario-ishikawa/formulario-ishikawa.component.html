@@ -203,7 +203,7 @@
         <div class="step-content">
           <div class="step-actions">
             <button class="waves-effect waves-dark btn-flat previous-step" *ngIf="action == 'registro' || action == 'edit'">REGRESAR</button>
-            <button type="button" class="waves-effect waves-light btn light-blue darken-2" (click)="generateDiagrama()">
+            <button type="button" class="waves-effect waves-light btn light-blue darken-2" (click)="verDiagrama()">
 
               <i class="material-icons left">remove_red_eye</i>VER DIAGRAMA</button>
             <button class="waves-effect waves-dark   light-green darken-3 btn next-step" *ngIf="action == 'registro' || action == 'edit'">CONTINUAR</button>
@@ -586,7 +586,7 @@
 <div id="modalDiagrama" class="modal" style="width: calc(95%); height: calc(100%)">
   <div class="modal-content center-align">
     <div class="content_diagrama">
-      <canvas id="image" *ngIf="viewDiagrama"></canvas>
+      <canvas id="image"></canvas>
     </div>
   </div>
 </div>

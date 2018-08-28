@@ -82,7 +82,7 @@ export class FormularioIshikawaComponent implements OnInit, OnChanges {
 
       if (this.ishikawa.estatus == 1 || this.ishikawa.estatus == 0) {
         $('.seguimiento_paso_9').prop("disabled", true);
-        
+
       }
 
 
@@ -117,10 +117,10 @@ export class FormularioIshikawaComponent implements OnInit, OnChanges {
   //Detecta cambios en ishikawa
   ngOnChanges(changes: SimpleChanges) {
     let ishikawa_tmp = changes['ishikawa'];
-    if(ishikawa_tmp){
-      if (ishikawa_tmp.currentValue.estatus == 2) {       
+    if (ishikawa_tmp) {
+      if (ishikawa_tmp.currentValue.estatus == 2) {
         $('.seguimiento_paso_9').removeProp("disabled");
-      }  
+      }
     }
   }
 
@@ -424,26 +424,47 @@ export class FormularioIshikawaComponent implements OnInit, OnChanges {
 
   getIdeasByEmeSelected(id_eme: number): Array<PetIdeas> {
     return this.ishikawa.listIdeas.filter(el => el.id_eme == id_eme && el.porques != undefined);
-   }
+  }
 
-  generateDiagrama(): void {
-    this.viewDiagrama = false;
-    this.viewDiagrama = true;
-    let canvas = <HTMLCanvasElement>document.getElementById('image');
-    let ctx = canvas.getContext('2d');
+  generateDiagrama(url: string, ishikawa:PetIshikawa) {
+    return new Promise(function (resolve, reject) {
+      let canvas = <HTMLCanvasElement>document.getElementById('image');
+      let ctx = canvas.getContext('2d');
+      let img = new Image();
 
-    let img = new Image();
+      img.onload = () => {
+        /*
+         * Inicia el pintado del diagrama de ishikawa
+         */
+        canvas.width = img.naturalWidth
+        canvas.height = img.naturalHeight
+        ctx.drawImage(img, 0, 0);
+        ctx.font = "9px Arial";
+        getDiamagraIshikawa(ishikawa, ctx, canvas);
+        /*
+         * Fin generación diagrama
+         */
+        resolve({ estatus: 200 })
+      }
+      img.onerror = () => {
+        reject(url)
+      }
 
-    img.onload = () => {
-      canvas.width = img.naturalWidth
-      canvas.height = img.naturalHeight
-      ctx.drawImage(img, 0, 0);
-      ctx.font = "9px Arial";
-      getDiamagraIshikawa(this.ishikawa,ctx, canvas);
-    
-    }
-    img.src = this.image_src;
-    this.$modal_ishikawa.modal('open');
+      img.src = url;
+    })
+
+    // this.viewDiagrama = false;
+    // this.viewDiagrama = true;
+
+    // this.$modal_ishikawa.modal('open');
+  }
+
+  verDiagrama(): void {
+    this.generateDiagrama(this.image_src, this.ishikawa).then((success) => {
+      this.$modal_ishikawa.modal('open');
+    }, (error) => {
+      Materialize.toast('Diagrama no disponible!', 4000, 'red');
+    });
   }
 
 
