@@ -30,6 +30,7 @@ import { RolesComponent } from './security/roles/roles.component';
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, canActivate: [NotAuthGuard] },
+  { path: 'videowall', loadChildren: './videowall/videowall.module#VideowallModule', canActivate: [AuthGuard] },
   {
     path: 'home', component: HomeComponent, canActivate: [AuthGuard], children: [
       { path: '', component: MenuPrincipalComponent },
@@ -37,7 +38,6 @@ const routes: Routes = [
       { path: 'oee', loadChildren: './oee/oee.module#OeeModule' },
       { path: 'etad', loadChildren: './etad/etad.module#EtadModule' },
       { path: 'ishikawa', loadChildren: './ishikawa/ishikawa.module#IshikawaModule' },
-      { path: 'videowall', loadChildren: './videowall/videowall.module#VideowallModule' },
       { path: 'seguridad', component: SecurityComponent },
       // { path: 'seguridad/perfil-roles/:id_perfil' ,  component: RolesComponent },
       {
