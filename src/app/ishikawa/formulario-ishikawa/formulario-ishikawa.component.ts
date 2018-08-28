@@ -46,7 +46,6 @@ export class FormularioIshikawaComponent implements OnInit, OnChanges {
   public acciones: Array<PetPlanAccion>;
   public image_src: string;
   public showSteepEight: boolean;
-  public viewDiagrama: boolean;
 
 
   constructor() { }
@@ -74,7 +73,7 @@ export class FormularioIshikawaComponent implements OnInit, OnChanges {
     this.aux_texto_idea = "";
     this.aux_index = -1;
     this.image_src = 'assets/diagrama_ishikawa.png';
-    this.viewDiagrama = false;
+
 
     setTimeout(() => {
 
@@ -453,10 +452,6 @@ export class FormularioIshikawaComponent implements OnInit, OnChanges {
       img.src = url;
     })
 
-    // this.viewDiagrama = false;
-    // this.viewDiagrama = true;
-
-    // this.$modal_ishikawa.modal('open');
   }
 
   verDiagrama(): void {

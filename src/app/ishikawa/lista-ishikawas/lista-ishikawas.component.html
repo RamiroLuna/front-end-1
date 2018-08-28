@@ -1,4 +1,4 @@
-<div class="container" *ngIf="!loading">
+<div class="container" *ngIf="!loading && !consultaById">
   <div class="section"></div>
   <h4 class="color_titulo center-align">Consulta de ishikawas
     <a class="tooltipped" href="" data-position="top" data-delay="50" data-tooltip="Cambiar año" (click)="openModalYear($event)">{{ anioSeleccionado }}</a>
@@ -27,7 +27,7 @@
           <th>Nombre etad</th>
           <th>Grupo</th>
           <th width="25%">Descripción corta</th>
-          <th *ngIf="permission.editarIshikawa" class="center-align">Actualizar</th>
+          <th *ngIf="permission.editarIshikawa" class="center-align">Editar</th>
           <th *ngIf="permission.finalizar" class="center-align">Consulta y verificación</th>
           <th>PDF</th>
         </tr>
@@ -79,20 +79,38 @@
   </div>
   <!-- Fin solo para pantallas-->
 </div>
-<div id="modalFormIshikawa" class="modal">
-  <div class="modal-footer">
-    <button (click)="closeModalFormulario()" class="modal-close waves-effect waves-green btn-flat" style="color: #00695c">CERRAR</button>
+<ng-container *ngIf="consultaById">
+  <div class="col s12 m12 l12 xl12">
+    <h4 class="center-align color_titulo" *ngIf="action == 'consult'">Consulta y verificación</h4>
+    <h4 class="center-align color_titulo" *ngIf="action == 'edit'">Edición de ishikawa</h4>
   </div>
-  <div class="modal-content">
-    <app-formulario-ishikawa *ngIf="consultaById" [bloquear]="bloquear" [preguntas]="preguntas" [emes]="emes" [etads]="etads"
-      [grupos]="grupos" [action]="action" [ishikawa]="ishikawa" (verificarModelo)="verificaIshikawa($event)" (enviaModelo)="updateIshikawa($event)"
-      (revisaIshikawa)="revisaIshikawa($event)"></app-formulario-ishikawa>
+  <!-- Solo para dispositivos moviles -->
+  <div class="hide-on-large-only right-align">
+    <button class="btn-floating btn  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+      data-tooltip="Regresar" (click)="regresar('back')">
+      <i class="material-icons">
+        <i class="material-icons">arrow_back</i>
+      </i>
+    </button>
   </div>
-  <div class="modal-footer">
-    <button (click)="closeModalFormulario()" class="modal-close waves-effect waves-green btn-flat" style="color: #00695c">CERRAR</button>
+  <!-- fin Solo para dispositivos moviles -->
+  <app-formulario-ishikawa [bloquear]="bloquear" [preguntas]="preguntas" [emes]="emes" [etads]="etads" [grupos]="grupos" [action]="action"
+    [ishikawa]="ishikawa" (verificarModelo)="verificaIshikawa($event)" (enviaModelo)="updateIshikawa($event)" (revisaIshikawa)="revisaIshikawa($event)"></app-formulario-ishikawa>
+  <!-- Inicio solo para pantallas-->
+  <div class="hide-on-small-only hide-on-med-only hide-on-med-and-down">
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <button class="btn-floating btn-large  indigo lighten-1 waves-effect waves-light tooltipped" data-position="top" data-delay="50"
+        data-tooltip="Regresar" (click)="regresar('back')">
+        <i class="material-icons">
+          <i class="material-icons">arrow_back</i>
+        </i>
+      </button>
+    </div>
   </div>
-</div>
+  <!-- Fin solo para pantallas-->
+</ng-container>
 <canvas id="image" style="display: none"></canvas>
+
 <div class="container" *ngIf="loading">
   <div id="loader-wrapper">
     <div id="loader"></div>

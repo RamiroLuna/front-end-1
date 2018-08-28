@@ -63,7 +63,7 @@ export class ListaIshikawasComponent implements OnInit {
   public idLinea: number;
   public idPeriodo: number;
   public recordsIshikawa: Array<PetIshikawa>;
-  public $modalFormIshikawa: any;
+
   public image_src: string;
   public imageForPdf: boolean;
 
@@ -151,13 +151,6 @@ export class ListaIshikawasComponent implements OnInit {
    */
   ngAfterViewInitHttp(): void {
     $('.tooltipped').tooltip({ delay: 50 });
-    this.$modalFormIshikawa = $('#modalFormIshikawa').modal({
-      opacity: 0.6,
-      inDuration: 800,
-      dismissible: false,
-      complete: () => { }
-    });
-
     this.consultaPeriodo();
 
   }
@@ -166,7 +159,8 @@ export class ListaIshikawasComponent implements OnInit {
     $('.tooltipped').tooltip('hide');
   }
 
-  regresar() {
+  regresar(param:string ="") {
+    if(param == 'back')this.consultaById = false;
     $('.tooltipped').tooltip('hide');
   }
 
@@ -199,6 +193,7 @@ export class ListaIshikawasComponent implements OnInit {
             this.status = "inactive";
             this.datos_tabla = false;
             this.recordsIshikawa = [];
+            this.consultaById = false;
             this.consultaPeriodo();
           } else {
             resolve('Seleccione un año')
@@ -352,7 +347,7 @@ export class ListaIshikawasComponent implements OnInit {
       if (result.response.sucessfull) {
         this.ishikawa = result.data.ishikawa;
         this.consultaById = true;
-        this.$modalFormIshikawa.modal('open');
+
       } else {
         Materialize.toast(result.response.message, 4000, 'red');
       }
@@ -363,7 +358,7 @@ export class ListaIshikawasComponent implements OnInit {
   }
 
   closeModalFormulario(): void {
-    this.$modalFormIshikawa.modal('close');
+
     this.consultaById = false;
   }
 
