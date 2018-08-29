@@ -1,0 +1,9 @@
+#main_container {
+    /*display: flex; */
+    align-items: center;
+    justify-content: center;
+}
+
+.img_welcome{
+    width: calc(95%);    
+}
