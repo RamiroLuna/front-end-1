@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ANIMATION_PRELOADER } from  './presentacion.animaciones';
+import { 
+  ANIMATION_PRELOADER,
+  EFECTS_ENFASIS 
+} from  './presentacion.animaciones';
 
 @Component({
   selector: 'app-presentacion',
@@ -9,16 +12,17 @@ import { ANIMATION_PRELOADER } from  './presentacion.animaciones';
 })
 export class PresentacionComponent implements OnInit {
 
-  status: string = 'inactive';
+  public status: string = 'inactive';
 
   constructor() { }
 
   ngOnInit() {
+
     setTimeout(() => {
       this.status = 'active';
       setTimeout(() => {
-        this.status = 'enfasis';
-        console.log(this.status)
+        const EFECT_RANDOM = Math.floor(Math.random() * EFECTS_ENFASIS.length); 
+        this.status = EFECTS_ENFASIS[EFECT_RANDOM];
         setTimeout(()=>{
           this.status = 'inactive';
         },5000);
