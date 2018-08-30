@@ -139,20 +139,23 @@
                       <div class="col s12 m12 l4 xl4">
                         <div class="collections-title">
                           <div class="input-field col s12 m12 l12 xl12">
-                            <input id="porque_uno" type="text" maxlength="40" [(ngModel)]="idea.porques.porque_uno" [ngModelOptions]="{standalone: true}" [disabled]="bloquear">
+                            <input id="porque_uno" type="text" maxlength="40" [(ngModel)]="idea.porques.porque_uno" [ngModelOptions]="{standalone: true}"
+                              [disabled]="bloquear">
                             <label for="porque_uno">1. ¿Por que?</label>
                           </div>
                         </div>
                       </div>
                       <div class="col s12 m12 l4 xl4">
                         <div class="input-field col s12 m12 l12 xl12">
-                          <input id="porque_dos" type="text" maxlength="40" [(ngModel)]="idea.porques.porque_dos" [ngModelOptions]="{standalone: true}" [disabled]="bloquear">
+                          <input id="porque_dos" type="text" maxlength="40" [(ngModel)]="idea.porques.porque_dos" [ngModelOptions]="{standalone: true}"
+                            [disabled]="bloquear">
                           <label for="porque_dos">2. ¿Por que?</label>
                         </div>
                       </div>
                       <div class="col s12 m12 l4 xl4">
                         <div class="input-field col s12 m12 l12 xl12">
-                          <input id="porque_tres" maxlength="40" type="text" [(ngModel)]="idea.porques.porque_tres" [ngModelOptions]="{standalone: true}" [disabled]="bloquear">
+                          <input id="porque_tres" maxlength="40" type="text" [(ngModel)]="idea.porques.porque_tres" [ngModelOptions]="{standalone: true}"
+                            [disabled]="bloquear">
                           <label for="porque_tres">3. ¿Por que?</label>
                         </div>
                       </div>
@@ -161,14 +164,16 @@
                       <div class="col s12 m12 l4 xl4">
                         <div class="collections-title">
                           <div class="input-field col s12 m12 l12 xl12">
-                            <input id="porque_cuatro" type="text" maxlength="40" [(ngModel)]="idea.porques.porque_cuatro" [ngModelOptions]="{standalone: true}" [disabled]="bloquear">
+                            <input id="porque_cuatro" type="text" maxlength="40" [(ngModel)]="idea.porques.porque_cuatro" [ngModelOptions]="{standalone: true}"
+                              [disabled]="bloquear">
                             <label for="porque_cuatro">4. ¿Por que?</label>
                           </div>
                         </div>
                       </div>
                       <div class="col s12 m12 l4 xl4">
                         <div class="input-field col s12 m12 l12 xl12">
-                          <input id="porque_cinco" type="text"  maxlength="40" [(ngModel)]="idea.porques.porque_cinco" [ngModelOptions]="{standalone: true}" [disabled]="bloquear">
+                          <input id="porque_cinco" type="text" maxlength="40" [(ngModel)]="idea.porques.porque_cinco" [ngModelOptions]="{standalone: true}"
+                            [disabled]="bloquear">
                           <label for="porque_cinco">5. ¿Por que?</label>
                         </div>
                       </div>
@@ -553,7 +558,7 @@
         <h6 class="color_titulo center-align" id="titulo"></h6>
       </div>
       <div class="input-field col s12 m12 l12 xl12">
-        <input id="idea_eme" type="text"  maxlength="80"  [(ngModel)]="tmp_idea.idea" [ngModelOptions]="{standalone: true}">
+        <input id="idea_eme" type="text" maxlength="80" [(ngModel)]="tmp_idea.idea" [ngModelOptions]="{standalone: true}">
         <label for="idea_eme">Escriba aquí su idea</label>
       </div>
     </div>
@@ -583,10 +588,8 @@
     </div>
   </div>
 </div>
-<div id="modalDiagrama" class="modal" style="width: calc(95%); height: calc(100%);z-index: 1005;">
-  <div class="modal-content center-align">
-    <div class="content_diagrama">
+<div id="modalDiagrama" class="modal">
+  <div class="modal-content">
       <canvas id="image"></canvas>
-    </div>
   </div>
 </div>

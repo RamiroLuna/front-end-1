@@ -437,6 +437,7 @@ export class FormularioIshikawaComponent implements OnInit, OnChanges {
          */
         canvas.width = img.naturalWidth
         canvas.height = img.naturalHeight
+      
         ctx.drawImage(img, 0, 0);
         ctx.font = "9px Arial";
         getDiamagraIshikawa(ishikawa, ctx, canvas);

@@ -58,16 +58,23 @@ td > p{
     margin-right: 10px
 }
 
-.content_diagrama {
-    margin: 0px;
-    padding: 0px;
-  }
+
 
  #myCanvas{
  max-width: 100%;
  height: auto;
  }
 
- #modalDiagrama { 
-     width: 90% !important ; height: 90% !important ;
-}
+ /* #modalDiagrama { 
+     width: 1000px !important ; 
+     height: 90% !important ;
+} */
+
+
+/*
+ * Estilo para mostrar scroll en ejex
+ */
+ .scroll_modal{
+    /* overflow: hidden;  */
+    overflow-x: scroll;
+ }
