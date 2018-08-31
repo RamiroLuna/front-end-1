@@ -127,6 +127,14 @@
                 <td class="center-align">{{falla.hora_final}}</td>
                 <td class="center-align">{{falla.tiempo_paro + ' Hrs'}}</td>
               </tr>
+              <tr *ngIf="(fallas | filterBy: ['diaString','valor_fuente','valor_razon','valor_equipo']: texto_busqueda).length > 0">
+                <td class="center-align" colspan="10">
+                  <b>TOTAL DE HORAS DE PARO DURANTE EL PERIODO</b>
+                </td>
+                <td>
+                  <b>{{ total_horas + 'Hrs'}}</b>
+                </td>
+              </tr>
             </tbody>
           </table>
           <br>

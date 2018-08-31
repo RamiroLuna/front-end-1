@@ -29,6 +29,7 @@ export class RptDetalladoFallasComponent implements OnInit {
   public meses: Array<any>;
   public periodos: Array<Periodo>;
   public texto_busqueda: string = "";
+  public total_horas: number;
 
   constructor(
     private service: RptDetalladoFallasService,
@@ -47,6 +48,7 @@ export class RptDetalladoFallasComponent implements OnInit {
     this.anios = [];
     this.meses = [];
     this.periodos = [];
+    this.total_horas = 0;
 
     this.service.getCatalogos(this.auth.getIdUsuario()).subscribe(result => {
 
@@ -125,6 +127,13 @@ export class RptDetalladoFallasComponent implements OnInit {
 
         if (result.response.sucessfull) {
           this.fallas = result.data.listFallas || [];
+          
+          let total = this.fallas.map(el=>  parseFloat("" +el.tiempo_paro)).reduce((anterior,actual)=>{
+            if (Number.isNaN(anterior) || typeof anterior == undefined) anterior = 0.00;
+            if (Number.isNaN(actual) || typeof actual == undefined) actual = 0.00;
+            return anterior + actual;
+          });
+          this.total_horas = parseFloat(total.toFixed(2));
           this.viewReport = true;
 
         } else {

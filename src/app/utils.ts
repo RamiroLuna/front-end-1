@@ -478,7 +478,8 @@ function getTablaUtf8(id: string): string {
         .replace(/ú/g, '%fa')
         .replace(/Ú/g, '%da')
         .replace(/Ñ/g, '%d1')
-        .replace(/ñ/g, '%f1');
+        .replace(/ñ/g, '%f1')
+        .replace(/´/g, '%27');
 }
 
 /**

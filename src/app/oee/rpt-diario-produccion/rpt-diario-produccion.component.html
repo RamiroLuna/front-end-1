@@ -61,7 +61,7 @@
     </div>
     <div class="section"></div>
     <div class="row scroll_ejex_tabla_reporte"  *ngIf="viewReport">
-      <table id="tblReporte" cellspacing="0">
+      <table id="tblReporte" cellspacing="0" *ngIf="this.parametrosBusqueda.idGpoLinea != 2">
         <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
           <ng-template [ngIf]="row.padre == 1">
             <th class="center-align">{{ row.dia }}</th>
@@ -122,6 +122,76 @@
             <td class="center-align"><b>{{ (row.difeHoju | formatDecimal:3 )| milles }}</b></td>
             <td class="center-align"><b>{{ ((row.eficiDia | formatDecimal:3 )| milles )  +  '%' }}</b></td>
             <td class="center-align"><b>{{ ((row.vsMetaH | formatDecimal:3 )| milles )  +  '%' }}</b></td>
+          </ng-template>
+        </tr>
+      </table>
+      <table id="tblReporte" cellspacing="0" *ngIf="this.parametrosBusqueda.idGpoLinea == 2">
+        <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
+          <ng-template [ngIf]="row.padre == 1">
+            <th class="center-align">{{ row.dia }}</th>
+            <th class="center-align">{{ row.resina }}</th>
+            <th class="center-align">{{ row.resina004 }}</th>
+            <th class="center-align">{{ row.acumulado }}</th>
+            <th class="center-align">{{ row.planResina }}</th>
+            <th class="center-align">{{ row.diferencia }}</th>
+            <th class="center-align">{{ row.eficiencia }}</th>
+            <th class="center-align">{{ row.vsMetaM }}</th>
+            <th class="center-align">{{ row.ext1 }}</th>
+            <th class="center-align">{{ row.ext2 }}</th>
+            <th class="center-align">{{ row.totalAmo }}</th>
+            <th class="center-align">{{ row.acumAmo }}</th>
+            <th class="center-align">{{ row.planExt }}</th>
+            <th class="center-align">{{ row.difeAmo }}</th>
+            <th class="center-align">{{ row.eficiDia }}</th>
+            <th class="center-align">{{ row.vsMetaE }}</th>
+            <th class="center-align">{{ row.hojuelaSS }}</th>
+            <th class="center-align">{{ row.plastas }}</th>
+            <th class="center-align">{{ row.pellet }}</th>
+            <th class="center-align">{{ row.EficMat }}</th>
+          </ng-template>
+          <ng-template [ngIf]="row.padre == 0">
+            <td class="center-align">{{ row.dia }}</td>
+            <td class="center-align">{{ (row.resina | formatDecimal: 3) | milles }}</td>
+            <td class="center-align">{{ (row.resina004 | formatDecimal: 3) | milles }}</td>
+            <td class="center-align">{{ (row.acumulado | formatDecimal: 3) | milles }}</td>
+            <td class="center-align">{{ (row.planResina | formatDecimal: 3) | milles }}</td>
+            <td class="center-align">{{ (row.diferencia | formatDecimal: 3) | milles }}</td>
+            <td class="center-align">{{ (row.eficiencia) + '%' }}</td>
+            <td class="center-align">{{ (row.vsMetaM) + '%' }}</td>
+            <td class="center-align">{{ (row.ext1 | formatDecimal: 3 )  | milles}}</td>
+            <td class="center-align">{{ (row.ext2 | formatDecimal: 3 )  | milles}}</td>
+            <td class="center-align">{{ (row.totalAmo | formatDecimal: 3 )  | milles}}</td>
+            <td class="center-align">{{ (row.acumAmo | formatDecimal: 3 )  | milles}}</td>
+            <td class="center-align">{{ (row.planExt | formatDecimal: 3 )  | milles}}</td>
+            <td class="center-align">{{ (row.difeAmo | formatDecimal: 3 )  | milles}}</td>
+            <td class="center-align">{{ (row.eficiDia) + '%' }}</td>
+            <td class="center-align">{{ (row.vsMetaE) + '%' }}</td>
+            <td class="center-align">{{ (row.hojuelaSS | formatDecimal: 3 )  | milles}}</td>
+            <td class="center-align">{{ (row.plastas | formatDecimal: 3 )  | milles}}</td>
+            <td class="center-align">{{ (row.pellet | formatDecimal: 3 )  | milles}}</td>
+            <td class="center-align">{{ (row.EficMat) + '%' }}</td>
+          </ng-template>
+          <ng-template [ngIf]="row.padre == 2">
+            <td class="center-align"><b>{{ row.dia }}</b></td>
+            <td class="center-align"><b>{{ (row.resina | formatDecimal: 3) | milles }}</b></td>
+            <td class="center-align"><b>{{ (row.resina004 | formatDecimal: 3) | milles }}</b></td>
+            <td class="center-align"><b>{{ (row.acumulado | formatDecimal: 3) | milles }}</b></td>
+            <td class="center-align"><b>{{ (row.planResina | formatDecimal: 3) | milles }}</b></td>
+            <td class="center-align"><b>{{ (row.diferencia | formatDecimal: 3) | milles }}</b></td>
+            <td class="center-align"><b>{{ (row.eficiencia) + '%' }}</b></td>
+            <td class="center-align"><b>{{ (row.vsMetaM) + '%' }}</b></td>
+            <td class="center-align"><b>{{ (row.ext1 | formatDecimal: 3 )  | milles}}</b></td>
+            <td class="center-align"><b>{{ (row.ext2 | formatDecimal: 3 )  | milles}}</b></td>
+            <td class="center-align"><b>{{ (row.totalAmo | formatDecimal: 3 )  | milles}}</b></td>
+            <td class="center-align"><b>{{ (row.acumAmo | formatDecimal: 3 )  | milles}}</b></td>
+            <td class="center-align"><b>{{ (row.planExt | formatDecimal: 3 )  | milles}}</b></td>
+            <td class="center-align"><b>{{ (row.difeAmo | formatDecimal: 3 )  | milles}}</b></td>
+            <td class="center-align"><b>{{ (row.eficiDia) + '%' }}</b></td>
+            <td class="center-align"><b>{{ (row.vsMetaE) + '%' }}</b></td>
+            <td class="center-align"><b>{{ (row.hojuelaSS | formatDecimal: 3 )  | milles}}</b></td>
+            <td class="center-align"><b>{{ (row.plastas | formatDecimal: 3 )  | milles}}</b></td>
+            <td class="center-align"><b>{{ (row.pellet | formatDecimal: 3 )  | milles}}</b></td>
+            <td class="center-align"><b>{{ (row.EficMat) + '%' }}</b></td>
           </ng-template>
         </tr>
       </table>
