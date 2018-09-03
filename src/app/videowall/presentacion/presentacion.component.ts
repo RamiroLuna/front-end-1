@@ -1,33 +1,48 @@
 import { Component, OnInit } from '@angular/core';
-import { 
+import {
   ANIMATION_PRELOADER,
-  EFECTS_ENFASIS 
-} from  './presentacion.animaciones';
+  EFECTS_ENFASIS
+} from './presentacion.animaciones';
 
 @Component({
   selector: 'app-presentacion',
   templateUrl: './presentacion.component.html',
   styleUrls: ['./presentacion.component.css'],
-  animations: [ ANIMATION_PRELOADER ]
+  animations: [ANIMATION_PRELOADER]
 })
 export class PresentacionComponent implements OnInit {
 
   public status: string = 'inactive';
+  public type_animation: string = 'entrada';
 
   constructor() { }
 
   ngOnInit() {
 
+  }
+
+  animationDone(event: any): void {
     setTimeout(() => {
-      this.status = 'active';
-      setTimeout(() => {
-        const EFECT_RANDOM = Math.floor(Math.random() * EFECTS_ENFASIS.length); 
-        this.status = EFECTS_ENFASIS[EFECT_RANDOM];
-        setTimeout(()=>{
+
+      switch (this.type_animation) {
+        case 'entrada':
+          this.status = 'active';
+          this.type_animation = 'enfasis';
+          break;
+        case 'enfasis':
+          const EFECT_RANDOM = Math.floor(Math.random() * EFECTS_ENFASIS.length);
+          this.status = EFECTS_ENFASIS[EFECT_RANDOM];
+          this.type_animation = 'salida';
+          break;
+        case 'salida':
           this.status = 'inactive';
-        },5000);
-      }, 7000);
+          this.type_animation = 'entrada';
+          break;
+
+      }
+
     }, 200);
+
   }
 
 }
