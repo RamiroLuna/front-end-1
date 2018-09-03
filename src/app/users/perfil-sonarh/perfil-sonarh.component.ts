@@ -46,7 +46,7 @@ export class PerfilSonarhComponent implements OnInit {
 
       let numero_empleado = parseInt(params.get('id'));
       this.service.getDetalleUsuarioSonarh(this.auth.getIdUsuario(), numero_empleado).subscribe(result => {
-    
+
         if (result.response.sucessfull) {
           if (result.data.usuarioSonarh) {
             this.grupos = result.data.listGrupos || [];
@@ -128,11 +128,36 @@ export class PerfilSonarhComponent implements OnInit {
   }
 
   filtraLineas(id_etad: number): void {
+
+    if (id_etad == undefined || id_etad == 0 || id_etad == 8 ) {
+    
+      let i = this.usuario.id_perfiles.indexOf(4);
+      if (i != -1) {
+        this.usuario.id_perfiles.splice(i, 1);
+      }
+
+      let j = this.usuario.id_perfiles.indexOf(5);
+      if (j != -1) {
+        this.usuario.id_perfiles.splice(j, 1);
+      }
+
+      $('#option4, #option5').removeAttr("selected");
+      $('#option4, #option5').prop("disabled", true);
+
+    } else {
+      $('#option4, #option5').prop("disabled", false);
+
+    }
+   
+
+    $('.perfi').material_select('destroy');
+    $('.perfi').material_select();
+
     this.lineas = this.lineas_disponibles.filter(el => el.id_etad == id_etad);
     this.formPerfilSonarh.controls.id_linea.reset();
+
+
   }
-
-
 
 
 }
