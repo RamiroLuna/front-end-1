@@ -14,6 +14,7 @@ export class PresentacionComponent implements OnInit {
 
   public status: string = 'inactive';
   public type_animation: string = 'entrada';
+  public steep: number = 1;
 
   constructor() { }
 
@@ -37,6 +38,11 @@ export class PresentacionComponent implements OnInit {
         case 'salida':
           this.status = 'inactive';
           this.type_animation = 'entrada';
+          this.steep++
+          // setTimeout(()=>{
+            
+          //   console.log('paso',this.steep)
+          // },500);
           break;
 
       }
