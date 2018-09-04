@@ -12,6 +12,7 @@ const ANIMATION_PRELOADER =
             opacity: 1,
             display: 'block',
         })),
+        // transition('void => inactive', animate('2ms')),
         transition('inactive => active', animate('2000ms')),
         transition('active => rotarY', animate('4000ms', keyframes([
             style({ opacity: 1, transform: 'rotateY(-90deg)', offset: 0.1 }),

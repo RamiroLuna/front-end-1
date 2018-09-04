@@ -12,6 +12,7 @@ import {
 })
 export class PresentacionComponent implements OnInit {
 
+  private TOTAL: number = 2;
   public status: string = 'inactive';
   public type_animation: string = 'entrada';
   public steep: number = 1;
@@ -22,7 +23,21 @@ export class PresentacionComponent implements OnInit {
 
   }
 
+  animationStart(event: any): void {
+  }
+
   animationDone(event: any): void {
+
+    if (this.type_animation == 'fin') {
+      if (event.fromState != 'void' && event.toState == 'inactive') {
+        this.steep = 2;
+        this.status = 'inactive';
+        this.type_animation = 'entrada';
+
+      }
+    }
+
+
     setTimeout(() => {
 
       switch (this.type_animation) {
@@ -37,14 +52,8 @@ export class PresentacionComponent implements OnInit {
           break;
         case 'salida':
           this.status = 'inactive';
-          this.type_animation = 'entrada';
-          this.steep++
-          // setTimeout(()=>{
-            
-          //   console.log('paso',this.steep)
-          // },500);
+          this.type_animation = 'fin';
           break;
-
       }
 
     }, 200);
