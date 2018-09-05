@@ -1,4 +1,4 @@
-import { animate, state, style, transition, trigger, keyframes, query, stagger , AnimationBuilder} from '@angular/animations';
+import { animate, state, style, transition, trigger, keyframes, query, stagger, AnimationBuilder } from '@angular/animations';
 const EFECTS_ENFASIS = ['rotarY', 'rotarX', 'rotarZ'];
 const ANIMATION_PRELOADER =
     trigger('preloader', [
@@ -12,7 +12,10 @@ const ANIMATION_PRELOADER =
             opacity: 1,
             display: 'block',
         })),
-        // transition('void => inactive', animate('2ms')),
+        state('void', style({
+            opacity: 0,
+            display: 'none'
+        })),
         transition('inactive => active', animate('2000ms')),
         transition('active => rotarY', animate('4000ms', keyframes([
             style({ opacity: 1, transform: 'rotateY(-90deg)', offset: 0.1 }),
@@ -35,8 +38,6 @@ const ANIMATION_PRELOADER =
         transition('rotarX => inactive', animate('2000ms')),
         transition('rotarY => inactive', animate('2000ms')),
         transition('rotarZ => inactive', animate('2000ms')),
-
-
     ]);
 
 export {
