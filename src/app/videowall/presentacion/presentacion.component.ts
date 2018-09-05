@@ -48,8 +48,6 @@ export class PresentacionComponent implements OnInit {
           this.stepp_status[this.steep_index] = 'active';
           this.type_animation = 'enfasis';
          }
-        
-          
           break;
         case 'enfasis':
           const EFECT_RANDOM = Math.floor(Math.random() * EFECTS_ENFASIS.length);
@@ -63,12 +61,10 @@ export class PresentacionComponent implements OnInit {
           break;
         case 'fin':
             if(this.steep_index < this.TOTAL){
-            
               setTimeout(()=>{
                 this.steep_index = this.steep_index + 1 ;
                 this.stepp_status[this.steep_index] = 'inactive';
                 this.type_animation = 'entrada';
-               
               },200);
           
              
