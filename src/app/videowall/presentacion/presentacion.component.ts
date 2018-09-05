@@ -3,7 +3,7 @@ import {
   ANIMATION_PRELOADER,
   EFECTS_ENFASIS
 } from './presentacion.animaciones';
-
+declare var $:any;
 @Component({
   selector: 'app-presentacion',
   templateUrl: './presentacion.component.html',
@@ -13,7 +13,6 @@ import {
 export class PresentacionComponent implements OnInit {
 
   private TOTAL: number = 3;
-  // public status: string = 'inactive';
   public type_animation: string = 'entrada';
   public steep_index: number = 1;
 
@@ -36,18 +35,27 @@ export class PresentacionComponent implements OnInit {
   animationDone(event: any): void {
   
     setTimeout(() => {
-
+      debugger
       switch (this.type_animation) {
         case 'entrada':
+
+         if(this.steep_index > 1){
+          setTimeout(()=>{
+            this.stepp_status[this.steep_index] = 'active';
+            this.type_animation = 'enfasis';
+          },200);
+         }else{
           this.stepp_status[this.steep_index] = 'active';
           this.type_animation = 'enfasis';
+         }
         
+          
           break;
         case 'enfasis':
           const EFECT_RANDOM = Math.floor(Math.random() * EFECTS_ENFASIS.length);
           this.stepp_status[this.steep_index] = EFECTS_ENFASIS[EFECT_RANDOM];
           this.type_animation = 'salida';
-      
+        
           break;
         case 'salida':
           this.stepp_status[this.steep_index] = 'inactive';
@@ -58,10 +66,10 @@ export class PresentacionComponent implements OnInit {
             
               setTimeout(()=>{
                 this.steep_index = this.steep_index + 1 ;
-                this.stepp_status[this.steep_index] = 'active';
+                this.stepp_status[this.steep_index] = 'inactive';
                 this.type_animation = 'entrada';
                
-              },20);
+              },200);
           
              
             }
