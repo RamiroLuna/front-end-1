@@ -10,7 +10,7 @@ export class OptionsService {
    * URL del servicio del componente
    */ 
 
-  private URL = BASE_URL_SERVICE + '/Produccion';
+  private URL = BASE_URL_SERVICE + '/videoWall';
 
   constructor(private http: HttpClient) { }
     /*

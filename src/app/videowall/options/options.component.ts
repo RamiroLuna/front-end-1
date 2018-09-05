@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
 import { OptionsService } from './options.service';
+import { AuthService } from '../../auth/auth.service';
 
 
 declare var $: any;
@@ -13,12 +14,18 @@ declare var Materialize: any;
 })
 export class OptionsComponent implements OnInit {
 
-  constructor( private service: OptionsService) { }
+  public disabled = false;
+
+  constructor(
+    private service: OptionsService,
+    private auth: AuthService,
+  ) { }
 
   ngOnInit() {
   }
 
   refreshData(): void {
+    this.disabled = true;
     /* 
     * Configuración del modal de confirmación
     */
@@ -39,25 +46,25 @@ export class OptionsComponent implements OnInit {
       if (result.value) {
 
        
-        // this.service.agregar(this.auth.getIdUsuario()).subscribe(result => {
-
-        //   if (result.response.sucessfull) {
-        //     this.btnAdd = false;
-
-        //     Materialize.toast('Producción registrada', 4000, 'green');
-
-        //   } else {
-        //     Materialize.toast(result.response.message, 4000, 'red');
-        //   }
-        // }, eror => {
-        //   Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
-        // });
+        this.service.generateVideoWall(this.auth.getIdUsuario()).subscribe(result => {
+          console.log('result', result)
+          if (result.response.sucessfull) {
+            Materialize.toast('Actualización correcta', 4000, 'green');
+            this.disabled = false;
+          } else {
+            Materialize.toast(result.response.message, 4000, 'red');
+            this.disabled = false;
+          }
+        }, eror => {
+          Materialize.toast('Ocurrió un error en el servicio!', 4000, 'red');
+          this.disabled = false;
+        });
 
         /*
         * Si cancela accion
         */
       } else if (result.dismiss === swal.DismissReason.cancel) {
-
+        this.disabled = false;
       }
     })
   }
