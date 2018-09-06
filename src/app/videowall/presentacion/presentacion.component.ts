@@ -16,6 +16,9 @@ export class PresentacionComponent implements OnInit {
   private TOTAL: number = 3;
   public type_animation: string = 'entrada';
   public steep_index: number = 1;
+  public loading: boolean;
+  public isOk:boolean;
+  public OEE:any;
 
   public stepp_status: any = {
     1: '',
@@ -26,7 +29,21 @@ export class PresentacionComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.stepp_status[this.steep_index] = 'inactive';
+    this.loading = true;
+    this.isOk = false;
+
+    this.OEE = localStorage.getItem('OEE');
+
+    if(this.OEE == null || this.OEE === undefined){
+      this.loading = false;
+    }else{
+      this.loading = false;
+      this.isOk = true;
+      // Tiene los datos para poder trabajar 
+      // this.stepp_status[this.steep_index] = 'inactive';
+    }
+
+   
   }
 
   animationDone(event: any): void {
