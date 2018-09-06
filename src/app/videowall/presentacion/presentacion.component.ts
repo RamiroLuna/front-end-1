@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { configChart as configPerdidas } from '../../oee/rpt-fuente-perdidas/rpt.config.export';
 import { configChart as configDisponiblidad } from '../../oee/rpt-disponibilidad/rpt.config.export';
+import { configChart as configOEE } from '../../oee/rpt-oee/rpt.config.export';
 import { clone } from '../../utils';
 import {
   ANIMATION_PRELOADER,
@@ -102,6 +103,9 @@ export class PresentacionComponent implements OnInit {
         case 3:
           this.buildChartDisponiblidad();
           break;
+        case 4:
+          this.buildChartOEE();
+          break;
       }
 
       //Ejecuta evento de animación
@@ -149,6 +153,33 @@ export class PresentacionComponent implements OnInit {
     configuracion.title.text = titulo;
     configuracion.xAxis.categories = labels;
     configuracion.series.push({ name: ' Horas ', data: horas });
+
+    $('#grafica').highcharts(configuracion);
+  }
+
+  buildChartOEE(): void {
+    let configuracion = clone(configOEE);
+    this.time_await = 15000;
+    let rows = this.OEE[2];
+
+    let meta_esperada = rows.filter((el) => el.padre == 0).map((el) => el.meta);
+    let labels = rows.filter((el) => el.padre == 0).map((el) => el.titulo);
+    let horas = rows.filter((el) => el.padre == 0).map((el) => el.porcentaje);
+    let titulo = rows.filter(el => el.padre == 1)[0].titulo_grafica;
+
+    horas = horas.map(el => el = parseFloat(el).toFixed(3));
+    horas = horas.map(el => el = parseFloat(el));
+
+    meta_esperada = meta_esperada.map(el => el = parseFloat(el).toFixed(3));
+    meta_esperada = meta_esperada.map(el => el = parseFloat(el));
+
+    configuracion.exporting.enabled = false;
+    configuracion.chart.height = this.height;
+    configuracion.series = [];
+    configuracion.title.text = titulo;
+    configuracion.xAxis.categories = labels;
+    configuracion.series.push({ name: ' Real ', data: horas });
+    configuracion.series.push({ name: ' Meta esperada ', data: meta_esperada, type: 'line' });
 
     $('#grafica').highcharts(configuracion);
   }
