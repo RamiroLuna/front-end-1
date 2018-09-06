@@ -18,7 +18,10 @@
     </div>
   </div>
   <div class="row" *ngIf="disabled">
-    <p class="center-align">Actualizando datos. Por favor espere </p>
+      <div class="progress col s12 m12 l12 xl12 center-align">
+          <div class="indeterminate"></div>
+      </div>     
+      <p class="center-align">Actualizando. Por favor espere ... </p>
   </div>
   <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
     <a routerLink="../../home" class="btn-floating btn-large  indigo darken-4 waves-effect waves-light tooltipped" data-position="top"

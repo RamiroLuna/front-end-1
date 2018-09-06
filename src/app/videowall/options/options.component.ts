@@ -25,7 +25,7 @@ export class OptionsComponent implements OnInit {
   }
 
   refreshData(): void {
-    this.disabled = true;
+  
     /* 
     * Configuración del modal de confirmación
     */
@@ -44,8 +44,8 @@ export class OptionsComponent implements OnInit {
        * Si acepta
        */
       if (result.value) {
-
-       
+        this.disabled = true;
+        
         this.service.generateVideoWall(this.auth.getIdUsuario()).subscribe(result => {
           console.log('result', result)
           if (result.response.sucessfull) {
