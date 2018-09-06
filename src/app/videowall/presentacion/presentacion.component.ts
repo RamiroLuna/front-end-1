@@ -4,6 +4,7 @@ import { configChart as configDisponiblidad } from '../../oee/rpt-disponibilidad
 import { configChart as configOEE } from '../../oee/rpt-oee/rpt.config.export';
 import { configChart as configJucodi } from '../../oee/rpt-jucodi/rpt.config.export';
 import { configChart as configRealPlan, configChartSpider } from '../../oee/rpt-produccion-real-plan/rpt.config.export';
+import { configChartSpider as configVelocidad } from '../../oee/rpt-velocidad-promedio/rpt.config.export';
 import { clone } from '../../utils';
 import {
   ANIMATION_PRELOADER,
@@ -116,6 +117,9 @@ export class PresentacionComponent implements OnInit {
           break;
         case 7:
           this.buildChartSpider();
+          break;
+        case 8:
+          this.buildChartVelocidad();
           break;
       }
 
@@ -251,7 +255,7 @@ export class PresentacionComponent implements OnInit {
     $('#grafica').highcharts(configuracion);
   }
 
-  buildChartSpider():void{
+  buildChartSpider(): void {
     let configuracion = clone(configChartSpider);
     this.time_await = 10000;
 
@@ -260,7 +264,7 @@ export class PresentacionComponent implements OnInit {
     configuracion.chart.height = this.height;
     configuracion.series = [];
     configuracion.xAxis.categories = [];
-    configuracion.title.text = '.';
+    configuracion.title.text = 'Producción real vs plan';
     let esperada = [];
     let real = [];
     let legeng = ':grupo:<br><span style="color:#9e9d24">:real:</span><br><span style="color:#283593">:meta:</span>';
@@ -309,6 +313,32 @@ export class PresentacionComponent implements OnInit {
 
     $('#grafica').highcharts(configuracion);
 
+  }
+
+  buildChartVelocidad(): void {
+    let configuracion = clone(configVelocidad);
+    this.time_await = 10000;
+
+    let row = this.OEE[6];
+  
+    let esperada = [];
+    let real = [];
+
+    let esperadaTmp = row.filter((el) => el.padre == 0)[0];
+    let titulo = row.filter(el => el.padre == 1)[0].titulo_grafica;
+
+    configuracion.exporting.enabled = false;
+    configuracion.chart.height = this.height;
+    configuracion.series = [];
+    configuracion.title.text = titulo;
+
+    esperada.push(esperadaTmp.sppeda);
+    esperada.push(esperadaTmp.sppedb);
+    esperada.push(esperadaTmp.sppedc);
+    esperada.push(esperadaTmp.sppedd);
+    configuracion.series.push({ color: '#1a237e', name: ' Velocidad promedio ', data: esperada, pointPlacement: 'on' });
+    $('#grafica').highcharts(configuracion);
+  
   }
 
 
