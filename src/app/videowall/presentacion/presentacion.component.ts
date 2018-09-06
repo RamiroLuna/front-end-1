@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { configChart } from '../../oee/rpt-fuente-perdidas/rpt.config.export';
+import { clone } from '../../utils';
 import {
   ANIMATION_PRELOADER,
   EFECTS_ENFASIS
@@ -35,7 +36,7 @@ export class PresentacionComponent implements OnInit {
     if (this.OEE == null || this.OEE === undefined) {
       this.loading = false;
     } else {
-      this.height = $(window).height();
+      this.height = $(window).height() - 100;
       this.OEE = JSON.parse(this.OEE);
       this.TOTAL = this.OEE.length + 1;
       this.isOk = true;
@@ -95,16 +96,19 @@ export class PresentacionComponent implements OnInit {
 
         // Perdidas AMUT1
         case 2:
+          let configuracion = clone(configChart); 
           this.time_await = 20000;
           let rows = this.OEE[0]
           let labels = rows.filter((el) => el.padre == 0).map((el) => el.fuente);
           let horas = rows.filter((el) => el.padre == 0).map((el) => el.hrs);
           let titulo = rows.filter(el => el.padre == 1)[0].titulo_grafica;
-          configChart.series = [];
-          configChart.title.text = titulo;
-          configChart.xAxis.categories = labels;
-          configChart.series.push({ name: 'Horas Muertas', data: horas });
-          $('#grafica').highcharts(configChart);
+          configuracion.exporting.enabled = false;
+          configuracion.chart.height = this.height;
+          configuracion.series = [];
+          configuracion.title.text = titulo;
+          configuracion.xAxis.categories = labels;
+          configuracion.series.push({ name: 'Horas Muertas', data: horas });
+          $('#grafica').highcharts(configuracion);
           break;
       }
 

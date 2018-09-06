@@ -1,4 +1,4 @@
-<div class="row" id="main_container" *ngIf="!loading && isOk">
+<div class="row" *ngIf="!loading && isOk">
   <img  src="http://www.petstar.mx/wp-content/uploads/2018/02/logo-petstar.png" class="img_width" [@preloader]="status"
     (@preloader.done)="animationDone($event)" *ngIf="steep_index == 1">
   
