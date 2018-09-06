@@ -121,6 +121,9 @@ export class PresentacionComponent implements OnInit {
         case 8:
           this.buildChartVelocidad();
           break;
+        case 9:
+          this.buildChartPoliolefinas();
+          break;
       }
 
       //Ejecuta evento de animación
@@ -320,7 +323,7 @@ export class PresentacionComponent implements OnInit {
     this.time_await = 10000;
 
     let row = this.OEE[6];
-  
+
     let esperada = [];
     let real = [];
 
@@ -338,7 +341,40 @@ export class PresentacionComponent implements OnInit {
     esperada.push(esperadaTmp.sppedd);
     configuracion.series.push({ color: '#1a237e', name: ' Velocidad promedio ', data: esperada, pointPlacement: 'on' });
     $('#grafica').highcharts(configuracion);
-  
+
+  }
+
+  buildChartPoliolefinas(): void {
+    let configuracion = clone(configJucodi);
+    this.time_await = 25000;
+
+    let datosPorLinea = this.OEE[7];
+
+    let titulo = datosPorLinea[0].titulo_grafica;
+    let labels = datosPorLinea.filter((el) => el.padre == 0).map(element => element.dia);
+    let dataGrupoA = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.a);
+    let dataGrupoB = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.b);
+    let dataGrupoC = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.c);
+    let dataGrupoD = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.d);
+    let dataMeta1 = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.meta1);
+    let dataMeta2 = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.meta2);
+    let dataMeta3 = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.meta3);
+
+    configuracion.exporting.enabled = false;
+    configuracion.chart.height = this.height;
+    configuracion.series = [];
+    configuracion.xAxis.categories = labels;
+    configuracion.title.text = titulo;
+
+    configuracion.series.push({ name: ' A ', data: dataGrupoA, color: '#ef5350' });
+    configuracion.series.push({ name: ' B ', data: dataGrupoB, color: '#66bb6a' });
+    configuracion.series.push({ name: ' C ', data: dataGrupoC, color: '#d4e157' });
+    configuracion.series.push({ name: ' D ', data: dataGrupoD, color: '#42a5f5' });
+    configuracion.series.push({ name: ' Meta 1ro ', data: dataMeta1, type: 'line', color: '#ffcc80', dashStyle: 'Dash' });
+    configuracion.series.push({ name: ' Meta 2do ', data: dataMeta2, type: 'line', color: '#ff9800', dashStyle: 'Dash' });
+    configuracion.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#e65100', dashStyle: 'Dash' });
+
+    $('#grafica').highcharts(configuracion);
   }
 
 
