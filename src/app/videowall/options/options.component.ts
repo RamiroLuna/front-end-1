@@ -10,7 +10,7 @@ declare var Materialize: any;
 @Component({
   selector: 'app-options',
   templateUrl: './options.component.html',
-  providers: [ OptionsService ]
+  providers: [OptionsService]
 })
 export class OptionsComponent implements OnInit {
 
@@ -25,7 +25,7 @@ export class OptionsComponent implements OnInit {
   }
 
   refreshData(): void {
-  
+
     /* 
     * Configuración del modal de confirmación
     */
@@ -45,10 +45,17 @@ export class OptionsComponent implements OnInit {
        */
       if (result.value) {
         this.disabled = true;
-        
+
         this.service.generateVideoWall(this.auth.getIdUsuario()).subscribe(result => {
-          console.log('result', result)
+         
           if (result.response.sucessfull) {
+            let datosOEE = localStorage.getItem('OEE');
+            if (datosOEE === null || datosOEE == undefined) {
+              localStorage.setItem('OEE', JSON.stringify(result.data.OEE));
+            } else {
+              localStorage.removeItem('OEE');
+              localStorage.setItem('OEE', JSON.stringify(result.data.OEE));
+            }
             Materialize.toast('Actualización correcta', 4000, 'green');
             this.disabled = false;
           } else {
