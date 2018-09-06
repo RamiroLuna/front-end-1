@@ -22,6 +22,7 @@ export class PresentacionComponent implements OnInit {
   public OEE: any;
   public status: string;
   public height: number;
+  public time_await:number = 4000; // tiempo en milisegundos
 
   constructor() { }
 
@@ -61,10 +62,11 @@ export class PresentacionComponent implements OnInit {
           }
           break;
         case 'enfasis':
-          const EFECT_RANDOM = Math.floor(Math.random() * EFECTS_ENFASIS.length);
-          this.status = EFECTS_ENFASIS[EFECT_RANDOM];
-          this.type_animation = 'salida';
-
+          setTimeout(() => {
+            const EFECT_RANDOM = Math.floor(Math.random() * EFECTS_ENFASIS.length);
+            this.status = EFECTS_ENFASIS[EFECT_RANDOM];
+            this.type_animation = 'salida';
+          }, this.time_await);
           break;
         case 'salida':
           this.status = 'inactive';
@@ -93,22 +95,22 @@ export class PresentacionComponent implements OnInit {
 
         // Perdidas AMUT1
         case 2:
-        let rows = this.OEE[0]
-        let labels = rows.filter((el) => el.padre == 0).map((el) => el.fuente);
-        let horas = rows.filter((el) => el.padre == 0).map((el) => el.hrs);
-        let titulo = rows.filter(el=> el.padre == 1)[0].titulo_grafica;
-        configChart.series = []; 
-
-        configChart.title.text = titulo;
-        configChart.xAxis.categories = labels;
-        configChart.series.push({ name: 'Horas Muertas', data: horas });
-
-        break;
+          this.time_await = 20000;
+          let rows = this.OEE[0]
+          let labels = rows.filter((el) => el.padre == 0).map((el) => el.fuente);
+          let horas = rows.filter((el) => el.padre == 0).map((el) => el.hrs);
+          let titulo = rows.filter(el => el.padre == 1)[0].titulo_grafica;
+          configChart.series = [];
+          configChart.title.text = titulo;
+          configChart.xAxis.categories = labels;
+          configChart.series.push({ name: 'Horas Muertas', data: horas });
+          $('#grafica').highcharts(configChart);
+          break;
       }
 
       //Ejecuta evento de animación
       setTimeout(() => {
-        $('#grafica_perdidas').highcharts(configChart);
+
         this.status = 'active';
         this.type_animation = 'enfasis';
       }, 200);
