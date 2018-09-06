@@ -2,8 +2,8 @@
   <img  src="http://www.petstar.mx/wp-content/uploads/2018/02/logo-petstar.png" class="img_width" [@preloader]="status"
     (@preloader.done)="animationDone($event)" *ngIf="steep_index == 1">
   
-    <div id="grafica_perdida" [@preloader]="status"
-    (@preloader.done)="animationDone($event)" *ngIf="steep_index == 2">PERDIDAS AMUT</div>
+    <div id="grafica_perdidas" [@preloader]="status"
+    (@preloader.done)="animationDone($event)" *ngIf="steep_index == 2"></div>
 </div>
 <div class="container" *ngIf="!loading && !isOk">
   <div class="section"></div>

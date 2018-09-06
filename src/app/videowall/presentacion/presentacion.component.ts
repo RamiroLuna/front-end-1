@@ -5,7 +5,7 @@ import {
   EFECTS_ENFASIS
 } from './presentacion.animaciones';
 
-declare var $:any;
+declare var $: any;
 @Component({
   selector: 'app-presentacion',
   templateUrl: './presentacion.component.html',
@@ -18,8 +18,8 @@ export class PresentacionComponent implements OnInit {
   public type_animation: string = 'entrada';
   public steep_index: number = 1;
   public loading: boolean;
-  public isOk:boolean;
-  public OEE:any;
+  public isOk: boolean;
+  public OEE: any;
   public status: string;
   public height: number;
 
@@ -31,10 +31,10 @@ export class PresentacionComponent implements OnInit {
 
     this.OEE = localStorage.getItem('OEE');
 
-    if(this.OEE == null || this.OEE === undefined){
+    if (this.OEE == null || this.OEE === undefined) {
       this.loading = false;
-    }else{
-      this.height = $( window ).height();
+    } else {
+      this.height = $(window).height();
       this.OEE = JSON.parse(this.OEE);
       this.TOTAL = this.OEE.length + 1;
       this.isOk = true;
@@ -43,48 +43,42 @@ export class PresentacionComponent implements OnInit {
       this.status = 'inactive';
     }
 
-   
+
   }
 
   animationDone(event: any): void {
-  
+
     setTimeout(() => {
-      
+
       switch (this.type_animation) {
         case 'entrada':
 
-         if(this.steep_index > 1){
-          this.buildChart(this.steep_index);
-          setTimeout(()=>{
+          if (this.steep_index > 1) {
+            this.buildChart(this.steep_index);
+          } else {
             this.status = 'active';
             this.type_animation = 'enfasis';
-          },200);
-         }else{
-          this.status = 'active';
-          this.type_animation = 'enfasis';
-         }
+          }
           break;
         case 'enfasis':
           const EFECT_RANDOM = Math.floor(Math.random() * EFECTS_ENFASIS.length);
           this.status = EFECTS_ENFASIS[EFECT_RANDOM];
           this.type_animation = 'salida';
-        
+
           break;
         case 'salida':
           this.status = 'inactive';
           this.type_animation = 'fin';
           break;
         case 'fin':
-            if(this.steep_index < this.TOTAL){
-              setTimeout(()=>{
-                this.steep_index = this.steep_index + 1 ;
-                this.status = 'inactive';
-                this.type_animation = 'entrada';
-              },200);
-          
-             
-            }
-             
+          if (this.steep_index < this.TOTAL) {
+            setTimeout(() => {
+              this.steep_index = this.steep_index + 1;
+              this.status = 'inactive';
+              this.type_animation = 'entrada';
+            }, 200);
+          }
+
           break;
       }
 
@@ -92,8 +86,34 @@ export class PresentacionComponent implements OnInit {
 
   }
 
-  buildChart(steep:number){
-    alert('build paso '+steep)
+  buildChart(steep: number) {
+    //setTimeout time para construir grafica
+    setTimeout(() => {
+      switch (steep) {
+
+        // Perdidas AMUT1
+        case 2:
+        let rows = this.OEE[0]
+        let labels = rows.filter((el) => el.padre == 0).map((el) => el.fuente);
+        let horas = rows.filter((el) => el.padre == 0).map((el) => el.hrs);
+        let titulo = rows.filter(el=> el.padre == 1)[0].titulo_grafica;
+        configChart.series = []; 
+
+        configChart.title.text = titulo;
+        configChart.xAxis.categories = labels;
+        configChart.series.push({ name: 'Horas Muertas', data: horas });
+
+        break;
+      }
+
+      //Ejecuta evento de animación
+      setTimeout(() => {
+        $('#grafica_perdidas').highcharts(configChart);
+        this.status = 'active';
+        this.type_animation = 'enfasis';
+      }, 200);
+    }, 200);
+
   }
 
 
