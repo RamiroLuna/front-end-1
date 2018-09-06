@@ -3,6 +3,7 @@ import {
   ANIMATION_PRELOADER,
   EFECTS_ENFASIS
 } from './presentacion.animaciones';
+
 declare var $:any;
 @Component({
   selector: 'app-presentacion',
@@ -26,10 +27,6 @@ export class PresentacionComponent implements OnInit {
 
   ngOnInit() {
     this.stepp_status[this.steep_index] = 'inactive';
-  }
-
-  animationStart(event: any): void {
-    
   }
 
   animationDone(event: any): void {

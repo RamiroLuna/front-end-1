@@ -19,6 +19,7 @@ export class OptionsComponent implements OnInit {
   constructor(
     private service: OptionsService,
     private auth: AuthService,
+    private router:Router
   ) { }
 
   ngOnInit() {
@@ -77,7 +78,7 @@ export class OptionsComponent implements OnInit {
   }
 
   viewVideoWall(): void {
-    alert('video wall')
+    this.router.navigate(['videowall/presentacion']);
   }
 
 }
