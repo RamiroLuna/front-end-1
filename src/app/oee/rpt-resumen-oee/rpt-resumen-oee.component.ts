@@ -231,7 +231,7 @@ export class RptResumenOeeComponent implements OnInit {
 
           /**  Grafica para Disponiblidad */
 
-          this.tituloGraficaDisponi = "Disponibilidad de " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea);
+          this.tituloGraficaDisponi = "Desempeño Global del Equipo " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea);
           this.rowsDisponibilidad = result.data.reporteDisponibilidad || [];
           this.rowsProduccion = result.data.datosProduccion || [];
           let labelsDisponibilidad = this.rowsDisponibilidad.filter((el) => el.padre == 0).map((el) => el.titulo);
