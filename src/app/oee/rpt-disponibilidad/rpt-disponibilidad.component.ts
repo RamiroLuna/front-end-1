@@ -171,7 +171,7 @@ export class RptDisponibilidadComponent implements OnInit {
       this.service.reporteDisponibilidad(this.auth.getIdUsuario(), parametrosBusqueda).subscribe(result => {
 
         if (result.response.sucessfull) {
-          this.tituloGrafica = "Disponibilidad de " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea);
+          this.tituloGrafica = "Desempeño Global del Equipo " + this.getTextoLinea(this.lineas, parametrosBusqueda.idLinea);
 
           this.rows = result.data.reporteDisponibilidad || [];
           this.rowsProduccion = result.data.datosProduccion || [];
