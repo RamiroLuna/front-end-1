@@ -20,11 +20,7 @@ export class PresentacionComponent implements OnInit {
   public isOk:boolean;
   public OEE:any;
 
-  public stepp_status: any = {
-    1: '',
-    2: '',
-    3: '',
-  }
+  public status: string;
 
   constructor() { }
 
@@ -40,7 +36,7 @@ export class PresentacionComponent implements OnInit {
       this.loading = false;
       this.isOk = true;
       // Tiene los datos para poder trabajar 
-      this.stepp_status[this.steep_index] = 'inactive';
+      this.status = 'inactive';
     }
 
    
@@ -55,29 +51,29 @@ export class PresentacionComponent implements OnInit {
 
          if(this.steep_index > 1){
           setTimeout(()=>{
-            this.stepp_status[this.steep_index] = 'active';
+            this.status = 'active';
             this.type_animation = 'enfasis';
           },200);
          }else{
-          this.stepp_status[this.steep_index] = 'active';
+          this.status = 'active';
           this.type_animation = 'enfasis';
          }
           break;
         case 'enfasis':
           const EFECT_RANDOM = Math.floor(Math.random() * EFECTS_ENFASIS.length);
-          this.stepp_status[this.steep_index] = EFECTS_ENFASIS[EFECT_RANDOM];
+          this.status = EFECTS_ENFASIS[EFECT_RANDOM];
           this.type_animation = 'salida';
         
           break;
         case 'salida':
-          this.stepp_status[this.steep_index] = 'inactive';
+          this.status = 'inactive';
           this.type_animation = 'fin';
           break;
         case 'fin':
             if(this.steep_index < this.TOTAL){
               setTimeout(()=>{
                 this.steep_index = this.steep_index + 1 ;
-                this.stepp_status[this.steep_index] = 'inactive';
+                this.status = 'inactive';
                 this.type_animation = 'entrada';
               },200);
           

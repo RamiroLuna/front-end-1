@@ -1,9 +1,9 @@
 <div class="row" id="main_container" *ngIf="!loading && isOk">
-  <img  src="http://www.petstar.mx/wp-content/uploads/2018/02/logo-petstar.png" class="img_width" [@preloader]="stepp_status[1]"
+  <img  src="http://www.petstar.mx/wp-content/uploads/2018/02/logo-petstar.png" class="img_width" [@preloader]="status"
     (@preloader.done)="animationDone($event)" *ngIf="steep_index == 1">
-  <img  src="http://www.petstar.mx/wp-content/uploads/2015/10/planta.jpg" class="img_width" [@preloader]="stepp_status[2]"
+  <img  src="http://www.petstar.mx/wp-content/uploads/2015/10/planta.jpg" class="img_width" [@preloader]="status"
     (@preloader.done)="animationDone($event)" *ngIf="steep_index == 2">
-  <img  src="https://www.marketingdirecto.com/wp-content/uploads/2012/10/cocacola.jpg" class="img_width" [@preloader]="stepp_status[3]"
+  <img  src="https://www.marketingdirecto.com/wp-content/uploads/2012/10/cocacola.jpg" class="img_width" [@preloader]="status"
     (@preloader.done)="animationDone($event)" *ngIf="steep_index == 3">
 </div>
 <div class="container" *ngIf="!loading && !isOk">
