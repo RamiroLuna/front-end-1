@@ -1,9 +1,13 @@
 let configChart = {
     chart: {
         type: 'column',
+        height: null
     },
     credits: {
         enabled: false
+    },
+    exporting: {
+        enabled: true
     },
     title: {
         text: '',

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { configChart as configPerdidas } from '../../oee/rpt-fuente-perdidas/rpt.config.export';
 import { configChart as configDisponiblidad } from '../../oee/rpt-disponibilidad/rpt.config.export';
 import { configChart as configOEE } from '../../oee/rpt-oee/rpt.config.export';
+import { configChart as configJucodi } from '../../oee/rpt-jucodi/rpt.config.export';
 import { clone } from '../../utils';
 import {
   ANIMATION_PRELOADER,
@@ -106,6 +107,9 @@ export class PresentacionComponent implements OnInit {
         case 4:
           this.buildChartOEE();
           break;
+        case 5:
+        this.buildChartJucodi();
+        break;
       }
 
       //Ejecuta evento de animación
@@ -181,6 +185,39 @@ export class PresentacionComponent implements OnInit {
     configuracion.series.push({ name: ' Real ', data: horas });
     configuracion.series.push({ name: ' Meta esperada ', data: meta_esperada, type: 'line' });
 
+    $('#grafica').highcharts(configuracion);
+  }
+
+  buildChartJucodi():void{
+    let configuracion = clone(configJucodi);
+    this.time_await = 40000;
+
+    let datosPorLinea = this.OEE[3];
+
+    let titulo = datosPorLinea[0].titulo_grafica;
+    let labels = datosPorLinea.filter((el) => el.padre == 0).map(element => element.dia);
+    let dataGrupoA = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.a);
+    let dataGrupoB = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.b);
+    let dataGrupoC = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.c);
+    let dataGrupoD = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.d);
+    let dataMeta1 = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.meta1);
+    let dataMeta2 = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.meta2);
+    let dataMeta3 = datosPorLinea.filter((el) => el.padre == 0).map((el) => el.meta3);
+
+    configuracion.exporting.enabled = false;
+    configuracion.chart.height = this.height;
+    configuracion.series = [];
+    configuracion.xAxis.categories = labels;
+    configuracion.title.text = titulo;
+
+    configuracion.series.push({ name: ' A ', data: dataGrupoA, color: '#ef5350' });
+    configuracion.series.push({ name: ' B ', data: dataGrupoB, color: '#66bb6a' });
+    configuracion.series.push({ name: ' C ', data: dataGrupoC, color: '#d4e157' });
+    configuracion.series.push({ name: ' D ', data: dataGrupoD, color: '#42a5f5' });
+    configuracion.series.push({ name: ' Meta 1ro ', data: dataMeta1, type: 'line', color: '#ffcc80', dashStyle: 'Dash' });
+    configuracion.series.push({ name: ' Meta 2do ', data: dataMeta2, type: 'line', color: '#ff9800', dashStyle: 'Dash' });
+    configuracion.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#e65100', dashStyle: 'Dash' });
+    
     $('#grafica').highcharts(configuracion);
   }
 

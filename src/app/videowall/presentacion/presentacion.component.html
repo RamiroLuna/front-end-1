@@ -10,6 +10,9 @@
 
     <div id="grafica" [@preloader]="status"
     (@preloader.done)="animationDone($event)" *ngIf="steep_index == 4"></div>
+
+    <div id="grafica" [@preloader]="status"
+    (@preloader.done)="animationDone($event)" *ngIf="steep_index == 5"></div>
 </div>
 <div class="container" *ngIf="!loading && !isOk">
   <div class="section"></div>
