@@ -1,0 +1,10 @@
+#main_container {
+    /*display: flex; */
+    align-items: center;
+    justify-content: center;
+}
+
+.img_width{
+    width: calc(95%); 
+    height: calc(95%);   
+}

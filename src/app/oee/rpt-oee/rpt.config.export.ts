@@ -1,5 +1,6 @@
 let configChart = {
     chart: {
+        height: null, 
         type: 'column',
         borderWidth: 0,
         borderRadius: 0,
@@ -12,6 +13,9 @@ let configChart = {
             beta: 1,
             depth: 56
         }
+    },
+    exporting: {
+        enabled: true
     },
     credits: {
         enabled: false

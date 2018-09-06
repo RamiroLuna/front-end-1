@@ -30,6 +30,7 @@ import { RolesComponent } from './security/roles/roles.component';
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, canActivate: [NotAuthGuard] },
+  { path: 'videowall', loadChildren: './videowall/videowall.module#VideowallModule', canActivate: [AuthGuard] },
   {
     path: 'home', component: HomeComponent, canActivate: [AuthGuard], children: [
       { path: '', component: MenuPrincipalComponent },
@@ -73,7 +74,7 @@ const routes: Routes = [
     ListByCatalogComponent,
     FormularioDetalleComponent,
     SecurityComponent,
-    RolesComponent,
+    RolesComponent
   ],
   imports: [
     BrowserModule,

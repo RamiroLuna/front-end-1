@@ -1,10 +1,14 @@
 let configChart = {
     chart: {
         type: 'column',
+        height: null, 
         // backgroundColor:'#e3f2fd'
     },
     credits: {
         enabled: false
+    },
+    exporting: {
+        enabled: true
     },
     title: {
         text: '',

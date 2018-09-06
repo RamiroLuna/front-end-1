@@ -1,6 +1,7 @@
 let configChartSpider = {
 
     chart: {
+        height: null, 
         polar: true,
         type: 'line',
         backgroundColor: {
@@ -11,7 +12,9 @@ let configChartSpider = {
             ]
         }
     },
-
+    exporting: {
+        enabled: true
+    },
     title: {
         text: '',
         style: {
