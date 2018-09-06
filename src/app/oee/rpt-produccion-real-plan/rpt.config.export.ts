@@ -1,5 +1,6 @@
 let configChart = {
     chart: {
+        height: null, 
         type: 'column',
         backgroundColor: {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
@@ -8,6 +9,9 @@ let configChart = {
                 [1, 'rgb(51,105,30)']
             ]
         }
+    },
+    exporting: {
+        enabled: true
     },
     credits: {
         enabled: false
@@ -88,7 +92,8 @@ let configChartSpider = {
 
     chart: {
         polar: true,
-        type: 'line'
+        type: 'line',
+        height: null
     },
 
     title: {
@@ -96,6 +101,9 @@ let configChartSpider = {
         style: {
             color: '#FFFFFF'
         }
+    },
+    exporting: {
+        enabled: true
     },
     credits: {
         enabled: false

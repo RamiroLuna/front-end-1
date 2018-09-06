@@ -3,6 +3,7 @@ import { configChart as configPerdidas } from '../../oee/rpt-fuente-perdidas/rpt
 import { configChart as configDisponiblidad } from '../../oee/rpt-disponibilidad/rpt.config.export';
 import { configChart as configOEE } from '../../oee/rpt-oee/rpt.config.export';
 import { configChart as configJucodi } from '../../oee/rpt-jucodi/rpt.config.export';
+import { configChart as configRealPlan, configChartSpider } from '../../oee/rpt-produccion-real-plan/rpt.config.export';
 import { clone } from '../../utils';
 import {
   ANIMATION_PRELOADER,
@@ -108,8 +109,14 @@ export class PresentacionComponent implements OnInit {
           this.buildChartOEE();
           break;
         case 5:
-        this.buildChartJucodi();
-        break;
+          this.buildChartJucodi();
+          break;
+        case 6:
+          this.buildChartRealvsPlanBarras();
+          break;
+        case 7:
+          this.buildChartSpider();
+          break;
       }
 
       //Ejecuta evento de animación
@@ -188,9 +195,9 @@ export class PresentacionComponent implements OnInit {
     $('#grafica').highcharts(configuracion);
   }
 
-  buildChartJucodi():void{
+  buildChartJucodi(): void {
     let configuracion = clone(configJucodi);
-    this.time_await = 40000;
+    this.time_await = 25000;
 
     let datosPorLinea = this.OEE[3];
 
@@ -217,8 +224,91 @@ export class PresentacionComponent implements OnInit {
     configuracion.series.push({ name: ' Meta 1ro ', data: dataMeta1, type: 'line', color: '#ffcc80', dashStyle: 'Dash' });
     configuracion.series.push({ name: ' Meta 2do ', data: dataMeta2, type: 'line', color: '#ff9800', dashStyle: 'Dash' });
     configuracion.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#e65100', dashStyle: 'Dash' });
-    
+
     $('#grafica').highcharts(configuracion);
+  }
+
+  buildChartRealvsPlanBarras(): void {
+    let configuracion = clone(configRealPlan);
+    this.time_await = 20000;
+
+    let datos = this.OEE[4];
+    let labels = datos.filter((el) => el.padre == 0).map(element => element.periodo);
+    let dataReal = datos.filter((el) => el.padre == 0).map(element => element.real);
+    let dataEsperada = datos.filter((el) => el.padre == 0).map(element => element.meta);
+    let titulo = datos.filter(el => el.padre == 1)[0].titulo_grafica;
+
+    configuracion.plotOptions.column.dataLabels.rotation = 270;
+    configuracion.exporting.enabled = false;
+    configuracion.chart.height = this.height;
+    configuracion.series = [];
+    configuracion.xAxis.categories = labels;
+    configuracion.title.text = titulo;
+
+    configuracion.series.push({ name: ' Real ', data: dataReal, color: '#dcedc8' });
+    configuracion.series.push({ name: ' Meta ', data: dataEsperada, type: 'line', color: '#1a237e' });
+
+    $('#grafica').highcharts(configuracion);
+  }
+
+  buildChartSpider():void{
+    let configuracion = clone(configChartSpider);
+    this.time_await = 10000;
+
+    let datosRRadar = this.OEE[5];
+    configuracion.exporting.enabled = false;
+    configuracion.chart.height = this.height;
+    configuracion.series = [];
+    configuracion.xAxis.categories = [];
+    configuracion.title.text = '.';
+    let esperada = [];
+    let real = [];
+    let legeng = ':grupo:<br><span style="color:#9e9d24">:real:</span><br><span style="color:#283593">:meta:</span>';
+
+    let esperadaTmp = datosRRadar.filter((el) => el.padre == 0)[0];
+    let realTmp = datosRRadar.filter((el) => el.padre == 0)[0];
+
+    esperada.push(esperadaTmp.metaa);
+    esperada.push(esperadaTmp.metab);
+    esperada.push(esperadaTmp.metac);
+    esperada.push(esperadaTmp.metad);
+
+    real.push(realTmp.reala);
+    real.push(realTmp.realb);
+    real.push(realTmp.realc);
+    real.push(realTmp.reald);
+
+    let categorias = [];
+    categorias.push(legeng.replace(':grupo:', 'Grupo A').replace(':real:', realTmp.reala).replace(':meta:', realTmp.metaa));
+    categorias.push(legeng.replace(':grupo:', 'Grupo B').replace(':real:', realTmp.realb).replace(':meta:', realTmp.metab));
+    categorias.push(legeng.replace(':grupo:', 'Grupo C').replace(':real:', realTmp.realc).replace(':meta:', realTmp.metac));
+    categorias.push(legeng.replace(':grupo:', 'Grupo D').replace(':real:', realTmp.reald).replace(':meta:', realTmp.metad));
+
+    configuracion.xAxis.categories = categorias;
+
+    configuracion.series.push({
+      color: '#283593',
+      name: ' Meta ',
+      data: esperada,
+      pointPlacement: 'on',
+      dataLabels: {
+        color: '#1a237e'
+      }
+    });
+
+    configuracion.series.push({
+      color: '#9e9d24',
+      name: ' Real ',
+      data: real,
+      pointPlacement: 'on',
+      dataLabels: {
+        y: 5,
+        color: '#9e9d24'
+      }
+    });
+
+    $('#grafica').highcharts(configuracion);
+
   }
 
 
