@@ -40,7 +40,7 @@ export class PresentacionComponent implements OnInit {
       this.loading = false;
       this.isOk = true;
       // Tiene los datos para poder trabajar 
-      // this.stepp_status[this.steep_index] = 'inactive';
+      this.stepp_status[this.steep_index] = 'inactive';
     }
 
    
