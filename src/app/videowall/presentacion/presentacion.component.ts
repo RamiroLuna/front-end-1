@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { configChart } from '../../oee/rpt-fuente-perdidas/rpt.config.export';
 import {
   ANIMATION_PRELOADER,
   EFECTS_ENFASIS
@@ -13,14 +14,14 @@ declare var $:any;
 })
 export class PresentacionComponent implements OnInit {
 
-  private TOTAL: number = 3;
+  private TOTAL: number;
   public type_animation: string = 'entrada';
   public steep_index: number = 1;
   public loading: boolean;
   public isOk:boolean;
   public OEE:any;
-
   public status: string;
+  public height: number;
 
   constructor() { }
 
@@ -33,8 +34,11 @@ export class PresentacionComponent implements OnInit {
     if(this.OEE == null || this.OEE === undefined){
       this.loading = false;
     }else{
-      this.loading = false;
+      this.height = $( window ).height();
+      this.OEE = JSON.parse(this.OEE);
+      this.TOTAL = this.OEE.length + 1;
       this.isOk = true;
+      this.loading = false;
       // Tiene los datos para poder trabajar 
       this.status = 'inactive';
     }
@@ -45,11 +49,12 @@ export class PresentacionComponent implements OnInit {
   animationDone(event: any): void {
   
     setTimeout(() => {
-      debugger
+      
       switch (this.type_animation) {
         case 'entrada':
 
          if(this.steep_index > 1){
+          this.buildChart(this.steep_index);
           setTimeout(()=>{
             this.status = 'active';
             this.type_animation = 'enfasis';
@@ -85,6 +90,10 @@ export class PresentacionComponent implements OnInit {
 
     }, 200);
 
+  }
+
+  buildChart(steep:number){
+    alert('build paso '+steep)
   }
 
 
