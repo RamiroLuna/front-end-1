@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { configChart } from '../../oee/rpt-fuente-perdidas/rpt.config.export';
+import { configChart as configPerdidas } from '../../oee/rpt-fuente-perdidas/rpt.config.export';
+import { configChart as configDisponiblidad } from '../../oee/rpt-disponibilidad/rpt.config.export';
 import { clone } from '../../utils';
 import {
   ANIMATION_PRELOADER,
@@ -23,7 +24,7 @@ export class PresentacionComponent implements OnInit {
   public OEE: any;
   public status: string;
   public height: number;
-  public time_await:number = 4000; // tiempo en milisegundos
+  public time_await: number = 4000; // tiempo en milisegundos
 
   constructor() { }
 
@@ -96,19 +97,10 @@ export class PresentacionComponent implements OnInit {
 
         // Perdidas AMUT1
         case 2:
-          let configuracion = clone(configChart); 
-          this.time_await = 20000;
-          let rows = this.OEE[0]
-          let labels = rows.filter((el) => el.padre == 0).map((el) => el.fuente);
-          let horas = rows.filter((el) => el.padre == 0).map((el) => el.hrs);
-          let titulo = rows.filter(el => el.padre == 1)[0].titulo_grafica;
-          configuracion.exporting.enabled = false;
-          configuracion.chart.height = this.height;
-          configuracion.series = [];
-          configuracion.title.text = titulo;
-          configuracion.xAxis.categories = labels;
-          configuracion.series.push({ name: 'Horas Muertas', data: horas });
-          $('#grafica').highcharts(configuracion);
+          this.buildChartPerdida();
+          break;
+        case 3:
+          this.buildChartDisponiblidad();
           break;
       }
 
@@ -120,6 +112,45 @@ export class PresentacionComponent implements OnInit {
       }, 200);
     }, 200);
 
+  }
+
+  buildChartPerdida(): void {
+    let configuracion = clone(configPerdidas);
+    this.time_await = 20000;
+    let rows = this.OEE[0]
+    let labels = rows.filter((el) => el.padre == 0).map((el) => el.fuente);
+    let horas = rows.filter((el) => el.padre == 0).map((el) => el.hrs);
+    let titulo = rows.filter(el => el.padre == 1)[0].titulo_grafica;
+    configuracion.exporting.enabled = false;
+    configuracion.chart.height = this.height;
+    configuracion.series = [];
+    configuracion.title.text = titulo;
+    configuracion.xAxis.categories = labels;
+    configuracion.series.push({ name: 'Horas Muertas', data: horas });
+    $('#grafica').highcharts(configuracion);
+  }
+
+  buildChartDisponiblidad(): void {
+    let configuracion = clone(configDisponiblidad);
+    this.time_await = 10000;
+    let rows = this.OEE[1];
+
+    let labels = rows.filter((el) => el.padre == 0).map((el) => el.titulo);
+    let horas = rows.filter((el) => el.padre == 0).map((el) => el.hrs);
+    rows.filter((el) => el.padre == 2).map((el) => {
+      horas.push(el.hrs);
+      labels.push(el.titulo);
+    });
+
+    let titulo = rows.filter(el => el.padre == 1)[0].titulo_grafica;
+    configuracion.exporting.enabled = false;
+    configuracion.chart.height = this.height;
+    configuracion.series = [];
+    configuracion.title.text = titulo;
+    configuracion.xAxis.categories = labels;
+    configuracion.series.push({ name: ' Horas ', data: horas });
+
+    $('#grafica').highcharts(configuracion);
   }
 
 
