@@ -333,13 +333,21 @@ export class PresentacionComponent implements OnInit {
     configuracion.exporting.enabled = false;
     configuracion.chart.height = this.height;
     configuracion.series = [];
+    configuracion.xAxis.categories = [];
     configuracion.title.text = titulo;
+
+    configuracion.xAxis.categories.push('GRUPO A<br><b>'+esperadaTmp.sppeda+'</b>');
+    configuracion.xAxis.categories.push('GRUPO B<br><b>'+esperadaTmp.sppedb+'</b>');
+    configuracion.xAxis.categories.push('GRUPO C<br><b>'+esperadaTmp.sppedc+'</b>');
+    configuracion.xAxis.categories.push('GRUPO D<br><b>'+esperadaTmp.sppedd+'</b>');
+
 
     esperada.push(esperadaTmp.sppeda);
     esperada.push(esperadaTmp.sppedb);
     esperada.push(esperadaTmp.sppedc);
     esperada.push(esperadaTmp.sppedd);
-    configuracion.series.push({ color: '#1a237e', name: ' Velocidad promedio ', data: esperada, pointPlacement: 'on' });
+    configuracion.series.push({ color: '#b71c1c', name: ' Velocidad promedio ', data: esperada, pointPlacement: 'on' });
+
     $('#grafica').highcharts(configuracion);
 
   }

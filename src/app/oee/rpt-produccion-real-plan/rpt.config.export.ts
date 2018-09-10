@@ -133,6 +133,7 @@ let configChartSpider = {
         min: 0,
 
         labels: {
+            enabled: false,
             style: {
                 color: '#33691E',
             },

@@ -1,7 +1,7 @@
 let configChartSpider = {
 
     chart: {
-        height: null, 
+        height: null,
         polar: true,
         type: 'line',
         backgroundColor: {
@@ -35,7 +35,7 @@ let configChartSpider = {
     },
 
     xAxis: {
-        categories: ['GRUPO A', 'GRUPO B', 'GRUPO C', 'GRUPO D'],
+        categories: [],
         tickmarkPlacement: 'on',
         lineWidth: 0,
         labels: {
@@ -46,26 +46,32 @@ let configChartSpider = {
     },
 
     yAxis: {
+        
         gridLineInterpolation: 'polygon',
         lineWidth: 0,
         min: 0,
         labels: {
+            enabled: false,
             style: {
                 color: '#000000',
             },
             formatter: function () {
-                return this.value + ' T/Hr';
+                // return this.value + ' T/Hr';
+                return '';
             }
         }
     },
 
     tooltip: {
         shared: true,
-        pointFormat: '<span>{series.name}: <b>{point.y}</b><br/>'
+        pointFormat: ''
     },
 
     legend: {
-        // align: 'right',
+        align: 'right',
+        itemStyle: {
+            color: '#fff'
+    	}
         // verticalAlign: 'top',
         // y: 70,
         // layout: 'vertical'
@@ -74,11 +80,11 @@ let configChartSpider = {
     plotOptions: {
         series: {
             dataLabels: {
-                enabled: true,
+                enabled: false,
                 color: '#FFFFFF',
                 inside: false,
-                y: 10,
-                distance: -10
+                y: 0,
+                distance: 10
             },
             events: {
                 legendItemClick: function () {

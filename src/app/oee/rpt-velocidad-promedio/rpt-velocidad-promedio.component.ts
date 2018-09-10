@@ -137,17 +137,25 @@ export class RptVelocidadPromedioComponent implements OnInit {
           this.rowsGrafica = result.data.graficaMap || [];
 
           configChartSpider.series = [];
+          configChartSpider.xAxis.categories = [];
           configChartSpider.title.text = titulo;
 
           let esperada = [];
           let real = [];
 
           let esperadaTmp = this.rowsGrafica.filter((el) => el.padre == 0)[0];
+
+          configChartSpider.xAxis.categories.push('GRUPO A<br><b>'+esperadaTmp.sppeda+'</b>');
+          configChartSpider.xAxis.categories.push('GRUPO B<br><b>'+esperadaTmp.sppedb+'</b>');
+          configChartSpider.xAxis.categories.push('GRUPO C<br><b>'+esperadaTmp.sppedc+'</b>');
+          configChartSpider.xAxis.categories.push('GRUPO D<br><b>'+esperadaTmp.sppedd+'</b>');
+
+
           esperada.push(esperadaTmp.sppeda);
           esperada.push(esperadaTmp.sppedb);
           esperada.push(esperadaTmp.sppedc);
           esperada.push(esperadaTmp.sppedd);
-          configChartSpider.series.push({ color: '#1a237e', name: ' Velocidad promedio ', data: esperada, pointPlacement: 'on' });
+          configChartSpider.series.push({ color: '#b71c1c', name: ' Velocidad promedio ', data: esperada, pointPlacement: 'on' });
 
           this.viewReport = true;
           setTimeout(() => {
