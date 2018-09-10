@@ -42,7 +42,7 @@ export class ListByCatalogComponent implements OnInit {
 
       switch (this.tipo_catalogo) {
         case 'gpos-lineas':
-          this.nombre_catalogo = 'Grupos de Línea';
+          this.nombre_catalogo = 'Áreas para OEE';
           this.nombre_tabla = 'pet_cat_gpo_linea';
           this.type_Catalogo = 'gpos-lineas';
           this.id_tipo_catalogo = 1;

@@ -64,7 +64,7 @@ export class FormularioDetalleComponent implements OnInit {
       if (this.seccion != 'invalid') {
         switch (params.get('name')) {
           case 'gpos-lineas':
-            this.nombre_catalogo = 'Grupos de Línea';
+            this.nombre_catalogo = 'Áreas para OEE';
             this.nombre_tabla = 'pet_cat_gpo_linea';
             this.type_Catalogo = 'gpos-lineas';
             this.itemCatalogo = new Catalogo();
