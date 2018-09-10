@@ -37,7 +37,7 @@ let configChartOEE = {
         },
         gridLineWidth: 0
     },
-    yAxis: {
+    yAxis: {       
         title: {
             text: ''
         },

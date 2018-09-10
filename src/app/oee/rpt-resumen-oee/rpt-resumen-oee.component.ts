@@ -146,17 +146,20 @@ export class RptResumenOeeComponent implements OnInit {
         $('.carousel .indicators .indicator-item.active').css('background-color', '#757575');
         switch (this.seccion) {
           case 0:
+            $('.carousel').height(450)
             // if (b) {
             //   $('#chartOee').highcharts(configChartOEE);
             // }
             // b = true;
             break;
           case 1:
+            $('.carousel').height(450)
             // b = true;
             // $('#chartDisponibilidad').highcharts(configChartDisp);
 
             break;
           case 2:
+            $('.carousel').height(700)
             // b = true;
             // $('#chartPerdidas').highcharts(configChartPerdidas);
 
@@ -364,24 +367,24 @@ export class RptResumenOeeComponent implements OnInit {
     let data_type = 'data:application/vnd.ms-excel;';
 
     if (linkFile.download != undefined) {
-        document.body.appendChild(linkFile);
-        let tablas = getTablaUtf8('tblReporte') +
-          getTablaUtf8('tblReporteDisponibilidad') +
-          getTablaUtf8('tblReporteProduccion') +
-          getTablaUtf8('tblReportePerdidas');
+      document.body.appendChild(linkFile);
+      let tablas = getTablaUtf8('tblReporte') +
+        getTablaUtf8('tblReporteDisponibilidad') +
+        getTablaUtf8('tblReporteProduccion') +
+        getTablaUtf8('tblReportePerdidas');
 
-        linkFile.href = data_type + ', ' + tablas;
-        linkFile.download = 'RptGlobalEficiencia';
-        linkFile.click();
-        linkFile.remove();
+      linkFile.href = data_type + ', ' + tablas;
+      linkFile.download = 'RptGlobalEficiencia';
+      linkFile.click();
+      linkFile.remove();
 
-      } else {
+    } else {
 
-        let elem = $("#tblReporte")[0].outerHTML + $("#tblReporteDisponibilidad")[0].outerHTML + 
-                   $("#tblReporteProduccion")[0].outerHTML + $("#tblReportePerdidas")[0].outerHTML;
-        let blobObject = new Blob(["\ufeff", elem], { type: 'application/vnd.ms-excel' });
-        window.navigator.msSaveBlob(blobObject, 'RptGlobalEficiencia.xls');
-      }
+      let elem = $("#tblReporte")[0].outerHTML + $("#tblReporteDisponibilidad")[0].outerHTML +
+        $("#tblReporteProduccion")[0].outerHTML + $("#tblReportePerdidas")[0].outerHTML;
+      let blobObject = new Blob(["\ufeff", elem], { type: 'application/vnd.ms-excel' });
+      window.navigator.msSaveBlob(blobObject, 'RptGlobalEficiencia.xls');
+    }
 
   }
 
