@@ -143,7 +143,7 @@ let configChartDisp = {
             dataLabels: {
                 enabled: true,
                 color: '#000000',
-                inside: true,
+                inside: false,
                 format: '{point.y:,.2f}'
             }
         },
