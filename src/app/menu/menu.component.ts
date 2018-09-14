@@ -43,7 +43,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
     // Descomentar si se requiere verificar si tiene roles en ishikawa
     // this.menu_ishikawa = !(this.auth.getRolesIshikawa().split(",")[0] == "0");
     this.menu_ishikawa = true;
-    this.videowall = true;
+    this.videowall =  !(this.auth.getRolesVideoWall().split(",")[0] == "0");;
     
     
     let tmpRolesGral = this.auth.getRolesGenerales().split(",").map(el=>parseInt(el));

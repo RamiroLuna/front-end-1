@@ -33,6 +33,9 @@ export class AuthService {
   public getRolesGenerales():string{
     return jwt_decode(this.getToken()).roles_generales || "0";
   }
+  public getRolesVideoWall():string{
+    return jwt_decode(this.getToken()).roles_videowall || "0";
+  }
 
   public getId_Grupo():number{
     return jwt_decode(this.getToken()).id_grupo || -1;
