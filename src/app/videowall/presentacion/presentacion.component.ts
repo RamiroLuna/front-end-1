@@ -37,6 +37,7 @@ export class PresentacionComponent implements OnInit {
     this.isOk = false;
 
     this.OEE = localStorage.getItem('OEE');
+    console.log(this.OEE)
 
     if (this.OEE == null || this.OEE === undefined) {
       this.loading = false;
@@ -98,31 +99,59 @@ export class PresentacionComponent implements OnInit {
     //setTimeout time para construir grafica
     setTimeout(() => {
       switch (steep) {
-
-        // Perdidas AMUT1
+        /*
+         * Graficas AMUT 1
+         */
         case 2:
-          this.buildChartPerdida();
+          this.buildChartPerdida(0);
           break;
         case 3:
-          this.buildChartDisponiblidad();
+          this.buildChartDisponiblidad(1);
           break;
         case 4:
-          this.buildChartOEE();
+          this.buildChartOEE(2);
           break;
         case 5:
-          this.buildChartJucodi();
+          this.buildChartJucodi(3);
           break;
         case 6:
-          this.buildChartRealvsPlanBarras();
+          this.buildChartRealvsPlanBarras(4);
           break;
         case 7:
-          this.buildChartSpider();
+          this.buildChartSpider(5);
           break;
         case 8:
-          this.buildChartVelocidad();
+          this.buildChartVelocidad(6);
           break;
         case 9:
-          this.buildChartPoliolefinas();
+          this.buildChartPoliolefinas(7);
+          break;
+        /*
+       * Graficas AMUT 2
+       */
+        case 10:
+          this.buildChartPerdida(8);
+          break;
+        case 11:
+          this.buildChartDisponiblidad(9);
+          break;
+        case 12:
+          this.buildChartOEE(10);
+          break;
+        case 13:
+          this.buildChartJucodi(11);
+          break;
+        case 14:
+          this.buildChartRealvsPlanBarras(12);
+          break;
+        case 15:
+          this.buildChartSpider(13);
+          break;
+        case 16:
+          this.buildChartVelocidad(14);
+          break;
+        case 17:
+          this.buildChartPoliolefinas(15);
           break;
       }
 
@@ -136,10 +165,10 @@ export class PresentacionComponent implements OnInit {
 
   }
 
-  buildChartPerdida(): void {
+  buildChartPerdida(position_data:number): void {
     let configuracion = clone(configPerdidas);
-    this.time_await = 20000;
-    let rows = this.OEE[0]
+    this.time_await = 20000;   
+    let rows = this.OEE[position_data]
     let labels = rows.filter((el) => el.padre == 0).map((el) => el.fuente);
     let horas = rows.filter((el) => el.padre == 0).map((el) => el.hrs);
     let titulo = rows.filter(el => el.padre == 1)[0].titulo_grafica;
@@ -152,10 +181,10 @@ export class PresentacionComponent implements OnInit {
     $('#grafica').highcharts(configuracion);
   }
 
-  buildChartDisponiblidad(): void {
+  buildChartDisponiblidad(position_data:number): void {
     let configuracion = clone(configDisponiblidad);
     this.time_await = 10000;
-    let rows = this.OEE[1];
+    let rows = this.OEE[position_data];
 
     let labels = rows.filter((el) => el.padre == 0).map((el) => el.titulo);
     let horas = rows.filter((el) => el.padre == 0).map((el) => el.hrs);
@@ -175,10 +204,10 @@ export class PresentacionComponent implements OnInit {
     $('#grafica').highcharts(configuracion);
   }
 
-  buildChartOEE(): void {
+  buildChartOEE(position_data:number): void {
     let configuracion = clone(configOEE);
     this.time_await = 15000;
-    let rows = this.OEE[2];
+    let rows = this.OEE[position_data];
 
     let meta_esperada = rows.filter((el) => el.padre == 0).map((el) => el.meta);
     let labels = rows.filter((el) => el.padre == 0).map((el) => el.titulo);
@@ -202,11 +231,11 @@ export class PresentacionComponent implements OnInit {
     $('#grafica').highcharts(configuracion);
   }
 
-  buildChartJucodi(): void {
+  buildChartJucodi(position_data:number): void {
     let configuracion = clone(configJucodi);
     this.time_await = 25000;
 
-    let datosPorLinea = this.OEE[3];
+    let datosPorLinea = this.OEE[position_data];
 
     let titulo = datosPorLinea[0].titulo_grafica;
     let labels = datosPorLinea.filter((el) => el.padre == 0).map(element => element.dia);
@@ -235,11 +264,11 @@ export class PresentacionComponent implements OnInit {
     $('#grafica').highcharts(configuracion);
   }
 
-  buildChartRealvsPlanBarras(): void {
+  buildChartRealvsPlanBarras(position_data:number): void {
     let configuracion = clone(configRealPlan);
     this.time_await = 20000;
 
-    let datos = this.OEE[4];
+    let datos = this.OEE[position_data];
     let labels = datos.filter((el) => el.padre == 0).map(element => element.periodo);
     let dataReal = datos.filter((el) => el.padre == 0).map(element => element.real);
     let dataEsperada = datos.filter((el) => el.padre == 0).map(element => element.meta);
@@ -258,11 +287,11 @@ export class PresentacionComponent implements OnInit {
     $('#grafica').highcharts(configuracion);
   }
 
-  buildChartSpider(): void {
+  buildChartSpider(position_data:number): void {
     let configuracion = clone(configChartSpider);
     this.time_await = 10000;
 
-    let datosRRadar = this.OEE[5];
+    let datosRRadar = this.OEE[position_data];
     configuracion.exporting.enabled = false;
     configuracion.chart.height = this.height;
     configuracion.series = [];
@@ -318,11 +347,11 @@ export class PresentacionComponent implements OnInit {
 
   }
 
-  buildChartVelocidad(): void {
+  buildChartVelocidad(position_data:number): void {
     let configuracion = clone(configVelocidad);
     this.time_await = 10000;
 
-    let row = this.OEE[6];
+    let row = this.OEE[position_data];
 
     let esperada = [];
     let real = [];
@@ -336,10 +365,10 @@ export class PresentacionComponent implements OnInit {
     configuracion.xAxis.categories = [];
     configuracion.title.text = titulo;
 
-    configuracion.xAxis.categories.push('GRUPO A<br><b>'+esperadaTmp.sppeda+'</b>');
-    configuracion.xAxis.categories.push('GRUPO B<br><b>'+esperadaTmp.sppedb+'</b>');
-    configuracion.xAxis.categories.push('GRUPO C<br><b>'+esperadaTmp.sppedc+'</b>');
-    configuracion.xAxis.categories.push('GRUPO D<br><b>'+esperadaTmp.sppedd+'</b>');
+    configuracion.xAxis.categories.push('GRUPO A<br><b>' + esperadaTmp.sppeda + '</b>');
+    configuracion.xAxis.categories.push('GRUPO B<br><b>' + esperadaTmp.sppedb + '</b>');
+    configuracion.xAxis.categories.push('GRUPO C<br><b>' + esperadaTmp.sppedc + '</b>');
+    configuracion.xAxis.categories.push('GRUPO D<br><b>' + esperadaTmp.sppedd + '</b>');
 
 
     esperada.push(esperadaTmp.sppeda);
@@ -352,11 +381,11 @@ export class PresentacionComponent implements OnInit {
 
   }
 
-  buildChartPoliolefinas(): void {
+  buildChartPoliolefinas(position_data:number): void {
     let configuracion = clone(configJucodi);
     this.time_await = 25000;
 
-    let datosPorLinea = this.OEE[7];
+    let datosPorLinea = this.OEE[position_data];
 
     let titulo = datosPorLinea[0].titulo_grafica;
     let labels = datosPorLinea.filter((el) => el.padre == 0).map(element => element.dia);
@@ -384,6 +413,8 @@ export class PresentacionComponent implements OnInit {
 
     $('#grafica').highcharts(configuracion);
   }
+
+
 
 
 }
