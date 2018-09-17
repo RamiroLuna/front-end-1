@@ -22,7 +22,7 @@ export class PresentacionComponent implements OnInit {
 
   private TOTAL: number;
   public type_animation: string = 'entrada';
-  public steep_index: number = 1;
+  public steep_index: number = 35;
   public loading: boolean;
   public isOk: boolean;
   public OEE: any;
@@ -37,14 +37,15 @@ export class PresentacionComponent implements OnInit {
     this.isOk = false;
 
     this.OEE = localStorage.getItem('OEE');
-    console.log(this.OEE)
+
 
     if (this.OEE == null || this.OEE === undefined) {
       this.loading = false;
     } else {
       this.height = $(window).height() - 100;
       this.OEE = JSON.parse(this.OEE);
-      this.TOTAL = this.OEE.length + 1;
+      this.TOTAL = this.OEE.length + 6; // Se suma la cantidad de diapositivas de presentacion 
+
       this.isOk = true;
       this.loading = false;
       // Tiene los datos para poder trabajar 
@@ -61,7 +62,7 @@ export class PresentacionComponent implements OnInit {
       switch (this.type_animation) {
         case 'entrada':
 
-          if (this.steep_index > 1) {
+          if (this.steep_index > 2) {
             this.buildChart(this.steep_index);
           } else {
             this.status = 'active';
@@ -103,56 +104,144 @@ export class PresentacionComponent implements OnInit {
          * Graficas AMUT 1
          */
         case 2:
-          this.buildChartPerdida(0);
+          this.time_await = 4000;
           break;
         case 3:
-          this.buildChartDisponiblidad(1);
+          this.buildChartPerdida(0);
           break;
         case 4:
-          this.buildChartOEE(2);
+          this.buildChartDisponiblidad(1);
           break;
         case 5:
-          this.buildChartJucodi(3);
+          this.buildChartOEE(2);
           break;
         case 6:
-          this.buildChartRealvsPlanBarras(4);
+          this.buildChartJucodi(3);
           break;
         case 7:
-          this.buildChartSpider(5);
+          this.buildChartRealvsPlanBarras(4);
           break;
         case 8:
-          this.buildChartVelocidad(6);
+          this.buildChartSpider(5);
           break;
         case 9:
+          this.buildChartVelocidad(6);
+          break;
+        case 10:
           this.buildChartPoliolefinas(7);
           break;
-        /*
+      /*
        * Graficas AMUT 2
        */
-        case 10:
-          this.buildChartPerdida(8);
-          break;
         case 11:
-          this.buildChartDisponiblidad(9);
+        this.time_await = 4000;
           break;
         case 12:
-          this.buildChartOEE(10);
+          this.buildChartPerdida(8);
           break;
         case 13:
-          this.buildChartJucodi(11);
+          this.buildChartDisponiblidad(9);
           break;
         case 14:
-          this.buildChartRealvsPlanBarras(12);
+          this.buildChartOEE(10);
           break;
         case 15:
-          this.buildChartSpider(13);
+          this.buildChartJucodi(11);
           break;
         case 16:
-          this.buildChartVelocidad(14);
+          this.buildChartRealvsPlanBarras(12);
           break;
         case 17:
+          this.buildChartSpider(13);
+          break;
+        case 18:
+          this.buildChartVelocidad(14);
+          break;
+        case 19:
           this.buildChartPoliolefinas(15);
           break;
+      /*
+       * Graficas EXT 1
+       */
+        case 20:
+        this.time_await = 4000;
+          break;
+        case 21:
+          this.buildChartPerdida(16);
+          break;
+        case 22:
+          this.buildChartDisponiblidad(17);
+          break;
+        case 23:
+          this.buildChartOEE(18);
+          break;
+        case 24:
+          this.buildChartJucodi(19);
+          break;
+        case 25:
+          this.buildChartRealvsPlanBarras(20);
+          break;
+        case 26:
+          this.buildChartSpider(21);
+          break;
+        case 27:
+          this.buildChartVelocidad(22);
+          break;
+      /*
+       * Graficas EXT 2
+       */
+        case 28:
+        this.time_await = 4000;
+          break;
+        case 29:
+          this.buildChartPerdida(23);
+          break;
+        case 30:
+          this.buildChartDisponiblidad(24);
+          break;
+        case 31:
+          this.buildChartOEE(25);
+          break;
+        case 32:
+          this.buildChartJucodi(26);
+          break;
+        case 33:
+          this.buildChartRealvsPlanBarras(27);
+          break;
+        case 34:
+          this.buildChartSpider(28);
+          break;
+        case 35:
+          this.buildChartVelocidad(29);
+          break;
+      /*
+       * Graficas SSP
+       */
+        case 36:
+        this.time_await = 4000;
+          break;
+        case 37:
+          this.buildChartPerdida(30);
+          break;
+        case 38:
+          this.buildChartDisponiblidad(31);
+          break;
+        case 39:
+          this.buildChartOEE(32);
+          break;
+        case 40:
+          this.buildChartJucodi(33);
+          break;
+        case 41:
+          this.buildChartRealvsPlanBarras(34);
+          break;
+        case 42:
+          this.buildChartSpider(35);
+          break;
+        case 43:
+          this.buildChartVelocidad(36);
+          break;
+
       }
 
       //Ejecuta evento de animación
@@ -165,9 +254,9 @@ export class PresentacionComponent implements OnInit {
 
   }
 
-  buildChartPerdida(position_data:number): void {
+  buildChartPerdida(position_data: number): void {
     let configuracion = clone(configPerdidas);
-    this.time_await = 20000;   
+    this.time_await = 20000;
     let rows = this.OEE[position_data]
     let labels = rows.filter((el) => el.padre == 0).map((el) => el.fuente);
     let horas = rows.filter((el) => el.padre == 0).map((el) => el.hrs);
@@ -181,7 +270,7 @@ export class PresentacionComponent implements OnInit {
     $('#grafica').highcharts(configuracion);
   }
 
-  buildChartDisponiblidad(position_data:number): void {
+  buildChartDisponiblidad(position_data: number): void {
     let configuracion = clone(configDisponiblidad);
     this.time_await = 10000;
     let rows = this.OEE[position_data];
@@ -204,11 +293,11 @@ export class PresentacionComponent implements OnInit {
     $('#grafica').highcharts(configuracion);
   }
 
-  buildChartOEE(position_data:number): void {
+  buildChartOEE(position_data: number): void {
     let configuracion = clone(configOEE);
     this.time_await = 15000;
     let rows = this.OEE[position_data];
-
+  
     let meta_esperada = rows.filter((el) => el.padre == 0).map((el) => el.meta);
     let labels = rows.filter((el) => el.padre == 0).map((el) => el.titulo);
     let horas = rows.filter((el) => el.padre == 0).map((el) => el.porcentaje);
@@ -231,7 +320,7 @@ export class PresentacionComponent implements OnInit {
     $('#grafica').highcharts(configuracion);
   }
 
-  buildChartJucodi(position_data:number): void {
+  buildChartJucodi(position_data: number): void {
     let configuracion = clone(configJucodi);
     this.time_await = 25000;
 
@@ -264,7 +353,7 @@ export class PresentacionComponent implements OnInit {
     $('#grafica').highcharts(configuracion);
   }
 
-  buildChartRealvsPlanBarras(position_data:number): void {
+  buildChartRealvsPlanBarras(position_data: number): void {
     let configuracion = clone(configRealPlan);
     this.time_await = 20000;
 
@@ -287,7 +376,7 @@ export class PresentacionComponent implements OnInit {
     $('#grafica').highcharts(configuracion);
   }
 
-  buildChartSpider(position_data:number): void {
+  buildChartSpider(position_data: number): void {
     let configuracion = clone(configChartSpider);
     this.time_await = 10000;
 
@@ -347,7 +436,7 @@ export class PresentacionComponent implements OnInit {
 
   }
 
-  buildChartVelocidad(position_data:number): void {
+  buildChartVelocidad(position_data: number): void {
     let configuracion = clone(configVelocidad);
     this.time_await = 10000;
 
@@ -381,7 +470,7 @@ export class PresentacionComponent implements OnInit {
 
   }
 
-  buildChartPoliolefinas(position_data:number): void {
+  buildChartPoliolefinas(position_data: number): void {
     let configuracion = clone(configJucodi);
     this.time_await = 25000;
 
