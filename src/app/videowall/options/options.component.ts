@@ -48,14 +48,30 @@ export class OptionsComponent implements OnInit {
         this.disabled = true;
 
         this.service.generateVideoWall(this.auth.getIdUsuario()).subscribe(result => {
-         
+        
           if (result.response.sucessfull) {
             let datosOEE = localStorage.getItem('OEE');
+            let posicion = localStorage.getItem('POSICION');
+            let posiciones = [];
+            posiciones.push(result.data.posicionAnual);
+            posiciones.push(result.data.posicionTrimestral);
+  
             if (datosOEE === null || datosOEE == undefined) {
               localStorage.setItem('OEE', JSON.stringify(result.data.OEE));
             } else {
+
               localStorage.removeItem('OEE');
               localStorage.setItem('OEE', JSON.stringify(result.data.OEE));
+
+              if(posicion  === null || posicion == undefined ){
+
+                localStorage.setItem('POSICION', JSON.stringify(posiciones));
+
+              }else{
+                localStorage.removeItem('POSICION');
+                localStorage.setItem('POSICION', JSON.stringify(posiciones));
+              }
+            
             }
             Materialize.toast('Actualización correcta', 4000, 'green');
             this.disabled = false;

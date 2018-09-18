@@ -5,6 +5,8 @@ import { configChart as configOEE } from '../../oee/rpt-oee/rpt.config.export';
 import { configChart as configJucodi } from '../../oee/rpt-jucodi/rpt.config.export';
 import { configChart as configRealPlan, configChartSpider } from '../../oee/rpt-produccion-real-plan/rpt.config.export';
 import { configChartSpider as configVelocidad } from '../../oee/rpt-velocidad-promedio/rpt.config.export';
+import { configChart as configAnual } from '../../etad/rpt-posicion-anual/rpt.config.export';
+import { configChart as configTrimestral } from '../../etad/rpt-posicion-trimestral/rpt.config.export';
 import { clone } from '../../utils';
 import {
   ANIMATION_PRELOADER,
@@ -22,10 +24,11 @@ export class PresentacionComponent implements OnInit {
 
   private TOTAL: number;
   public type_animation: string = 'entrada';
-  public steep_index: number = 35;
+  public steep_index: number = 43;
   public loading: boolean;
   public isOk: boolean;
   public OEE: any;
+  public POSICION: any;
   public status: string;
   public height: number;
   public time_await: number = 4000; // tiempo en milisegundos
@@ -37,14 +40,16 @@ export class PresentacionComponent implements OnInit {
     this.isOk = false;
 
     this.OEE = localStorage.getItem('OEE');
+    this.POSICION = localStorage.getItem('POSICION');
 
 
-    if (this.OEE == null || this.OEE === undefined) {
+    if (this.OEE == null || this.OEE === undefined || this.POSICION == null || this.POSICION === undefined) {
       this.loading = false;
     } else {
       this.height = $(window).height() - 100;
       this.OEE = JSON.parse(this.OEE);
-      this.TOTAL = this.OEE.length + 6; // Se suma la cantidad de diapositivas de presentacion 
+      this.POSICION = JSON.parse(this.POSICION);
+      this.TOTAL = this.OEE.length + this.POSICION.length + 7; // Se suma la cantidad de diapositivas de presentacion 
 
       this.isOk = true;
       this.loading = false;
@@ -130,11 +135,11 @@ export class PresentacionComponent implements OnInit {
         case 10:
           this.buildChartPoliolefinas(7);
           break;
-      /*
-       * Graficas AMUT 2
-       */
+        /*
+         * Graficas AMUT 2
+         */
         case 11:
-        this.time_await = 4000;
+          this.time_await = 4000;
           break;
         case 12:
           this.buildChartPerdida(8);
@@ -160,11 +165,11 @@ export class PresentacionComponent implements OnInit {
         case 19:
           this.buildChartPoliolefinas(15);
           break;
-      /*
-       * Graficas EXT 1
-       */
+        /*
+         * Graficas EXT 1
+         */
         case 20:
-        this.time_await = 4000;
+          this.time_await = 4000;
           break;
         case 21:
           this.buildChartPerdida(16);
@@ -187,11 +192,11 @@ export class PresentacionComponent implements OnInit {
         case 27:
           this.buildChartVelocidad(22);
           break;
-      /*
-       * Graficas EXT 2
-       */
+        /*
+         * Graficas EXT 2
+         */
         case 28:
-        this.time_await = 4000;
+          this.time_await = 4000;
           break;
         case 29:
           this.buildChartPerdida(23);
@@ -214,11 +219,11 @@ export class PresentacionComponent implements OnInit {
         case 35:
           this.buildChartVelocidad(29);
           break;
-      /*
-       * Graficas SSP
-       */
+        /*
+         * Graficas SSP
+         */
         case 36:
-        this.time_await = 4000;
+          this.time_await = 4000;
           break;
         case 37:
           this.buildChartPerdida(30);
@@ -242,6 +247,18 @@ export class PresentacionComponent implements OnInit {
           this.buildChartVelocidad(36);
           break;
 
+        /*
+         * INICIO GRAFICAS ETAD
+         */
+        case 44:
+          this.time_await = 4000;
+          break;
+        case 45:
+          this.buildChartTrimestral(1);
+          break;
+        case 46:
+          this.buildChartAnual(0);
+          break;
       }
 
       //Ejecuta evento de animación
@@ -297,7 +314,7 @@ export class PresentacionComponent implements OnInit {
     let configuracion = clone(configOEE);
     this.time_await = 15000;
     let rows = this.OEE[position_data];
-  
+
     let meta_esperada = rows.filter((el) => el.padre == 0).map((el) => el.meta);
     let labels = rows.filter((el) => el.padre == 0).map((el) => el.titulo);
     let horas = rows.filter((el) => el.padre == 0).map((el) => el.porcentaje);
@@ -502,6 +519,132 @@ export class PresentacionComponent implements OnInit {
 
     $('#grafica').highcharts(configuracion);
   }
+
+
+  buildChartTrimestral(position_data: number): void {
+    let configuracion = clone(configTrimestral);
+    this.time_await = 10000;
+    let datos = this.POSICION[position_data];
+    /*
+     * Proceso para asignar el color de la barra
+     */
+
+    let lugar = 0;
+    datos.forEach((element, index, arg) => {
+      if (index > 0) {
+
+        if (element.valor < arg[index - 1].valor) {
+          if (lugar < 4) lugar++;
+        }
+
+        switch (lugar) {
+          case 1:
+            element.color = "#1b5e20";
+            break;
+          case 2:
+            element.color = "#ffd600";
+            break;
+          case 3:
+            element.color = "#827717";
+            break;
+          case 4:
+            element.color = "#b71c1c";
+            break;
+
+        }
+
+      } else if (index == 0) {
+        lugar = 1;
+        element.color = "#1b5e20";
+      }
+    });
+
+    /*
+           * Fin del proceso
+           */
+
+    let data = [];
+
+    datos.map(el => {
+      data.push({ y: el.valor, color: el.color });
+    });
+
+    let etiquetas = datos.map(el => el.name);
+    let colores = datos.map(el => el.color);
+
+    configuracion.series = [];
+    configuracion.xAxis.categories = etiquetas;
+    configuracion.colors = colores;
+    configuracion.series.push({ name: ' Calificación ', data: data });
+
+    configuracion.title.text = 'Posición trimestral';
+
+    $('#grafica').highcharts(configuracion);
+
+  }
+
+  buildChartAnual(position_data: number): void {
+    let configuracion = clone(configAnual);
+    this.time_await = 10000;
+    let datos = this.POSICION[position_data];
+    /*
+     * Proceso para asignar el color de la barra
+     */
+
+    let lugar = 0;
+    datos.forEach((element, index, arg) => {
+      if (index > 0) {
+
+        if (element.valor < arg[index - 1].valor) {
+          if (lugar < 4) lugar++;
+        }
+
+        switch (lugar) {
+          case 1:
+            element.color = "#1b5e20";
+            break;
+          case 2:
+            element.color = "#ffd600";
+            break;
+          case 3:
+            element.color = "#827717";
+            break;
+          case 4:
+            element.color = "#b71c1c";
+            break;
+
+        }
+
+      } else if (index == 0) {
+        lugar = 1;
+        element.color = "#1b5e20";
+      }
+    });
+
+    /*
+           * Fin del proceso
+           */
+
+    let data = [];
+
+    datos.map(el => {
+      data.push({ y: el.valor, color: el.color });
+    });
+
+    let etiquetas = datos.map(el => el.name);
+    let colores = datos.map(el => el.color);
+
+    configuracion.series = [];
+    configuracion.xAxis.categories = etiquetas;
+    configuracion.colors = colores;
+    configuracion.series.push({ name: ' Calificación ', data: data });
+
+    configuracion.title.text = 'Posición Anual';
+
+    $('#grafica').highcharts(configuracion);
+
+  }
+
 
 
 
