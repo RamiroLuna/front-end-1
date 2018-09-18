@@ -52,7 +52,7 @@ export class PresentacionComponent implements OnInit {
     this.loading = true;
     this.isOk = false;
     this.auxIndexETAD = 0;
-    this.auxIndexKPI = 0;
+    this.auxIndexKPI = -3;
     this.finishPresentationEtad = false;
     this.row = [];
     this.OEE = localStorage.getItem('OEE');
@@ -138,12 +138,14 @@ export class PresentacionComponent implements OnInit {
                   this.review = true;
                 }, 15);
               }
-              // if (this.finishPresentationEtad) {
-              //   // (this.auxIndexETAD < (this.KPI.length))
-              //   this.finishPresentationEtad = false;
-              //   this.auxIndexETAD++;
-              //   this.steep_index = 47;
-              // }
+
+              if (this.finishPresentationEtad) {
+                // (this.auxIndexETAD < (this.KPI.length))
+                this.finishPresentationEtad = false;
+                this.auxIndexETAD++;
+                this.auxIndexKPI = -3;
+                this.steep_index = 47;
+              }
 
 
 
@@ -325,7 +327,7 @@ export class PresentacionComponent implements OnInit {
 
           break;
         default:
-          // this.buildChartKPI(this.auxIndexKPI, this.auxIndexETAD);
+         
           if (this.steep_index > 47 && this.steep_index < this.TOTAL) {
 
             let kpi_etad = this.KPI[this.auxIndexETAD];
@@ -335,9 +337,9 @@ export class PresentacionComponent implements OnInit {
               tmp += 1;
             }
             pasos_etad += (tmp + 47);
+           
 
-
-            if (this.steep_index == pasos_etad) {
+            if (this.steep_index > pasos_etad) {
               this.finishPresentationEtad = true;
             } else {
               //Construye las graficas correspondientes
