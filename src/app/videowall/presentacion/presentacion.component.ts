@@ -33,6 +33,7 @@ export class PresentacionComponent implements OnInit {
   public POSICION: any;
   public status: string;
   public height: number;
+  public endVideoWall: boolean;
   /*
    * Variables auxiliares para mostrar KPI
    */
@@ -51,7 +52,8 @@ export class PresentacionComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.isOk = false;
-    this.auxIndexETAD = 0;
+    this.endVideoWall = false;
+    this.auxIndexETAD = 5;
     this.auxIndexKPI = -3;
     this.finishPresentationEtad = false;
     this.row = [];
@@ -127,26 +129,33 @@ export class PresentacionComponent implements OnInit {
         case 'fin':
           if (this.steep_index < this.TOTAL) {
             setTimeout(() => {
-              this.steep_index = this.steep_index + 1;
-              this.status = 'inactive';
-              this.type_animation = 'entrada';
+              if (!this.endVideoWall) {
+                this.steep_index = this.steep_index + 1;
+                this.status = 'inactive';
+                this.type_animation = 'entrada';
 
-              if (this.steep_index > 47) {
-                this.review = false;
-                this.auxIndexKPI = this.auxIndexKPI + 3;
-                setTimeout(() => {
-                  this.review = true;
-                }, 15);
+                if (this.steep_index > 47) {
+                  this.review = false;
+                  this.auxIndexKPI = this.auxIndexKPI + 3;
+                  setTimeout(() => {
+                    this.review = true;
+                  }, 15);
+                }
+
+                if (this.finishPresentationEtad) {
+
+                  if (this.auxIndexETAD < (this.KPI.length) - 1) {
+
+                    this.finishPresentationEtad = false;
+                    this.auxIndexETAD++;
+                    this.auxIndexKPI = -3;
+                    this.steep_index = 47;
+                  } else {
+                    // Fin de la presentacion
+                    this.endVideoWall = true;
+                  }
+                }
               }
-
-              if (this.finishPresentationEtad) {
-                // (this.auxIndexETAD < (this.KPI.length))
-                this.finishPresentationEtad = false;
-                this.auxIndexETAD++;
-                this.auxIndexKPI = -3;
-                this.steep_index = 47;
-              }
-
 
 
             }, 200);
@@ -327,7 +336,7 @@ export class PresentacionComponent implements OnInit {
 
           break;
         default:
-         
+
           if (this.steep_index > 47 && this.steep_index < this.TOTAL) {
 
             let kpi_etad = this.KPI[this.auxIndexETAD];
@@ -337,7 +346,7 @@ export class PresentacionComponent implements OnInit {
               tmp += 1;
             }
             pasos_etad += (tmp + 47);
-           
+
 
             if (this.steep_index > pasos_etad) {
               this.finishPresentationEtad = true;
