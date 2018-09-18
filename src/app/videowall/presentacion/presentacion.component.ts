@@ -39,7 +39,8 @@ export class PresentacionComponent implements OnInit {
   public auxIndexETAD: number;
   public finishPresentationEtad: boolean;
   public row: Array<any>;
-  public review:boolean;
+  public review: boolean;
+  public auxIndexKPI: number;
   /*
    * Fin variables auxiliares de KPI'S
    */
@@ -51,6 +52,7 @@ export class PresentacionComponent implements OnInit {
     this.loading = true;
     this.isOk = false;
     this.auxIndexETAD = 0;
+    this.auxIndexKPI = 0;
     this.finishPresentationEtad = false;
     this.row = [];
     this.OEE = localStorage.getItem('OEE');
@@ -99,7 +101,7 @@ export class PresentacionComponent implements OnInit {
   animationDone(event: any): void {
 
     setTimeout(() => {
-      debugger
+
 
       switch (this.type_animation) {
         case 'entrada':
@@ -129,11 +131,12 @@ export class PresentacionComponent implements OnInit {
               this.status = 'inactive';
               this.type_animation = 'entrada';
 
-              if(this.steep_index > 47){
+              if (this.steep_index > 47) {
                 this.review = false;
-                setTimeout(()=>{
+                this.auxIndexKPI = this.auxIndexKPI + 3;
+                setTimeout(() => {
                   this.review = true;
-                },15);
+                }, 15);
               }
               // if (this.finishPresentationEtad) {
               //   // (this.auxIndexETAD < (this.KPI.length))
@@ -156,7 +159,7 @@ export class PresentacionComponent implements OnInit {
 
   buildChart(steep: number) {
     //setTimeout time para construir grafica
-   
+
     setTimeout(() => {
       switch (steep) {
         /*
@@ -319,10 +322,29 @@ export class PresentacionComponent implements OnInit {
         case 47:
           //case 47 solo para mostrar imagen de ETAD
           this.time_await = 4000;
-          
+
           break;
         default:
-          this.buildChartKPI([]);
+          // this.buildChartKPI(this.auxIndexKPI, this.auxIndexETAD);
+          if (this.steep_index > 47 && this.steep_index < this.TOTAL) {
+
+            let kpi_etad = this.KPI[this.auxIndexETAD];
+            let pasos_etad = 0;
+            let tmp = parseInt("" + (kpi_etad.length) / 3);
+            if (kpi_etad.length % 3 != 0) {
+              tmp += 1;
+            }
+            pasos_etad += (tmp + 47);
+
+
+            if (this.steep_index == pasos_etad) {
+              this.finishPresentationEtad = true;
+            } else {
+              //Construye las graficas correspondientes
+              this.buildChartKPI(this.auxIndexKPI, this.auxIndexETAD);
+            }
+
+          }
 
       }
 
@@ -331,7 +353,7 @@ export class PresentacionComponent implements OnInit {
         this.status = 'active';
         this.type_animation = 'enfasis';
       }, 200);
-      
+
     }, 200);
 
   }
@@ -710,31 +732,39 @@ export class PresentacionComponent implements OnInit {
 
   }
 
-  buildChartKPI(kpis: Array<any>): void {
+  buildChartKPI(indiceKPI: number, indiceETAD: number): void {
 
     this.time_await = 3000;
     this.row = [];
-    let datos = kpis;
-    datos.map((el, index, arg) => {
 
-      let config_grafica = clone(configKPI);
-      let dataReal = [el.metaA, el.metaB, el.metaC, el.metaD];
-      let dataEsperada = [el.resultadoA, el.resultadoB, el.resultadoC, el.resultadoD];
+    let datos = this.KPI[indiceETAD].filter((el, index) => {
 
-      config_grafica.series = [];
-      config_grafica.xAxis.categories = ['A', 'B', 'C', 'D'];
-      config_grafica.title.text = el.kpi;
-
-      config_grafica.series.push({ name: ' Logro ', data: dataEsperada, color: '#dcedc8' });
-      config_grafica.series.push({ name: ' Meta ', data: dataReal, type: 'line', color: '#1a237e' });
-
-      this.row.push(config_grafica);
-
+      if (index >= indiceKPI && index < (indiceKPI + 3)) {
+        return el;
+      }
     });
 
-    this.row.forEach((grafica, i) => {
-      $('#grafica' + i).highcharts(grafica);
-    });
+    console.log('datos para graficar en paso ', datos, this.steep_index)
+    // datos.map((el, index, arg) => {
+
+    //   let config_grafica = clone(configKPI);
+    //   let dataReal = [el.metaA, el.metaB, el.metaC, el.metaD];
+    //   let dataEsperada = [el.resultadoA, el.resultadoB, el.resultadoC, el.resultadoD];
+
+    //   config_grafica.series = [];
+    //   config_grafica.xAxis.categories = ['A', 'B', 'C', 'D'];
+    //   config_grafica.title.text = el.kpi;
+
+    //   config_grafica.series.push({ name: ' Logro ', data: dataEsperada, color: '#dcedc8' });
+    //   config_grafica.series.push({ name: ' Meta ', data: dataReal, type: 'line', color: '#1a237e' });
+
+    //   this.row.push(config_grafica);
+
+    // });
+
+    // this.row.forEach((grafica, i) => {
+    //   $('#grafica' + i).highcharts(grafica);
+    // });
 
   }
 
