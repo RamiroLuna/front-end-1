@@ -53,7 +53,7 @@ export class PresentacionComponent implements OnInit {
     this.loading = true;
     this.isOk = false;
     this.endVideoWall = false;
-    this.auxIndexETAD = 5;
+    this.auxIndexETAD = 0;
     this.auxIndexKPI = -3;
     this.finishPresentationEtad = false;
     this.row = [];
@@ -130,6 +130,7 @@ export class PresentacionComponent implements OnInit {
           if (this.steep_index < this.TOTAL) {
             setTimeout(() => {
               if (!this.endVideoWall) {
+                
                 this.steep_index = this.steep_index + 1;
                 this.status = 'inactive';
                 this.type_animation = 'entrada';
@@ -153,6 +154,7 @@ export class PresentacionComponent implements OnInit {
                   } else {
                     // Fin de la presentacion
                     this.endVideoWall = true;
+                    alert('fin')
                   }
                 }
               }
