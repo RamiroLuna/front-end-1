@@ -51,6 +51,7 @@ export class OptionsComponent implements OnInit {
         
           if (result.response.sucessfull) {
             let datosOEE = localStorage.getItem('OEE');
+            let datosKPI = localStorage.getItem('KPI');
             let posicion = localStorage.getItem('POSICION');
             let posiciones = [];
             posiciones.push(result.data.posicionAnual);
@@ -59,20 +60,24 @@ export class OptionsComponent implements OnInit {
             if (datosOEE === null || datosOEE == undefined) {
               localStorage.setItem('OEE', JSON.stringify(result.data.OEE));
             } else {
-
               localStorage.removeItem('OEE');
               localStorage.setItem('OEE', JSON.stringify(result.data.OEE));
-
-              if(posicion  === null || posicion == undefined ){
-
-                localStorage.setItem('POSICION', JSON.stringify(posiciones));
-
-              }else{
-                localStorage.removeItem('POSICION');
-                localStorage.setItem('POSICION', JSON.stringify(posiciones));
-              }
-            
             }
+
+            if(posicion  === null || posicion == undefined ){
+              localStorage.setItem('POSICION', JSON.stringify(posiciones));
+            }else{
+              localStorage.removeItem('POSICION');
+              localStorage.setItem('POSICION', JSON.stringify(posiciones));
+            }
+
+            if(datosKPI  === null || datosKPI == undefined ){
+              localStorage.setItem('KPI', JSON.stringify(result.data.ETAD));
+            }else{
+              localStorage.removeItem('KPI');
+              localStorage.setItem('KPI', JSON.stringify(result.data.ETAD));
+            }
+
             Materialize.toast('Actualización correcta', 4000, 'green');
             this.disabled = false;
           } else {

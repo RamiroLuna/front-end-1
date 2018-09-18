@@ -7,6 +7,7 @@ import { configChart as configRealPlan, configChartSpider } from '../../oee/rpt-
 import { configChartSpider as configVelocidad } from '../../oee/rpt-velocidad-promedio/rpt.config.export';
 import { configChart as configAnual } from '../../etad/rpt-posicion-anual/rpt.config.export';
 import { configChart as configTrimestral } from '../../etad/rpt-posicion-trimestral/rpt.config.export';
+import { configChart as configKPI } from '../../etad/rpt-graficas-kpi/rpt.config.export';
 import { clone } from '../../utils';
 import {
   ANIMATION_PRELOADER,
@@ -24,13 +25,24 @@ export class PresentacionComponent implements OnInit {
 
   private TOTAL: number;
   public type_animation: string = 'entrada';
-  public steep_index: number = 43;
+  public steep_index: number = 45;
   public loading: boolean;
   public isOk: boolean;
   public OEE: any;
+  public KPI: any;
   public POSICION: any;
   public status: string;
   public height: number;
+  /*
+   * Variables auxiliares para mostrar KPI
+   */
+  public auxIndexETAD: number;
+  public finishPresentationEtad: boolean;
+  public row: Array<any>;
+  public cloneKpi: any;
+  /*
+   * Fin variables auxiliares de KPI'S
+   */
   public time_await: number = 4000; // tiempo en milisegundos
 
   constructor() { }
@@ -38,18 +50,43 @@ export class PresentacionComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.isOk = false;
+    this.auxIndexETAD = 0;
+    this.finishPresentationEtad = false;
+    this.row = [];
 
     this.OEE = localStorage.getItem('OEE');
+    this.KPI = localStorage.getItem('KPI');
     this.POSICION = localStorage.getItem('POSICION');
 
 
-    if (this.OEE == null || this.OEE === undefined || this.POSICION == null || this.POSICION === undefined) {
+    if (this.OEE == null || this.OEE === undefined
+      || this.KPI == null || this.KPI === undefined
+      || this.POSICION == null || this.POSICION === undefined
+    ) {
       this.loading = false;
     } else {
       this.height = $(window).height() - 100;
       this.OEE = JSON.parse(this.OEE);
+      this.KPI = JSON.parse(this.KPI);
       this.POSICION = JSON.parse(this.POSICION);
-      this.TOTAL = this.OEE.length + this.POSICION.length + 7; // Se suma la cantidad de diapositivas de presentacion 
+
+      /*
+       * Calcular total de pasos que existiran para 
+       * mostrar las graficas de KPI
+       */
+      let cantidad_pasos_KPI = 0;
+      this.KPI.map((el) => {
+        let tmp = parseInt("" + (el.length) / 3);
+        if (el.length % 3 != 0) {
+          tmp += 1;
+        }
+        cantidad_pasos_KPI += tmp;
+      });
+
+      /*
+       * Fin calculo
+       */
+      this.TOTAL = this.OEE.length + this.POSICION.length + this.KPI.length + cantidad_pasos_KPI + 7; // Se suma " 7 " la cantidad de diapositivas de presentacion 
 
       this.isOk = true;
       this.loading = false;
@@ -91,6 +128,14 @@ export class PresentacionComponent implements OnInit {
               this.steep_index = this.steep_index + 1;
               this.status = 'inactive';
               this.type_animation = 'entrada';
+
+              if (this.finishPresentationEtad) {
+                // (this.auxIndexETAD < (this.KPI.length))
+                this.finishPresentationEtad = false;
+                this.auxIndexETAD++;
+                this.steep_index = 47;
+              }
+
             }, 200);
           }
 
@@ -259,6 +304,36 @@ export class PresentacionComponent implements OnInit {
         case 46:
           this.buildChartAnual(0);
           break;
+        /*
+         * Inicio presentación KPI
+         */
+        case 47:
+          //case 47 solo para mostrar imagen de ETAD
+          this.time_await = 4000;
+          this.cloneKpi = clone(this.KPI[this.auxIndexETAD]);
+          break;
+        default:
+          if (this.steep_index > 47 && this.steep_index < this.TOTAL) {
+            debugger
+            
+            let kpi_etad = this.KPI[this.auxIndexETAD];
+            let pasos_etad = 0;
+            let tmp = parseInt("" + (kpi_etad.length) / 3);
+            if (kpi_etad.length % 3 != 0) {
+              tmp += 1;
+            }
+            pasos_etad += (tmp + 47);
+
+            
+            if (this.steep_index == pasos_etad) {
+              this.finishPresentationEtad = true;
+            }else{
+              //Construye las graficas correspondientes
+              this.buildChartKPI(this.cloneKpi.splice(0,3));
+            }
+
+          }
+
       }
 
       //Ejecuta evento de animación
@@ -560,8 +635,8 @@ export class PresentacionComponent implements OnInit {
     });
 
     /*
-           * Fin del proceso
-           */
+     * Fin del proceso
+     */
 
     let data = [];
 
@@ -645,7 +720,25 @@ export class PresentacionComponent implements OnInit {
 
   }
 
+  buildChartKPI(kpis: Array<any>): void {
+    this.row = [];
+    kpis.map((el, index, arg) => {
 
+      let config_grafica = clone(configKPI);
+      let dataReal = [el.metaA, el.metaB, el.metaC, el.metaD];
+      let dataEsperada = [el.resultadoA, el.resultadoB, el.resultadoC, el.resultadoD];
+
+      config_grafica.series = [];
+      config_grafica.xAxis.categories = ['A', 'B', 'C', 'D'];
+      config_grafica.title.text = el.kpi;
+
+      config_grafica.series.push({ name: ' Logro ', data: dataEsperada, color: '#dcedc8' });
+      config_grafica.series.push({ name: ' Meta ', data: dataReal, type: 'line', color: '#1a237e' });
+
+      this.row.push(config_grafica);
+
+    });
+  }
 
 
 
