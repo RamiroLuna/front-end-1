@@ -25,7 +25,7 @@ export class PresentacionComponent implements OnInit {
 
   private TOTAL: number;
   public type_animation: string = 'entrada';
-  public steep_index: number = 45;
+  public steep_index: number = 46;
   public loading: boolean;
   public isOk: boolean;
   public OEE: any;
@@ -39,7 +39,7 @@ export class PresentacionComponent implements OnInit {
   public auxIndexETAD: number;
   public finishPresentationEtad: boolean;
   public row: Array<any>;
-  public cloneKpi: any;
+  public review:boolean;
   /*
    * Fin variables auxiliares de KPI'S
    */
@@ -53,7 +53,6 @@ export class PresentacionComponent implements OnInit {
     this.auxIndexETAD = 0;
     this.finishPresentationEtad = false;
     this.row = [];
-
     this.OEE = localStorage.getItem('OEE');
     this.KPI = localStorage.getItem('KPI');
     this.POSICION = localStorage.getItem('POSICION');
@@ -100,6 +99,7 @@ export class PresentacionComponent implements OnInit {
   animationDone(event: any): void {
 
     setTimeout(() => {
+      debugger
 
       switch (this.type_animation) {
         case 'entrada':
@@ -129,12 +129,20 @@ export class PresentacionComponent implements OnInit {
               this.status = 'inactive';
               this.type_animation = 'entrada';
 
-              if (this.finishPresentationEtad) {
-                // (this.auxIndexETAD < (this.KPI.length))
-                this.finishPresentationEtad = false;
-                this.auxIndexETAD++;
-                this.steep_index = 47;
+              if(this.steep_index > 47){
+                this.review = false;
+                setTimeout(()=>{
+                  this.review = true;
+                },15);
               }
+              // if (this.finishPresentationEtad) {
+              //   // (this.auxIndexETAD < (this.KPI.length))
+              //   this.finishPresentationEtad = false;
+              //   this.auxIndexETAD++;
+              //   this.steep_index = 47;
+              // }
+
+
 
             }, 200);
           }
@@ -148,6 +156,7 @@ export class PresentacionComponent implements OnInit {
 
   buildChart(steep: number) {
     //setTimeout time para construir grafica
+   
     setTimeout(() => {
       switch (steep) {
         /*
@@ -310,38 +319,19 @@ export class PresentacionComponent implements OnInit {
         case 47:
           //case 47 solo para mostrar imagen de ETAD
           this.time_await = 4000;
-          this.cloneKpi = clone(this.KPI[this.auxIndexETAD]);
+          
           break;
         default:
-          if (this.steep_index > 47 && this.steep_index < this.TOTAL) {
-            debugger
-            
-            let kpi_etad = this.KPI[this.auxIndexETAD];
-            let pasos_etad = 0;
-            let tmp = parseInt("" + (kpi_etad.length) / 3);
-            if (kpi_etad.length % 3 != 0) {
-              tmp += 1;
-            }
-            pasos_etad += (tmp + 47);
-
-            
-            if (this.steep_index == pasos_etad) {
-              this.finishPresentationEtad = true;
-            }else{
-              //Construye las graficas correspondientes
-              this.buildChartKPI(this.cloneKpi.splice(0,3));
-            }
-
-          }
+          this.buildChartKPI([]);
 
       }
 
       //Ejecuta evento de animación
       setTimeout(() => {
-
         this.status = 'active';
         this.type_animation = 'enfasis';
       }, 200);
+      
     }, 200);
 
   }
@@ -721,8 +711,11 @@ export class PresentacionComponent implements OnInit {
   }
 
   buildChartKPI(kpis: Array<any>): void {
+
+    this.time_await = 3000;
     this.row = [];
-    kpis.map((el, index, arg) => {
+    let datos = kpis;
+    datos.map((el, index, arg) => {
 
       let config_grafica = clone(configKPI);
       let dataReal = [el.metaA, el.metaB, el.metaC, el.metaD];
@@ -738,6 +731,11 @@ export class PresentacionComponent implements OnInit {
       this.row.push(config_grafica);
 
     });
+
+    this.row.forEach((grafica, i) => {
+      $('#grafica' + i).highcharts(grafica);
+    });
+
   }
 
 
