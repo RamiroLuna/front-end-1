@@ -18,7 +18,7 @@
   <img src="assets/videowall_ssp_oee.png"
     class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 36">
 
-  <img src="https://manana.blob.core.windows.net.optimalcdn.com/images/2017/06/11/crop_w0_h0_c70611063-focus-0-0-628-524.jpg"
+  <img src="assets/videowall_portada_etad.png"
     class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 44">
 
   <!-- Inicio graficas para OEE -->
@@ -43,7 +43,7 @@
 
   <div id="grafica" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 46"></div>
 
-  <img src="http://www.shopio.com/wp-content/uploads/2015/01/kpi-promo.jpg" class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)"
+  <img [src]="imageEtadPresentation" class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)"
     *ngIf="steep_index == 47">
 
   <!-- template kpi -->

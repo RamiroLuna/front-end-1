@@ -25,7 +25,7 @@ export class PresentacionComponent implements OnInit {
 
   private TOTAL: number;
   public type_animation: string = 'entrada';
-  public steep_index: number = 46;
+  public steep_index: number = 43;
   public loading: boolean;
   public isOk: boolean;
   public OEE: any;
@@ -37,6 +37,7 @@ export class PresentacionComponent implements OnInit {
   /*
    * Variables auxiliares para mostrar KPI
    */
+  public imageEtadPresentation: string;
   public auxIndexETAD: number;
   public finishPresentationEtad: boolean;
   public row: Array<any>;
@@ -56,6 +57,7 @@ export class PresentacionComponent implements OnInit {
     this.auxIndexETAD = 0;
     this.auxIndexKPI = -3;
     this.finishPresentationEtad = false;
+    this.imageEtadPresentation = 'assets/videowall_etad_id_:idEtad:.png';
     this.row = [];
     this.OEE = localStorage.getItem('OEE');
     this.KPI = localStorage.getItem('KPI');
@@ -72,7 +74,7 @@ export class PresentacionComponent implements OnInit {
       this.OEE = JSON.parse(this.OEE);
       this.KPI = JSON.parse(this.KPI);
       this.POSICION = JSON.parse(this.POSICION);
-      
+
       this.TOTAL = this.OEE.length + this.POSICION.length + this.KPI.length + 7; // Se suma " 7 " la cantidad de diapositivas de presentacion 
 
       this.isOk = true;
@@ -132,7 +134,7 @@ export class PresentacionComponent implements OnInit {
                 if (this.finishPresentationEtad) {
 
                   if (this.auxIndexETAD < (this.KPI.length) - 1) {
-
+                    this.imageEtadPresentation = 'assets/videowall_etad_id_:idEtad:.png';
                     this.finishPresentationEtad = false;
                     this.auxIndexETAD++;
                     this.auxIndexKPI = -3;
@@ -320,6 +322,9 @@ export class PresentacionComponent implements OnInit {
          */
         case 47:
           //case 47 solo para mostrar imagen de ETAD
+          let idEtad = this.getIdEtad(this.auxIndexETAD);
+          this.imageEtadPresentation = this.imageEtadPresentation.replace(/:idEtad:/, idEtad);
+
           this.time_await = 5000;
           /*
            * Calcular total de pasos que existiran para 
@@ -783,6 +788,15 @@ export class PresentacionComponent implements OnInit {
       });
     }, 70)
 
+
+  }
+
+  getIdEtad(indice: number): string {
+    if (this.KPI[indice][0]) {
+      return "" + this.KPI[indice][0].id_etad;
+    } else {
+      return "no_identificado";
+    }
 
   }
 
