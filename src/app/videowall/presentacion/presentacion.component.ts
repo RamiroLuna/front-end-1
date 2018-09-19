@@ -25,7 +25,7 @@ export class PresentacionComponent implements OnInit {
 
   private TOTAL: number;
   public type_animation: string = 'entrada';
-  public steep_index: number = 46;
+  public steep_index: number = 1;
   public loading: boolean;
   public isOk: boolean;
   public OEE: any;
