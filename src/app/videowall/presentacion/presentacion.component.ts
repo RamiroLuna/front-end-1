@@ -747,7 +747,7 @@ export class PresentacionComponent implements OnInit {
 
   buildChartKPI(indiceKPI: number, indiceETAD: number): void {
 
-    this.time_await = 3000;
+    this.time_await = 15000;
     this.row = [];
 
     let datos = this.KPI[indiceETAD].filter((el, index) => {
@@ -757,27 +757,29 @@ export class PresentacionComponent implements OnInit {
       }
     });
 
-    console.log('datos para graficar en paso ', datos, this.steep_index)
-    // datos.map((el, index, arg) => {
+    datos.map((el, index, arg) => {
 
-    //   let config_grafica = clone(configKPI);
-    //   let dataReal = [el.metaA, el.metaB, el.metaC, el.metaD];
-    //   let dataEsperada = [el.resultadoA, el.resultadoB, el.resultadoC, el.resultadoD];
+      let config_grafica = clone(configKPI);
+      let dataReal = [el.metaA, el.metaB, el.metaC, el.metaD];
+      let dataEsperada = [el.resultadoA, el.resultadoB, el.resultadoC, el.resultadoD];
 
-    //   config_grafica.series = [];
-    //   config_grafica.xAxis.categories = ['A', 'B', 'C', 'D'];
-    //   config_grafica.title.text = el.kpi;
+      config_grafica.series = [];
+      config_grafica.xAxis.categories = ['A', 'B', 'C', 'D'];
+      config_grafica.title.text = el.kpi;
 
-    //   config_grafica.series.push({ name: ' Logro ', data: dataEsperada, color: '#dcedc8' });
-    //   config_grafica.series.push({ name: ' Meta ', data: dataReal, type: 'line', color: '#1a237e' });
+      config_grafica.series.push({ name: ' Logro ', data: dataEsperada, color: '#dcedc8' });
+      config_grafica.series.push({ name: ' Meta ', data: dataReal, type: 'line', color: '#1a237e' });
 
-    //   this.row.push(config_grafica);
+      this.row.push(config_grafica);
 
-    // });
+    });
 
-    // this.row.forEach((grafica, i) => {
-    //   $('#grafica' + i).highcharts(grafica);
-    // });
+    setTimeout(()=>{
+      this.row.forEach((grafica, i) => {
+        $('#grafica' + i).highcharts(grafica);
+      });
+    },70)
+   
 
   }
 
