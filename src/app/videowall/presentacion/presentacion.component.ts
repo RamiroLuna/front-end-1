@@ -25,7 +25,7 @@ export class PresentacionComponent implements OnInit {
 
   private TOTAL: number;
   public type_animation: string = 'entrada';
-  public steep_index: number = 43;
+  public steep_index: number = 1;
   public loading: boolean;
   public isOk: boolean;
   public OEE: any;
@@ -632,6 +632,7 @@ export class PresentacionComponent implements OnInit {
   buildChartTrimestral(position_data: number): void {
     let configuracion = clone(configTrimestral);
     configuracion.exporting.enabled = false;
+    configuracion.chart.height = this.height;
     this.time_await = 10000;
     let datos = this.POSICION[position_data];
     /*
@@ -695,6 +696,7 @@ export class PresentacionComponent implements OnInit {
   buildChartAnual(position_data: number): void {
     let configuracion = clone(configAnual);
     configuracion.exporting.enabled = false;
+    configuracion.chart.height = this.height;
     this.time_await = 10000;
     let datos = this.POSICION[position_data];
     /*

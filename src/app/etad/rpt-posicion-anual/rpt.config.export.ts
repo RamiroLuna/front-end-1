@@ -1,6 +1,7 @@
 let configChart = {
     chart: {
         type: 'column',
+        height: null
     },
     exporting: {
         enabled: true
