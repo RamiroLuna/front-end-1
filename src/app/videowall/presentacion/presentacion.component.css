@@ -8,3 +8,9 @@
     width: calc(95%); 
     height: calc(95%);   
 }
+
+.centrado{
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+  }

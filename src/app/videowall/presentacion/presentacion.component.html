@@ -3,23 +3,23 @@
   <img src="http://www.petstar.mx/wp-content/uploads/2018/02/logo-petstar.png" class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)"
     *ngIf="steep_index == 1">
 
-  <img src="assets/videowall_amut1_oee.png"
-    class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 2">
+
+  <img src="assets/videowall_amut1_oee.png" class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 2">
+
+  <img src="assets/videowall_amut2_oee.png"
+    class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 11">
+
+  <img src="assets/videowall_ext1_oee.png"
+    class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 20">
+
+  <img src="assets/videowall_ext2_oee.png"
+    class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 28">
+
+  <img src="assets/videowall_ssp_oee.png"
+    class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 36">
 
   <img src="https://manana.blob.core.windows.net.optimalcdn.com/images/2017/06/11/crop_w0_h0_c70611063-focus-0-0-628-524.jpg"
-    class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 11">
-
-  <img src="https://manana.blob.core.windows.net.optimalcdn.com/images/2017/06/11/crop_w0_h0_c70611063-focus-0-0-628-524.jpg"
-    class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 20">
-
-  <img src="https://manana.blob.core.windows.net.optimalcdn.com/images/2017/06/11/crop_w0_h0_c70611063-focus-0-0-628-524.jpg"
-    class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 28">
-
-  <img src="https://manana.blob.core.windows.net.optimalcdn.com/images/2017/06/11/crop_w0_h0_c70611063-focus-0-0-628-524.jpg"
-    class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 36">
-
-  <img src="https://manana.blob.core.windows.net.optimalcdn.com/images/2017/06/11/crop_w0_h0_c70611063-focus-0-0-628-524.jpg"
-    class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 44">
+    class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 44">
 
   <!-- Inicio graficas para OEE -->
   <div id="grafica" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 3 || steep_index == 12  || steep_index == 21 || steep_index == 29 || steep_index == 37"></div>
@@ -43,8 +43,8 @@
 
   <div id="grafica" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 46"></div>
 
-  <img src="http://www.shopio.com/wp-content/uploads/2015/01/kpi-promo.jpg"
-  class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 47">
+  <img src="http://www.shopio.com/wp-content/uploads/2015/01/kpi-promo.jpg" class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)"
+    *ngIf="steep_index == 47">
 
   <!-- template kpi -->
   <div class="col s12 m12 l12 xl12  center-align" *ngIf="steep_index > 47 && review" [@preloader]="status" (@preloader.done)="animationDone($event)">

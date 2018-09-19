@@ -25,7 +25,7 @@ export class PresentacionComponent implements OnInit {
 
   private TOTAL: number;
   public type_animation: string = 'entrada';
-  public steep_index: number = 1;
+  public steep_index: number = 46;
   public loading: boolean;
   public isOk: boolean;
   public OEE: any;
@@ -72,24 +72,8 @@ export class PresentacionComponent implements OnInit {
       this.OEE = JSON.parse(this.OEE);
       this.KPI = JSON.parse(this.KPI);
       this.POSICION = JSON.parse(this.POSICION);
-
-      /*
-       * Calcular total de pasos que existiran para 
-       * mostrar las graficas de KPI
-       */
-      let cantidad_pasos_KPI = 0;
-      this.KPI.map((el) => {
-        let tmp = parseInt("" + (el.length) / 3);
-        if (el.length % 3 != 0) {
-          tmp += 1;
-        }
-        cantidad_pasos_KPI += tmp;
-      });
-
-      /*
-       * Fin calculo
-       */
-      this.TOTAL = this.OEE.length + this.POSICION.length + this.KPI.length + cantidad_pasos_KPI + 7; // Se suma " 7 " la cantidad de diapositivas de presentacion 
+      
+      this.TOTAL = this.OEE.length + this.POSICION.length + this.KPI.length + 7; // Se suma " 7 " la cantidad de diapositivas de presentacion 
 
       this.isOk = true;
       this.loading = false;
@@ -123,14 +107,16 @@ export class PresentacionComponent implements OnInit {
           }, this.time_await);
           break;
         case 'salida':
-          this.status = 'inactive';
-          this.type_animation = 'fin';
+          setTimeout(() => {
+            this.status = 'inactive';
+            this.type_animation = 'fin';
+          }, 1000);
           break;
         case 'fin':
           if (this.steep_index < this.TOTAL) {
             setTimeout(() => {
               if (!this.endVideoWall) {
-                
+
                 this.steep_index = this.steep_index + 1;
                 this.status = 'inactive';
                 this.type_animation = 'entrada';
@@ -179,7 +165,7 @@ export class PresentacionComponent implements OnInit {
          * Graficas AMUT 1
          */
         case 2:
-          this.time_await = 4000;
+          this.time_await = 5000;
           break;
         case 3:
           this.buildChartPerdida(0);
@@ -209,7 +195,7 @@ export class PresentacionComponent implements OnInit {
          * Graficas AMUT 2
          */
         case 11:
-          this.time_await = 4000;
+          this.time_await = 5000;
           break;
         case 12:
           this.buildChartPerdida(8);
@@ -239,7 +225,7 @@ export class PresentacionComponent implements OnInit {
          * Graficas EXT 1
          */
         case 20:
-          this.time_await = 4000;
+          this.time_await = 5000;
           break;
         case 21:
           this.buildChartPerdida(16);
@@ -266,7 +252,7 @@ export class PresentacionComponent implements OnInit {
          * Graficas EXT 2
          */
         case 28:
-          this.time_await = 4000;
+          this.time_await = 5000;
           break;
         case 29:
           this.buildChartPerdida(23);
@@ -293,7 +279,7 @@ export class PresentacionComponent implements OnInit {
          * Graficas SSP
          */
         case 36:
-          this.time_await = 4000;
+          this.time_await = 5000;
           break;
         case 37:
           this.buildChartPerdida(30);
@@ -321,7 +307,7 @@ export class PresentacionComponent implements OnInit {
          * INICIO GRAFICAS ETAD
          */
         case 44:
-          this.time_await = 4000;
+          this.time_await = 5000;
           break;
         case 45:
           this.buildChartTrimestral(1);
@@ -334,8 +320,25 @@ export class PresentacionComponent implements OnInit {
          */
         case 47:
           //case 47 solo para mostrar imagen de ETAD
-          this.time_await = 4000;
+          this.time_await = 5000;
+          /*
+           * Calcular total de pasos que existiran para 
+           * mostrar las graficas de KPI
+           */
+          let cantidad_pasos_KPI = 0;
+          this.KPI.map((el) => {
+            let tmp = parseInt("" + (el.length) / 3);
+            if (el.length % 3 != 0) {
+              tmp += 1;
+            }
+            cantidad_pasos_KPI += tmp;
+          });
 
+          this.TOTAL += cantidad_pasos_KPI;
+
+          /*
+           * Fin calculo
+           */
           break;
         default:
 
@@ -774,12 +777,12 @@ export class PresentacionComponent implements OnInit {
 
     });
 
-    setTimeout(()=>{
+    setTimeout(() => {
       this.row.forEach((grafica, i) => {
         $('#grafica' + i).highcharts(grafica);
       });
-    },70)
-   
+    }, 70)
+
 
   }
 
