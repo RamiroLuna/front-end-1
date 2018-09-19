@@ -1,25 +1,28 @@
 <div class="row" *ngIf="!loading && isOk">
   <div class="section"></div>
-  <img src="http://www.petstar.mx/wp-content/uploads/2018/02/logo-petstar.png" class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)"
+  <!-- <img src="http://www.petstar.mx/wp-content/uploads/2018/02/logo-petstar.png" class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)"
+    *ngIf="steep_index == 1"> -->
+
+  <img src="assets/videowall_portada_oee.png" class="img_width centrado" [@preloader]="status" (@preloader.done)="animationDone($event)"
     *ngIf="steep_index == 1">
 
+  <img src="assets/videowall_amut1_oee.png" class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)"
+    *ngIf="steep_index == 2">
 
-  <img src="assets/videowall_amut1_oee.png" class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 2">
+  <img src="assets/videowall_amut2_oee.png" class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)"
+    *ngIf="steep_index == 11">
 
-  <img src="assets/videowall_amut2_oee.png"
-    class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 11">
+  <img src="assets/videowall_ext1_oee.png" class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)"
+    *ngIf="steep_index == 20">
 
-  <img src="assets/videowall_ext1_oee.png"
-    class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 20">
+  <img src="assets/videowall_ext2_oee.png" class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)"
+    *ngIf="steep_index == 28">
 
-  <img src="assets/videowall_ext2_oee.png"
-    class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 28">
+  <img src="assets/videowall_ssp_oee.png" class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)"
+    *ngIf="steep_index == 36">
 
-  <img src="assets/videowall_ssp_oee.png"
-    class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 36">
-
-  <img src="assets/videowall_portada_etad.png"
-    class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 44">
+  <img src="assets/videowall_portada_etad.png" class="img_width centrado" [@preloader]="status" (@preloader.done)="animationDone($event)"
+    *ngIf="steep_index == 44">
 
   <!-- Inicio graficas para OEE -->
   <div id="grafica" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 3 || steep_index == 12  || steep_index == 21 || steep_index == 29 || steep_index == 37"></div>
@@ -43,8 +46,7 @@
 
   <div id="grafica" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 46"></div>
 
-  <img [src]="imageEtadPresentation" class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)"
-    *ngIf="steep_index == 47">
+  <img [src]="imageEtadPresentation" class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 47">
 
   <!-- template kpi -->
   <div class="col s12 m12 l12 xl12  center-align" *ngIf="steep_index > 47 && review" [@preloader]="status" (@preloader.done)="animationDone($event)">

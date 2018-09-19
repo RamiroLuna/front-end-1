@@ -2,6 +2,9 @@ let configChart = {
     chart: {
         type: 'column',
     },
+    exporting: {
+        enabled: true
+    },
     credits: {
         enabled: false
     },

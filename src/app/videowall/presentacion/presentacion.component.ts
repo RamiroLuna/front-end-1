@@ -631,6 +631,7 @@ export class PresentacionComponent implements OnInit {
 
   buildChartTrimestral(position_data: number): void {
     let configuracion = clone(configTrimestral);
+    configuracion.exporting.enabled = false;
     this.time_await = 10000;
     let datos = this.POSICION[position_data];
     /*
@@ -693,6 +694,7 @@ export class PresentacionComponent implements OnInit {
 
   buildChartAnual(position_data: number): void {
     let configuracion = clone(configAnual);
+    configuracion.exporting.enabled = false;
     this.time_await = 10000;
     let datos = this.POSICION[position_data];
     /*
