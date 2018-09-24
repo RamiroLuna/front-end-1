@@ -1,12 +1,10 @@
 <div class="row" *ngIf="!loading && isOk">
-  <div class="section"></div>
-  <!-- <img src="http://www.petstar.mx/wp-content/uploads/2018/02/logo-petstar.png" class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)"
-    *ngIf="steep_index == 1"> -->
+  <div class="section"><br></div>
 
   <img src="assets/videowall_portada_oee.png" class="img_width centrado" [@preloader]="status" (@preloader.done)="animationDone($event)"
     *ngIf="steep_index == 1">
 
-  <img src="assets/videowall_amut1_oee.png" class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)"
+  <img src="assets/videowall_amut1_oee.png" class="img_width centrado" [@preloader]="status" (@preloader.done)="animationDone($event)"
     *ngIf="steep_index == 2">
 
   <img src="assets/videowall_amut2_oee.png" class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)"
@@ -90,6 +88,7 @@
     </ng-container>
   </div>
 
+  <app-formato-enlace [datos]="datos_formato" [consulta]="true" *ngIf="false"></app-formato-enlace>
 
 </div>
 <div class="container" *ngIf="!loading && !isOk">

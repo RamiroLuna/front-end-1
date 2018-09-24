@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PetReporteEnlace } from '../../models/pet-reporte-enlace';
 import { configChart as configPerdidas } from '../../oee/rpt-fuente-perdidas/rpt.config.export';
 import { configChart as configDisponiblidad } from '../../oee/rpt-disponibilidad/rpt.config.export';
 import { configChart as configOEE } from '../../oee/rpt-oee/rpt.config.export';
@@ -25,12 +26,13 @@ export class PresentacionComponent implements OnInit {
 
   private TOTAL: number;
   public type_animation: string = 'entrada';
-  public steep_index: number = 1;
+  public steep_index: number = 45;
   public loading: boolean;
   public isOk: boolean;
   public OEE: any;
   public KPI: any;
   public POSICION: any;
+  public ENLACE_OBJ: any;
   public status: string;
   public height: number;
   public endVideoWall: boolean;
@@ -46,6 +48,15 @@ export class PresentacionComponent implements OnInit {
   /*
    * Fin variables auxiliares de KPI'S
    */
+
+  /*
+   * Variable para auxiliares reporte de enlace
+   */
+  public datos_formato: PetReporteEnlace;
+  public existRptEnlace: boolean;
+  /*
+   * Fin variables auxiliares reporte enlace
+   */
   public time_await: number = 4000; // tiempo en milisegundos
 
   constructor() { }
@@ -54,6 +65,7 @@ export class PresentacionComponent implements OnInit {
     this.loading = true;
     this.isOk = false;
     this.endVideoWall = false;
+    this.existRptEnlace = false;
     this.auxIndexETAD = 0;
     this.auxIndexKPI = -3;
     this.finishPresentationEtad = false;
@@ -62,6 +74,7 @@ export class PresentacionComponent implements OnInit {
     this.OEE = localStorage.getItem('OEE');
     this.KPI = localStorage.getItem('KPI');
     this.POSICION = localStorage.getItem('POSICION');
+    this.ENLACE_OBJ = localStorage.getItem('ENLACE_OBJ');
 
 
     if (this.OEE == null || this.OEE === undefined
@@ -74,6 +87,11 @@ export class PresentacionComponent implements OnInit {
       this.OEE = JSON.parse(this.OEE);
       this.KPI = JSON.parse(this.KPI);
       this.POSICION = JSON.parse(this.POSICION);
+
+      // Sumar un paso mas si existe reporte de enlace de objetivos
+      if (this.ENLACE_OBJ != null || this.ENLACE_OBJ !== undefined) {
+        this.existRptEnlace = true;
+      }
 
       this.TOTAL = this.OEE.length + this.POSICION.length + this.KPI.length + 7; // Se suma " 7 " la cantidad de diapositivas de presentacion 
 

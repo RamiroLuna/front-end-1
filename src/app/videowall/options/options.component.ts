@@ -19,7 +19,7 @@ export class OptionsComponent implements OnInit {
   constructor(
     private service: OptionsService,
     private auth: AuthService,
-    private router:Router
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -48,15 +48,16 @@ export class OptionsComponent implements OnInit {
         this.disabled = true;
 
         this.service.generateVideoWall(this.auth.getIdUsuario()).subscribe(result => {
-        
+
           if (result.response.sucessfull) {
             let datosOEE = localStorage.getItem('OEE');
             let datosKPI = localStorage.getItem('KPI');
             let posicion = localStorage.getItem('POSICION');
+            let enlaceObj = localStorage.getItem('ENLACE_OBJ');
             let posiciones = [];
             posiciones.push(result.data.posicionAnual);
             posiciones.push(result.data.posicionTrimestral);
-  
+
             if (datosOEE === null || datosOEE == undefined) {
               localStorage.setItem('OEE', JSON.stringify(result.data.OEE));
             } else {
@@ -64,18 +65,29 @@ export class OptionsComponent implements OnInit {
               localStorage.setItem('OEE', JSON.stringify(result.data.OEE));
             }
 
-            if(posicion  === null || posicion == undefined ){
+            if (posicion === null || posicion == undefined) {
               localStorage.setItem('POSICION', JSON.stringify(posiciones));
-            }else{
+            } else {
               localStorage.removeItem('POSICION');
               localStorage.setItem('POSICION', JSON.stringify(posiciones));
             }
 
-            if(datosKPI  === null || datosKPI == undefined ){
+            if (datosKPI === null || datosKPI == undefined) {
               localStorage.setItem('KPI', JSON.stringify(result.data.ETAD));
-            }else{
+            } else {
               localStorage.removeItem('KPI');
               localStorage.setItem('KPI', JSON.stringify(result.data.ETAD));
+            }
+
+            if (enlaceObj === null || enlaceObj == undefined) {
+              if (result.data.enlaceObjetivos) {
+                localStorage.setItem('ENLACE_OBJ', JSON.stringify(result.data.enlaceObjetivos));
+              }
+            } else {
+              if (result.data.enlaceObjetivos) {
+                localStorage.removeItem('ENLACE_OBJ');
+                localStorage.setItem('ENLACE_OBJ', JSON.stringify(result.data.enlaceObjetivos));
+              }
             }
 
             Materialize.toast('Actualización correcta', 4000, 'green');
