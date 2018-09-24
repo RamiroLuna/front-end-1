@@ -90,6 +90,7 @@ export class PresentacionComponent implements OnInit {
 
       // Sumar un paso mas si existe reporte de enlace de objetivos
       if (this.ENLACE_OBJ != null || this.ENLACE_OBJ !== undefined) {
+        this.datos_formato = JSON.parse(this.ENLACE_OBJ);
         this.existRptEnlace = true;
       }
 

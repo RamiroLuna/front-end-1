@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { MaterializeModule } from 'angular2-materialize';
@@ -35,6 +35,9 @@ const routesVideoWall: Routes = [
   providers: [
     AuthGuardVideoWall
   ],
-  declarations: [PresentacionComponent, OptionsComponent]
+  declarations: [PresentacionComponent, OptionsComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ]
 })
 export class VideowallModule { }
