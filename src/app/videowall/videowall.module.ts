@@ -1,10 +1,12 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { MaterializeModule } from 'angular2-materialize';
 import { PresentacionComponent } from './presentacion/presentacion.component';
 import { OptionsComponent } from './options/options.component';
 import { AuthGuardVideoWall } from '../auth/auth.guard.video.wall';
+import { FormatoEnlaceComponent } from '../../app/etad/formato-enlace/formato-enlace.component';
 /* expectedRole: number Es el id del rol que se encuentra en la base de datos */
 const routesVideoWall: Routes = [
   {
@@ -30,14 +32,13 @@ const routesVideoWall: Routes = [
   imports: [
     CommonModule,
     MaterializeModule,
+    ReactiveFormsModule, 
+    FormsModule,
     RouterModule.forChild(routesVideoWall)
   ],
   providers: [
     AuthGuardVideoWall
   ],
-  declarations: [PresentacionComponent, OptionsComponent],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
-  ]
+  declarations: [PresentacionComponent, OptionsComponent, FormatoEnlaceComponent]
 })
 export class VideowallModule { }

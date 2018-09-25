@@ -1,5 +1,7 @@
 <div class="row" *ngIf="!loading && isOk">
-  <div class="section"><br></div>
+  <div class="section">
+    <br>
+  </div>
 
   <img src="assets/videowall_portada_oee.png" class="img_width centrado" [@preloader]="status" (@preloader.done)="animationDone($event)"
     *ngIf="steep_index == 1">
@@ -88,9 +90,12 @@
     </ng-container>
   </div>
 
-  <app-formato-enlace [datos]="datos_formato" [consulta]="true" *ngIf="false"></app-formato-enlace>
+  <app-formato-enlace [datos]="datos_formato" [consulta]="true" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == -1"></app-formato-enlace>
+
 
 </div>
+
+
 <div class="container" *ngIf="!loading && !isOk">
   <div class="section"></div>
   <h4 class="color_titulo center-align">
