@@ -40,6 +40,7 @@ export class PresentacionComponent implements OnInit {
   public imageEtadPresentation: string;
   public auxIndexETAD: number;
   public finishPresentationEtad: boolean;
+  public cantidad_pasos_KPI :number;
   public row: Array<any>;
   public review: boolean;
   public auxIndexKPI: number;
@@ -75,7 +76,7 @@ export class PresentacionComponent implements OnInit {
       this.KPI = JSON.parse(this.KPI);
       this.POSICION = JSON.parse(this.POSICION);
       debugger
-      this.TOTAL = this.OEE.length + this.POSICION.length + this.KPI.length + 7; // Se suma " 7 " la cantidad de diapositivas de presentacion 
+      this.TOTAL = this.OEE.length + this.POSICION.length + 8; // Se suma " 7 " la cantidad de diapositivas de presentacion 
 
       this.isOk = true;
       this.loading = false;
@@ -116,7 +117,29 @@ export class PresentacionComponent implements OnInit {
           break;
         case 'fin':
           debugger
-          if (this.steep_index < 51) {
+          
+          if(this.steep_index == 46)
+          {
+              /*
+              * Calcular total de pasos que existiran para 
+              * mostrar las graficas de KPI
+              */
+              this.cantidad_pasos_KPI = 0;
+              let kpis = this.KPI[this.auxIndexETAD];
+
+              let tmp = parseInt("" + (kpis.length) / 3);
+              if (kpis.length % 3 != 0) {
+                tmp += 1;
+              }
+
+              this.cantidad_pasos_KPI = tmp;
+
+          /*
+           * Fin calculo
+           */
+          }
+
+          if (this.steep_index < (this.TOTAL + this.cantidad_pasos_KPI)) {
             setTimeout(() => {
               if (!this.endVideoWall) {
 
@@ -124,7 +147,7 @@ export class PresentacionComponent implements OnInit {
                 this.status = 'inactive';
                 this.type_animation = 'entrada';
                 debugger
-                if (this.steep_index > 47 && this.steep_index <= 51) {
+                if (this.steep_index > 47 && this.steep_index <= (this.TOTAL + this.cantidad_pasos_KPI)) {
                   this.review = false;
                   this.auxIndexKPI = this.auxIndexKPI + 3;
                   setTimeout(() => {
@@ -340,16 +363,25 @@ export class PresentacionComponent implements OnInit {
            * Calcular total de pasos que existiran para 
            * mostrar las graficas de KPI
            */
-          let cantidad_pasos_KPI = 0;
-          this.KPI.map((el) => {
-            let tmp = parseInt("" + (el.length) / 3);
-            if (el.length % 3 != 0) {
-              tmp += 1;
-            }
-            cantidad_pasos_KPI += tmp;
-          });
+          // let cantidad_pasos_KPI = 0;
+          // this.KPI.map((el) => {
+          //   let tmp = parseInt("" + (el.length) / 3);
+          //   if (el.length % 3 != 0) {
+          //     tmp += 1;
+          //   }
+          //   cantidad_pasos_KPI += tmp;
+          // });
 
-          this.TOTAL += cantidad_pasos_KPI;
+          // this.TOTAL += cantidad_pasos_KPI;
+          this.cantidad_pasos_KPI = 0;
+          let kpis = this.KPI[this.auxIndexETAD];
+
+          let tmp = parseInt("" + (kpis.length) / 3);
+          if (kpis.length % 3 != 0) {
+            tmp += 1;
+          }
+
+          this.cantidad_pasos_KPI = tmp;
 
           /*
            * Fin calculo
@@ -357,7 +389,9 @@ export class PresentacionComponent implements OnInit {
           break;
         default:
 
-          if (this.steep_index > 47 && this.steep_index < this.TOTAL) {
+          // if (this.steep_index > 47 && this.steep_index < 100000000000) {
+
+            if (this.steep_index > 47) {
 
             let kpi_etad = this.KPI[this.auxIndexETAD];
             let pasos_etad = 0;
