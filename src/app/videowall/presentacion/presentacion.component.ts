@@ -25,7 +25,7 @@ export class PresentacionComponent implements OnInit {
 
   private TOTAL: number;
   public type_animation: string = 'entrada';
-  public steep_index: number = 43;
+  public steep_index: number = 46;
   public loading: boolean;
   public isOk: boolean;
   public OEE: any;
@@ -74,7 +74,7 @@ export class PresentacionComponent implements OnInit {
       this.OEE = JSON.parse(this.OEE);
       this.KPI = JSON.parse(this.KPI);
       this.POSICION = JSON.parse(this.POSICION);
-
+      debugger
       this.TOTAL = this.OEE.length + this.POSICION.length + this.KPI.length + 7; // Se suma " 7 " la cantidad de diapositivas de presentacion 
 
       this.isOk = true;
@@ -90,7 +90,7 @@ export class PresentacionComponent implements OnInit {
 
     setTimeout(() => {
 
-
+      debugger
       switch (this.type_animation) {
         case 'entrada':
 
@@ -115,15 +115,16 @@ export class PresentacionComponent implements OnInit {
           }, 1000);
           break;
         case 'fin':
-          if (this.steep_index < this.TOTAL) {
+          debugger
+          if (this.steep_index < 51) {
             setTimeout(() => {
               if (!this.endVideoWall) {
 
                 this.steep_index = this.steep_index + 1;
                 this.status = 'inactive';
                 this.type_animation = 'entrada';
-
-                if (this.steep_index > 47) {
+                debugger
+                if (this.steep_index > 47 && this.steep_index <= 51) {
                   this.review = false;
                   this.auxIndexKPI = this.auxIndexKPI + 3;
                   setTimeout(() => {
@@ -131,7 +132,7 @@ export class PresentacionComponent implements OnInit {
                   }, 15);
                 }
 
-                if (this.finishPresentationEtad) {
+               /*if (this.finishPresentationEtad) {
 
                   if (this.auxIndexETAD < (this.KPI.length) - 1) {
                     this.imageEtadPresentation = 'assets/videowall_etad_id_:idEtad:.png';
@@ -144,11 +145,20 @@ export class PresentacionComponent implements OnInit {
                     this.endVideoWall = true;
                     alert('fin')
                   }
-                }
+               }*/
               }
 
 
             }, 200);
+          }
+          else{
+            this.imageEtadPresentation = 'assets/videowall_etad_id_:idEtad:.png';
+            this.steep_index = 47
+            this.status = 'inactive';
+            this.type_animation = 'entrada';
+            this.auxIndexETAD++;
+            this.auxIndexKPI = -3;
+            
           }
 
           break;
