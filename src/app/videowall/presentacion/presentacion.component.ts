@@ -55,7 +55,7 @@ export class PresentacionComponent implements OnInit {
     this.loading = true;
     this.isOk = false;
     this.endVideoWall = false;
-    this.auxIndexETAD = 0;
+    this.auxIndexETAD = 5;
     this.auxIndexKPI = -3;
     this.finishPresentationEtad = false;
     this.imageEtadPresentation = 'assets/videowall_etad_id_:idEtad:.png';
@@ -182,6 +182,10 @@ export class PresentacionComponent implements OnInit {
             this.auxIndexETAD++;
             this.auxIndexKPI = -3;
             
+          }
+
+          if (this.auxIndexETAD == (this.KPI.length)) {
+             this.steep_index = 46;
           }
 
           break;
@@ -363,16 +367,7 @@ export class PresentacionComponent implements OnInit {
            * Calcular total de pasos que existiran para 
            * mostrar las graficas de KPI
            */
-          // let cantidad_pasos_KPI = 0;
-          // this.KPI.map((el) => {
-          //   let tmp = parseInt("" + (el.length) / 3);
-          //   if (el.length % 3 != 0) {
-          //     tmp += 1;
-          //   }
-          //   cantidad_pasos_KPI += tmp;
-          // });
-
-          // this.TOTAL += cantidad_pasos_KPI;
+        
           this.cantidad_pasos_KPI = 0;
           let kpis = this.KPI[this.auxIndexETAD];
 
@@ -389,7 +384,7 @@ export class PresentacionComponent implements OnInit {
           break;
         default:
 
-          // if (this.steep_index > 47 && this.steep_index < 100000000000) {
+
 
             if (this.steep_index > 47) {
 
@@ -404,6 +399,7 @@ export class PresentacionComponent implements OnInit {
 
             if (this.steep_index > pasos_etad) {
               this.finishPresentationEtad = true;
+              alert('termino')
             } else {
               //Construye las graficas correspondientes
               this.buildChartKPI(this.auxIndexKPI, this.auxIndexETAD);
