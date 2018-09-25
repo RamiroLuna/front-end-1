@@ -160,7 +160,7 @@ function getDefinitionPdf(ishikawa: PetIshikawa, diagrama_base_64: any, tabla_ap
                 width: 650,
                 image: diagrama_base_64
             },
-            '\n\n\n\n\n',
+            '\n\n\n\n\n\n\n\n',
             //Test de causa raíz  
             {
                 alignment: 'center',
