@@ -12,6 +12,7 @@ import { configChart as configKPI } from '../../etad/rpt-graficas-kpi/rpt.config
 import { clone } from '../../utils';
 import {
   ANIMATION_PRELOADER,
+  ANIMATION_REPORTE,
   EFECTS_ENFASIS
 } from './presentacion.animaciones';
 
@@ -20,7 +21,7 @@ declare var $: any;
   selector: 'app-presentacion',
   templateUrl: './presentacion.component.html',
   styleUrls: ['./presentacion.component.css'],
-  animations: [ANIMATION_PRELOADER]
+  animations: [ANIMATION_PRELOADER, ANIMATION_REPORTE]
 })
 export class PresentacionComponent implements OnInit {
 
@@ -34,6 +35,7 @@ export class PresentacionComponent implements OnInit {
   public POSICION: any;
   public ENLACE_OBJ: any;
   public status: string;
+  public statusRpt: string;
   public height: number;
   public endVideoWall: boolean;
   /*
@@ -95,7 +97,7 @@ export class PresentacionComponent implements OnInit {
       if (this.ENLACE_OBJ != null || this.ENLACE_OBJ !== undefined) {
         this.datos_formato = JSON.parse(this.ENLACE_OBJ);
         this.existRptEnlace = true;
-   
+
       }
 
       this.TOTAL = this.OEE.length + this.POSICION.length + 8; // Se suma " 8 " la cantidad de diapositivas de presentacion 
@@ -104,6 +106,7 @@ export class PresentacionComponent implements OnInit {
       this.loading = false;
       // Tiene los datos para poder trabajar 
       this.status = 'inactive';
+      this.statusRpt = 'inactive';
     }
 
 
@@ -194,9 +197,12 @@ export class PresentacionComponent implements OnInit {
             this.auxIndexKPI = -3;
 
             if (this.existRptEnlace) {
+              this.steep_index = -1;
               setTimeout(() => {
-                this.steep_index = -1;
+                this.statusRpt = 'active';
               }, 200);
+            } else {
+              // reset all values 
             }
           }
 
@@ -212,9 +218,6 @@ export class PresentacionComponent implements OnInit {
 
     setTimeout(() => {
       switch (steep) {
-        case -1:
-          this.time_await = 10000;
-          break;
         /*
          * Graficas AMUT 1
          */
@@ -414,6 +417,16 @@ export class PresentacionComponent implements OnInit {
 
     }, 200);
 
+  }
+
+  animationDoneRpt(event: any): void {
+    if (this.statusRpt == 'active') {
+      setTimeout(() => {
+        this.statusRpt = 'desplazarY';
+      }, 1000)
+    }else if(this.statusRpt == 'desplazarY'){
+      alert('finish')
+    }
   }
 
   buildChartPerdida(position_data: number): void {
