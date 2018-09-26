@@ -94,11 +94,15 @@ export class PresentacionComponent implements OnInit {
 
 
       // Sumar un paso mas si existe reporte de enlace de objetivos
-      if (this.ENLACE_OBJ != null || this.ENLACE_OBJ !== undefined) {
+      debugger
+      if (this.ENLACE_OBJ) {
         this.datos_formato = JSON.parse(this.ENLACE_OBJ);
         this.existRptEnlace = true;
-
+      }else{
+        this.existRptEnlace = false;
       }
+
+
 
       this.TOTAL = this.OEE.length + this.POSICION.length + 8; // Se suma " 8 " la cantidad de diapositivas de presentacion 
 
@@ -149,35 +153,65 @@ export class PresentacionComponent implements OnInit {
             * mostrar las graficas de KPI
             */
             this.cantidad_pasos_KPI = 0;
-            let kpis = this.KPI[this.auxIndexETAD];
+            if (this.KPI.length > 0) {
 
-            let tmp = parseInt("" + (kpis.length) / 3);
-            if (kpis.length % 3 != 0) {
-              tmp += 1;
+              let kpis = this.KPI[this.auxIndexETAD];
+
+              let tmp = parseInt("" + (kpis.length) / 3);
+              if (kpis.length % 3 != 0) {
+                tmp += 1;
+              }
+
+              this.cantidad_pasos_KPI = tmp;
             }
-
-            this.cantidad_pasos_KPI = tmp;
 
             /*
              * Fin calculo
              */
           }
-
+          debugger
           if (this.steep_index < (this.TOTAL + this.cantidad_pasos_KPI)) {
             setTimeout(() => {
               if (!this.endVideoWall) {
 
-                this.steep_index = this.steep_index + 1;
-                this.status = 'inactive';
-                this.type_animation = 'entrada';
+                if ((this.steep_index + 1) >= 47) {
 
-                if (this.steep_index > 47 && this.steep_index <= (this.TOTAL + this.cantidad_pasos_KPI)) {
-                  this.review = false;
-                  this.auxIndexKPI = this.auxIndexKPI + 3;
-                  setTimeout(() => {
-                    this.review = true;
-                  }, 15);
+                  if (this.KPI.length > 0) {
+                    this.steep_index = this.steep_index + 1;
+                    this.status = 'inactive';
+                    this.type_animation = 'entrada';
+
+                    if (this.steep_index > 47 && this.steep_index <= (this.TOTAL + this.cantidad_pasos_KPI)) {
+                      this.review = false;
+                      this.auxIndexKPI = this.auxIndexKPI + 3;
+                      setTimeout(() => {
+                        this.review = true;
+                      }, 15);
+                    }
+
+                  } else {
+                    debugger
+                    // Entra si termina OEE y no existen KPI.
+                    if (this.existRptEnlace) {
+                      // Entonces muestra reporte de enlace si existe
+                      this.steep_index = -1;
+                      setTimeout(() => {
+                        this.statusRpt = 'active';
+                      }, 200);
+                    } else {
+                      // Si no existe reporte finaliza presentacion
+                      alert('FINISH PRESENTATION')
+                    }
+                  }
+                } else {
+                  if(this.steep_index != -1){
+                    this.steep_index = this.steep_index + 1;
+                    this.status = 'inactive';
+                    this.type_animation = 'entrada';
+                  }
+                 
                 }
+
               }
 
 
@@ -192,18 +226,20 @@ export class PresentacionComponent implements OnInit {
 
           }
 
-          if (this.auxIndexETAD == this.KPI.length) {
-            this.auxIndexETAD = 5;
-            this.auxIndexKPI = -3;
+          if (this.KPI.length > 0) {
 
-            if (this.existRptEnlace) {
-              this.steep_index = -1;
-              setTimeout(() => {
-                this.statusRpt = 'active';
-              }, 200);
-            } else {
-              // reset all values 
+            if (this.auxIndexETAD == this.KPI.length) {
+              
+              if (this.existRptEnlace) {
+                this.steep_index = -1;
+                setTimeout(() => {
+                  this.statusRpt = 'active';
+                }, 200);
+              } else {
+                alert ('Termina')
+              }
             }
+
           }
 
           break;
@@ -377,28 +413,30 @@ export class PresentacionComponent implements OnInit {
          */
         case 47:
           //case 47 solo para mostrar imagen de ETAD
-          let idEtad = this.getIdEtad(this.auxIndexETAD);
-          this.imageEtadPresentation = this.imageEtadPresentation.replace(/:idEtad:/, idEtad);
+          if (this.KPI.length > 0) {
+            let idEtad = this.getIdEtad(this.auxIndexETAD);
+            this.imageEtadPresentation = this.imageEtadPresentation.replace(/:idEtad:/, idEtad);
 
-          this.time_await = 5000;
-          /*
-           * Calcular total de pasos que existiran para 
-           * mostrar las graficas de KPI
-           */
+            this.time_await = 5000;
+            /*
+            * Calcular total de pasos que existiran para 
+            * mostrar las graficas de KPI
+            */
 
-          this.cantidad_pasos_KPI = 0;
-          let kpis = this.KPI[this.auxIndexETAD];
+            this.cantidad_pasos_KPI = 0;
+            let kpis = this.KPI[this.auxIndexETAD];
 
-          let tmp = parseInt("" + (kpis.length) / 3);
-          if (kpis.length % 3 != 0) {
-            tmp += 1;
+            let tmp = parseInt("" + (kpis.length) / 3);
+            if (kpis.length % 3 != 0) {
+              tmp += 1;
+            }
+
+            this.cantidad_pasos_KPI = tmp;
+
+            /*
+            * Fin calculo
+            */
           }
-
-          this.cantidad_pasos_KPI = tmp;
-
-          /*
-           * Fin calculo
-           */
           break;
         default:
 
@@ -424,7 +462,7 @@ export class PresentacionComponent implements OnInit {
       setTimeout(() => {
         this.statusRpt = 'desplazarY';
       }, 1000)
-    }else if(this.statusRpt == 'desplazarY'){
+    } else if (this.statusRpt == 'desplazarY') {
       alert('finish')
     }
   }
