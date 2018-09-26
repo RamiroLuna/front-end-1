@@ -26,8 +26,8 @@ declare var $: any;
 export class PresentacionComponent implements OnInit {
 
   private TOTAL: number;
-  public type_animation: string = 'entrada';
-  public steep_index: number = 46;
+  public type_animation: string;
+  public steep_index: number; //Controla la secuencia de las graficas
   public loading: boolean;
   public isOk: boolean;
   public OEE: any;
@@ -60,16 +60,24 @@ export class PresentacionComponent implements OnInit {
   /*
    * Fin variables auxiliares reporte enlace
    */
-  public time_await: number = 4000; // tiempo en milisegundos
+  public time_await: number; // tiempo en milisegundos
 
   constructor() { }
 
   ngOnInit() {
+    this.initializeComponent();
+  }
+
+  initializeComponent() {
     this.loading = true;
+    this.type_animation = 'entrada';
+    this.cantidad_pasos_KPI = 0;
+    this.steep_index = 1;
+    this.time_await = 4000;
     this.isOk = false;
     this.endVideoWall = false;
     this.existRptEnlace = false;
-    this.auxIndexETAD = 5;
+    this.auxIndexETAD = 0;
 
     this.auxIndexKPI = -3;
     this.finishPresentationEtad = false;
@@ -94,14 +102,13 @@ export class PresentacionComponent implements OnInit {
 
 
       // Sumar un paso mas si existe reporte de enlace de objetivos
-      debugger
+
       if (this.ENLACE_OBJ) {
         this.datos_formato = JSON.parse(this.ENLACE_OBJ);
         this.existRptEnlace = true;
-      }else{
+      } else {
         this.existRptEnlace = false;
       }
-
 
 
       this.TOTAL = this.OEE.length + this.POSICION.length + 8; // Se suma " 8 " la cantidad de diapositivas de presentacion 
@@ -112,8 +119,6 @@ export class PresentacionComponent implements OnInit {
       this.status = 'inactive';
       this.statusRpt = 'inactive';
     }
-
-
   }
 
   animationDone(event: any): void {
@@ -190,7 +195,7 @@ export class PresentacionComponent implements OnInit {
                     }
 
                   } else {
-                    debugger
+
                     // Entra si termina OEE y no existen KPI.
                     if (this.existRptEnlace) {
                       // Entonces muestra reporte de enlace si existe
@@ -200,16 +205,16 @@ export class PresentacionComponent implements OnInit {
                       }, 200);
                     } else {
                       // Si no existe reporte finaliza presentacion
-                      alert('FINISH PRESENTATION')
+                      this.initializeComponent();
                     }
                   }
                 } else {
-                  if(this.steep_index != -1){
+                  if (this.steep_index != -1) {
                     this.steep_index = this.steep_index + 1;
                     this.status = 'inactive';
                     this.type_animation = 'entrada';
                   }
-                 
+
                 }
 
               }
@@ -229,14 +234,14 @@ export class PresentacionComponent implements OnInit {
           if (this.KPI.length > 0) {
 
             if (this.auxIndexETAD == this.KPI.length) {
-              
+
               if (this.existRptEnlace) {
                 this.steep_index = -1;
                 setTimeout(() => {
                   this.statusRpt = 'active';
                 }, 200);
               } else {
-                alert ('Termina')
+                this.initializeComponent();
               }
             }
 
@@ -463,7 +468,7 @@ export class PresentacionComponent implements OnInit {
         this.statusRpt = 'desplazarY';
       }, 1000)
     } else if (this.statusRpt == 'desplazarY') {
-      alert('finish')
+      this.initializeComponent();
     }
   }
 
