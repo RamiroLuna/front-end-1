@@ -123,8 +123,7 @@ let configChartSpider = {
                 color: '#33691E',
                 fontWeight: 'bold'
             },
-            y: 5
-
+            y: -20
         },
 
     },
@@ -155,9 +154,8 @@ let configChartSpider = {
         itemStyle: {
             color: '#33691E'
         },
-        align: 'left',
-        verticalAlign: 'bottom',
-        layout: 'vertical',
+        x: -200,
+        margin: 0
     },
 
     plotOptions: {
