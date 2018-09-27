@@ -72,7 +72,7 @@ export class PresentacionComponent implements OnInit {
     this.loading = true;
     this.type_animation = 'entrada';
     this.cantidad_pasos_KPI = 0;
-    this.steep_index = 7;
+    this.steep_index = 0;
     this.time_await = 4000;
     this.isOk = false;
     this.endVideoWall = false;
@@ -129,7 +129,7 @@ export class PresentacionComponent implements OnInit {
       switch (this.type_animation) {
         case 'entrada':
 
-          if (this.steep_index > 2 || this.steep_index == -1) {
+          if (this.steep_index > 1 || this.steep_index == -1) {
             this.buildChart(this.steep_index);
           } else {
             this.status = 'active';
@@ -174,7 +174,7 @@ export class PresentacionComponent implements OnInit {
              * Fin calculo
              */
           }
-          
+
           if (this.steep_index < (this.TOTAL + this.cantidad_pasos_KPI)) {
             setTimeout(() => {
               if (!this.endVideoWall) {
@@ -259,6 +259,12 @@ export class PresentacionComponent implements OnInit {
 
     setTimeout(() => {
       switch (steep) {
+        /*
+         * Portada
+         */ 
+        case 1:
+          this.time_await = 4000;
+          break;
         /*
          * Graficas AMUT 1
          */
@@ -623,10 +629,10 @@ export class PresentacionComponent implements OnInit {
     real.push(realTmp.reald);
 
     let categorias = [];
-    categorias.push(legeng.replace(':grupo:', 'Grupo A').replace(':real:', formatDecimal(realTmp.reala,3)).replace(':meta:', formatDecimal(realTmp.metaa,3)));
-    categorias.push(legeng.replace(':grupo:', 'Grupo B').replace(':real:', formatDecimal(realTmp.realb,3)).replace(':meta:', formatDecimal(realTmp.metab,3)));
-    categorias.push(legeng.replace(':grupo:', 'Grupo C').replace(':real:', formatDecimal(realTmp.realc,3)).replace(':meta:', formatDecimal(realTmp.metac,3)));
-    categorias.push(legeng.replace(':grupo:', 'Grupo D').replace(':real:', formatDecimal(realTmp.reald,3)).replace(':meta:', formatDecimal(realTmp.metad,3)));
+    categorias.push(legeng.replace(':grupo:', 'Grupo A').replace(':real:', formatDecimal(realTmp.reala, 3)).replace(':meta:', formatDecimal(realTmp.metaa, 3)));
+    categorias.push(legeng.replace(':grupo:', 'Grupo B').replace(':real:', formatDecimal(realTmp.realb, 3)).replace(':meta:', formatDecimal(realTmp.metab, 3)));
+    categorias.push(legeng.replace(':grupo:', 'Grupo C').replace(':real:', formatDecimal(realTmp.realc, 3)).replace(':meta:', formatDecimal(realTmp.metac, 3)));
+    categorias.push(legeng.replace(':grupo:', 'Grupo D').replace(':real:', formatDecimal(realTmp.reald, 3)).replace(':meta:', formatDecimal(realTmp.metad, 3)));
 
     configuracion.xAxis.categories = categorias;
 
@@ -673,10 +679,10 @@ export class PresentacionComponent implements OnInit {
     configuracion.xAxis.categories = [];
     configuracion.title.text = titulo;
 
-    configuracion.xAxis.categories.push('GRUPO A<br><b>' + formatDecimal(esperadaTmp.sppeda,3) + '</b>');
-    configuracion.xAxis.categories.push('GRUPO B<br><b>' + formatDecimal(esperadaTmp.sppedb,3) + '</b>');
-    configuracion.xAxis.categories.push('GRUPO C<br><b>' + formatDecimal(esperadaTmp.sppedc,3) + '</b>');
-    configuracion.xAxis.categories.push('GRUPO D<br><b>' + formatDecimal(esperadaTmp.sppedd,3) + '</b>');
+    configuracion.xAxis.categories.push('GRUPO A<br><b>' + formatDecimal(esperadaTmp.sppeda, 3) + '</b>');
+    configuracion.xAxis.categories.push('GRUPO B<br><b>' + formatDecimal(esperadaTmp.sppedb, 3) + '</b>');
+    configuracion.xAxis.categories.push('GRUPO C<br><b>' + formatDecimal(esperadaTmp.sppedc, 3) + '</b>');
+    configuracion.xAxis.categories.push('GRUPO D<br><b>' + formatDecimal(esperadaTmp.sppedd, 3) + '</b>');
 
 
     esperada.push(esperadaTmp.sppeda);
