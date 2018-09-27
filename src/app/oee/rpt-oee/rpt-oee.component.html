@@ -91,14 +91,14 @@
             <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
               <ng-template [ngIf]="row.padre == 0">
                 <td>{{ row.titulo }}</td>
-                <td class="center-align">{{  row.hrs | formatDecimal: 3 }}</td>
+                <td class="right-align">{{  row.hrs | formatDecimal: 3 }}</td>
                 <td class="center-align"> {{( row.porcentaje | formatDecimal: 3 ) + ' % ' }}</td>
               </ng-template>
               <ng-template [ngIf]="row.padre == 2">
                 <td class="right-align">
                   <b>{{ row.titulo }}</b>
                 </td>
-                <td class="center-align">
+                <td class="right-align">
                   <b>{{ row.hrs | formatDecimal: 3  }}</b>
                 </td>
                 <td class="center-align">

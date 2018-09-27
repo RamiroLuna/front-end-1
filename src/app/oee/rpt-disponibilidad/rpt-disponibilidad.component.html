@@ -90,26 +90,26 @@
           <table id="tblReporte">
             <tr class="light-green darken-1 texto header">
               <th>Tiempo</th>
-              <th class="center-align">Hrs</th>
-              <th class="center-align">%</th>
+              <th class="right-align">Hrs</th>
+              <th class="right-align">%</th>
             </tr>
 
             <tr *ngFor="let row of rows" [ngClass]="{'total':row.padre == 1}">
 
               <ng-template [ngIf]="row.padre == 0">
                 <td>{{ row.titulo }}</td>
-                <td class="center-align">{{ row.hrs | formatDecimal: 2  }}</td>
-                <td class="center-align">{{ row.porcentaje }}</td>
+                <td class="right-align">{{ row.hrs | formatDecimal: 3  }}</td>
+                <td class="right-align">{{ row.porcentaje | formatDecimal: 3 }}</td>
               </ng-template>
               <ng-template [ngIf]="row.padre == 2">
                 <td class="right-align">
                   <b>{{ row.titulo }}</b>
                 </td>
-                <td class="center-align">
-                  <b>{{ row.hrs | formatDecimal: 2  }}</b>
+                <td class="right-align">
+                  <b>{{ row.hrs | formatDecimal: 3  }}</b>
                 </td>
-                <td class="center-align">
-                  <b>{{ row.porcentaje | formatDecimal: 2  }}</b>
+                <td class="right-align">
+                  <b>{{ row.porcentaje | formatDecimal: 3  }}</b>
                 </td>
               </ng-template>
             </tr>
@@ -124,14 +124,14 @@
             <tr *ngFor="let row of rowsProduccion" [ngClass]="{'total':row.padre == 1}">
               <ng-template [ngIf]="row.padre == 0">
                 <td>{{ row.titulo }}</td>
-                <td class="center-align">{{ row.hrs  | formatDecimal: 3  }}</td>
+                <td class="right-align">{{ row.hrs  | formatDecimal: 3  }}</td>
               </ng-template>
               <ng-template [ngIf]="row.padre == 2">
                 <td class="right-align">
                   <b>{{ row.titulo }}</b>
                 </td>
-                <td class="center-align">
-                  <b>{{ row.hrs  }}</b>
+                <td class="right-align">
+                  <b>{{ row.hrs | formatDecimal: 3  }}</b>
                 </td>
               </ng-template>
             </tr>

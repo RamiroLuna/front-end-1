@@ -58,6 +58,7 @@ let configChartOEE = {
         visible: false
     },
     tooltip: {
+        valueDecimals: 3,
         shared: false,
         pointFormat: '<span>{series.name}: <b>{point.y}</b><br/>'
     },
@@ -72,7 +73,14 @@ let configChartOEE = {
             dataLabels: {
                 color: '#000000',
                 enabled: true,
-                inside: true
+                inside: true,
+                format: '{y:.3f}',
+                style: {
+                    fontWeight: 'bold',
+                    color: '#000',
+                    textOutline: '1px',
+                    fontSize: '11px'
+                }
             },
             events: {
                 legendItemClick: function () {
@@ -121,6 +129,9 @@ let configChartDisp = {
             }
         }
     },
+    tooltip: {
+        valueDecimals: 3
+    },
     yAxis: {
         title: {
             text: ''
@@ -144,7 +155,7 @@ let configChartDisp = {
                 enabled: true,
                 color: '#000000',
                 inside: false,
-                format: '{point.y:,.2f}'
+                format: '{point.y:,.3f}'
             }
         },
         bar: {
@@ -210,6 +221,9 @@ let configChartPerdidas = {
         gridLineDashStyle: 'dot'
 
     },
+    tooltip: {
+        valueDecimals: 3
+    },
     plotOptions: {
         series: {
             dataLabels: {
@@ -217,14 +231,21 @@ let configChartPerdidas = {
                 color: '#000',
                 inside: true,
                 y: 0,
-                distance: -10
+                distance: -10,
+                format: '{y:.3f}',
+                style: {
+                    fontWeight: 'bold',
+                    color: '#000',
+                    textOutline: '1px',
+                    fontSize: '10px'
+                }
             }
         },
         bar: {
             depth: 75
         }
     },
-    colors: ['#d32f2f'],
+    colors: ['#ef5350'],
     series: [],
 };
 

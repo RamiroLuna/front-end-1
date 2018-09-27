@@ -539,6 +539,22 @@ function getFrecuenciaMetaKPI(): Array<any> {
     ];
 }
 
+/**
+* @function formatDecimal
+* @param  {any} numero -  numero para dar formato
+* @param  {number} precision -  cantidad decimales
+* @return  {number} 
+* @description retorna numero con formato
+*/
+function formatDecimal(numero: any , precision:number):string {
+    if(numero === ""){
+       return  "";
+     }else{
+       return parseFloat(numero).toFixed(precision);
+     }
+     
+   }
+
 
 
 
@@ -568,5 +584,6 @@ export {
     getMetasKPI,
     getFrecuenciaMetaKPI,
     isNum,
-    isValidText
+    isValidText,
+    formatDecimal
 }

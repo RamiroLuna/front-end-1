@@ -30,6 +30,9 @@ let configChart = {
             }
         }
     },
+    tooltip: {
+        valueDecimals: 3
+    },
     yAxis: {
         title: {
             text: ''
@@ -53,7 +56,7 @@ let configChart = {
                 enabled: true,
                 color: '#000000',
                 inside: false,
-                format: '{point.y:,.2f}'
+                format: '{point.y:,.3f}'
             }
         },
         bar:{

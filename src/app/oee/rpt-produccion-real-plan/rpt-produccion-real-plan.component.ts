@@ -4,7 +4,7 @@ import { RptProduccionRealPlanService } from "./rpt-produccion-real-plan.service
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
 import { Catalogo } from '../../models/catalogo';
-import { getTablaUtf8, clone, getFechaActual, calculaDiaPorMes } from '../../utils';
+import { getTablaUtf8, clone, getFechaActual, calculaDiaPorMes, formatDecimal } from '../../utils';
 import { configChartSpider, configChart } from './rpt.config.export';
 import { Linea } from '../../models/linea';
 
@@ -180,10 +180,10 @@ export class RptProduccionRealPlanComponent implements OnInit {
           real.push(realTmp.reald);
 
           let categorias = [];
-          categorias.push(legeng.replace(':grupo:', 'Grupo A').replace(':real:', realTmp.reala).replace(':meta:', realTmp.metaa));
-          categorias.push(legeng.replace(':grupo:', 'Grupo B').replace(':real:', realTmp.realb).replace(':meta:', realTmp.metab));
-          categorias.push(legeng.replace(':grupo:', 'Grupo C').replace(':real:', realTmp.realc).replace(':meta:', realTmp.metac));
-          categorias.push(legeng.replace(':grupo:', 'Grupo D').replace(':real:', realTmp.reald).replace(':meta:', realTmp.metad));
+          categorias.push(legeng.replace(':grupo:', 'Grupo A').replace(':real:', formatDecimal(realTmp.reala,3)).replace(':meta:', formatDecimal(realTmp.metaa,3)));
+          categorias.push(legeng.replace(':grupo:', 'Grupo B').replace(':real:', formatDecimal(realTmp.realb,3)).replace(':meta:', formatDecimal(realTmp.metab,3)));
+          categorias.push(legeng.replace(':grupo:', 'Grupo C').replace(':real:', formatDecimal(realTmp.realc,3)).replace(':meta:', formatDecimal(realTmp.metac,3)));
+          categorias.push(legeng.replace(':grupo:', 'Grupo D').replace(':real:', formatDecimal(realTmp.reald,3)).replace(':meta:', formatDecimal(realTmp.metad,3)));
 
           configChartSpider.xAxis.categories = categorias;
 
@@ -230,7 +230,6 @@ export class RptProduccionRealPlanComponent implements OnInit {
 
 
   }
-
 
   regresar() {
     $('.tooltipped').tooltip('hide');

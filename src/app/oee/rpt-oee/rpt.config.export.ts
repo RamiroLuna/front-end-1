@@ -62,6 +62,7 @@ let configChart = {
         visible: false
     },
     tooltip: {
+        valueDecimals: 3,
         shared: false,
         pointFormat: '<span>{series.name}: <b>{point.y}</b><br/>'
     },
@@ -76,7 +77,14 @@ let configChart = {
             dataLabels: {
                 color: '#000000',
                 enabled: true,
-                inside: true
+                inside: true,
+                format: '{y:.3f}',
+                style: {
+                    fontWeight: 'bold',
+                    color: '#000',
+                    textOutline: '1px',
+                    fontSize: '11px'
+                }
             },
             events: {
                 legendItemClick: function () {

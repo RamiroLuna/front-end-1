@@ -73,7 +73,8 @@ let configChart = {
                 enabled: true,
                 color: '#000000',
                 inside: true,
-                rotation: 0
+                rotation: 0,
+                format: '{point.y:,.3f}'
             }
         },
         line: {
@@ -83,6 +84,7 @@ let configChart = {
         }
     },
     tooltip: {
+        valueDecimals: 3,        
         headerFormat: ''
     },
     series: [],
@@ -155,6 +157,7 @@ let configChartSpider = {
         },
         align: 'left',
         verticalAlign: 'bottom',
+        layout: 'vertical',
     },
 
     plotOptions: {
@@ -165,7 +168,7 @@ let configChartSpider = {
                 allowOverlap: true,
                 enabled: false,
                 x: 0,
-                y: -6
+                y: -6,
             },
 
             events: {

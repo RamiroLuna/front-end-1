@@ -1,6 +1,6 @@
 let configChart = {
     chart: {
-        height: null, 
+        height: null,
         type: 'bar',
         borderWidth: 0,
         borderRadius: 0,
@@ -57,6 +57,9 @@ let configChart = {
         gridLineDashStyle: 'dot'
 
     },
+    tooltip: {
+        valueDecimals: 3
+    },
     plotOptions: {
         series: {
             dataLabels: {
@@ -64,14 +67,21 @@ let configChart = {
                 color: '#000',
                 inside: true,
                 y: 0,
-                distance: -10
+                distance: -10,
+                format: '{y:.3f}',
+                style: {
+                    fontWeight: 'bold',
+                    color: '#000',
+                    textOutline: '1px',
+                    fontSize: '10px'
+                }
             }
         },
-        bar:{
+        bar: {
             depth: 75
         }
     },
-    colors: ['#d32f2f'],
+    colors: ['#ef5350'],
     series: [],
 };
 
