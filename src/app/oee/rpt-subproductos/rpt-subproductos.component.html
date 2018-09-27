@@ -101,7 +101,7 @@
                   <td>{{ row.dia }}</td>
                   <td class="center-align">{{ row.grupo }}</td>
                   <td class="center-align">{{ row.turno }}</td>
-                  <td class="center-align">{{ (row.valor | formatDecimal : 2) + ' %' }}</td>
+                  <td class="center-align">{{ (row.valor | formatDecimal : 3) + ' %' }}</td>
                 </ng-template>
                 <ng-template [ngIf]="row.padre == 2">
                   <td class="right-align">
@@ -114,7 +114,7 @@
                     <b>{{ row.turno }}</b>
                   </td>
                   <td class="center-align">
-                    <b>{{ ( row.valor | formatDecimal : 2 ) + ' %' }}</b>
+                    <b>{{ ( row.valor | formatDecimal : 3 ) + ' %' }}</b>
                   </td>
                 </ng-template>
               </tr>

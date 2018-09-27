@@ -1,6 +1,6 @@
 let configChart = {
     chart: {
-        height: null, 
+        height: null,
         type: 'column',
         backgroundColor: {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
@@ -84,7 +84,7 @@ let configChart = {
         }
     },
     tooltip: {
-        valueDecimals: 3,        
+        valueDecimals: 3,
         headerFormat: ''
     },
     series: [],
@@ -100,8 +100,10 @@ let configChartSpider = {
 
     title: {
         text: '',
+        x: -300,     
         style: {
-            color: '#FFFFFF'
+            color: '#FFFFFF',
+            fontSize: '20px'
         }
     },
     exporting: {

@@ -3,7 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { Linea } from '../../models/linea';
 import { AuthService } from '../../auth/auth.service';
 import { Periodo } from '../../models/periodo';
-import { getTablaUtf8 } from '../../utils';
+import { getTablaUtf8 , formatDecimal} from '../../utils';
 import { RptVelocidadPromedioService } from './rpt-velocidad-promedio.service';
 import { configChartSpider } from './rpt.config.export';
 
@@ -145,10 +145,10 @@ export class RptVelocidadPromedioComponent implements OnInit {
 
           let esperadaTmp = this.rowsGrafica.filter((el) => el.padre == 0)[0];
 
-          configChartSpider.xAxis.categories.push('GRUPO A<br><b>'+esperadaTmp.sppeda+'</b>');
-          configChartSpider.xAxis.categories.push('GRUPO B<br><b>'+esperadaTmp.sppedb+'</b>');
-          configChartSpider.xAxis.categories.push('GRUPO C<br><b>'+esperadaTmp.sppedc+'</b>');
-          configChartSpider.xAxis.categories.push('GRUPO D<br><b>'+esperadaTmp.sppedd+'</b>');
+          configChartSpider.xAxis.categories.push('GRUPO A<br><b>'+formatDecimal(esperadaTmp.sppeda,3)+'</b>');
+          configChartSpider.xAxis.categories.push('GRUPO B<br><b>'+formatDecimal(esperadaTmp.sppedb,3)+'</b>');
+          configChartSpider.xAxis.categories.push('GRUPO C<br><b>'+formatDecimal(esperadaTmp.sppedc,3)+'</b>');
+          configChartSpider.xAxis.categories.push('GRUPO D<br><b>'+formatDecimal(esperadaTmp.sppedd,3)+'</b>');
 
 
           esperada.push(esperadaTmp.sppeda);

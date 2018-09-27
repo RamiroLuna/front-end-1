@@ -68,7 +68,8 @@ let configChart = {
         }
     },
     tooltip: {
-        headerFormat: '<b>Dia: {point.x}</b><br/>'
+        headerFormat: '<b>Dia: {point.x}</b><br/>',
+        valueDecimals: 3
     },
     series: [],
 };
