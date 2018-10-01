@@ -17,6 +17,7 @@ import {
 } from './presentacion.animaciones';
 
 declare var $: any;
+declare var Materialize: any;
 @Component({
   selector: 'app-presentacion',
   templateUrl: './presentacion.component.html',
@@ -38,7 +39,9 @@ export class PresentacionComponent implements OnInit {
   public statusRpt: string;
   public height: number;
   public endVideoWall: boolean;
-  public hidden_actions:boolean;
+  public hidden_actions: boolean;
+  public play: boolean;
+  public disabled_btn_play:boolean;
   /*
    * Variables auxiliares para mostrar KPI
    */
@@ -71,6 +74,8 @@ export class PresentacionComponent implements OnInit {
 
   initializeComponent() {
     this.loading = true;
+    this.play = true;
+    this.disabled_btn_play = true;
     this.hidden_actions = true;
     this.type_animation = 'entrada';
     this.cantidad_pasos_KPI = 0;
@@ -120,140 +125,144 @@ export class PresentacionComponent implements OnInit {
       // Tiene los datos para poder trabajar 
       this.status = 'inactive';
       this.statusRpt = 'inactive';
+      this.disabled_btn_play = false;
     }
   }
 
   animationDone(event: any): void {
+    if (this.play) {
+      setTimeout(() => {
+        
+        switch (this.type_animation) {
+          case 'entrada':
 
-    setTimeout(() => {
+            if (this.steep_index > 1 || this.steep_index == -1) {
+              this.buildChart(this.steep_index);
+            } else {
+              this.status = 'active';
+              this.type_animation = 'enfasis';
+            }
+            break;
+          case 'enfasis':
+            setTimeout(() => {
+              if (this.play) {
+                const EFECT_RANDOM = Math.floor(Math.random() * EFECTS_ENFASIS.length);
+                this.status = EFECTS_ENFASIS[EFECT_RANDOM];
+                this.type_animation = 'salida';
+              }
+            }, this.time_await);
+            break;
+          case 'salida':
+            setTimeout(() => {
+              if (this.play) {
+                this.status = 'inactive';
+                this.type_animation = 'fin';
+              }
+            }, 1000);
+            break;
+          case 'fin':
 
 
-      switch (this.type_animation) {
-        case 'entrada':
+            if (this.steep_index == 46) {
+              /*
+              * Calcular total de pasos que existiran para 
+              * mostrar las graficas de KPI
+              */
+              this.cantidad_pasos_KPI = 0;
+              if (this.KPI.length > 0) {
 
-          if (this.steep_index > 1 || this.steep_index == -1) {
-            this.buildChart(this.steep_index);
-          } else {
-            this.status = 'active';
-            this.type_animation = 'enfasis';
-          }
-          break;
-        case 'enfasis':
-          setTimeout(() => {
-            const EFECT_RANDOM = Math.floor(Math.random() * EFECTS_ENFASIS.length);
-            this.status = EFECTS_ENFASIS[EFECT_RANDOM];
-            this.type_animation = 'salida';
-          }, this.time_await);
-          break;
-        case 'salida':
-          setTimeout(() => {
-            this.status = 'inactive';
-            this.type_animation = 'fin';
-          }, 1000);
-          break;
-        case 'fin':
+                let kpis = this.KPI[this.auxIndexETAD];
 
+                let tmp = parseInt("" + (kpis.length) / 3);
+                if (kpis.length % 3 != 0) {
+                  tmp += 1;
+                }
 
-          if (this.steep_index == 46) {
-            /*
-            * Calcular total de pasos que existiran para 
-            * mostrar las graficas de KPI
-            */
-            this.cantidad_pasos_KPI = 0;
-            if (this.KPI.length > 0) {
-
-              let kpis = this.KPI[this.auxIndexETAD];
-
-              let tmp = parseInt("" + (kpis.length) / 3);
-              if (kpis.length % 3 != 0) {
-                tmp += 1;
+                this.cantidad_pasos_KPI = tmp;
               }
 
-              this.cantidad_pasos_KPI = tmp;
+              /*
+              * Fin calculo
+              */
             }
 
-            /*
-             * Fin calculo
-             */
-          }
+            if (this.steep_index < (this.TOTAL + this.cantidad_pasos_KPI)) {
+              setTimeout(() => {
+                if (!this.endVideoWall) {
 
-          if (this.steep_index < (this.TOTAL + this.cantidad_pasos_KPI)) {
-            setTimeout(() => {
-              if (!this.endVideoWall) {
+                  if ((this.steep_index + 1) >= 47) {
 
-                if ((this.steep_index + 1) >= 47) {
+                    if (this.KPI.length > 0) {
+                      this.steep_index = this.steep_index + 1;
+                      this.status = 'inactive';
+                      this.type_animation = 'entrada';
 
-                  if (this.KPI.length > 0) {
-                    this.steep_index = this.steep_index + 1;
-                    this.status = 'inactive';
-                    this.type_animation = 'entrada';
+                      if (this.steep_index > 47 && this.steep_index <= (this.TOTAL + this.cantidad_pasos_KPI)) {
+                        this.review = false;
+                        this.auxIndexKPI = this.auxIndexKPI + 3;
+                        setTimeout(() => {
+                          this.review = true;
+                        }, 15);
+                      }
 
-                    if (this.steep_index > 47 && this.steep_index <= (this.TOTAL + this.cantidad_pasos_KPI)) {
-                      this.review = false;
-                      this.auxIndexKPI = this.auxIndexKPI + 3;
-                      setTimeout(() => {
-                        this.review = true;
-                      }, 15);
-                    }
-
-                  } else {
-
-                    // Entra si termina OEE y no existen KPI.
-                    if (this.existRptEnlace) {
-                      // Entonces muestra reporte de enlace si existe
-                      this.steep_index = -1;
-                      setTimeout(() => {
-                        this.statusRpt = 'active';
-                      }, 200);
                     } else {
-                      // Si no existe reporte finaliza presentacion
-                      this.initializeComponent();
+
+                      // Entra si termina OEE y no existen KPI.
+                      if (this.existRptEnlace) {
+                        // Entonces muestra reporte de enlace si existe
+                        this.steep_index = -1;
+                        setTimeout(() => {
+                          this.statusRpt = 'active';
+                        }, 200);
+                      } else {
+                        // Si no existe reporte finaliza presentacion
+                        this.initializeComponent();
+                      }
                     }
-                  }
-                } else {
-                  if (this.steep_index != -1) {
-                    this.steep_index = this.steep_index + 1;
-                    this.status = 'inactive';
-                    this.type_animation = 'entrada';
+                  } else {
+                    if (this.steep_index != -1) {
+                      this.steep_index = this.steep_index + 1;
+                      this.status = 'inactive';
+                      this.type_animation = 'entrada';
+                    }
+
                   }
 
                 }
 
-              }
 
+              }, 200);
+            } else {
+              this.imageEtadPresentation = 'assets/videowall_etad_id_:idEtad:.png';
+              this.steep_index = 47
+              this.status = 'inactive';
+              this.type_animation = 'entrada';
+              this.auxIndexETAD++;
+              this.auxIndexKPI = -3;
 
-            }, 200);
-          } else {
-            this.imageEtadPresentation = 'assets/videowall_etad_id_:idEtad:.png';
-            this.steep_index = 47
-            this.status = 'inactive';
-            this.type_animation = 'entrada';
-            this.auxIndexETAD++;
-            this.auxIndexKPI = -3;
-
-          }
-
-          if (this.KPI.length > 0) {
-
-            if (this.auxIndexETAD == this.KPI.length) {
-
-              if (this.existRptEnlace) {
-                this.steep_index = -1;
-                setTimeout(() => {
-                  this.statusRpt = 'active';
-                }, 200);
-              } else {
-                this.initializeComponent();
-              }
             }
 
-          }
+            if (this.KPI.length > 0) {
 
-          break;
-      }
+              if (this.auxIndexETAD == this.KPI.length) {
 
-    }, 200);
+                if (this.existRptEnlace) {
+                  this.steep_index = -1;
+                  setTimeout(() => {
+                    this.statusRpt = 'active';
+                  }, 200);
+                } else {
+                  this.initializeComponent();
+                }
+              }
 
+            }
+
+            break;
+        }
+
+      }, 200);
+    }
   }
 
   buildChart(steep: number) {
@@ -263,7 +272,7 @@ export class PresentacionComponent implements OnInit {
       switch (steep) {
         /*
          * Portada
-         */ 
+         */
         case 1:
           this.time_await = 4000;
           break;
@@ -907,13 +916,23 @@ export class PresentacionComponent implements OnInit {
   }
 
 
-  actionVideoWall(): void{
-  
+  actionVideoWall(): void {
+    this.disabled_btn_play = true;
+    this.play = !this.play;
+
+    if (this.play) {
+      this.animationDone(null);
+      Materialize.toast('Reproduciendo', 1000, 'green');
+    }else{
+      Materialize.toast('Presentación pausada', 1000, 'red');
+    }
+    setTimeout(()=>{
+      this.disabled_btn_play = false;
+    },1000);
   }
 
-  optionsVideoWall(param: string): void{
+  optionsVideoWall(param: string): void {
     this.hidden_actions = ('leave' == param);
-    console.log(this.hidden_actions)
   }
 
 

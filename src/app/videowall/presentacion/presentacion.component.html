@@ -100,8 +100,9 @@
 </div>
 <div class="options videowall fixed-action-btn" *ngIf="!loading && isOk" (mouseover)="optionsVideoWall('over')" (mouseleave)="optionsVideoWall('leave')">
   <div [hidden]="hidden_actions">
-    <button class="btn-floating btn-large waves-effect waves-light red darken-4 btn-control" (click)="actionVideoWall()">
-      <i class="material-icons">pause</i>
+    <button [ngClass]="{'btn-floating btn-large waves-effect waves-light btn-control':true, 'red darken-4':play , 'green darken-4': !play }" (click)="actionVideoWall()" [disabled]="disabled_btn_play">
+      <i class="material-icons" *ngIf="play">pause</i>
+      <i class="material-icons" *ngIf="!play">play_arrow</i>
     </button>
     <button class="btn-floating btn-large waves-effect waves-light indigo darken-4" routerLink="../">
       <i class="material-icons">arrow_back</i>
