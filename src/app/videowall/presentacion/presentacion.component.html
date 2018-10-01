@@ -3,8 +3,7 @@
     <br>
   </div>
 
-  <img src="assets/logo_color.png" class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)"
-    *ngIf="steep_index == 0">
+  <img src="assets/logo_color.png" class="centrado" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 0">
 
   <img src="assets/videowall_portada_oee.png" class="img_width centrado" [@preloader]="status" (@preloader.done)="animationDone($event)"
     *ngIf="steep_index == 1">
@@ -98,7 +97,16 @@
       <app-formato-enlace [datos]="datos_formato" [consulta]="true"></app-formato-enlace>
     </div>
   </div>
-
+</div>
+<div class="options videowall fixed-action-btn" *ngIf="!loading && isOk" (mouseover)="optionsVideoWall('over')" (mouseleave)="optionsVideoWall('leave')">
+  <div [hidden]="hidden_actions">
+    <button class="btn-floating btn-large waves-effect waves-light red darken-4 btn-control" (click)="actionVideoWall()">
+      <i class="material-icons">pause</i>
+    </button>
+    <button class="btn-floating btn-large waves-effect waves-light indigo darken-4" routerLink="../">
+      <i class="material-icons">arrow_back</i>
+    </button>
+  </div>
 </div>
 
 

@@ -38,6 +38,7 @@ export class PresentacionComponent implements OnInit {
   public statusRpt: string;
   public height: number;
   public endVideoWall: boolean;
+  public hidden_actions:boolean;
   /*
    * Variables auxiliares para mostrar KPI
    */
@@ -70,6 +71,7 @@ export class PresentacionComponent implements OnInit {
 
   initializeComponent() {
     this.loading = true;
+    this.hidden_actions = true;
     this.type_animation = 'entrada';
     this.cantidad_pasos_KPI = 0;
     this.steep_index = 0;
@@ -902,6 +904,16 @@ export class PresentacionComponent implements OnInit {
       return "no_identificado";
     }
 
+  }
+
+
+  actionVideoWall(): void{
+  
+  }
+
+  optionsVideoWall(param: string): void{
+    this.hidden_actions = ('leave' == param);
+    console.log(this.hidden_actions)
   }
 
 
