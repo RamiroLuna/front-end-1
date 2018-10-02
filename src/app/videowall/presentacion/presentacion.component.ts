@@ -84,13 +84,12 @@ export class PresentacionComponent implements OnInit {
     this.hidden_actions = true;
     this.type_animation = 'entrada';
     this.cantidad_pasos_KPI = 0;
-    this.steep_index = 46;
+    this.steep_index = 0;
     this.time_await = 4000;
     this.isOk = false;
     this.endVideoWall = false;
     this.existRptEnlace = false;
-    this.auxIndexETAD = 5;
-    // this.auxIndexETAD = 0;
+    this.auxIndexETAD = 0;
 
     this.auxIndexKPI = -3;
     this.finishPresentationEtad = false;
@@ -131,7 +130,9 @@ export class PresentacionComponent implements OnInit {
       // Tiene los datos para poder trabajar 
       this.status = 'inactive';
       this.statusRpt = 'inactive';
-      this.disabled_btn_play = false;
+      setTimeout(()=>{
+        this.disabled_btn_play = false;
+      },200)
     }
   }
 
@@ -486,6 +487,7 @@ export class PresentacionComponent implements OnInit {
   }
 
   animationDoneRpt(event: any): void {
+    this.disabled_btn_play = true;
     if (this.statusRpt == 'active') {
       setTimeout(() => {
         this.statusRpt = 'desplazarY';
