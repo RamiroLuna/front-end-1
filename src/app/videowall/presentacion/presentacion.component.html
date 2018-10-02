@@ -92,7 +92,7 @@
     </ng-container>
   </div>
 
-  <div id="formato" class="row" [@showingRpt]="statusRpt" (@showingRpt.done)="animationDoneRpt($event)" *ngIf="steep_index == -1">
+  <div #formato id="formato" class="row" [@showingRpt]="statusRpt" (@showingRpt.done)="animationDoneRpt($event)" *ngIf="steep_index == -1">
     <div class="col s12 m12 l12 xl12">
       <app-formato-enlace [datos]="datos_formato" [consulta]="true"></app-formato-enlace>
     </div>

@@ -1,4 +1,4 @@
-import { animate, state, style, transition, trigger, keyframes, query, stagger, AnimationBuilder } from '@angular/animations';
+import { animate, state, style, transition, trigger, keyframes, query, stagger, AnimationBuilder, AnimationPlayer } from '@angular/animations';
 const EFECTS_ENFASIS = ['rotarY', 'rotarX'];
 const ANIMATION_PRELOADER =
     trigger('preloader', [
@@ -70,5 +70,7 @@ const ANIMATION_REPORTE =
 export {
     ANIMATION_PRELOADER,
     ANIMATION_REPORTE,
-    EFECTS_ENFASIS
+    EFECTS_ENFASIS,
+    AnimationPlayer,
+    AnimationBuilder
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { PetReporteEnlace } from '../../models/pet-reporte-enlace';
 import { configChart as configPerdidas } from '../../oee/rpt-fuente-perdidas/rpt.config.export';
 import { configChart as configDisponiblidad } from '../../oee/rpt-disponibilidad/rpt.config.export';
@@ -13,7 +13,9 @@ import { clone, formatDecimal } from '../../utils';
 import {
   ANIMATION_PRELOADER,
   ANIMATION_REPORTE,
-  EFECTS_ENFASIS
+  EFECTS_ENFASIS,
+  AnimationPlayer,
+  AnimationBuilder
 } from './presentacion.animaciones';
 
 declare var $: any;
@@ -26,6 +28,8 @@ declare var Materialize: any;
 })
 export class PresentacionComponent implements OnInit {
 
+  @ViewChild('formato') rpt_enlace: ElementRef;
+  
   private TOTAL: number;
   public type_animation: string;
   public steep_index: number; //Controla la secuencia de las graficas
@@ -42,6 +46,7 @@ export class PresentacionComponent implements OnInit {
   public hidden_actions: boolean;
   public play: boolean;
   public disabled_btn_play:boolean;
+  private player: AnimationPlayer;
   /*
    * Variables auxiliares para mostrar KPI
    */
@@ -66,7 +71,7 @@ export class PresentacionComponent implements OnInit {
    */
   public time_await: number; // tiempo en milisegundos
 
-  constructor() { }
+  constructor(private builder: AnimationBuilder) { }
 
   ngOnInit() {
     this.initializeComponent();
@@ -79,12 +84,13 @@ export class PresentacionComponent implements OnInit {
     this.hidden_actions = true;
     this.type_animation = 'entrada';
     this.cantidad_pasos_KPI = 0;
-    this.steep_index = 0;
+    this.steep_index = 46;
     this.time_await = 4000;
     this.isOk = false;
     this.endVideoWall = false;
     this.existRptEnlace = false;
-    this.auxIndexETAD = 0;
+    this.auxIndexETAD = 5;
+    // this.auxIndexETAD = 0;
 
     this.auxIndexKPI = -3;
     this.finishPresentationEtad = false;
@@ -924,6 +930,7 @@ export class PresentacionComponent implements OnInit {
       this.animationDone(null);
       Materialize.toast('Reproduciendo', 1000, 'green');
     }else{
+ 
       Materialize.toast('Presentación pausada', 1000, 'red');
     }
     setTimeout(()=>{
