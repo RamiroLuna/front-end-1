@@ -74,7 +74,13 @@ let configChart = {
                 enabled: true,
                 color: '#000000',
                 inside: true,
-                rotation: 0
+                rotation: 0,
+                style: {
+                    fontWeight: 'bold',
+                    color: '#000',
+                    textOutline: '1px',
+                    fontSize: '10px'
+                }
             }
         },
         line: {
