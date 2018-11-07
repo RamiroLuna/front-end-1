@@ -135,7 +135,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisSSP[0].real }}
+          {{ datos.kpisSSP[0].real | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -169,7 +169,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisSSP[1].real }}
+          {{ datos.kpisSSP[1].real | formatDecimal:3 }}
         </ng-container>
       </font>
     </td>
@@ -203,7 +203,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisSSP[2].real }}
+          {{ datos.kpisSSP[2].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -237,7 +237,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisSSP[3].real }}
+          {{ datos.kpisSSP[3].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -271,7 +271,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.eficiencia_entregas_compra_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.eficiencia_entregas_compra_real }}
+          {{ datos.eficiencia_entregas_compra_real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -299,7 +299,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.objetivosSSP[1].real }}
+          {{ datos.objetivosSSP[1].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -328,7 +328,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisSSP[5].real }}
+          {{ datos.kpisSSP[5].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -362,7 +362,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisSSP[6].real }}
+          {{ datos.kpisSSP[6].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -396,7 +396,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisSSP[7].real }}
+          {{ datos.kpisSSP[7].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -424,7 +424,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.objetivosSSP[2].real }}
+          {{ datos.objetivosSSP[2].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -453,7 +453,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisSSP[8].real }}
+          {{ datos.kpisSSP[8].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -487,7 +487,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisSSP[9].real }}
+          {{ datos.kpisSSP[9].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -521,7 +521,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisSSP[10].real }}
+          {{ datos.kpisSSP[10].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -612,7 +612,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.objetivosEx1[0].real }}
+          {{ datos.objetivosEx1[0].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -641,7 +641,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx1[0].real }}
+          {{ datos.kpisEx1[0].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -675,7 +675,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx1[1].real }}
+          {{ datos.kpisEx1[1].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -709,7 +709,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx1[2].real }}
+          {{ datos.kpisEx1[2].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -743,7 +743,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx1[3].real }}
+          {{ datos.kpisEx1[3].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -778,7 +778,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.eficiencia_entregas_compra_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.eficiencia_entregas_compra_real }}
+          {{ datos.eficiencia_entregas_compra_real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -806,7 +806,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.objetivosEx1[1].real }}
+          {{ datos.objetivosEx1[1].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -835,7 +835,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx1[5].real }}
+          {{ datos.kpisEx1[5].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -869,7 +869,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx1[6].real }}
+          {{ datos.kpisEx1[6].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -903,7 +903,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx1[7].real }}
+          {{ datos.kpisEx1[7].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -931,7 +931,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.objetivosEx1[2].real }}
+          {{ datos.objetivosEx1[2].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -960,7 +960,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx1[8].real }}
+          {{ datos.kpisEx1[8].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -994,7 +994,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx1[9].real }}
+          {{ datos.kpisEx1[9].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1028,7 +1028,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx1[10].real }}
+          {{ datos.kpisEx1[10].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1103,7 +1103,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.objetivosEx2[0].real }}
+          {{ datos.objetivosEx2[0].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1132,7 +1132,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx2[0].real }}
+          {{ datos.kpisEx2[0].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1166,7 +1166,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx2[1].real }}
+          {{ datos.kpisEx2[1].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1200,7 +1200,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx2[2].real }}
+          {{ datos.kpisEx2[2].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1234,7 +1234,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx2[3].real }}
+          {{ datos.kpisEx2[3].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1269,7 +1269,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.eficiencia_entregas_compra_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.eficiencia_entregas_compra_real }}
+          {{ datos.eficiencia_entregas_compra_real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1297,7 +1297,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.objetivosEx2[1].real }}
+          {{ datos.objetivosEx2[1].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1326,7 +1326,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx2[5].real }}
+          {{ datos.kpisEx2[5].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1360,7 +1360,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx2[6].real }}
+          {{ datos.kpisEx2[6].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1394,7 +1394,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx2[7].real }}
+          {{ datos.kpisEx2[7].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1422,7 +1422,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.objetivosEx2[2].real }}
+          {{ datos.objetivosEx2[2].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1451,7 +1451,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx2[8].real }}
+          {{ datos.kpisEx2[8].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1485,7 +1485,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx2[9].real }}
+          {{ datos.kpisEx2[9].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1519,7 +1519,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisEx2[10].real }}
+          {{ datos.kpisEx2[10].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1610,7 +1610,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.objetivosAmut1[0].real }}
+          {{ datos.objetivosAmut1[0].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1639,7 +1639,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut1[0].real }}
+          {{ datos.kpisAmut1[0].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1673,7 +1673,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut1[1].real }}
+          {{ datos.kpisAmut1[1].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1707,7 +1707,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut1[2].real }}
+          {{ datos.kpisAmut1[2].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1741,7 +1741,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut1[3].real }}
+          {{ datos.kpisAmut1[3].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1776,7 +1776,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.eficiencia_entregas_compra_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.eficiencia_entregas_compra_real }}
+          {{ datos.eficiencia_entregas_compra_real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1804,7 +1804,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.objetivosAmut1[1].real }}
+          {{ datos.objetivosAmut1[1].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1833,7 +1833,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut1[5].real }}
+          {{ datos.kpisAmut1[5].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1867,7 +1867,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut1[6].real }}
+          {{ datos.kpisAmut1[6].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1901,7 +1901,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut1[7].real }}
+          {{ datos.kpisAmut1[7].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1929,7 +1929,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.objetivosAmut1[2].real }}
+          {{ datos.objetivosAmut1[2].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1958,7 +1958,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut1[8].real }}
+          {{ datos.kpisAmut1[8].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -1992,7 +1992,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut1[9].real }}
+          {{ datos.kpisAmut1[9].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2026,7 +2026,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut1[10].real }}
+          {{ datos.kpisAmut1[10].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2101,7 +2101,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.objetivosAmut2[0].real }}
+          {{ datos.objetivosAmut2[0].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2130,7 +2130,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut2[0].real }}
+          {{ datos.kpisAmut2[0].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2164,7 +2164,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut2[1].real }}
+          {{ datos.kpisAmut2[1].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2198,7 +2198,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut2[2].real }}
+          {{ datos.kpisAmut2[2].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2232,7 +2232,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut2[3].real }}
+          {{ datos.kpisAmut2[3].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2266,7 +2266,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.eficiencia_entregas_compra_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.eficiencia_entregas_compra_real }}
+          {{ datos.eficiencia_entregas_compra_real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2294,7 +2294,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.objetivosAmut2[1].real }}
+          {{ datos.objetivosAmut2[1].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2323,7 +2323,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut2[5].real }}
+          {{ datos.kpisAmut2[5].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2357,7 +2357,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut2[6].real }}
+          {{ datos.kpisAmut2[6].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2391,7 +2391,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut2[7].real }}
+          {{ datos.kpisAmut2[7].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2419,7 +2419,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.objetivosAmut2[2].real }}
+          {{ datos.objetivosAmut2[2].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2448,7 +2448,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut2[8].real }}
+          {{ datos.kpisAmut2[8].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2482,7 +2482,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut2[9].real }}
+          {{ datos.kpisAmut2[9].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2516,7 +2516,7 @@
           Reporte
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.kpisAmut2[10].real }}
+          {{ datos.kpisAmut2[10].real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2608,7 +2608,7 @@
             <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.merma_real" [ngModelOptions]="{standalone: true}">
           </ng-container>
           <ng-container *ngIf="consulta">
-            {{ datos.merma_real }}
+            {{ datos.merma_real  | formatDecimal:3}}
           </ng-container>
 
         </font>
@@ -2639,7 +2639,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.no_fugas_pet_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.no_fugas_pet_real }}
+          {{ datos.no_fugas_pet_real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -2668,7 +2668,7 @@
             <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.subproducto_real" [ngModelOptions]="{standalone: true}">
           </ng-container>
           <ng-container *ngIf="consulta">
-            {{ datos.subproducto_real }}
+            {{ datos.subproducto_real  | formatDecimal:3}}
           </ng-container>
         </font>
       </b>
@@ -2743,7 +2743,7 @@
             <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.costo_unitario_real" [ngModelOptions]="{standalone: true}">
           </ng-container>
           <ng-container *ngIf="consulta">
-            {{ datos.costo_unitario_real }}
+            {{ datos.costo_unitario_real  | formatDecimal:3}}
           </ng-container>
         </font>
       </b>
@@ -2773,7 +2773,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.costo_unitario" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.costo_unitario }}
+          {{ datos.costo_unitario  | formatDecimal:3}}
         </ng-container>
 
       </font>
@@ -2847,7 +2847,7 @@
           <textarea class="color_input materialize-textarea" [(ngModel)]="datos.objetivo_estrategico_dos" [ngModelOptions]="{standalone: true}"></textarea>
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.objetivo_estrategico_dos }}
+          {{ datos.objetivo_estrategico_dos}}
         </ng-container>
       </font>
     </td>
@@ -2876,7 +2876,7 @@
             <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.mdp_real" [ngModelOptions]="{standalone: true}">
           </ng-container>
           <ng-container *ngIf="consulta">
-            {{ datos.mdp_real }}
+            {{ datos.mdp_real  | formatDecimal:3}}
           </ng-container>
         </font>
       </b>
@@ -2908,7 +2908,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.ajuste_error_inventario" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.ajuste_error_inventario }}
+          {{ datos.ajuste_error_inventario  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -3020,7 +3020,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.eficiencia_carga_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.eficiencia_carga_real }}
+          {{ datos.eficiencia_carga_real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -3054,7 +3054,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.descarga_mp_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.descarga_mp_real }}
+          {{ datos.descarga_mp_real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -3088,7 +3088,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.liberacion_embarques" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.liberacion_embarques }}
+          {{ datos.liberacion_embarques  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -3122,7 +3122,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.efectividad_entrega_cliente_real" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.efectividad_entrega_cliente_real }}
+          {{ datos.efectividad_entrega_cliente_real  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -3156,7 +3156,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.control_entradas_salidas_contratistas" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.control_entradas_salidas_contratistas }}
+          {{ datos.control_entradas_salidas_contratistas  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -3191,7 +3191,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.control_entradas_salidas_transportistas" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.control_entradas_salidas_transportistas }}
+          {{ datos.control_entradas_salidas_transportistas  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -3226,7 +3226,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.control_entradas_salidas_proveedores" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.control_entradas_salidas_proveedores }}
+          {{ datos.control_entradas_salidas_proveedores  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -3260,7 +3260,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.control_entradas_salidas_visitantes" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.control_entradas_salidas_visitantes }}
+          {{ datos.control_entradas_salidas_visitantes  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
@@ -3294,7 +3294,7 @@
           <input style=" background-color: #99ddff" type="text" [(ngModel)]="datos.ot_alimentadas_mp9" [ngModelOptions]="{standalone: true}">
         </ng-container>
         <ng-container *ngIf="consulta">
-          {{ datos.ot_alimentadas_mp9 }}
+          {{ datos.ot_alimentadas_mp9  | formatDecimal:3}}
         </ng-container>
       </font>
     </td>
