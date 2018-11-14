@@ -85,7 +85,7 @@ export class PresentacionComponent implements OnInit {
     this.type_animation = 'entrada';
     this.cantidad_pasos_KPI = 0;
     // this.steep_index = 0;
-    this.steep_index = 8;
+    this.steep_index = 9;
     this.time_await = 4000;
     this.isOk = false;
     this.endVideoWall = false;
@@ -743,9 +743,9 @@ export class PresentacionComponent implements OnInit {
     configuracion.series.push({ name: ' B ', data: dataGrupoB, color: '#66bb6a' });
     configuracion.series.push({ name: ' C ', data: dataGrupoC, color: '#d4e157' });
     configuracion.series.push({ name: ' D ', data: dataGrupoD, color: '#42a5f5' });
-    configuracion.series.push({ name: ' Meta 1ro ', data: dataMeta1, type: 'line', color: '#ffcc80', dashStyle: 'Dash' });
-    configuracion.series.push({ name: ' Meta 2do ', data: dataMeta2, type: 'line', color: '#ff9800', dashStyle: 'Dash' });
-    configuracion.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#e65100', dashStyle: 'Dash' });
+    configuracion.series.push({ name: ' Meta 1ro ', data: dataMeta1, type: 'line', color: '#b71c1c', dashStyle: 'Dash' });
+    configuracion.series.push({ name: ' Meta 2do ', data: dataMeta2, type: 'line', color: '#1a237e', dashStyle: 'Dash' });
+    configuracion.series.push({ name: ' Meta dia ', data: dataMeta3, type: 'line', color: '#736914', dashStyle: 'Dash' });
 
     $('#grafica').highcharts(configuracion);
   }
