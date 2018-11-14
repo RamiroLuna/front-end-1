@@ -633,7 +633,7 @@ export class PresentacionComponent implements OnInit {
     configuracion.title.style.color = '#0d47a1';
     let esperada = [];
     let real = [];
-    let legeng = ':grupo:<br><span style="color:#9e9d24">:real:</span><br><span style="color:#283593">:meta:</span>';
+    let legeng = '<p style="font-size: 1.3em;">:grupo:</p><br><span style="color:#6D6414;font-size: 1.3em;">:real:</span><br><span style="color:#283593;font-size: 1.3em;">:meta:</span>';
 
     let esperadaTmp = datosRRadar.filter((el) => el.padre == 0)[0];
     let realTmp = datosRRadar.filter((el) => el.padre == 0)[0];
@@ -658,7 +658,7 @@ export class PresentacionComponent implements OnInit {
 
     configuracion.series.push({
       color: '#283593',
-      name: ' Meta ',
+      name: '<p style="font-size: 1.3em;color:#283593""> Meta </p>',
       data: esperada,
       pointPlacement: 'on',
       dataLabels: {
@@ -667,13 +667,13 @@ export class PresentacionComponent implements OnInit {
     });
 
     configuracion.series.push({
-      color: '#9e9d24',
-      name: ' Real ',
+      color: '#6D6414',
+      name: '<p style="font-size: 1.3em;color:#6D6414"> Real </p>',
       data: real,
       pointPlacement: 'on',
       dataLabels: {
         y: 5,
-        color: '#9e9d24'
+        color: '#6D6414'
       }
     });
 
