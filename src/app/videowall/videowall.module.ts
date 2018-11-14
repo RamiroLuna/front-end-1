@@ -7,6 +7,7 @@ import { PresentacionComponent } from './presentacion/presentacion.component';
 import { OptionsComponent } from './options/options.component';
 import { AuthGuardVideoWall } from '../auth/auth.guard.video.wall';
 import { FormatoEnlaceComponent } from '../../app/etad/formato-enlace/formato-enlace.component';
+import { PipesCustomModule } from '../pipes/pipes.custom.module';
 /* expectedRole: number Es el id del rol que se encuentra en la base de datos */
 const routesVideoWall: Routes = [
   {
@@ -34,6 +35,7 @@ const routesVideoWall: Routes = [
     MaterializeModule,
     ReactiveFormsModule, 
     FormsModule,
+    PipesCustomModule,
     RouterModule.forChild(routesVideoWall)
   ],
   providers: [
