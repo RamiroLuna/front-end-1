@@ -17,6 +17,8 @@ let configChartSpider = {
     },
     title: {
         text: '',
+        x: 0,
+        y: 10,
         style: {
             color: '#ffffff'
         }

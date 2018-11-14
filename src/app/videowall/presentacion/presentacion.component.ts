@@ -84,7 +84,8 @@ export class PresentacionComponent implements OnInit {
     this.hidden_actions = true;
     this.type_animation = 'entrada';
     this.cantidad_pasos_KPI = 0;
-    this.steep_index = 0;
+    // this.steep_index = 0;
+    this.steep_index = 8;
     this.time_await = 4000;
     this.isOk = false;
     this.endVideoWall = false;
@@ -697,11 +698,13 @@ export class PresentacionComponent implements OnInit {
     configuracion.series = [];
     configuracion.xAxis.categories = [];
     configuracion.title.text = titulo;
+    configuracion.title.x = -300;
+    configuracion.title.y = 50;
 
-    configuracion.xAxis.categories.push('GRUPO A<br><b>' + formatDecimal(esperadaTmp.sppeda, 3) + '</b>');
-    configuracion.xAxis.categories.push('GRUPO B<br><b>' + formatDecimal(esperadaTmp.sppedb, 3) + '</b>');
-    configuracion.xAxis.categories.push('GRUPO C<br><b>' + formatDecimal(esperadaTmp.sppedc, 3) + '</b>');
-    configuracion.xAxis.categories.push('GRUPO D<br><b>' + formatDecimal(esperadaTmp.sppedd, 3) + '</b>');
+    configuracion.xAxis.categories.push('<p style="font-size: 1.3em;">GRUPO A</p><br><b style="font-size: 1.5em;">' + formatDecimal(esperadaTmp.sppeda, 3) + '</b>');
+    configuracion.xAxis.categories.push('<p style="font-size: 1.3em;">GRUPO B</p><br><b style="font-size: 1.5em;">' + formatDecimal(esperadaTmp.sppedb, 3) + '</b>');
+    configuracion.xAxis.categories.push('<p style="font-size: 1.3em;">GRUPO C</p><br><b style="font-size: 1.5em;">' + formatDecimal(esperadaTmp.sppedc, 3) + '</b>');
+    configuracion.xAxis.categories.push('<p style="font-size: 1.3em;">GRUPO D</p><br><b style="font-size: 1.5em;">' + formatDecimal(esperadaTmp.sppedd, 3) + '</b>');
 
 
     esperada.push(esperadaTmp.sppeda);
