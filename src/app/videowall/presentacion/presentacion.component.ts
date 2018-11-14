@@ -84,8 +84,7 @@ export class PresentacionComponent implements OnInit {
     this.hidden_actions = true;
     this.type_animation = 'entrada';
     this.cantidad_pasos_KPI = 0;
-    // this.steep_index = 0;
-    this.steep_index = 9;
+    this.steep_index = 0;
     this.time_await = 4000;
     this.isOk = false;
     this.endVideoWall = false;
@@ -558,6 +557,7 @@ export class PresentacionComponent implements OnInit {
     configuracion.series = [];
     configuracion.title.text = titulo;
     configuracion.xAxis.categories = labels;
+    configuracion.plotOptions.series.dataLabels.style.fontSize='14px';
     configuracion.series.push({ name: ' Real ', data: horas });
     configuracion.series.push({ name: ' Meta esperada ', data: meta_esperada, type: 'line' });
 

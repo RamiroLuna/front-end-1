@@ -51,7 +51,7 @@
   <img [src]="imageEtadPresentation" class="img_width" [@preloader]="status" (@preloader.done)="animationDone($event)" *ngIf="steep_index == 47">
 
   <!-- template kpi -->
-  <div class="col s12 m12 l12 xl12  center-align" *ngIf="steep_index > 47 && review" [@preloader]="status" (@preloader.done)="animationDone($event)">
+  <div class="col s12 m12 l12 xl12  center-align margen_superior" *ngIf="steep_index > 47 && review" [@preloader]="status" (@preloader.done)="animationDone($event)">
     <ng-container *ngFor="let grafica of row; let j = index">
       <div class="col s12 m12 l4 xl4">
         <div class="card">

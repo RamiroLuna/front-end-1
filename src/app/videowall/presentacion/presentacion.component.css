@@ -11,6 +11,9 @@
     margin-right: auto; 
 
 }
+.margen_superior{
+    margin-top: -30px;
+}
 
 .btn-control{
     right: 5px; 
