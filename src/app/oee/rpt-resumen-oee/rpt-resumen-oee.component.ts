@@ -138,6 +138,7 @@ export class RptResumenOeeComponent implements OnInit {
       fullWidth: true,
       indicators: true,
       duration: 400,
+      dragged: true,
       onCycleTo: (ele, dragged) => {
         this.texto_link = "Ver datos en tabla(s)";
         this.ver_tabla = false;
