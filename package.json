@@ -29,7 +29,7 @@
     "datatables.net-dt": "^1.10.16",
     "hammerjs": "^2.0.8",
     "highcharts": "^6.1.0",
-    "jquery": "^2.2.4",
+    "jquery": "^3.2.1",
     "jwt-decode": "^2.2.0",
     "materialize-css": "^0.100.2",
     "materialize-stepper": "^2.1.4",
