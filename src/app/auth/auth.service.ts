@@ -64,7 +64,6 @@ export class AuthService {
 
     let perfiles:string = jwt_decode(this.getToken()).perfiles || "-1";
     let idPerfiles = perfiles.split(",").map(el=>parseInt(el));
-   
     return (idPerfiles.indexOf(idPerfil) == -1);
   }
 

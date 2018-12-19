@@ -118,7 +118,7 @@ export class ListaValidacionComponent implements OnInit {
     this.estatusPeriodo = 0;
     this.anioSeleccionado = getAnioActual();
 
-    this.no_permiso_edicion = (!this.auth.permissionEdit(6) || !this.auth.permissionEdit(5) || !this.auth.permissionEdit(4));
+    this.no_permiso_edicion = !(!this.auth.permissionEdit(3) || !this.auth.permissionEdit(2) || !this.auth.permissionEdit(1));
 
     this.permission.validar = findRol(49, this.auth.getRolesEtad());   
     this.permission.quitar_validacion = findRol(51, this.auth.getRolesEtad());   
@@ -242,7 +242,7 @@ export class ListaValidacionComponent implements OnInit {
     this.formConsultaPeriodo = this.fb.group({
       idEtad: new FormControl({ value: this.idEtad ,  disabled:  (this.no_permiso_edicion && !this.isFacilitadorAmut ) }, [Validators.required]),
       idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required]),
-      idGrupo: new FormControl({ value: this.idGrupo , disabled:  this.no_permiso_edicion }, [Validators.required])
+      idGrupo: new FormControl({ value: this.idGrupo , disabled:  this.no_permiso_edicion && this.idGrupo != 6 && this.idGrupo != 5 }, [Validators.required])
     });
   }
 
