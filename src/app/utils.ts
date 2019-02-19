@@ -479,7 +479,12 @@ function getTablaUtf8(id: string): string {
         .replace(/Ú/g, '%da')
         .replace(/Ñ/g, '%d1')
         .replace(/ñ/g, '%f1')
-        .replace(/´/g, '%27');
+        .replace(/´/g, '%27')
+        .replace(/-/g, '%2d')
+        .replace(/=/g, '%3d')
+        .replace(/,/g, '%2c')
+        .replace(/\//g, '%2f')
+        .replace(/#/g, '%23');
 }
 
 /**
