@@ -179,7 +179,7 @@ export class FormularioProduccionComponent implements OnInit {
         * Configuración del modal de confirmación
         */
       swal({
-        title: '<span style="color: #303f9f "> ¿ Está seguro registrar la producción ? </span>',
+        title: '<span style="color: #303f9f "> ¿ Está seguro registrar la producción tt? </span>',
         type: 'question',
         showCancelButton: true,
         confirmButtonColor: '#303f9f',
@@ -187,18 +187,20 @@ export class FormularioProduccionComponent implements OnInit {
         cancelButtonText: 'Cancelar',
         confirmButtonText: 'Si, registrar',
         allowOutsideClick: false,
-        allowEnterKey: false
+        allowEnterKey: false,
+        showLoaderOnConfirm: true
+        
       }).then((result) => {
         /*
          * Si acepta
          */
-        if (result.value) {
+        if (result.value) {          
           let arregloAsignaciones: Array<any> = [];
 
           this.productos.map((el) => {
             arregloAsignaciones.push({ 'id_producto': el.id_producto, 'valor': parseFloat(el.asignacion) });
           });
-
+          
           this.service.agregar(this.auth.getIdUsuario(), arregloAsignaciones, this.meta.id_meta).subscribe(result => {
 
             if (result.response.sucessfull) {
