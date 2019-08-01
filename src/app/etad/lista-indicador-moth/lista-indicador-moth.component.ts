@@ -77,6 +77,7 @@ export class ListaIndicadorMothComponent implements OnInit {
 
   public no_permiso_edicion: boolean;
   public isFacilitadorAmut: boolean;
+  public isMantenimiento: boolean;
 
   public permission: any = {
     editar_indicador_mensual: false
@@ -124,9 +125,14 @@ export class ListaIndicadorMothComponent implements OnInit {
           this.idEtad = this.auth.getIdEtad();
 
           this.isFacilitadorAmut =  (!this.auth.permissionEdit(4) && (this.idEtad == 1 || this.idEtad == 2));
+          this.isMantenimiento = (!this.auth.permissionEdit(4) && (this.idEtad == 5 || this.idEtad == 2010));
           
           if(this.isFacilitadorAmut){
             this.etads = this.etads.filter(el=>el.id == 1 || el.id == 2);
+          }
+
+          if(this.isMantenimiento){
+            this.etads = this.etads.filter(el=>el.id == 5 || el.id == 2010);
           }
         }
 
@@ -198,6 +204,10 @@ export class ListaIndicadorMothComponent implements OnInit {
             if (!this.isFacilitadorAmut) {
               this.formConsultaPeriodo.controls.idGrupo.reset();
             }
+
+            if(!this.isMantenimiento){
+              this.formConsultaPeriodo.controls.idGrupo.reset();
+            }
           }
           
           
@@ -220,7 +230,7 @@ export class ListaIndicadorMothComponent implements OnInit {
 
   loadFormulario(): void {
     this.formConsultaPeriodo = this.fb.group({
-      idEtad: new FormControl({ value: this.idEtad,  disabled:  (this.no_permiso_edicion && !this.isFacilitadorAmut )  }, [Validators.required]),
+      idEtad: new FormControl({ value: this.idEtad,  disabled:  (this.no_permiso_edicion && !this.isFacilitadorAmut && !this.isMantenimiento )  }, [Validators.required]),
       idPeriodo: new FormControl({ value: this.idPeriodo }, [Validators.required]),
       idGrupo: new FormControl({ value: this.idGrupo, disabled:  this.no_permiso_edicion }, [Validators.required])
     });
